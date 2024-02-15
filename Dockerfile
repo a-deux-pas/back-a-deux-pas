@@ -1,36 +1,30 @@
-# Définit l'image de base
-FROM eclipse-temurin:21-jdk AS base
+# Use JRE 21 LTS 
+FROM eclipse-temurin:21-jre
 
-# Définit le répertoire de travail dans le conteneur
-WORKDIR /workspace/app
-# Créer un volume docker à partir du repertoire /tmp pour stocker les fichiers temporaires
-VOLUME /tmp
+ARG APP_NAME=back \
+    APP_VERSION=0.0.1-SNAPSHOT \
+    APP_UID=1001
 
-# Copie les fichiers nécessaires pour la construction
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY src src
-# Résout les dépendances du projet
-RUN ./mvnw dependency:resolve
 
-# Définit le paramétrage de l'image pour l'environnement de développement
-FROM base AS dev
-# Commande à exécuter lors du démarrage du conteneur en mode développement
-CMD ["./mvnw", "spring-boot:run"]
+# create app user to avoid running app as root and install ca-certificates and clean apt cache
+RUN useradd -U -m -d /app/ -s /bin/bash -u ${APP_UID} app-user && \
+    apt install -y ca-certificates && \
+    apt clean
 
-# Définit le paramétrage de l'image pour l'environnement de test
-FROM base AS test
-# Commande à exécuter lors du démarrage du conteneur en mode test
-CMD ["./mvnw", "test"]
+# switch to app-user and its home directory 
+USER app-user
+WORKDIR /app
 
-# Compilation du projet
-FROM base AS build
-RUN ./mvnw package
+# copy application jar to /app/ directory and change owner (chown) to app-user
+COPY --chown=${APP_UID}:${APP_UID} target/${APP_NAME}-${APP_VERSION}.jar /app/ 
 
-# Définit une image pour l'environnement de production
-FROM eclipse-temurin:21-jre-jammy AS production
-# Copie le fichier JAR de l'étape de construction précédente dans l'image de production
-COPY --from=build /workspace/app/target/back-0.0.1-SNAPSHOT.jar back.jar
-# Commande à exécuter lors du démarrage du conteneur en mode production
-CMD ["java", "-jar", "/back.jar"]
+# make app and tmp directories writable when container is running in readonly
+VOLUME /app /tmp
+
+# Set Env vars needed for CMD
+ENV APP_NAME=${APP_NAME}
+ENV APP_VERSION=${APP_VERSION}
+
+# set default command to start application and expose application port
+CMD ["sh", "-c", "java -jar /app/${APP_NAME}-${APP_VERSION}.jar"]
+EXPOSE 8081
