@@ -27,4 +27,4 @@ ENV APP_VERSION=${APP_VERSION}
 
 # set default command to start application and expose application port
 CMD ["sh", "-c", "java -jar /app/${APP_NAME}-${APP_VERSION}.jar"]
-EXPOSE 8081
+EXPOSE 8080
