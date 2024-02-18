@@ -65,8 +65,6 @@ jobs:
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v3
       # Build docker image and push to docker hub
-      - name: Print MAPP_VERSION
-        run: echo APP_VERSION ===>> ${{ needs.maven.outputs.APP_VERSION }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       # Docker login
@@ -80,4 +78,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: douniabed/${{ vars.APP_NAME }}:${{ needs.maven.outputs.APP_VERSION }}"
+          tags: douniabed/${{ vars.APP_NAME }}:${{ needs.maven.outputs.APP_VERSION }}
