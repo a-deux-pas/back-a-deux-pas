@@ -51,7 +51,7 @@ jobs:
         run: mvn -B package -Dmaven.test.skip=true
       # Upload artifact to repository
       - name: Upload Application Package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@master
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
@@ -61,9 +61,17 @@ jobs:
     #if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
     needs: maven
     runs-on: ubuntu-latest
+    env:
+      APP_NAME: ${{ vars.APP_NAME }}
+      APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
     steps:
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v3
+      - name: Download Application Package
+        uses: actions/download-artifact@master
+        with:
+          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+          path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+      - name: Display structure of downloaded files
+        run: ls -R target/
       # Build docker image and push to docker hub
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -78,4 +86,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: douniabed/${{ vars.APP_NAME }}:${{ needs.maven.outputs.APP_VERSION }}
+          tags: douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
