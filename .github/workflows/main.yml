@@ -1,4 +1,4 @@
-name: back-a-deux-pas CI with Maven and Docker
+name: back-a-deux-pas CI
 # Triggers the workflow on push or pull request
 on:
   push:
