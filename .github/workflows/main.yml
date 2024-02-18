@@ -71,7 +71,7 @@ jobs:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           path: ${{ github.workspace }}/target/
       - name: Display structure of downloaded files
-        run: ls -l target/ && jar vtf target/*jar
+        run: ls -l target/ ${{ github.workspace }}/Dockerfile
       # Build docker image and push to docker hub
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v3
