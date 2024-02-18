@@ -28,23 +28,26 @@ jobs:
           distribution: "temurin"
           cache: maven
       # Get application version from pom.xml to variable
-      - name: get-pom-version
-        id: pom-version
-        uses: PERES-Richard/maven-get-version-action@v3.0.0
+      - name: Retrieve Application Version
+        run: |
+          print ::set-env name=APP_VERSION::$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)
       - name: Print Maven POM project version
-        run: echo "version = ${{ steps.pom-version.outputs.version }}"
-      # Project compilation with Maven and creation of the package from the pom.xml file
-      - name: Build with Maven
-        run: mvn -B clean package
+        run: echo "application version = ${{ env.APP_VERSION }}"
+      # Project compilation
+      - name: Compile Code Source
+        run: mvn -B clean compile
       # Execution of unit tests
       - name: Run Unit Tests
-        run: mvn test
+        run: mvn -B test
+      # Package application
+      - name: Package Application
+        run: mvn -B package -Dmaven.test.skip=true
       # Upload artifact to repository
-      - name: Upload Build Artifact
+      - name: Upload Application Package
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP_NAME }}-${{ steps.pom-version.outputs.version }}.jar
-          path: ${{ github.workspace }}/target/back-a-deux-pas-${{ steps.pom-version.outputs.version }}.jar
+          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+          path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
   docker:
     if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -63,4 +66,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: douniabed/${{ env.APP_NAME }}:${{ steps.pom-version.outputs.version }}
+          tags: douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
