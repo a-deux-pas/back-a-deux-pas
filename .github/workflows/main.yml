@@ -88,7 +88,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@master
         with:
-          context: .
+          context: ${{ github.workspace }}
           file: Dockerfile
           push: true
           tags: docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
