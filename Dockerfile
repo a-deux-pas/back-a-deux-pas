@@ -16,7 +16,7 @@ USER app-user
 WORKDIR /app
 
 # copy application jar to /app/ directory and change owner (chown) to app-user
-ADD --chown=${APP_UID}:${APP_UID} ./target/${APP_NAME}-${APP_VERSION}.jar /app/ 
+COPY --chown=${APP_UID}:${APP_UID} ./target/${APP_NAME}-${APP_VERSION}.jar /app/ 
 
 # make app and tmp directories writable when container is running in readonly
 VOLUME /app /tmp
