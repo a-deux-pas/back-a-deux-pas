@@ -1,7 +1,7 @@
 # Use JRE 21 LTS 
 FROM eclipse-temurin:21-jre
 
-ARG APP_NAME=back \
+ARG APP_NAME=back-a-deux-pas \
     APP_VERSION=0.0.1-SNAPSHOT \
     APP_UID=1001
 
