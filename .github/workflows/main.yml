@@ -3,7 +3,8 @@ name: back-a-deux-pas CI
 on:
   push:
     branches:
-      - "**"
+      - "dev"
+      - "main"
   pull_request:
     branches:
       - "**"
@@ -33,6 +34,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
           cache: maven
+          server-id: github
       # Get application version from pom.xml to variable
       - name: Retrieve Application Version
         id: set_app_version
@@ -59,7 +61,6 @@ jobs:
           compression-level: 0
           overwrite: true
   docker:
-    #if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
     needs: maven
     runs-on: ubuntu-latest
     env:
@@ -90,7 +91,7 @@ jobs:
         with:
           context: ${{ github.workspace }}
           file: Dockerfile
-          push: true
+          push: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' }}
           tags: docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
           build-args: |
             APP_NAME=${{ env.APP_NAME }}
