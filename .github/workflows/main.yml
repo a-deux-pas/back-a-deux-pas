@@ -73,9 +73,7 @@ jobs:
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           path: target/
-      - name: Display structure of downloaded files
-        run: ls -l target/ ${{ github.workspace }}/
-      # Build docker image and push to docker hub
+      # Prepare docker build with buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@master
         with:
