@@ -1,10 +1,9 @@
-src/main/resources/application.properties
-.env
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.env
 
 ### STS ###
 .apt_generated
@@ -33,3 +32,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Spring Boot ###
+target/*
+bin/*
+build/*
+.gradle/*
+.settings/*
+.classpath
+.project
+.factorypath
+.attach_pid*
+.idea
+*.iml
+/target
+.sts4-cache/
+.vscode
+_site/
+*.css

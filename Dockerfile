@@ -1,8 +1,8 @@
 # Use JRE 21 LTS 
 FROM eclipse-temurin:21-jre
 
-ARG APP_NAME=back \
-    APP_VERSION=0.0.1-SNAPSHOT \
+ARG APP_NAME=back-a-deux-pas \
+    APP_VERSION=1.0.0-SNAPSHOT \
     APP_UID=1001
 
 
@@ -16,7 +16,7 @@ USER app-user
 WORKDIR /app
 
 # copy application jar to /app/ directory and change owner (chown) to app-user
-COPY --chown=${APP_UID}:${APP_UID} target/${APP_NAME}-${APP_VERSION}.jar /app/ 
+COPY --chown=${APP_UID}:${APP_UID} ./target/${APP_NAME}-${APP_VERSION}.jar /app/ 
 
 # make app and tmp directories writable when container is running in readonly
 VOLUME /app /tmp
