@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>fr.a-deux-pas</groupId>
 	<artifactId>back-a-deux-pas</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>back-a-deux-pas</name>
 	<description>project for Spring Boot</description>
 	<properties>
