@@ -158,11 +158,11 @@ public class User {
         this.role = role;
     }
 
+    // toString
     @Override
     public String toString(){
         return this.email;
     }
-
 
     // equals and hashCode
     @Override

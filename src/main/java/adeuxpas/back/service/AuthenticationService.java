@@ -6,10 +6,9 @@ import adeuxpas.back.entity.User;
 
 import java.util.Optional;
 
-public interface UserService {
+public interface AuthenticationService {
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findUserByEmail(String email);
     boolean canDoSignup(SignupRequest signupRequest);
-
     Optional<String> login(LoginRequest loginRequest);
 }

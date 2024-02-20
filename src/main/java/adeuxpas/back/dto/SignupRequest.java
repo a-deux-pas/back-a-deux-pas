@@ -1,6 +1,6 @@
 package adeuxpas.back.dto;
 
-public class SignupRequestDTO {
+public class SignupRequest {
     private String email;
     private String password;
     private String alias;
@@ -11,9 +11,9 @@ public class SignupRequestDTO {
     private String postalCode;
     private String profilePicture;
 
-    public SignupRequestDTO(String email, String password, String alias,
-                            String bio, String country, String city, String street,
-                            String postalCode, String profilePicture) {
+    public SignupRequest(String email, String password, String alias,
+                         String bio, String country, String city, String street,
+                         String postalCode, String profilePicture) {
         this.email = email;
         this.password = password;
         this.alias = alias;

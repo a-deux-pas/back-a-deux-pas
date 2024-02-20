@@ -1,10 +1,10 @@
 package adeuxpas.back.dto;
 
-public class LoginRequestDTO {
+public class LoginRequest {
     private String email;
     private String password;
 
-    public LoginRequestDTO(String email, String password) {
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }

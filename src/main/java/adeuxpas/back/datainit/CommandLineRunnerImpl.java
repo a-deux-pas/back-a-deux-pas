@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 
-// class used to execute custom logic or tasks at the start of the application
+// executes custom logic or tasks at the start of the application
 // (after the Spring application context is initialized and before the application starts serving requests)
 @Component
 public class CommandLineRunnerImpl implements CommandLineRunner {
