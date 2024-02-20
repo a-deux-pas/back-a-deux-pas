@@ -87,7 +87,7 @@ public class User {
     }
 
     public String getBio() {
-        return bio;
+         return bio;
     }
 
     public void setBio(String bio) {
