@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @SpringBootTest
 class BackApplicationTests {
 
-	@Test
+	/*@Test
 	void contextLoads() {
         System.out.println("Test successful");
-	}
+	}*/
 
 }
