@@ -11,7 +11,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 /**
  * Configuration class for Spring Security setup.
  * <p>
@@ -46,11 +45,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http)) // configure Cross-Origin Resource Sharing (CORS) for the HTTP security.
                 .csrf(CsrfConfigurer::disable) // disable Cross-Site Request Forgery (CSRF) protection during development.
                 .authorizeHttpRequests((requests) -> requests
-                        // expose endpoints at "/api/signup" and "api/login", for "GET" requests, without authentication
-                        .requestMatchers("/api/signup", "/api/login").permitAll()
-                        // protect our other endpoints with authentication
-                        .requestMatchers("/api/content").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers("/api/admin-page").hasAuthority("ADMIN"))
+                        // expose endpoints at "/api/signup" and "api/login", for "GET" requests, for everybody
+                        .requestMatchers("/signup", "/login").permitAll()
+                        // protect our other endpoints from unauthenticated and/or unauthorized users
+                        .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/admin-page").hasAuthority("ADMIN"))
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
                         // meaning no session will be created or used for authentication.

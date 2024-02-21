@@ -22,7 +22,6 @@ import java.util.Optional;
  */
 
 @RestController
-@RequestMapping(("/api"))
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
