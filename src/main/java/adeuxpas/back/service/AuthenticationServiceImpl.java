@@ -4,36 +4,33 @@ import adeuxpas.back.auth.JWTService;
 import adeuxpas.back.dto.LoginRequest;
 import adeuxpas.back.dto.SignupRequest;
 import adeuxpas.back.entity.User;
+import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
-import adeuxpas.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final BCryptPasswordEncoder encoder;
     private final JWTService jwtService;
 
-    public AuthenticationServiceImpl(@Autowired UserRepository userRepository,
+    public AuthenticationServiceImpl(@Autowired UserService userService,
                                      @Autowired BCryptPasswordEncoder encoder,
                                      @Autowired JWTService jwtService){
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.encoder = encoder;
         this.jwtService = jwtService;
-    }
-    @Override
-    public Optional<User> findUserByEmail(String email) {
-        return this.userRepository.findByEmail(email);
     }
 
     @Override
     public boolean canDoSignup(SignupRequest signupRequest){
-        Optional<User> userFromDB = this.findUserByEmail(signupRequest.getEmail());
+        Optional<User> userFromDB = this.userService.findUserByEmail(signupRequest.getEmail());
         if (userFromDB.isEmpty()){
             User userToSave = new User();
             userToSave.setEmail(signupRequest.getEmail());
@@ -45,9 +42,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userToSave.setStreet(signupRequest.getStreet());
             userToSave.setPostalCode(signupRequest.getPostalCode());
             userToSave.setProfilePicture(signupRequest.getProfilePicture());
+            userToSave.setInscriptionDate(LocalDateTime.now());
             userToSave.setRole(UserRole.USER);
+            userToSave.setAccountStatus(AccountStatus.ACTIVE);
 
-            this.userRepository.save(userToSave);
+            this.userService.save(userToSave);
 
             return true;
         }
@@ -56,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Optional<String> login(LoginRequest loginRequest) {
-        Optional<User> userFromDB = this.findUserByEmail(loginRequest.getEmail());
+        Optional<User> userFromDB = this.userService.findUserByEmail(loginRequest.getEmail());
         if (userFromDB.isPresent() && encoder.matches(loginRequest.getPassword(), userFromDB.get().getPassword())){
             String token = this.jwtService.generateToken(userFromDB.get().getEmail(), userFromDB.get().getRole());
             return Optional.of(token);

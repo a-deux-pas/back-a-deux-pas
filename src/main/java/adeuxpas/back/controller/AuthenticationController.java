@@ -41,7 +41,7 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest){
         if (this.authenticationService.canDoSignup(signupRequest))
-            return ResponseEntity.ok().body("User signed up successfully with email: " + this.authenticationService.findUserByEmail(signupRequest.getEmail()).get().toString());
+            return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
 
         return ResponseEntity.status(403).body("A user with email '" + signupRequest.getEmail() + "' already exists");
     }
