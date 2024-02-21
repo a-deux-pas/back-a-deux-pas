@@ -11,10 +11,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(("/api"))
-public class UserController {
+public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
-    public UserController(@Autowired AuthenticationService authenticationService){
+    public AuthenticationController(@Autowired AuthenticationService authenticationService){
         this.authenticationService = authenticationService;
     }
 
