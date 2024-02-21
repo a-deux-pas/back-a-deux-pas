@@ -28,10 +28,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       # Configure the Java environment and enable Maven caching to accelerate subsequent build executions
-      - name: Set up JDK 21
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: "21"
+          java-version: ${{ matrix.java }}
           distribution: "temurin"
           cache: maven
           server-id: github
