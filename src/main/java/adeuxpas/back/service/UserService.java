@@ -1,7 +1,6 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.entity.User;
-
 import java.util.Optional;
 
 /**

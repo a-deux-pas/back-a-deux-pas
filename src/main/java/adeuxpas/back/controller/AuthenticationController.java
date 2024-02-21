@@ -74,7 +74,7 @@ public class AuthenticationController {
      * @return ResponseEntity indicating the status of the sign-up operation.
      */
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest){
+    public ResponseEntity<Object> signUp(@RequestBody SignupRequest signupRequest){
         if (this.authenticationService.canDoSignup(signupRequest))
             return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
 
@@ -88,7 +88,7 @@ public class AuthenticationController {
      * @return ResponseEntity containing the authentication token if login is successful, or an error message otherwise.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest){
         Optional<String> token = this.authenticationService.login(loginRequest);
         if (token.isPresent())
             return ResponseEntity.ok(token);

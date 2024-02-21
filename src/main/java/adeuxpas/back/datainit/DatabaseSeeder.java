@@ -54,11 +54,11 @@ public class DatabaseSeeder {
      * Each user is initialized with sample data such as email, password, role, status, and creation timestamp.
      */
     private void seedUsers(){
-        this.userRepository.save(new User("mbardan@email.com", passwordEncoder.encode("password1"), "Koroviev", "bio", "France", "Maisons Alfort", "Victor Hugo", "94700", "profilePictureUrl", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.USER));
-        this.userRepository.save(new User("daouali@email.fr", passwordEncoder.encode("password2"), "Dounia", "bio", "France", "Paris", "5, Garibaldi", "75000", "profilePictureUrl", LocalDateTime.now(), AccountStatus.REPORTED,  UserRole.USER));
-        this.userRepository.save(new User("lhadida@email.com", passwordEncoder.encode("password3"), "Leahad", "bio", "France", "Marseille", "40 Av de la Liberte", "13000", "profilePictureUrl", LocalDateTime.now(), AccountStatus.SUSPENDED,  UserRole.USER));
-        this.userRepository.save(new User("erikaike@email.com", passwordEncoder.encode("password4"), "Eri", "bio", "France", "Lyon", "Prom. Germain Sablon", "69000", "profilePictureUrl", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
-        this.userRepository.save(new User("jmoukmir@email.com", passwordEncoder.encode("password5"), "theRabbi", "bio", "France", "Bobigny", "6 rue de la Synagogue", "93000", "profilePictureUrl", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
+        this.userRepository.save(new User("mbardan@email.ro", passwordEncoder.encode("password1"), "Koroviev", "bio", "Romania", "Cluj-Napoca", "Victor Hugo", "94700", "profilePictureUrl1", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.USER));
+        this.userRepository.save(new User("daouali@email.com", passwordEncoder.encode("password2"), "Dounia", "bio", "Algeria", "Alger", "5, Garibaldi", "75000", "profilePictureUrl2", LocalDateTime.now(), AccountStatus.REPORTED,  UserRole.USER));
+        this.userRepository.save(new User("lhadida@email.com", passwordEncoder.encode("password3"), "Leahad", "bio", "Germany", "Dortmund", "40 Av de la Liberte", "13000", "profilePictureUrl3", LocalDateTime.now(), AccountStatus.SUSPENDED,  UserRole.USER));
+        this.userRepository.save(new User("erikaike@email.po", passwordEncoder.encode("password4"), "Eri", "bio", "Portugal", "Porto", "Prom. Germain Sablon", "69000", "profilePictureUrl4", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
+        this.userRepository.save(new User("jmoukmir@email.com", passwordEncoder.encode("password5"), "theRabbi", "bio", "Israel", "Tel-Aviv", "6 rue de la Synagogue", "93000", "profilePictureUrl5", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
     }
 
 }
