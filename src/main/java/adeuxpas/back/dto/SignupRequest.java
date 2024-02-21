@@ -1,5 +1,17 @@
 package adeuxpas.back.dto;
 
+/**
+ * Data Transfer Object (DTO) representing a signup request.
+ * This class encapsulates the information required for a user signup operation,
+ * including the user's email, password, alias, bio etc.
+ * It provides getter and setter methods to access and modify all the fields.
+ * <p>
+ * Instances of this class are used to transfer signup request data between different layers of the application,
+ * such as the presentation layer (e.g., REST controller) and the service layer.
+ * </p>
+ *
+ * @author Mircea Bardan
+ */
 public class SignupRequest {
     private String email;
     private String password;

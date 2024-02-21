@@ -7,6 +7,13 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Entity class representing a user in the application.
+ * This class encapsulates user-related information, such as email, password, profile details, account status etc.
+ * Instances of this class are persisted in the database and typically interact with the UserRepository.
+ *
+ * @author Mircea Bardan
+ */
 @Entity
 public class User {
 
@@ -164,7 +171,7 @@ public class User {
         return this.email;
     }
 
-    // equals and hashCode
+    // equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -172,6 +179,7 @@ public class User {
         return Objects.equals(email, user.email);
     }
 
+    // hashCode
     @Override
     public int hashCode() {
         return Objects.hash(email);

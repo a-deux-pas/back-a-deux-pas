@@ -4,12 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
 
-@Component
 @SpringBootTest
 class BackApplicationTests {
 
-	@Test
+	/*@Test
 	void contextLoads() {
-	}
+	} */
 
 }

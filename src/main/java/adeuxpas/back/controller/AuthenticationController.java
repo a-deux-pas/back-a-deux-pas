@@ -28,17 +28,17 @@ public class AuthenticationController {
         return "Welcome, EVERYBODY. Please LOG IN using the POST http method on this endpoint";
     }
 
-    @GetMapping("/content")
+    @GetMapping("/content/secure")
     public String accessContent(){
         return "Welcome, USER/ADMIN";
     }
 
-    @GetMapping("/admin-page")
+    @GetMapping("/admin-page/secure")
     public String accessAdminPage(){
         return "Welcome, ADMIN";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/signup/secure")
     public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest){
         if (this.authenticationService.canDoSignup(signupRequest))
             return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
@@ -46,7 +46,7 @@ public class AuthenticationController {
         return ResponseEntity.status(403).body("A user with email '" + signupRequest.getEmail() + "' already exists");
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login/secure")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
         Optional<String> token = this.authenticationService.login(loginRequest);
         if (token.isPresent())

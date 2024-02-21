@@ -59,7 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * <p>
      * This method retrieves the user from the database based on the provided email address.
      * If the user is found, their details are loaded into a {@code UserDetails} object,
-     * which includes their username (email), password, and authorities (roles).
+     * which includes their username (email), password, and authorities (role).
      * </p>
      * <p>
      * If the user is not found, a {@code UsernameNotFoundException} is thrown.
