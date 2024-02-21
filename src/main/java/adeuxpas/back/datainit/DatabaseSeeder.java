@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-
 // class used to seed the database with initial sample data
 @Component
 public class DatabaseSeeder {
@@ -34,4 +33,5 @@ public class DatabaseSeeder {
         this.userRepository.save(new User("erikaike@email.com", passwordEncoder.encode("password4"), "Eri", "bio", "France", "Lyon", "Prom. Germain Sablon", "69000", "profilePictureUrl", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
         this.userRepository.save(new User("jmoukmir@email.com", passwordEncoder.encode("password5"), "theRabbi", "bio", "France", "Bobigny", "6 rue de la Synagogue", "93000", "profilePictureUrl", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
     }
+
 }

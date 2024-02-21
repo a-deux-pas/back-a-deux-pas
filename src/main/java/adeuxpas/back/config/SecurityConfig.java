@@ -14,7 +14,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * Configuration class for Spring Security setup.
+ * <p>
  * Configures security filters and permissions for the application.
+ * </p>
  * @author Mircea Bardan
  */
 @Configuration

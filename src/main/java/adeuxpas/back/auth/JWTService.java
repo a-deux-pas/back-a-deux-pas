@@ -9,8 +9,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-// Service class for the JWT
-// Contains methods to generate, get the validity and the subject of the JWT
+/**
+ * Service class for handling JSON Web Tokens (JWT).
+ <p>
+ Contains methods to generate and retrieve token information.
+ </p>
+ <p>
+ * This class is annotated with {@code @Service} to indicate that it is a service component
+ * and should be automatically detected and registered as a Spring bean.
+ </p>
+ * @author Mircea Bardan
+ */
 @Service
 public class JWTService {
 
@@ -20,9 +29,16 @@ public class JWTService {
     @Value("${app.jwt.expiration}")
     private int jwtExpiration;
 
-    public String generateToken(String username, UserRole role) {
+    /**
+     * Generates a JWT token based on the provided user email and role.
+     *
+     * @param email The username for which the token is generated.
+     * @param role     The role associated with the user.
+     * @return The generated JWT token.
+     */
+    public String generateToken(String email, UserRole role) {
         return Jwts.builder()
-                .subject(username)
+                .subject(email)
                 .claim("user", role.equals(UserRole.USER))
                 .claim("admin",role.equals(UserRole.ADMIN))
                 .issuedAt(new Date())
@@ -31,6 +47,12 @@ public class JWTService {
                 .compact();
     }
 
+    /**
+     * Extracts the subject (sub) from the JWT token.
+     *
+     * @param token The JWT token from which to extract the subject.
+     * @return The subject (sub) of the token.
+     */
     public String getSub(String token){
         return Jwts
                 .parser()
@@ -41,6 +63,12 @@ public class JWTService {
                 .getSubject();
     }
 
+    /**
+     * Retrieves the expiration date of the JWT token.
+     *
+     * @param token The JWT token from which to extract the expiration date.
+     * @return The expiration date of the token.
+     */
     public Date getExpiration(String token){
         return Jwts
                 .parser()
