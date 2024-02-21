@@ -9,7 +9,7 @@ class BackApplicationTests {
 
 	@Test
 	void contextLoads() {
-
+        System.out.println("Test successful");
 	}
 
 }
