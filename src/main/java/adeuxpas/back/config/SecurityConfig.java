@@ -11,30 +11,48 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+/**
+ * Configuration class for Spring Security setup.
+ * Configures security filters and permissions for the application.
+ * @author Mircea Bardan
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JWTFilter jwtFilter;
 
+    /**
+     * Constructor for SecurityConfig.
+     * @param jwtFilter The JWT filter for authentication.
+     */
     public SecurityConfig(@Autowired JWTFilter jwtFilter){
         this.jwtFilter = jwtFilter;
     }
 
+    /**
+     * Configures the security filter chain.
+     * @param http The HttpSecurity object for configuring security.
+     * @return The configured SecurityFilterChain.
+     * @throws Exception If an error occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configure(http))
-                .csrf(CsrfConfigurer::disable) // disable csrf during development
+                .cors(cors -> cors.configure(http)) // configure Cross-Origin Resource Sharing (CORS) for the HTTP security.
+                .csrf(CsrfConfigurer::disable) // disable Cross-Site Request Forgery (CSRF) protection during development.
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/signup", "/api/login").permitAll()
                         .requestMatchers("/api/content").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/api/admin-page").hasAuthority("ADMIN"))
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+                        // Set the session creation policy to STATELESS,
+                        // meaning no session will be created or used for authentication.
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) );
 
-        // adding our custom JWTFilter to the SecurityFilterChain
+        // Add our custom JWTFilter before the UsernamePasswordAuthenticationFilter in the filter chain.
+        // It ensures that the JWT authentication filter is applied before the username-password authentication filter.
         http.addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
