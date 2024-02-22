@@ -16,6 +16,11 @@ public class LoginRequest {
     private String email;
     private String password;
 
+    /**
+     * Constructor for {@code LoginRequest}.
+     * @param email The {@code LoginRequest} sender's email.
+     * @param password The {@code LoginRequest} sender's password.
+     */
     public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;

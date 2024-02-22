@@ -27,6 +27,10 @@ import org.springframework.stereotype.Component;
 public class CommandLineRunnerImpl implements CommandLineRunner {
     private final DatabaseSeeder seeder;
 
+    /**
+     * Constructor for CommandLineRunnerImpl.
+     * @param seeder The {@code DatabaseSeeder} for populating the database.
+     */
     public CommandLineRunnerImpl(@Autowired DatabaseSeeder seeder){
         this.seeder = seeder;
     }
