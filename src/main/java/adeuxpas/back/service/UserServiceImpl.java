@@ -32,6 +32,16 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
+     * Saves a user to the database.
+     *
+     * @param user The user to save.
+     */
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    /**
      * Finds a user by their email address.
      *
      * @param email The email address of the user to find.
@@ -42,13 +52,4 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email);
     }
 
-    /**
-     * Saves a user to the database.
-     *
-     * @param user The user to save.
-     */
-    @Override
-    public void save(User user) {
-        userRepository.save(user);
-    }
 }

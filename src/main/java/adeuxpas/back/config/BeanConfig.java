@@ -12,20 +12,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * This class provides a central location for defining and configuring
  * Beans that are required by the application.
  * </p>
- * @author : Mircea Bardan
+ * @author Mircea Bardan
  */
 @Configuration
 public class BeanConfig {
 
     /**
-     * Bean definition for BCryptPasswordEncoder.
-     * <p>
-     * This method registers an instance of BCryptPasswordEncoder
-     * as a Spring Bean. It can be used for encoding and decoding passwords
-     * securely.
-     * </p>
-     *
-     * @return An instance of BCryptPasswordEncoder.
+     * Returns an instance of the {@code BCryptPasswordEncoder} used to hash passwords.
+     * @return The {@code BCryptPasswordEncoder} instance.
      */
     @Bean
     public BCryptPasswordEncoder getEncoder(){
