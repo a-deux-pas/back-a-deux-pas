@@ -4,6 +4,7 @@ import adeuxpas.back.dto.LoginRequest;
 import adeuxpas.back.dto.SignupRequest;
 import adeuxpas.back.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,33 +38,33 @@ public class AuthenticationController {
     /**
      * Endpoint to access the sign-up page.
      *
-     * @return A welcome message for accessing the sign-up page.
+     * @return ResponseEntity with a 200(OK) status and a body containing a welcome message for accessing the sign-up page.
      */
     @GetMapping("/signup")
-    public String accessSignup(){
-        return "Welcome, EVERYBODY. Please SIGN UP using the POST http method on this endpoint";
+    public ResponseEntity<String> accessSignup(){
+        return ResponseEntity.ok("Welcome, EVERYBODY. Please SIGN UP using the POST http method on this endpoint");
     }
 
     /**
      * Endpoint to access the login page.
      *
-     * @return A welcome message for accessing the login page.
+     * @return ResponseEntity with a 200(OK) status and a body containing a welcome message for accessing the login page.
      */
     @GetMapping("/login")
-    public String accessLogin(){
-        return "Welcome, EVERYBODY. Please LOG IN using the POST http method on this endpoint";
+    public ResponseEntity<String> accessLogin(){
+        return ResponseEntity.ok("Welcome, EVERYBODY. Please LOG IN using the POST http method on this endpoint");
     }
 
-    // Mock endpoint to imitate access to a secured page; to be REMOVED / REPLACED
+    // Test endpoint to imitate access to a secured page; to be REMOVED / REPLACED
     @GetMapping("/content")
-    public String accessContent(){
-        return "Welcome, USER/ADMIN";
+    public ResponseEntity<String> accessContent(){
+        return ResponseEntity.ok("Welcome, USER/ADMIN");
     }
 
-    // Mock endpoint to imitate access to a restricted page; to be REMOVED / REPLACED
+    // Test endpoint to imitate access to a restricted page; to be REMOVED / REPLACED
     @GetMapping("/admin-page")
-    public String accessAdminPage(){
-        return "Welcome, ADMIN";
+    public ResponseEntity<String> accessAdminPage(){
+        return ResponseEntity.ok("Welcome, ADMIN");
     }
 
     /**
@@ -73,11 +74,12 @@ public class AuthenticationController {
      * @return ResponseEntity indicating the status of the sign-up operation.
      */
     @PostMapping("/signup")
-    public ResponseEntity<Object> signUp(@RequestBody SignupRequest signupRequest){
+    public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
         if (this.authenticationService.canDoSignup(signupRequest))
             return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
-
-        return ResponseEntity.status(403).body("A user with email '" + signupRequest.getEmail() + "' already exists");
+        else
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("A user with email '" + signupRequest.getEmail() + "' already exists");
     }
 
     /**
@@ -87,11 +89,14 @@ public class AuthenticationController {
      * @return ResponseEntity containing the authentication token if login is successful, or an error message otherwise.
      */
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest){
-        Optional<String> token = this.authenticationService.login(loginRequest);
-        if (token.isPresent())
-            return ResponseEntity.ok(token);
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+        String token = this.authenticationService.login(loginRequest)
+                .orElse(null);
 
-        return ResponseEntity.status(401).body("Invalid email and/or password");
+        if (token != null)
+            return ResponseEntity.ok(token);
+        else
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid email and/or password");
     }
 }
