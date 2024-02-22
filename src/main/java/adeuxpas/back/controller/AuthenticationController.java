@@ -3,6 +3,8 @@ package adeuxpas.back.controller;
 import adeuxpas.back.dto.LoginRequest;
 import adeuxpas.back.dto.SignupRequest;
 import adeuxpas.back.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +74,10 @@ public class AuthenticationController {
      * @return ResponseEntity indicating the status of the sign-up operation.
      */
     @PostMapping("/signup")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User signed up successfully"),
+            @ApiResponse(responseCode = "409", description = "User already exists")
+    })
     public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
         if (this.authenticationService.canDoSignup(signupRequest))
             return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
@@ -87,6 +93,10 @@ public class AuthenticationController {
      * @return ResponseEntity containing the authentication token if login is successful, or an error message otherwise.
      */
     @PostMapping("/login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User logged in successfully"),
+            @ApiResponse(responseCode = "401", description = "Invalid email and/or password")
+    })
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
         String token = this.authenticationService.login(loginRequest)
                 .orElse(null);

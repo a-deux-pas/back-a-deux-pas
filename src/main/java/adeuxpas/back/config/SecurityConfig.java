@@ -49,7 +49,9 @@ public class SecurityConfig {
                         .requestMatchers("/signup", "/login").permitAll()
                         // protect our other endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers("/admin-page").hasAuthority("ADMIN"))
+                        .requestMatchers("/admin-page").hasAuthority("ADMIN")
+                        // permit any other endpoints to be accessed freely, during development only
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
                         // meaning no session will be created or used for authentication.
