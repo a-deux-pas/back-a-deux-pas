@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http)) // configure Cross-Origin Resource Sharing (CORS) for the HTTP security.
                 .csrf(CsrfConfigurer::disable) // disable Cross-Site Request Forgery (CSRF) protection during development.
                 .authorizeHttpRequests((requests) -> requests
-                        // expose endpoints at "/api/signup" and "api/login", for "GET" requests, for everybody
+                        // expose endpoints at "/api/signup" and "api/login", for "GET" and "POST" requests, for everybody
                         .requestMatchers("/signup", "/login").permitAll()
                         // protect our other endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
