@@ -18,9 +18,6 @@ import java.util.Optional;
  * by its email address.
  * </p>
  *
- * @param <User> The type of entity managed by the repository, in this case, {@link User}.
- * @param <Long> The type of the identifier property of the entity, in this case, {@code Long}.
- *
  * @author Mircea Bardan
  */
 @Repository
