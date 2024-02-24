@@ -45,11 +45,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http)) // configure Cross-Origin Resource Sharing (CORS) for the HTTP security.
                 .csrf(CsrfConfigurer::disable) // disable Cross-Site Request Forgery (CSRF) protection during development.
                 .authorizeHttpRequests((requests) -> requests
-                        // expose endpoints at "/api/signup" and "api/login", for "GET" requests, for everybody
+                        // expose endpoints at "/api/signup" and "api/login", for "GET" and "POST" requests, for everybody
                         .requestMatchers("/signup", "/login").permitAll()
                         // protect our other endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers("/admin-page").hasAuthority("ADMIN"))
+                        .requestMatchers("/admin-page").hasAuthority("ADMIN")
+                        // permit any other endpoints to be accessed freely, during development only
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
                         // meaning no session will be created or used for authentication.
