@@ -42,19 +42,28 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configure(http)) // configure Cross-Origin Resource Sharing (CORS) for the HTTP security.
-                .csrf(CsrfConfigurer::disable) // disable Cross-Site Request Forgery (CSRF) protection during development.
+                // Configure the default Cross-Origin Resource Sharing (CORS) policy for the HTTP security.
+                // Without this line, the default CORS configuration provided by Spring Security would still be in effect,
+                // permitting same-origin resource sharing and denying cross-origin requests.
+                // The explicit inclusion of this line simply ensures that the default configuration is applied explicitly
+                // and provides a hook for further customization if needed in the future.
+                .cors(cors -> cors.configure(http))
+                // Disable Cross-Site Request Forgery (CSRF) protection for our app,
+                // since it uses stateless API with token-based authentication (JWT),
+                // and CSRF protection is less relevant in this scenario
+               .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        // expose endpoints at "/api/signup" and "api/login", for "GET" and "POST" requests, for everybody
+                        // Expose endpoints at "/api/signup" and "api/login", for "GET" and "POST" requests, for everybody
                         .requestMatchers("/signup", "/login").permitAll()
-                        // protect our other endpoints from unauthenticated and/or unauthorized users
+                        // Protect our other endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin-page").hasAuthority("ADMIN")
-                        // permit any other endpoints to be accessed freely, during development only
+                        // Permit any other endpoints to be accessed freely, during development only
                         .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
                         // meaning no session will be created or used for authentication.
+                        // This aligns with the stateless nature of JWT authentication
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) );
 
         // Add our custom JWTFilter before the UsernamePasswordAuthenticationFilter in the filter chain.
