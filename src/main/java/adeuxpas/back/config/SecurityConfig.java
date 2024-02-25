@@ -46,7 +46,9 @@ public class SecurityConfig {
                 // Without this line, the default CORS configuration provided by Spring Security would still be in effect,
                 // permitting same-origin resource sharing and denying cross-origin requests.
                 // The explicit inclusion of this line simply ensures that the default configuration is applied explicitly
-                // and provides a hook for further customization if needed in the future.
+                // and provides a hook for further customization when needed in the near future:
+                // ! FOR EXAMPLE, we'll need to MODIFY this line to only allow cross-origin requests
+                // from our Angular web server, running at localhost:4200 !
                 .cors(cors -> cors.configure(http))
                 // Disable Cross-Site Request Forgery (CSRF) protection for our app,
                 // since it uses stateless API with token-based authentication (JWT),
