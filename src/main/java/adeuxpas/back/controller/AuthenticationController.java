@@ -42,6 +42,7 @@ public class AuthenticationController {
      */
     @GetMapping("/signup")
     public ResponseEntity<String> accessSignup(){
+        // might to be modified when developing the signup functionality
         return ResponseEntity.ok("Welcome, EVERYBODY. Please SIGN UP using the POST http method on this endpoint");
     }
 
@@ -52,6 +53,7 @@ public class AuthenticationController {
      */
     @GetMapping("/login")
     public ResponseEntity<String> accessLogin(){
+        // might to be modified when developing the login functionality
         return ResponseEntity.ok("Welcome, EVERYBODY. Please LOG IN using the POST http method on this endpoint");
     }
 
@@ -79,6 +81,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
     public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
+        // might need to be modified when developing the signup functionality
         if (this.authenticationService.canDoSignup(signupRequest))
             return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
         else
@@ -98,6 +101,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "401", description = "Invalid email and/or password")
     })
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+        // might need to be modified when developing the login functionality
         String token = this.authenticationService.login(loginRequest)
                 .orElse(null);
 

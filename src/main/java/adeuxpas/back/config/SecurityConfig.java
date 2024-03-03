@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Configuration class for Spring Security setup.
@@ -44,12 +48,22 @@ public class SecurityConfig {
         http
                 // Configure the default Cross-Origin Resource Sharing (CORS) policy for the HTTP security.
                 // Without this line, the default CORS configuration provided by Spring Security would still be in effect,
-                // permitting same-origin resource sharing and denying cross-origin requests.
+                // permitting same-origin resource sharing and denying cross-origin requests:
+                // .cors(cors -> cors.configure(http))
                 // The explicit inclusion of this line simply ensures that the default configuration is applied explicitly
                 // and provides a hook for further customization, needed in the near future:
-                // ! FOR EXAMPLE, we'll need to MODIFY this line when we start making requests from our Front End,
-                // and set it to only allow cross-origin requests from our Angular web server, running at localhost:4200 !
-                .cors(cors -> cors.configure(http))
+                // FOR EXAMPLE, we'll need to customize the above default CORS configuration, when we start making requests to our Front End,
+                // to only allow cross-origin requests from our Angular web server, running at localhost:4200:
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(List.of("http://localhost:4200")); // self-explanatory
+                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // self-explanatory
+                    // For ex: standard headers like Content-Type, Authorization, etc.,
+                    // but also custom headers that the frontend application might include in its requests.
+                    // In a production environment it's more secure to explicitly specify the headers that are allowed, rather than allowing them all.
+                    configuration.setAllowedHeaders(List.of("*"));
+                    return configuration;
+                }))
                 // Disable Cross-Site Request Forgery (CSRF) protection for our app,
                 // since it uses stateless API with token-based authentication (JWT),
                 // and CSRF protection is less relevant in this scenario
