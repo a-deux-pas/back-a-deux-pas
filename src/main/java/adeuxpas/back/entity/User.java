@@ -5,6 +5,7 @@ import adeuxpas.back.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,6 +38,8 @@ public class User {
     @Column(name = "account_status")
     private AccountStatus accountStatus;
     private UserRole role;
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
+    private List<Ad> ads;
 
 
     // no args constructor
@@ -76,6 +79,7 @@ public class User {
     }
 
     // getters and setters
+
     public long getId() {
         return id;
     }
@@ -180,10 +184,35 @@ public class User {
         this.role = role;
     }
 
+    public List<Ad> getAds() {
+        return ads;
+    }
+
+    public void setAds(List<Ad> ads) {
+        this.ads = ads;
+    }
+
+
     // toString
+
     @Override
-    public String toString(){
-        return this.email;
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", alias='" + alias + '\'' +
+                ", bio='" + bio + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", inscriptionDate=" + inscriptionDate +
+                ", accountStatus=" + accountStatus +
+                ", role=" + role +
+                ", ads=" + ads +
+                '}';
     }
 
     // equals
