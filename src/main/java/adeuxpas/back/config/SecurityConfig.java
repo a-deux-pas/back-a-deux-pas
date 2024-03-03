@@ -69,12 +69,12 @@ public class SecurityConfig {
                 // and CSRF protection is less relevant in this scenario
                .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        // Expose endpoints at "/api/signup" and "api/login", for "GET" and "POST" requests, for everybody
+                        // Explicitly expose these endpoints to everybody
                         .requestMatchers("/signup", "/login", "ads/list").permitAll()
-                        // Protect our other endpoints from unauthenticated and/or unauthorized users
+                        // Protect these endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin-page").hasAuthority("ADMIN")
-                        // Permit any other endpoints to be accessed freely, during development only
+                        // Permit any other endpoints to be accessed freely, e.g.:'/swagger-ui/' (during development only)
                         .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
