@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/ads")
+@RequestMapping("/annonce")
 public class AdController {
 
     private final AdService adService;
@@ -17,7 +17,7 @@ public class AdController {
         this.adService = adService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/liste")
     public ResponseEntity<String> findAllAds(){
         try {
             return ResponseEntity.ok(this.adService.findAllAds().toString());
