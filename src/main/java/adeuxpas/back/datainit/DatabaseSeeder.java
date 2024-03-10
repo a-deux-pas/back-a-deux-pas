@@ -166,7 +166,7 @@ public class DatabaseSeeder {
     private List<Ad> createAds(List<User> users){
         Ad firstAd = new Ad();
         firstAd.setArticleDescription("first description");
-        firstAd.setCreationDate(LocalDateTime.now());
+        firstAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
         firstAd.setPrice(BigDecimal.valueOf(9.99));
         firstAd.setTitle("First ad");
         firstAd.setPublisher(users.get(0));
@@ -177,7 +177,7 @@ public class DatabaseSeeder {
 
         Ad secondAd = new Ad();
         secondAd.setArticleDescription("second description");
-        secondAd.setCreationDate(LocalDateTime.now());
+        secondAd.setCreationDate(LocalDateTime.now().plusMinutes(2));
         secondAd.setPrice(BigDecimal.valueOf(12.99));
         secondAd.setTitle("second ad");
         secondAd.setPublisher(users.get(1));
@@ -188,7 +188,7 @@ public class DatabaseSeeder {
 
         Ad thirdAd = new Ad();
         thirdAd.setArticleDescription("third description");
-        thirdAd.setCreationDate(LocalDateTime.now());
+        thirdAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
         thirdAd.setPrice(BigDecimal.valueOf(965132));
         thirdAd.setTitle("third ad");
         thirdAd.setPublisher(users.get(0));
@@ -198,7 +198,7 @@ public class DatabaseSeeder {
 
         Ad fourthAd = new Ad();
         fourthAd.setArticleDescription("fourth description");
-        fourthAd.setCreationDate(LocalDateTime.now());
+        fourthAd.setCreationDate(LocalDateTime.now().plusMinutes(4));
         fourthAd.setPrice(BigDecimal.valueOf(999.99));
         fourthAd.setTitle("Fourth ad");
         fourthAd.setPublisher(users.get(0));
@@ -208,7 +208,7 @@ public class DatabaseSeeder {
 
         Ad fifthAd = new Ad();
         fifthAd.setArticleDescription("fifth description");
-        fifthAd.setCreationDate(LocalDateTime.now());
+        fifthAd.setCreationDate(LocalDateTime.now().minusMinutes(1));
         fifthAd.setPrice(BigDecimal.valueOf(0.99));
         fifthAd.setTitle("Fifth ad");
         fifthAd.setPublisher(users.get(2));
