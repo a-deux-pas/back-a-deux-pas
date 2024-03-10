@@ -35,7 +35,7 @@ public class Ad {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private User publisher;
-    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ad", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ArticlePicture> articlePictures;
 
 

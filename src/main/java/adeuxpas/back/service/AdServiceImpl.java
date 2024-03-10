@@ -4,6 +4,7 @@ import adeuxpas.back.dto.HomePageAdDTO;
 import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.repository.AdRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,14 @@ public class AdServiceImpl implements AdService{
         this.mapper = mapper;
     }
 
+    @Transactional
     @Override
     public List<HomePageAdDTO> findAllAds() {
         List<Ad> myAds = this.adRepository.findAll();
-        List<HomePageAdDTO> mappedList = myAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
-        if(mappedList.size() > 1) this.sortByCreationDateDesc(mappedList);
+        List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
+        if(mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);
 
-        return mappedList;
+        return mappedAdsList;
     }
 
     private void sortByCreationDateDesc(List<HomePageAdDTO> myAds) {

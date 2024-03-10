@@ -12,7 +12,13 @@ import org.mapstruct.Mapping;
 )
 public interface MapStructMapper {
     @Mapping(source = "articlePictures.first.url", target = "articlePictureUrl")
+    @Mapping(source = "publisher", target = "publisherDTO")
     HomePageAdDTO adToHomePageAdDTO(Ad ad);
 
-    AdPublisherDTO userToAdPublisherDTO(User user);
+    default AdPublisherDTO userToAdPublisherDTO(User user) {
+        AdPublisherDTO publisherDTO = new AdPublisherDTO();
+        publisherDTO.setAlias(user.getAlias());
+        publisherDTO.setEmail(user.getEmail());
+        return publisherDTO;
+    }
 }
