@@ -1,9 +1,13 @@
 package adeuxpas.back.service;
 
+import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
+import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,14 +25,16 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final PreferredScheduleRepository preferredSchedulerRepository;
 
     /**
      * Constructor for UserServiceImpl.
      *
      * @param userRepository The UserRepository for interacting with user-related database operations.
      */
-    public UserServiceImpl(@Autowired UserRepository userRepository){
+    public UserServiceImpl(@Autowired UserRepository userRepository, @Autowired PreferredScheduleRepository preferredScheduleRepository){
         this.userRepository = userRepository;
+        this.preferredSchedulerRepository = preferredScheduleRepository;
     }
 
     /**
@@ -50,6 +56,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    /**
+     * Finds preferred schedule of an user.
+     *
+     * @param user concerned.
+     * @return An optional containing the list of preferred schedule.
+     */
+    @Override
+    public List<PreferredSchedule> findPreferredScheduleByUser(User user) {
+        return preferredSchedulerRepository.findAllByUser(user);
     }
 
 }

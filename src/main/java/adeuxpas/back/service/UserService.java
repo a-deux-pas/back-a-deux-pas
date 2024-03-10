@@ -1,6 +1,9 @@
 package adeuxpas.back.service;
 
+import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,4 +27,10 @@ public interface UserService {
      * @param email The email address used in the search.
      */
     Optional<User> findUserByEmail(String email);
+
+    /**
+     * Abstract method that attempts to find preferred schedule of an user.
+     * @param user concerned
+     */
+    List<PreferredSchedule> findPreferredScheduleByUser(User user);
 }
