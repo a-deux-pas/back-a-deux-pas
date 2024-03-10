@@ -9,10 +9,7 @@ import adeuxpas.back.enums.UserRole;
 import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.ArticlePictureRepository;
 import adeuxpas.back.repository.UserRepository;
-import adeuxpas.back.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +38,6 @@ public class DatabaseSeeder {
     private final AdRepository adRepository;
     private final ArticlePictureRepository articlePictureRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final CloudinaryService cloudinaryService;
 
     /**
      * Constructs a new instance of DatabaseSeeder.
@@ -53,12 +49,10 @@ public class DatabaseSeeder {
     public DatabaseSeeder(@Autowired UserRepository userRepository,
                           @Autowired AdRepository adRepository,
                           @Autowired ArticlePictureRepository articlePictureRepository,
-                          @Autowired BCryptPasswordEncoder passwordEncoder,
-                          @Autowired CloudinaryService cloudinaryService){
+                          @Autowired BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.adRepository = adRepository;
         this.passwordEncoder = passwordEncoder;
-        this.cloudinaryService = cloudinaryService;
         this.articlePictureRepository = articlePictureRepository;
     }
 
@@ -235,10 +229,10 @@ public class DatabaseSeeder {
     }
 
     private void seedArticlePictures(List<Ad> ads) {
-        this.articlePictureRepository.save(new ArticlePicture(this.cloudinaryService.uploadPictureAndGetUrl("src/main/resources/images/book.jpg"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(this.cloudinaryService.uploadPictureAndGetUrl("src/main/resources/images/camera.jpg"), ads.get(1)));
-        this.articlePictureRepository.save(new ArticlePicture(this.cloudinaryService.uploadPictureAndGetUrl("src/main/resources/images/parrots.jpg"), ads.get(2)));
-        this.articlePictureRepository.save(new ArticlePicture(this.cloudinaryService.uploadPictureAndGetUrl("src/main/resources/images/shoe.jpg"), ads.getLast()));
+        this.articlePictureRepository.save(new ArticlePicture(("picture_url1"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.get(1)));
+        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.get(2)));
+        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.getLast()));
     }
 
 }

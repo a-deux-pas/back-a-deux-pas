@@ -19,13 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 public class BeanConfig {
-    @Value("${cloud.name}")
-    private String cloudName;
-    @Value("${cloud.key}")
-    private String apiKey;
-    @Value("${cloud.secret}")
-    private String apiSecret;
-
     /**
      * Returns an instance of the {@code BCryptPasswordEncoder} used to hash passwords.
      * @return The {@code BCryptPasswordEncoder} instance.
@@ -33,13 +26,5 @@ public class BeanConfig {
     @Bean
     public BCryptPasswordEncoder getEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public Cloudinary getCloudinary() {
-        return new Cloudinary(ObjectUtils.asMap(
-            "cloud_name", cloudName,
-            "api_key", apiKey,
-            "api_secret", apiSecret));
     }
 }
