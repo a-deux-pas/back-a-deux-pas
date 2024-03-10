@@ -24,7 +24,7 @@ public class AdController {
     public ResponseEntity<Object> findAllAds(){
         try {
             return ResponseEntity.ok(this.adService.findAllAds());
-        } catch(RuntimeException e) {
+        } catch(Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }

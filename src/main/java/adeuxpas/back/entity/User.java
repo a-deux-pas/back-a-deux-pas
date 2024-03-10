@@ -2,7 +2,6 @@ package adeuxpas.back.entity;
 
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -47,7 +46,7 @@ public class User {
     private AccountStatus accountStatus;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ad> ads;
 
     // no args constructor

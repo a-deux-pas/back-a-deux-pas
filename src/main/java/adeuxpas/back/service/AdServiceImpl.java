@@ -4,7 +4,6 @@ import adeuxpas.back.dto.HomePageAdDTO;
 import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.repository.AdRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,6 @@ public class AdServiceImpl implements AdService{
         this.mapper = mapper;
     }
 
-    @Transactional
     @Override
     public List<HomePageAdDTO> findAllAds() {
         List<Ad> myAds = this.adRepository.findAll();
