@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.AdDto;
+import adeuxpas.back.dto.AdPostDto;
 import adeuxpas.back.entity.Ad;
 
 import java.util.List;
@@ -10,5 +10,5 @@ public interface AdService {
 
     List<Ad> findAllAds();
 
-    Optional<Ad> postAd(AdDto adDto);
+    Optional<Ad> postAd(AdPostDto adDto);
 }

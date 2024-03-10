@@ -2,14 +2,14 @@ package adeuxpas.back.service;
 
 import org.springframework.stereotype.Service;
 
-import adeuxpas.back.dto.AdDto;
+import adeuxpas.back.dto.AdPostDto;
 import adeuxpas.back.entity.Ad;
 
 @Service
 public class AdMapper {
-    public AdDto TransformAdEntityInAdDto(Ad ad) {
-        AdDto adDto = new AdDto();
-        adDto.setId(ad.getId());
+    public AdPostDto TransformAdEntityInAdDto(Ad ad) {
+        AdPostDto adDto = new AdPostDto();
+        // adDto.setId(ad.getId());
         adDto.setTitle(ad.getTitle());
         adDto.setArticleDescription(ad.getArticleDescription());
         adDto.setArticleState(ad.getArticleState());
@@ -22,9 +22,9 @@ public class AdMapper {
         return adDto;
     }
 
-    public Ad TransformAdDtoInAdEntity(AdDto adDto) {
+    public Ad TransformAdDtoInAdEntity(AdPostDto adDto) {
         Ad ad = new Ad();
-        ad.setId(adDto.getId());
+        // ad.setId(adDto.getId());
         ad.setTitle(adDto.getTitle());
         ad.setArticleDescription(adDto.getArticleDescription());
         ad.setArticleState(adDto.getArticleState());

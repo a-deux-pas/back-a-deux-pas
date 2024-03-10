@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 
-public class AdDto {
-    Long id;
+public class AdPostDto {
+    // Long id;
     String title;
     String articleDescription;
     String articleState;
@@ -18,13 +18,13 @@ public class AdDto {
     String articleGender;
     User publisher;
     
-    public Long getId() {
-        return id;
-    }
+    // public Long getId() {
+    //     return id;
+    // }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // public void setId(Long id) {
+    //     this.id = id;
+    // }
 
     public String getTitle() {
         return title;

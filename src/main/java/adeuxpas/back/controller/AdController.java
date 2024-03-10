@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.AdDto;
+import adeuxpas.back.dto.AdPostDto;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.service.AdService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/ads")
+@RequestMapping("/annonce")
 public class AdController {
 
     private final AdService adService;
@@ -25,7 +25,7 @@ public class AdController {
         this.adService = adService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/liste")
     public ResponseEntity<String> findAllAds(){
         try {
             return ResponseEntity.ok(this.adService.findAllAds().toString());
@@ -35,7 +35,7 @@ public class AdController {
     }
 
     @PostMapping("/creation")
-    public ResponseEntity<?> postAd(@RequestBody AdDto adDto) {
+    public ResponseEntity<?> postAd(@RequestBody AdPostDto adDto) {
         try {
             Optional<Ad> savedAd = this.adService.postAd(adDto);
             if (savedAd.isPresent()) {
