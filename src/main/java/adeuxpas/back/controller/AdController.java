@@ -2,7 +2,6 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.AdDto;
 import adeuxpas.back.entity.Ad;
-import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.service.AdService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
