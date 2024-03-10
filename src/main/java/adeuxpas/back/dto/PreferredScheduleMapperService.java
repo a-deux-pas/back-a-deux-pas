@@ -9,9 +9,11 @@ public class PreferredScheduleMapperService {
 
     public PreferredScheduleDto mapToDto(PreferredSchedule preferredSchedule) {
         return new PreferredScheduleDto(
+            preferredSchedule.getId(),
             preferredSchedule.getWeekDay(),
             preferredSchedule.getStartTime(),
-            preferredSchedule.getEndTime()
+            preferredSchedule.getEndTime(),
+            preferredSchedule.getUser().getId()
         );
     }
     
