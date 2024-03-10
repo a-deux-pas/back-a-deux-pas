@@ -1,5 +1,8 @@
 package adeuxpas.back.config;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +19,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 public class BeanConfig {
+    @Value("${cloud.name}")
+    private String cloudName;
+    @Value("${cloud.key}")
+    private String apiKey;
+    @Value("${cloud.secret}")
+    private String apiSecret;
 
     /**
      * Returns an instance of the {@code BCryptPasswordEncoder} used to hash passwords.
@@ -24,5 +33,13 @@ public class BeanConfig {
     @Bean
     public BCryptPasswordEncoder getEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Cloudinary getCloudinary() {
+        return new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", cloudName,
+            "api_key", apiKey,
+            "api_secret", apiSecret));
     }
 }
