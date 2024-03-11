@@ -12,19 +12,22 @@ package adeuxpas.back.dto;
  *
  * @author Mircea Bardan
  */
-public class LoginRequest {
+public class LoginRequestDTO {
     private String email;
     private String password;
 
     /**
-     * Constructor for {@code LoginRequest}.
-     * @param email The {@code LoginRequest} sender's email.
-     * @param password The {@code LoginRequest} sender's password.
+     * Constructor for {@code LoginRequestDTO}.
+     * @param email The {@code LoginRequestDTO} sender's email.
+     * @param password The {@code LoginRequestDTO} sender's password.
      */
-    public LoginRequest(String email, String password) {
+    public LoginRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
+
+    // no args constructor
+    public LoginRequestDTO(){}
 
     public String getEmail() {
         return email;

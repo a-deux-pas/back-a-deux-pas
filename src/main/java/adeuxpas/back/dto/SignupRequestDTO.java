@@ -12,7 +12,7 @@ package adeuxpas.back.dto;
  *
  * @author Mircea Bardan
  */
-public class SignupRequest {
+public class SignupRequestDTO {
     private String email;
     private String password;
     private String alias;
@@ -23,31 +23,9 @@ public class SignupRequest {
     private String postalCode;
     private String profilePicture;
 
-    /**
-     * Constructor for {@code SignupRequest}.
-     * @param email The {@code SignupRequest} sender's email.
-     * @param password The {@code SignupRequest} sender's password.
-     * @param alias The {@code SignupRequest} sender's alias.
-     * @param bio The {@code SignupRequest} sender's bio.
-     * @param country The {@code SignupRequest} sender's country.
-     * @param city The {@code SignupRequest} sender's city.
-     * @param street The {@code SignupRequest} sender's street.
-     * @param postalCode The {@code SignupRequest} sender's postal code.
-     * @param profilePicture The {@code SignupRequest} sender's profile picture.
-     */
-    public SignupRequest(String email, String password, String alias,
-                         String bio, String country, String city, String street,
-                         String postalCode, String profilePicture) {
-        this.email = email;
-        this.password = password;
-        this.alias = alias;
-        this.bio = bio;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.postalCode = postalCode;
-        this.profilePicture = profilePicture;
-    }
+    // constructor
+    public SignupRequestDTO(){}
+
 
     public String getEmail() {
         return email;

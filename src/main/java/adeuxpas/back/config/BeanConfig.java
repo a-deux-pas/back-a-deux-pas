@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 public class BeanConfig {
-
     /**
      * Returns an instance of the {@code BCryptPasswordEncoder} used to hash passwords.
      * @return The {@code BCryptPasswordEncoder} instance.

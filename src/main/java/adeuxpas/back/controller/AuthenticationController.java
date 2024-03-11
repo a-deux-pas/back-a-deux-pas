@@ -1,7 +1,7 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.LoginRequest;
-import adeuxpas.back.dto.SignupRequest;
+import adeuxpas.back.dto.LoginRequestDTO;
+import adeuxpas.back.dto.SignupRequestDTO;
 import adeuxpas.back.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -72,7 +72,7 @@ public class AuthenticationController {
     /**
      * Endpoint to handle user sign-up requests.
      *
-     * @param signupRequest The sign-up request containing user details.
+     * @param signupRequestDTO The sign-up request containing user details.
      * @return ResponseEntity indicating the status of the sign-up operation.
      */
     @PostMapping("/signup")
@@ -80,19 +80,19 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "200", description = "User signed up successfully"),
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
-    public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<String> signUp(@RequestBody SignupRequestDTO signupRequestDTO) {
         // might need to be modified when developing the signup functionality
-        if (this.authenticationService.canDoSignup(signupRequest))
-            return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
+        if (this.authenticationService.canDoSignup(signupRequestDTO))
+            return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequestDTO.getEmail());
         else
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("A user with email '" + signupRequest.getEmail() + "' already exists");
+                    .body("A user with email '" + signupRequestDTO.getEmail() + "' already exists");
     }
 
     /**
      * Endpoint to handle user login requests.
      *
-     * @param loginRequest The login request containing user credentials.
+     * @param loginRequestDTO The login request containing user credentials.
      * @return ResponseEntity containing the authentication token if login is successful, or an error message otherwise.
      */
     @PostMapping("/login")
@@ -100,9 +100,9 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "200", description = "User logged in successfully"),
             @ApiResponse(responseCode = "401", description = "Invalid email and/or password")
     })
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequestDTO){
         // might need to be modified when developing the login functionality
-        String token = this.authenticationService.login(loginRequest)
+        String token = this.authenticationService.login(loginRequestDTO)
                 .orElse(null);
 
         if (token != null)

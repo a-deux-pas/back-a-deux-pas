@@ -1,8 +1,8 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.auth.JWTService;
-import adeuxpas.back.dto.LoginRequest;
-import adeuxpas.back.dto.SignupRequest;
+import adeuxpas.back.dto.LoginRequestDTO;
+import adeuxpas.back.dto.SignupRequestDTO;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
@@ -51,23 +51,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * Validates the signup request and creates a new user account if the user does not already exist.
      *
-     * @param signupRequest The signup request containing user information.
+     * @param signupRequestDTO The signup request containing user information.
      * @return {@code true} if the user is successfully signed up, {@code false} otherwise.
      */
     @Override
-    public boolean canDoSignup(SignupRequest signupRequest){
-        Optional<User> userFromDB = this.userService.findUserByEmail(signupRequest.getEmail());
+    public boolean canDoSignup(SignupRequestDTO signupRequestDTO){
+        Optional<User> userFromDB = this.userService.findUserByEmail(signupRequestDTO.getEmail());
         if (userFromDB.isEmpty()){
             User userToSave = new User();
-            userToSave.setEmail(signupRequest.getEmail());
-            userToSave.setPassword(encoder.encode(signupRequest.getPassword()));
-            userToSave.setAlias(signupRequest.getAlias());
-            userToSave.setBio(signupRequest.getBio());
-            userToSave.setCity(signupRequest.getCity());
-            userToSave.setCountry(signupRequest.getCountry());
-            userToSave.setStreet(signupRequest.getStreet());
-            userToSave.setPostalCode(signupRequest.getPostalCode());
-            userToSave.setProfilePicture(signupRequest.getProfilePicture());
+            userToSave.setEmail(signupRequestDTO.getEmail());
+            userToSave.setPassword(encoder.encode(signupRequestDTO.getPassword()));
+            userToSave.setAlias(signupRequestDTO.getAlias());
+            userToSave.setBio(signupRequestDTO.getBio());
+            userToSave.setCity(signupRequestDTO.getCity());
+            userToSave.setCountry(signupRequestDTO.getCountry());
+            userToSave.setStreet(signupRequestDTO.getStreet());
+            userToSave.setPostalCode(signupRequestDTO.getPostalCode());
+            userToSave.setProfilePicture(signupRequestDTO.getProfilePicture());
             userToSave.setInscriptionDate(LocalDateTime.now());
             userToSave.setRole(UserRole.USER);
             userToSave.setAccountStatus(AccountStatus.ACTIVE);
@@ -84,13 +84,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * If authentication is successful, it generates and returns a JWT token representing the user's session.
      * If authentication fails, it returns an empty optional.
      *
-     * @param loginRequest The login request containing user credentials.
+     * @param loginRequestDTO The login request containing user credentials.
      * @return An optional containing the JWT token if authentication is successful, or an empty optional otherwise.
      */
     @Override
-    public Optional<String> login(LoginRequest loginRequest) {
-        Optional<User> userFromDB = this.userService.findUserByEmail(loginRequest.getEmail());
-        if (userFromDB.isPresent() && encoder.matches(loginRequest.getPassword(), userFromDB.get().getPassword())){
+    public Optional<String> login(LoginRequestDTO loginRequestDTO) {
+        Optional<User> userFromDB = this.userService.findUserByEmail(loginRequestDTO.getEmail());
+        if (userFromDB.isPresent() && encoder.matches(loginRequestDTO.getPassword(), userFromDB.get().getPassword())){
             String token = this.jwtService.generateToken(userFromDB.get().getEmail(), userFromDB.get().getRole());
             return Optional.of(token);
         }
