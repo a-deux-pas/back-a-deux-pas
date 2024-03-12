@@ -73,7 +73,8 @@ public class UserController {
                 PreferredScheduleDto preferredScheduleDto = preferredScheduleMapperService.mapToDto(preferredSchedule);
                 preferredScheduleDtos.add(preferredScheduleDto);
             }
-            return ResponseEntity.ok(preferredScheduleDtos);
+            List<PreferredScheduleDto> filteredPreferredScheduleDtos = preferredScheduleMapperService.groupByTimes(preferredScheduleDtos);
+            return ResponseEntity.ok(filteredPreferredScheduleDtos);
         } else {
             return ResponseEntity.notFound().build();
         }

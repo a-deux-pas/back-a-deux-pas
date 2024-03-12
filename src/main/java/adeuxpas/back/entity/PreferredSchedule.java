@@ -2,9 +2,13 @@ package adeuxpas.back.entity;
 
 import java.time.LocalTime;
 
+import adeuxpas.back.enums.WeekDays;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,13 +30,13 @@ public class PreferredSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
     @Column(name = "week_day")
-    private String weekDay;
+    private WeekDays weekDay;
     @Column(name = "start_time")
     private LocalTime startTime;
     @Column(name = "end_time")
     private LocalTime endTime;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -40,7 +44,7 @@ public class PreferredSchedule {
     public PreferredSchedule() {
     }
 
-    public PreferredSchedule(String weekDay, LocalTime startTime, LocalTime endTime) {
+    public PreferredSchedule(WeekDays weekDay, LocalTime startTime, LocalTime endTime) {
         this.weekDay = weekDay;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -54,11 +58,11 @@ public class PreferredSchedule {
         this.id = id;
     }
 
-    public String getWeekDay() {
+    public WeekDays getWeekDay() {
         return weekDay;
     }
 
-    public void setWeekDay(String weekDay) {
+    public void setWeekDay(WeekDays weekDay) {
         this.weekDay = weekDay;
     }
 

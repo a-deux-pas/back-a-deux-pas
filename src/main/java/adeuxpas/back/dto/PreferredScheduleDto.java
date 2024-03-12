@@ -2,19 +2,21 @@ package adeuxpas.back.dto;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 
 public class PreferredScheduleDto {
     private Long id;
-    private String dayOfWeek;
+    private List<Integer> daysOfWeek;;
     private String startTime;
     private String endTime;
     private Long userId;
 
-    public PreferredScheduleDto(Long id, String dayOfWeek, LocalTime startTime, LocalTime endTime, Long userId) {
+    public PreferredScheduleDto(Long id, List<Integer> daysOfWeek, LocalTime startTime, LocalTime endTime, Long userId) {
         this.id = id;
-        this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime.format(DateTimeFormatter.ISO_LOCAL_TIME);
-        this.endTime = endTime.format(DateTimeFormatter.ISO_LOCAL_TIME);
+        this.daysOfWeek = daysOfWeek;
+        this.startTime = formatTime(startTime);
+        this.endTime = formatTime(endTime);
         this.userId = userId;
     }
 
@@ -26,12 +28,12 @@ public class PreferredScheduleDto {
         this.id = id;
     }
     
-    public String getDayOfWeek() {
-        return dayOfWeek;
+    public List<Integer> getDaysOfWeek() {
+        return daysOfWeek;
     }
 
-    public void setDayOfWeek(String dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDaysOfWeek(List<Integer> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
     }
 
     public String getStartTime() {
@@ -56,5 +58,10 @@ public class PreferredScheduleDto {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+    
+    // Méthode de formatage des horaires
+    private String formatTime(LocalTime time) {
+        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 }

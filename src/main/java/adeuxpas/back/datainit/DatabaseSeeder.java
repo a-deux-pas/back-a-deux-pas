@@ -4,6 +4,7 @@ import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
+import adeuxpas.back.enums.WeekDays;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 
@@ -70,20 +71,23 @@ public class DatabaseSeeder {
         this.userRepository.save(new User("jmoukmir@email.com", passwordEncoder.encode("pass5"), "theRabbi", "bio5", "Israel", "Tel-Aviv", "6 rue de la Synagogue", "93000", "profilePictureUrl5", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
     
         User Lea = userRepository.findById(3L).orElse(null); 
-        PreferredSchedule preferredSchedule1 = new PreferredSchedule("Lundi", LocalTime.of(8, 0), LocalTime.of(10, 0));
+        PreferredSchedule preferredSchedule1 = new PreferredSchedule(WeekDays.LUNDI, LocalTime.of(8, 0), LocalTime.of(10, 0));
         preferredSchedule1.setUser(Lea);
         this.preferredScheduleRepository.save(preferredSchedule1);
-        PreferredSchedule preferredSchedule2 = new PreferredSchedule("Mardi", LocalTime.of(17, 0), LocalTime.of(18, 0));
+        PreferredSchedule preferredSchedule2 = new PreferredSchedule(WeekDays.MARDI, LocalTime.of(8, 0), LocalTime.of(10, 0));
         preferredSchedule2.setUser(Lea);
         this.preferredScheduleRepository.save(preferredSchedule2);
+        PreferredSchedule preferredSchedule3 = new PreferredSchedule(WeekDays.MERCREDI, LocalTime.of(18, 0), LocalTime.of(20, 0));
+        preferredSchedule3.setUser(Lea);
+        this.preferredScheduleRepository.save(preferredSchedule3);
 
         User Eri = userRepository.findById(4L).orElse(null); 
-        PreferredSchedule preferredSchedule3 = new PreferredSchedule("Mercredi", LocalTime.of(20, 0), LocalTime.of(21, 0));
-        preferredSchedule3.setUser(Eri);
-        this.preferredScheduleRepository.save(preferredSchedule3);
-        PreferredSchedule preferredSchedule4 = new PreferredSchedule("Samedi", LocalTime.of(15, 0), LocalTime.of(20, 0));
+        PreferredSchedule preferredSchedule4 = new PreferredSchedule(WeekDays.SAMEDI, LocalTime.of(20, 0), LocalTime.of(21, 0));
         preferredSchedule4.setUser(Eri);
         this.preferredScheduleRepository.save(preferredSchedule4);
+        PreferredSchedule preferredSchedule5 = new PreferredSchedule(WeekDays.DIMANCHE, LocalTime.of(15, 0), LocalTime.of(20, 0));
+        preferredSchedule5.setUser(Eri);
+        this.preferredScheduleRepository.save(preferredSchedule5);
     }
 
 }
