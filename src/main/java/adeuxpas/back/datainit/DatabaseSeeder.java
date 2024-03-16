@@ -165,10 +165,10 @@ public class DatabaseSeeder {
      */
     private List<Ad> createAds(List<User> users){
         Ad firstAd = new Ad();
-        firstAd.setArticleDescription("first description");
+        firstAd.setArticleDescription("Rocky Mountain Growler 40, perfect condition ");
         firstAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
-        firstAd.setPrice(BigDecimal.valueOf(9.99));
-        firstAd.setTitle("First ad");
+        firstAd.setPrice(BigDecimal.valueOf(999.99));
+        firstAd.setTitle("Trail Bike");
         firstAd.setPublisher(users.get(0));
         List<Ad> firstUserAds = new ArrayList<>();
         firstUserAds.add(firstAd);
@@ -176,10 +176,10 @@ public class DatabaseSeeder {
         firstAd.setStatus(AdStatus.AVAILABLE);
 
         Ad secondAd = new Ad();
-        secondAd.setArticleDescription("second description");
+        secondAd.setArticleDescription("Everlast leather boxing gloves, mint condition");
         secondAd.setCreationDate(LocalDateTime.now().plusMinutes(2));
-        secondAd.setPrice(BigDecimal.valueOf(12.99));
-        secondAd.setTitle("second ad");
+        secondAd.setPrice(BigDecimal.valueOf(399.99));
+        secondAd.setTitle("Vintage boxing gloves");
         secondAd.setPublisher(users.get(1));
         List<Ad> secondUserAds = new ArrayList<>();
         secondUserAds.add(secondAd);
@@ -187,30 +187,30 @@ public class DatabaseSeeder {
         secondAd.setStatus(AdStatus.AVAILABLE);
 
         Ad thirdAd = new Ad();
-        thirdAd.setArticleDescription("third description");
+        thirdAd.setArticleDescription("Light grey, italian wool, size 48");
         thirdAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
-        thirdAd.setPrice(BigDecimal.valueOf(965132));
-        thirdAd.setTitle("third ad");
+        thirdAd.setPrice(BigDecimal.valueOf(965));
+        thirdAd.setTitle("3 piece suit");
         thirdAd.setPublisher(users.get(0));
         firstUserAds.add(thirdAd);
         users.get(0).setAds(firstUserAds);
         thirdAd.setStatus(AdStatus.AVAILABLE);
 
         Ad fourthAd = new Ad();
-        fourthAd.setArticleDescription("fourth description");
+        fourthAd.setArticleDescription("mechanical swiss made, limited edition");
         fourthAd.setCreationDate(LocalDateTime.now().plusMinutes(4));
-        fourthAd.setPrice(BigDecimal.valueOf(999.99));
-        fourthAd.setTitle("Fourth ad");
+        fourthAd.setPrice(BigDecimal.valueOf(2999.99));
+        fourthAd.setTitle("F. Constant 1988");
         fourthAd.setPublisher(users.get(0));
         firstUserAds.add(fourthAd);
         users.get(0).setAds(firstUserAds);
         fourthAd.setStatus(AdStatus.AVAILABLE);
 
         Ad fifthAd = new Ad();
-        fifthAd.setArticleDescription("fifth description");
+        fifthAd.setArticleDescription("Bose quiet comfort, noise cancelling headphones");
         fifthAd.setCreationDate(LocalDateTime.now().minusMinutes(1));
-        fifthAd.setPrice(BigDecimal.valueOf(0.99));
-        fifthAd.setTitle("Fifth ad");
+        fifthAd.setPrice(BigDecimal.valueOf(150));
+        fifthAd.setTitle("Bose headphones");
         fifthAd.setPublisher(users.get(2));
         List<Ad> thirdUserAds = new ArrayList<>();
         thirdUserAds.add(fifthAd);
@@ -229,10 +229,16 @@ public class DatabaseSeeder {
     }
 
     private void seedArticlePictures(List<Ad> ads) {
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url1"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.get(1)));
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.get(2)));
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.getLast()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/90b00509-dd97-46e3-b832-24eb8eaa8e0b_large.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://d2yn9m4p3q9iyv.cloudfront.net/rockymountain/2023/growler-40/thumbs/1000/62903.webp"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/13185af6-1f03-4cdc-8545-af767b7e6bb3_large.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://i.ytimg.com/vi/2B1bWKBTROE/sddefault.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/cf15ac41-1979-4264-9193-3b0c2d302907_large.jpg"), ads.getFirst()));
+
+        this.articlePictureRepository.save(new ArticlePicture(("https://i.ebayimg.com/images/g/5DMAAOSwpIVldRxH/s-l1200.webp"), ads.get(1)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://andreemilio.com/wp-content/uploads/2021/03/Mens-Light-gray-3-Piece-Suit-2.jpg"), ads.get(2)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"), ads.get(3)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"), ads.getLast()));
     }
 
 }

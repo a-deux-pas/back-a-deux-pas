@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AdService {
 
-    List<HomePageAdDTO> findAllAds();
+    List<HomePageAdDTO> findAllHomePageAds();
 }

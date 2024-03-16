@@ -23,7 +23,7 @@ public class AdServiceImpl implements AdService{
     }
 
     @Override
-    public List<HomePageAdDTO> findAllAds() {
+    public List<HomePageAdDTO> findAllHomePageAds() {
         List<Ad> myAds = this.adRepository.findAll();
         List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
         if(mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);

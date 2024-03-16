@@ -12,7 +12,7 @@ public class HomePageAdDTO {
     private String subcategory;
     private String articleGender;
     private LocalDateTime creationDate;
-    private AdPublisherDTO publisherDTO;
+    private String publisher;
 
     public HomePageAdDTO(){}
 
@@ -80,11 +80,11 @@ public class HomePageAdDTO {
         this.creationDate = creationDate;
     }
 
-    public AdPublisherDTO getPublisherDTO() {
-        return publisherDTO;
+    public String getPublisher() {
+        return publisher;
     }
 
-    public void setPublisherDTO(AdPublisherDTO publisherDTO) {
-        this.publisherDTO = publisherDTO;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 }
