@@ -157,6 +157,23 @@ public class DatabaseSeeder {
         this.userRepository.saveAll(users);
     }
 
+    private void seedArticlePictures(List<Ad> ads) {
+        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/90b00509-dd97-46e3-b832-24eb8eaa8e0b_large.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://d2yn9m4p3q9iyv.cloudfront.net/rockymountain/2023/growler-40/thumbs/1000/62903.webp"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/13185af6-1f03-4cdc-8545-af767b7e6bb3_large.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://i.ytimg.com/vi/2B1bWKBTROE/sddefault.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/cf15ac41-1979-4264-9193-3b0c2d302907_large.jpg"), ads.getFirst()));
+
+        this.articlePictureRepository.save(new ArticlePicture(("https://i.ebayimg.com/images/g/5DMAAOSwpIVldRxH/s-l1200.webp"), ads.get(1)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://andreemilio.com/wp-content/uploads/2021/03/Mens-Light-gray-3-Piece-Suit-2.jpg"), ads.get(2)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"), ads.get(3)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"), ads.get(4)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRH_Z_65KbwGUDdA2KcCzqroUzVXmmq68NA&usqp=CAU"), ads.get(5)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"), ads.getLast()));
+
+    }
+
     /**
      * This method creates ad entities.
      * Each ad is initialized with sample data such as title, price, creation date, publisher etc.
@@ -165,10 +182,10 @@ public class DatabaseSeeder {
      */
     private List<Ad> createAds(List<User> users){
         Ad firstAd = new Ad();
-        firstAd.setArticleDescription("first description");
-        firstAd.setCreationDate(LocalDateTime.now());
-        firstAd.setPrice(BigDecimal.valueOf(9.99));
-        firstAd.setTitle("First ad");
+        firstAd.setArticleDescription("Rocky Mountain Growler 40, perfect condition ");
+        firstAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
+        firstAd.setPrice(BigDecimal.valueOf(999.99));
+        firstAd.setTitle("Trail Bike");
         firstAd.setPublisher(users.get(0));
         List<Ad> firstUserAds = new ArrayList<>();
         firstUserAds.add(firstAd);
@@ -176,10 +193,10 @@ public class DatabaseSeeder {
         firstAd.setStatus(AdStatus.AVAILABLE);
 
         Ad secondAd = new Ad();
-        secondAd.setArticleDescription("second description");
-        secondAd.setCreationDate(LocalDateTime.now());
-        secondAd.setPrice(BigDecimal.valueOf(12.99));
-        secondAd.setTitle("second ad");
+        secondAd.setArticleDescription("Everlast leather boxing gloves, mint condition");
+        secondAd.setCreationDate(LocalDateTime.now().plusMinutes(4));
+        secondAd.setPrice(BigDecimal.valueOf(399.99));
+        secondAd.setTitle("Vintage boxing gloves");
         secondAd.setPublisher(users.get(1));
         List<Ad> secondUserAds = new ArrayList<>();
         secondUserAds.add(secondAd);
@@ -187,37 +204,69 @@ public class DatabaseSeeder {
         secondAd.setStatus(AdStatus.AVAILABLE);
 
         Ad thirdAd = new Ad();
-        thirdAd.setArticleDescription("third description");
-        thirdAd.setCreationDate(LocalDateTime.now());
-        thirdAd.setPrice(BigDecimal.valueOf(965132));
-        thirdAd.setTitle("third ad");
-        thirdAd.setPublisher(users.get(0));
-        firstUserAds.add(thirdAd);
-        users.get(0).setAds(firstUserAds);
+        thirdAd.setArticleDescription("Light grey, italian wool, size 48");
+        thirdAd.setCreationDate(LocalDateTime.now().plusMinutes(2));
+        thirdAd.setPrice(BigDecimal.valueOf(965));
+        thirdAd.setTitle("3 piece suit");
+        thirdAd.setPublisher(users.get(4));
+        List<Ad> fifthUserAds = new ArrayList<>();
+        fifthUserAds.add(thirdAd);
+        users.get(4).setAds(fifthUserAds);
         thirdAd.setStatus(AdStatus.AVAILABLE);
 
         Ad fourthAd = new Ad();
-        fourthAd.setArticleDescription("fourth description");
-        fourthAd.setCreationDate(LocalDateTime.now());
-        fourthAd.setPrice(BigDecimal.valueOf(999.99));
-        fourthAd.setTitle("Fourth ad");
+        fourthAd.setArticleDescription("mechanical swiss made, limited edition");
+        fourthAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
+        fourthAd.setPrice(BigDecimal.valueOf(2999.99));
+        fourthAd.setTitle("Frédérique Constant 1988");
         fourthAd.setPublisher(users.get(0));
         firstUserAds.add(fourthAd);
         users.get(0).setAds(firstUserAds);
         fourthAd.setStatus(AdStatus.AVAILABLE);
 
         Ad fifthAd = new Ad();
-        fifthAd.setArticleDescription("fifth description");
-        fifthAd.setCreationDate(LocalDateTime.now());
-        fifthAd.setPrice(BigDecimal.valueOf(0.99));
-        fifthAd.setTitle("Fifth ad");
+        fifthAd.setArticleDescription("Bose quiet comfort, noise cancelling headphones");
+        fifthAd.setCreationDate(LocalDateTime.now().minusMinutes(1));
+        fifthAd.setPrice(BigDecimal.valueOf(150));
+        fifthAd.setTitle("Bose headphones");
         fifthAd.setPublisher(users.get(2));
         List<Ad> thirdUserAds = new ArrayList<>();
         thirdUserAds.add(fifthAd);
         users.get(2).setAds(thirdUserAds);
         fifthAd.setStatus(AdStatus.AVAILABLE);
 
-        return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd);
+        Ad sixthAd = new Ad();
+        sixthAd.setArticleDescription("Wonderlust phone case");
+        sixthAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
+        sixthAd.setPrice(BigDecimal.valueOf(20));
+        sixthAd.setTitle("Phone case");
+        sixthAd.setPublisher(users.get(3));
+        List<Ad> fourthUserAds = new ArrayList<>();
+        fourthUserAds.add(sixthAd);
+        users.get(3).setAds(fourthUserAds);
+        sixthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad seventhAd = new Ad();
+        seventhAd.setArticleDescription("Blue satin silk shirt");
+        seventhAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
+        seventhAd.setPrice(BigDecimal.valueOf(35));
+        seventhAd.setTitle("Blue silk shirt");
+        seventhAd.setPublisher(users.get(3));
+        fourthUserAds.add(seventhAd);
+        users.get(3).setAds(fourthUserAds);
+        seventhAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad eighthAd = new Ad();
+        eighthAd.setArticleDescription("Nassim N. Taleb's best selling collection; includes: Anti-Fragile, The Black San, Skin in the Game etc ");
+        eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
+        eighthAd.setPrice(BigDecimal.valueOf(150));
+        eighthAd.setTitle("Incerto Book Collection");
+        eighthAd.setPublisher(users.get(2));
+        thirdUserAds.add(eighthAd);
+        users.get(2).setAds(thirdUserAds);
+        eighthAd.setStatus(AdStatus.AVAILABLE);
+
+        return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd);
     }
 
     /**
@@ -226,13 +275,6 @@ public class DatabaseSeeder {
      */
     private void seedAds(List<Ad> ads){
         this.adRepository.saveAll(ads);
-    }
-
-    private void seedArticlePictures(List<Ad> ads) {
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url1"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.get(1)));
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.get(2)));
-        this.articlePictureRepository.save(new ArticlePicture(("picture_url2"), ads.getLast()));
     }
 
 }

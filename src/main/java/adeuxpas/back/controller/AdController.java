@@ -24,8 +24,8 @@ public class AdController {
     @GetMapping("/liste")
     public ResponseEntity<Object> findAllAds(){
         try {
-            return ResponseEntity.ok(this.adService.findAllAds());
-        } catch(RuntimeException e) {
+            return ResponseEntity.ok(this.adService.findAllHomePageAds());
+        } catch(Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
