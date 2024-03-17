@@ -13,6 +13,7 @@ public class HomePageAdDTO {
     private String articleGender;
     private LocalDateTime creationDate;
     private String publisher;
+    private String publisherCity;
 
     public HomePageAdDTO(){}
 
@@ -86,5 +87,13 @@ public class HomePageAdDTO {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    public String getPublisherCity() {
+        return publisherCity;
+    }
+
+    public void setPublisherCity(String publisherCity) {
+        this.publisherCity = publisherCity;
     }
 }

@@ -169,9 +169,7 @@ public class DatabaseSeeder {
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"), ads.get(3)));
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"), ads.get(4)));
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRH_Z_65KbwGUDdA2KcCzqroUzVXmmq68NA&usqp=CAU"), ads.get(5)));
-
         this.articlePictureRepository.save(new ArticlePicture(("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
-
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"), ads.getLast()));
 
     }
@@ -210,9 +208,10 @@ public class DatabaseSeeder {
         thirdAd.setCreationDate(LocalDateTime.now().plusMinutes(2));
         thirdAd.setPrice(BigDecimal.valueOf(965));
         thirdAd.setTitle("3 piece suit");
-        thirdAd.setPublisher(users.get(0));
-        firstUserAds.add(thirdAd);
-        users.get(0).setAds(firstUserAds);
+        thirdAd.setPublisher(users.get(4));
+        List<Ad> fifthUserAds = new ArrayList<>();
+        fifthUserAds.add(thirdAd);
+        users.get(4).setAds(fifthUserAds);
         thirdAd.setStatus(AdStatus.AVAILABLE);
 
         Ad fourthAd = new Ad();
@@ -262,10 +261,9 @@ public class DatabaseSeeder {
         eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
         eighthAd.setPrice(BigDecimal.valueOf(150));
         eighthAd.setTitle("Incerto Book Collection");
-        eighthAd.setPublisher(users.get(4));
-        List<Ad> fifthUserAds = new ArrayList<>();
-        fifthUserAds.add(eighthAd);
-        users.get(4).setAds(fifthUserAds);
+        eighthAd.setPublisher(users.get(2));
+        thirdUserAds.add(eighthAd);
+        users.get(2).setAds(thirdUserAds);
         eighthAd.setStatus(AdStatus.AVAILABLE);
 
         return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd);
