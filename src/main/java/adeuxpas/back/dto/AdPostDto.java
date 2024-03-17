@@ -1,5 +1,6 @@
 package adeuxpas.back.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import adeuxpas.back.entity.User;
@@ -11,7 +12,7 @@ public class AdPostDto {
     String articleDescription;
     String articleState;
     LocalDateTime creationDate;
-    double price;
+    BigDecimal price;
     AdStatus status;
     String category;
     String subcategory;
@@ -58,12 +59,12 @@ public class AdPostDto {
         this.creationDate = creationDate;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice(BigDecimal bigDecimal) {
+        this.price = bigDecimal;
     }
 
     public AdStatus getStatus() {

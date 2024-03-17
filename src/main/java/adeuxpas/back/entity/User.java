@@ -2,6 +2,7 @@ package adeuxpas.back.entity;
 
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -22,64 +23,37 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 150)
     private String email;
     private String password;
+    @Column(length = 150)
     private String alias;
+    @Column(columnDefinition = "TEXT")
     private String bio;
+    @Column(length = 150)
     private String country;
+    @Column(length = 150)
     private String city;
+    @Column(length = 200)
     private String street;
-    @Column(name = "postal_code")
+    @Column(name = "postal_code", length = 15)
     private String postalCode;
     @Column(name = "profile_picture")
     private String profilePicture;
     @Column(name = "inscription_date")
     private LocalDateTime inscriptionDate;
     @Column(name = "account_status")
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
-    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Ad> ads;
-
 
     // no args constructor
     public User() {}
 
-    /**
-     * All args constructor for {@code User}.
-     * @param email The {@code User}'s email.
-     * @param password The {@code User}'s password.
-     * @param alias The {@code User}'s alias.
-     * @param bio The {@code User}'s bio.
-     * @param country The {@code User}'s country.
-     * @param city The {@code User}'s city.
-     * @param street The {@code User}'s street.
-     * @param postalCode The {@code User}'s postal code.
-     * @param profilePicture The {@code User}'s profile picture.
-     * @param inscriptionDate The {@code User}'s inscription date.
-     * @param accountStatus The {@code User}'s account status.
-     * @param role The {@code User}'s role.
-     */
-    // all args constructor
-    public User(String email, String password, String alias, String bio, String country, String city,
-                String street, String postalCode, String profilePicture, LocalDateTime inscriptionDate,
-                AccountStatus accountStatus, UserRole role) {
-        this.email = email;
-        this.password = password;
-        this.alias = alias;
-        this.bio = bio;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.postalCode = postalCode;
-        this.profilePicture = profilePicture;
-        this.inscriptionDate = inscriptionDate;
-        this.accountStatus = accountStatus;
-        this.role = role;
-    }
-
     // getters and setters
-
     public long getId() {
         return id;
     }
@@ -194,7 +168,6 @@ public class User {
 
 
     // toString
-
     @Override
     public String toString() {
         return "User{" +
@@ -211,7 +184,7 @@ public class User {
                 ", inscriptionDate=" + inscriptionDate +
                 ", accountStatus=" + accountStatus +
                 ", role=" + role +
-                ", ads=" + ads +
+                //", ads=" + ads +
                 '}';
     }
 
