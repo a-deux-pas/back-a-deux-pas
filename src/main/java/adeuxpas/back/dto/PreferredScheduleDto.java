@@ -5,14 +5,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-public class PreferredScheduleDto {
+public class PreferredScheduleDTO {
     private Long id;
     private List<Integer> daysOfWeek;;
     private String startTime;
     private String endTime;
     private Long userId;
 
-    public PreferredScheduleDto(Long id, List<Integer> daysOfWeek, LocalTime startTime, LocalTime endTime, Long userId) {
+    public PreferredScheduleDTO(Long id, List<Integer> daysOfWeek, LocalTime startTime, LocalTime endTime, Long userId) {
         this.id = id;
         this.daysOfWeek = daysOfWeek;
         this.startTime = formatTime(startTime);

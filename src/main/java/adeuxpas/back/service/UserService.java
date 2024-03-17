@@ -1,6 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.entity.PreferredSchedule;
+import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
+import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.entity.User;
 
 import java.util.List;
@@ -32,5 +33,11 @@ public interface UserService {
      * Abstract method that attempts to find preferred schedule of an user.
      * @param user concerned
      */
-    List<PreferredSchedule> findPreferredScheduleByUser(User user);
+    List<PreferredScheduleDTO> findAllPreferredSchedulesByUser(User user);
+
+    /**
+     * Abstract method that attempts to find preferred meeting places of an user.
+     * @param user concerned
+     */
+    List<PreferredMeetingPlaceDTO> findAllPreferredMeetingPlacesByUser(User user);
 }

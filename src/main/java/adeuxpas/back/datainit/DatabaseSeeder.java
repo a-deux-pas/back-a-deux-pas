@@ -1,10 +1,12 @@
 package adeuxpas.back.datainit;
 
+import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
 import adeuxpas.back.enums.WeekDays;
+import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 
@@ -33,6 +35,7 @@ public class DatabaseSeeder {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final PreferredScheduleRepository preferredScheduleRepository;
+    private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
 
     /**
      * Constructs a new instance of DatabaseSeeder.
@@ -43,10 +46,12 @@ public class DatabaseSeeder {
      */
     public DatabaseSeeder(@Autowired UserRepository userRepository,
                             @Autowired BCryptPasswordEncoder passwordEncoder,
-                            @Autowired PreferredScheduleRepository preferredScheduleRepository){
+                            @Autowired PreferredScheduleRepository preferredScheduleRepository,
+                            @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.preferredScheduleRepository = preferredScheduleRepository;
+        this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
     }
 
     /**
@@ -55,6 +60,8 @@ public class DatabaseSeeder {
      */
     public void seedDatabase(){
         seedUsers();
+        seedPreferredSchedules();
+        seedPreferredMeetingPlaces();
     }
 
     /**
@@ -69,7 +76,10 @@ public class DatabaseSeeder {
         this.userRepository.save(new User("lhadida@email.com", passwordEncoder.encode("pass3"), "Leahad", "bio3", "Germany", "Dortmund", "40 Av de la Liberte", "13000", "profilePictureUrl3", LocalDateTime.now(), AccountStatus.SUSPENDED,  UserRole.USER));
         this.userRepository.save(new User("erikaike@email.po", passwordEncoder.encode("pass4"), "Eri", "bio4", "Portugal", "Porto", "Prom. Germain Sablon", "69000", "profilePictureUrl4", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
         this.userRepository.save(new User("jmoukmir@email.com", passwordEncoder.encode("pass5"), "theRabbi", "bio5", "Israel", "Tel-Aviv", "6 rue de la Synagogue", "93000", "profilePictureUrl5", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
-    
+    }
+
+
+    private void seedPreferredSchedules(){
         User Lea = userRepository.findById(3L).orElse(null); 
         PreferredSchedule preferredSchedule1 = new PreferredSchedule(WeekDays.LUNDI, LocalTime.of(8, 0), LocalTime.of(10, 0));
         preferredSchedule1.setUser(Lea);
@@ -90,4 +100,22 @@ public class DatabaseSeeder {
         this.preferredScheduleRepository.save(preferredSchedule5);
     }
 
+    private void seedPreferredMeetingPlaces(){
+        User Lea = userRepository.findById(3L).orElse(null); 
+        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("France", "75020", "Paris", "61 place Gambetta", "Mairie du 20e arrondissement");
+        meetingPlace1.setUser(Lea);
+        this.preferredMeetingPlaceRepository.save(meetingPlace1);
+        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("France", "75020", "Paris", "place Martin Nadaud", "Place Martin Nadaud");
+        meetingPlace2.setUser(Lea);
+        this.preferredMeetingPlaceRepository.save(meetingPlace2);
+        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("France", "75020", "Paris", "120 rue Orfila", "Métro Pelleport");
+        meetingPlace3.setUser(Lea);
+        this.preferredMeetingPlaceRepository.save(meetingPlace3);
+        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("France", "75011", "Paris", "Avenue de la République", "Métro Père Lachaise");
+        meetingPlace4.setUser(Lea);
+        this.preferredMeetingPlaceRepository.save(meetingPlace4);
+        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("France", "75020", "Paris", "Rue de Paris", "Métro Ménilmontant");
+        meetingPlace5.setUser(Lea);
+        this.preferredMeetingPlaceRepository.save(meetingPlace5);
+    }
 }
