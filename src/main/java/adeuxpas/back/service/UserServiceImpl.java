@@ -2,6 +2,7 @@ package adeuxpas.back.service;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
+import adeuxpas.back.dto.ProfilePageUserDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private final PreferredScheduleRepository preferredSchedulerRepository;
+    private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
     private final UserMapper userMapper;
 
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService{
         @Autowired UserMapper userMapper
         ){
         this.userRepository = userRepository;
-        this.preferredSchedulerRepository = preferredScheduleRepository;
+        this.preferredScheduleRepository = preferredScheduleRepository;
         this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
         this.userMapper = userMapper;
     }
@@ -77,17 +78,47 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
-     * Finds preferred schedules of an user.
+     * Retrieves profile information of a user by user ID.
      *
-     * @param user concerned.
-     * @return a list of preferred schedules.
+     * This method retrieves the profile information of a user based on the provided user ID.
+     * It maps the user entity to a DTO representing profile page user information.
+     *
+     * @param userId the ID of the user to retrieve profile information for.
+     * @return the profile information of the user.
      */
     @Override
-    public List<PreferredScheduleDTO> findAllPreferredSchedulesByUser(User user) {
-        List<PreferredSchedule> preferredSchedules = preferredSchedulerRepository.findAllPreferredSchedulesByUser(user);
-        List<PreferredScheduleDTO> mappedPreferredSchedules = preferredSchedules.stream().map(userMapper::mapPreferredScheduleToDTO).collect(Collectors.toList());
-        List<PreferredScheduleDTO> filteredPreferredSchedules = this.groupByTimes(mappedPreferredSchedules);
-        return filteredPreferredSchedules;
+    public ProfilePageUserDTO findUserProfileInfoById(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            ProfilePageUserDTO mappedUser = userMapper.mapUserToProfilePageUserDTO(user);
+            return mappedUser;
+        } else {
+            return null; // definir si on on ne lance pas une exception ici
+        }
+    }
+
+    /**
+     * Retrieves preferred schedules of a user.
+     *
+     * This method retrieves all preferred schedules associated with a given user.
+     * It performs a filtering operation to group preferred schedules by specific time.
+     *
+     * @param user the concerned user.
+     * @return a list of preferred schedules grouped by specific time.
+     */
+    @Override
+    public List<PreferredScheduleDTO> findPreferredSchedulesByUserId(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            List<PreferredSchedule> preferredSchedules = preferredScheduleRepository.findPreferredSchedulesByUser(user);
+            List<PreferredScheduleDTO> mappedPreferredSchedules = preferredSchedules.stream().map(userMapper::mapPreferredScheduleToDTO).collect(Collectors.toList());
+            List<PreferredScheduleDTO> filteredPreferredSchedules = this.groupByTimes(mappedPreferredSchedules);
+            return filteredPreferredSchedules;
+        } else {
+            return null; // definir si on on ne lance pas une exception ici
+        }
     }
 
     /**
@@ -120,15 +151,24 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
-     * Finds preferred meeting places of an user.
+     * Retrieves preferred meeting places of a user.
      *
-     * @param user concerned.
+     * This method retrieves all preferred meeting places associated with a given user.
+     * It maps the preferred meeting places to DTOs.
+     *
+     * @param user the concerned user.
      * @return a list of preferred meeting places.
      */
     @Override
-    public List<PreferredMeetingPlaceDTO> findAllPreferredMeetingPlacesByUser(User user) {
-        List<PreferredMeetingPlace> PreferredMeetingPlaces = preferredMeetingPlaceRepository.findAllPreferredMeetingPlacesByUser(user);
-        List<PreferredMeetingPlaceDTO> mappedPreferredMeetingPlaces = PreferredMeetingPlaces.stream().map(userMapper::mapPreferredMettingPlaceToDTO).collect(Collectors.toList());
-        return mappedPreferredMeetingPlaces;
+    public List<PreferredMeetingPlaceDTO> findPreferredMeetingPlacesByUserId(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            List<PreferredMeetingPlace> PreferredMeetingPlaces = preferredMeetingPlaceRepository.findPreferredMeetingPlacesByUser(user);
+            List<PreferredMeetingPlaceDTO> mappedPreferredMeetingPlaces = PreferredMeetingPlaces.stream().map(userMapper::mapPreferredMettingPlaceToDTO).collect(Collectors.toList());
+            return mappedPreferredMeetingPlaces;
+        } else {
+            return null; // definir si on on ne lance pas une exception ici
+        }
     }
 }

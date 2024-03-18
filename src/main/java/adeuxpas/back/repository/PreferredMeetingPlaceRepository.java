@@ -11,5 +11,5 @@ import adeuxpas.back.entity.User;
 @Repository
 public interface PreferredMeetingPlaceRepository extends JpaRepository<PreferredMeetingPlace, Long> {
     
-    List<PreferredMeetingPlace> findAllPreferredMeetingPlacesByUser(User user);
+    List<PreferredMeetingPlace> findPreferredMeetingPlacesByUser(User user);
 }

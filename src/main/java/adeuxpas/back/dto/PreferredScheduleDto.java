@@ -60,7 +60,6 @@ public class PreferredScheduleDTO {
         this.userId = userId;
     }
     
-    // Méthode de formatage des horaires
     private String formatTime(LocalTime time) {
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }

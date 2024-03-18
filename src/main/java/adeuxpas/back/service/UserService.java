@@ -2,6 +2,7 @@ package adeuxpas.back.service;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
+import adeuxpas.back.dto.ProfilePageUserDTO;
 import adeuxpas.back.entity.User;
 
 import java.util.List;
@@ -30,14 +31,20 @@ public interface UserService {
     Optional<User> findUserByEmail(String email);
 
     /**
+     * Abstract method that attempts to find the user info with its ID.
+     * @param userId The user ID used in the search.
+     */
+    ProfilePageUserDTO findUserProfileInfoById(Long userId);
+
+    /**
      * Abstract method that attempts to find preferred schedule of an user.
      * @param user concerned
      */
-    List<PreferredScheduleDTO> findAllPreferredSchedulesByUser(User user);
+    List<PreferredScheduleDTO> findPreferredSchedulesByUserId(Long userId);
 
     /**
      * Abstract method that attempts to find preferred meeting places of an user.
      * @param user concerned
      */
-    List<PreferredMeetingPlaceDTO> findAllPreferredMeetingPlacesByUser(User user);
+    List<PreferredMeetingPlaceDTO> findPreferredMeetingPlacesByUserId(Long userId);
 }

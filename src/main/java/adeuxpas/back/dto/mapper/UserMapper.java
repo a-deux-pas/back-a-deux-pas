@@ -9,14 +9,18 @@ import org.mapstruct.Named;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
+import adeuxpas.back.dto.ProfilePageUserDTO;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
+import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.WeekDays;
 
 @Mapper(
     componentModel = "spring"
 )
 public interface UserMapper {
+
+    ProfilePageUserDTO mapUserToProfilePageUserDTO(User user);
 
     @Mapping(source = "weekDay", target = "daysOfWeek", qualifiedByName = "convertWeekDayToList")
     @Mapping(source = "user.id", target = "userId")

@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class responsible for seeding the database with initial sample data.
@@ -59,23 +62,99 @@ public class DatabaseSeeder {
      * This method delegates the seeding process to individual seeding methods for different entities.
      */
     public void seedDatabase(){
-        seedUsers();
+        List<User> users = createUsers();
+        seedUsers(users);
+
         seedPreferredSchedules();
+        
         seedPreferredMeetingPlaces();
     }
 
     /**
-     * Seeds the database with sample user data.
-     * This method creates and saves user entities to the userRepository.
+     * This method creates user entities.
      * Each user is initialized with sample data such as email, password, role, status, and creation timestamp.
+     * @return a list of users.
      */
+    private List<User> createUsers(){
+        User first = new User();
+        first.setEmail("mbardan@email.ro");
+        first.setAlias("Koroviev");
+        first.setPassword(passwordEncoder.encode("pass1"));
+        first.setBio("bio1");
+        first.setCountry("France");
+        first.setCity("Maisons-Alfort");
+        first.setStreet("Victor Hugo");
+        first.setPostalCode("94700");
+        first.setProfilePicture("profilePictureUrl1");
+        first.setInscriptionDate(LocalDate.now());
+        first.setAccountStatus(AccountStatus.ACTIVE);
+        first.setRole(UserRole.USER);
 
-    private void seedUsers(){
-        this.userRepository.save(new User("mbardan@email.ro", passwordEncoder.encode("pass1"), "Koroviev", "bio1", "Romania", "Cluj-Napoca", "Victor Hugo", "94700", "profilePictureUrl1", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.USER));
-        this.userRepository.save(new User("daouali@email.com", passwordEncoder.encode("pass2"), "Dounia", "bio2", "Algeria", "Alger", "5, Garibaldi", "75000", "profilePictureUrl2", LocalDateTime.now(), AccountStatus.REPORTED,  UserRole.USER));
-        this.userRepository.save(new User("lhadida@email.com", passwordEncoder.encode("pass3"), "Leahad", "bio3", "Germany", "Dortmund", "40 Av de la Liberte", "13000", "profilePictureUrl3", LocalDateTime.now(), AccountStatus.SUSPENDED,  UserRole.USER));
-        this.userRepository.save(new User("erikaike@email.po", passwordEncoder.encode("pass4"), "Eri", "bio4", "Portugal", "Porto", "Prom. Germain Sablon", "69000", "profilePictureUrl4", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
-        this.userRepository.save(new User("jmoukmir@email.com", passwordEncoder.encode("pass5"), "theRabbi", "bio5", "Israel", "Tel-Aviv", "6 rue de la Synagogue", "93000", "profilePictureUrl5", LocalDateTime.now(), AccountStatus.ACTIVE,  UserRole.ADMIN));
+        User second = new User();
+        second.setEmail("daouali@email.com");
+        second.setPassword(passwordEncoder.encode("pass2"));
+        second.setAlias("Dounia");
+        second.setBio("bio2");
+        second.setCountry("France");
+        second.setCity("Paris");
+        second.setStreet("5, Garibaldi");
+        second.setPostalCode("75000");
+        second.setProfilePicture("profilePictureUrl2");
+        second.setInscriptionDate(LocalDate.now());
+        second.setAccountStatus(AccountStatus.REPORTED);
+        second.setRole(UserRole.USER);
+
+        User third = new User();
+        third.setEmail("lhadida@email.com");
+        third.setPassword(passwordEncoder.encode("pass3"));
+        third.setAlias("Leahad");
+        third.setBio("bio3");
+        third.setCountry("France");
+        third.setCity("Charenton");
+        third.setStreet("5, Av de la Liberte");
+        third.setPostalCode("75018");
+        third.setProfilePicture("https://urlz.fr/pVV1");
+        third.setInscriptionDate(LocalDate.now());
+        third.setAccountStatus(AccountStatus.SUSPENDED);
+        third.setRole(UserRole.USER);
+
+        User fourth = new User();
+        fourth.setEmail("erikaike@email.fr");
+        fourth.setPassword(passwordEncoder.encode("pass4"));
+        fourth.setAlias("Eri");
+        fourth.setBio("bio4");
+        fourth.setCountry("France");
+        fourth.setCity("Lyon");
+        fourth.setStreet("5, rue Gabriel Peri");
+        fourth.setPostalCode("69000");
+        fourth.setProfilePicture("https://urlz.fr/pVV3");
+        fourth.setInscriptionDate(LocalDate.now());
+        fourth.setAccountStatus(AccountStatus.ACTIVE);
+        fourth.setRole(UserRole.ADMIN);
+
+        User fifth = new User();
+        fifth.setEmail("jmoukmir@email.com");
+        fifth.setPassword(passwordEncoder.encode("pass5"));
+        fifth.setAlias("theRabbi");
+        fifth.setBio("bio5");
+        fifth.setCountry("France");
+        fifth.setCity("Lyon");
+        fifth.setStreet("7bis, rue de la Synagogue");
+        fifth.setPostalCode("69000");
+        fifth.setProfilePicture("profilePictureUrl5");
+        fifth.setInscriptionDate(LocalDate.now());
+        fifth.setAccountStatus(AccountStatus.ACTIVE);
+        fifth.setRole(UserRole.ADMIN);
+
+        return Arrays.asList(first, second, third, fourth, fifth);
+    }
+
+    /**
+     * Seeds the database with sample user data.
+     * @param users the list of users to save.
+    */
+    private void seedUsers(List<User> users){
+        this.userRepository.saveAll(users);
     }
 
 

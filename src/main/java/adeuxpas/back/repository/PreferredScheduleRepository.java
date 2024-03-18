@@ -19,5 +19,5 @@ import adeuxpas.back.entity.User;
 @Repository
 public interface PreferredScheduleRepository extends JpaRepository<PreferredSchedule, Long> {
 
-    List<PreferredSchedule> findAllPreferredSchedulesByUser(User user);
+    List<PreferredSchedule> findPreferredSchedulesByUser(User user);
 }
