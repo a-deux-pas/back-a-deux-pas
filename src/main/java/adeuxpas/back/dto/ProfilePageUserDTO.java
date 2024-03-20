@@ -14,6 +14,9 @@ public class ProfilePageUserDTO {
     private String profilePicture;
     private String inscriptionDate;
     
+    public ProfilePageUserDTO() {
+    }
+
     public ProfilePageUserDTO(Long id, String alias, String bio, String country, String city, String street,
             String postalCode, String profilePicture, LocalDate inscriptionDate) {
         this.id = id;

@@ -10,6 +10,8 @@ import adeuxpas.back.entity.User;
 import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService{
      * It maps the user entity to a DTO representing profile page user information.
      *
      * @param userId the ID of the user to retrieve profile information for.
-     * @return the profile information of the user.
+     * @return the profile information of the user or an exception if the user is not found.
      */
     @Override
     public ProfilePageUserDTO findUserProfileInfoById(Long userId) {
@@ -94,7 +96,7 @@ public class UserServiceImpl implements UserService{
             ProfilePageUserDTO mappedUser = userMapper.mapUserToProfilePageUserDTO(user);
             return mappedUser;
         } else {
-            return null; // definir si on on ne lance pas une exception ici
+            throw new EntityNotFoundException("User with ID : " + userId + " not Found");
         }
     }
 
@@ -105,11 +107,11 @@ public class UserServiceImpl implements UserService{
      * It performs a filtering operation to group preferred schedules by specific time.
      *
      * @param user the concerned user.
-     * @return a list of preferred schedules grouped by specific time.
+     * @return a list of preferred schedules grouped by specific time or an exception if the user is not found.
      */
     @Override
     public List<PreferredScheduleDTO> findPreferredSchedulesByUserId(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
+            Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             List<PreferredSchedule> preferredSchedules = preferredScheduleRepository.findPreferredSchedulesByUser(user);
@@ -117,7 +119,7 @@ public class UserServiceImpl implements UserService{
             List<PreferredScheduleDTO> filteredPreferredSchedules = this.groupByTimes(mappedPreferredSchedules);
             return filteredPreferredSchedules;
         } else {
-            return null; // definir si on on ne lance pas une exception ici
+            throw new EntityNotFoundException("User with ID : " + userId + " not Found");
         }
     }
 
@@ -149,7 +151,7 @@ public class UserServiceImpl implements UserService{
     });
         return result;
     }
-
+    
     /**
      * Retrieves preferred meeting places of a user.
      *
@@ -157,7 +159,7 @@ public class UserServiceImpl implements UserService{
      * It maps the preferred meeting places to DTOs.
      *
      * @param user the concerned user.
-     * @return a list of preferred meeting places.
+     * @return a list of preferred meeting places or an exception if the user is not found.
      */
     @Override
     public List<PreferredMeetingPlaceDTO> findPreferredMeetingPlacesByUserId(Long userId) {
@@ -168,7 +170,7 @@ public class UserServiceImpl implements UserService{
             List<PreferredMeetingPlaceDTO> mappedPreferredMeetingPlaces = PreferredMeetingPlaces.stream().map(userMapper::mapPreferredMettingPlaceToDTO).collect(Collectors.toList());
             return mappedPreferredMeetingPlaces;
         } else {
-            return null; // definir si on on ne lance pas une exception ici
+            throw new EntityNotFoundException("User with ID : " + userId + " not Found");
         }
     }
 }

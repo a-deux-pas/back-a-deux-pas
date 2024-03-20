@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -108,11 +107,11 @@ public class DatabaseSeeder {
         third.setEmail("lhadida@email.com");
         third.setPassword(passwordEncoder.encode("pass3"));
         third.setAlias("Leahad");
-        third.setBio("bio3");
+        third.setBio("Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
         third.setCountry("France");
-        third.setCity("Charenton");
+        third.setCity("Paris");
         third.setStreet("5, Av de la Liberte");
-        third.setPostalCode("75018");
+        third.setPostalCode("75020");
         third.setProfilePicture("https://urlz.fr/pVV1");
         third.setInscriptionDate(LocalDate.now());
         third.setAccountStatus(AccountStatus.SUSPENDED);
@@ -122,7 +121,7 @@ public class DatabaseSeeder {
         fourth.setEmail("erikaike@email.fr");
         fourth.setPassword(passwordEncoder.encode("pass4"));
         fourth.setAlias("Eri");
-        fourth.setBio("bio4");
+        fourth.setBio("Passionnée de mode, je vends mes vêtements pour permettre aux plus grand nombre d’être stylé.");
         fourth.setCountry("France");
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
@@ -181,19 +180,19 @@ public class DatabaseSeeder {
 
     private void seedPreferredMeetingPlaces(){
         User Lea = userRepository.findById(3L).orElse(null); 
-        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("France", "75020", "Paris", "61 place Gambetta", "Mairie du 20e arrondissement");
+        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", "Paris", "75020", "France");
         meetingPlace1.setUser(Lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace1);
-        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("France", "75020", "Paris", "place Martin Nadaud", "Place Martin Nadaud");
+        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("Place Martin Nadaud", "Place Martin Nadaud", "Paris", "75020", "France");
         meetingPlace2.setUser(Lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace2);
-        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("France", "75020", "Paris", "120 rue Orfila", "Métro Pelleport");
+        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("Métro Pelleport", "120 rue Orfila", "Paris", "75020", "France");
         meetingPlace3.setUser(Lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace3);
-        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("France", "75011", "Paris", "Avenue de la République", "Métro Père Lachaise");
+        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("Métro Père Lachaise", "Avenue de la République", "Paris", "75020", "France");
         meetingPlace4.setUser(Lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace4);
-        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("France", "75020", "Paris", "Rue de Paris", "Métro Ménilmontant");
+        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("Métro Ménilmontant","Rue de Paris",  "Paris", "75020", "France");
         meetingPlace5.setUser(Lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace5);
     }

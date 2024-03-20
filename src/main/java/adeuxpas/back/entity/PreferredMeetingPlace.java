@@ -24,12 +24,16 @@ public class PreferredMeetingPlace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String country;
-    @Column(name = "postal_code")
-    private String postalCode;
-    private String city;
-    private String street;
+    @Column(length = 200) 
     private String name;
+    @Column(length = 150) 
+    private String street;
+    @Column(length = 150) 
+    private String city;
+    @Column(name = "postal_code", length = 50)
+    private String postalCode;
+    @Column(length = 150) 
+    private String country;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -37,12 +41,13 @@ public class PreferredMeetingPlace {
     public PreferredMeetingPlace() {
     }
     
-    public PreferredMeetingPlace(String country, String postalCode, String city, String street, String name) {
-        this.country = country;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.street = street;
+
+    public PreferredMeetingPlace(String name, String street, String city, String postalCode, String country) {
         this.name = name;
+        this.street = street;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country;
     }
 
     public Long getId() {

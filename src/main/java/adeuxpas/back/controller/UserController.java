@@ -25,7 +25,7 @@ public class UserController {
     // méthode à changer une fois le login réalisé
     @GetMapping("/compte/profil/présentation")
     public ResponseEntity<Object> getUserInformation() {
-        Long userId = 3L; 
+        Long userId = 4L; 
         try {
             return ResponseEntity.ok(userService.findUserProfileInfoById(userId));
         } catch(Exception e) {

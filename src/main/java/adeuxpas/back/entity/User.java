@@ -5,7 +5,6 @@ import adeuxpas.back.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -22,12 +21,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 150) 
     private String email;
     private String password;
+    @Column(length = 150) 
     private String alias;
     private String bio;
+    @Column(length = 150) 
     private String country;
+    @Column(length = 150) 
     private String city;
+    @Column(length = 200) 
     private String street;
     @Column(name = "postal_code")
     private String postalCode;
