@@ -16,6 +16,7 @@ public interface MapStructMapper {
     @Mapping(source = "articlePictures", target = "articlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "publisher.alias", target = "publisher")
     @Mapping(source = "publisher.city", target = "publisherCity")
+    @Mapping(source = "publisher.postalCode", target = "publisherPostalCode")
     HomePageAdDTO adToHomePageAdDTO(Ad ad);
 
     @Named("findFirstArticlePictureUrl")

@@ -14,6 +14,7 @@ public class HomePageAdDTO {
     private LocalDateTime creationDate;
     private String publisher;
     private String publisherCity;
+    private String publisherPostalCode;
 
     public HomePageAdDTO(){}
 
@@ -95,5 +96,13 @@ public class HomePageAdDTO {
 
     public void setPublisherCity(String publisherCity) {
         this.publisherCity = publisherCity;
+    }
+
+    public String getPublisherPostalCode() {
+        return publisherPostalCode;
+    }
+
+    public void setPublisherPostalCode(String publisherPostalCode) {
+        this.publisherPostalCode = publisherPostalCode;
     }
 }
