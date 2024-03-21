@@ -31,6 +31,21 @@ public class AdServiceImpl implements AdService{
         return mappedAdsList;
     }
 
+    @Override
+    public List<HomePageAdDTO> findFilteredAds(List<String> selectedPriceRanges, List<String> citiesAndPostalCodes, List<String> selectedArticleStates, List<String> selectedCategories, List<String> selectedSubcategories, List<String> selectedGender) {
+        // Formatting the request parameters (received from the controller) to be passed as query parameters (to the repository)
+        // extracting the postal codes :
+        List<String> postalCodes = citiesAndPostalCodes.stream().map(city -> city.substring(city.indexOf('(') + 1, city.indexOf(')')))
+                .collect(Collectors.toList());
+        postalCodes.forEach(System.out::println);
+
+        List<Ad> myAds = this.adRepository.findFilteredAds(selectedPriceRanges, postalCodes, selectedArticleStates, selectedCategories, selectedSubcategories, selectedGender);
+        List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
+        if(mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);
+
+        return mappedAdsList;
+    }
+
     private void sortByCreationDateDesc(List<HomePageAdDTO> myAds) {
         myAds.sort((a, b) -> {
            if (a.getCreationDate().isBefore(b.getCreationDate())) return 1;
