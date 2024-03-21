@@ -12,6 +12,9 @@ public class PreferredScheduleDTO {
     private String endTime;
     private Long userId;
 
+    public PreferredScheduleDTO() {
+    }
+
     public PreferredScheduleDTO(Long id, List<Integer> daysOfWeek, LocalTime startTime, LocalTime endTime, Long userId) {
         this.id = id;
         this.daysOfWeek = daysOfWeek;

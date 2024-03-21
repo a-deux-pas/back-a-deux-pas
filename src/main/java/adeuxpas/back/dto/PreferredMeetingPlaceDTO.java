@@ -8,6 +8,9 @@ public class PreferredMeetingPlaceDTO {
     private String street;
     private String name;
     private Long userId;
+
+    public PreferredMeetingPlaceDTO() {
+    }
     
     public PreferredMeetingPlaceDTO(Long id, String country, String postalCode, String city, String street, String name,
             Long userId) {

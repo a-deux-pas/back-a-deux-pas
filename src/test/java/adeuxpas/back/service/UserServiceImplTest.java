@@ -1,103 +1,94 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.ProfilePageUserDTO;
+import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
+import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
-import adeuxpas.back.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import adeuxpas.back.enums.WeekDays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import com.github.javafaker.Faker;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class UserServiceImplTest {
 
-    private final Faker faker = new Faker();
-
-    // Create the instance of UserSerive and automatically inject the studentRepository mock
+    // Create the instance of UserSerive and automatically inject the UserRepository mock
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
-    // Create a mock version of the object
-    @Mock 
-    private UserRepository userRepository;
-
-    @Mock
+    @Autowired
     private UserMapper userMapper;
 
-
-    @Test
-    public void testFindUserProfileInfoById_UserFound() {
-        // Mocking User data
-        Long userId = 1L;
+    private User createUser(Long userId) {
         User user = new User();
         user.setId(userId);
-        user.setAlias(faker.name().firstName());
-        user.setBio(faker.lorem().paragraph());
-        user.setCountry(faker.address().country());
-        user.setCity(faker.address().city());
-        user.setStreet(faker.address().streetAddress());
-        user.setPostalCode(faker.address().zipCode());
-        user.setProfilePicture(faker.internet().url());
-        user.setInscriptionDate(LocalDate.now());
-        // Mocking User DTO data
-        ProfilePageUserDTO mappedUser = new ProfilePageUserDTO();
-        mappedUser.setId(user.getId());
-        mappedUser.setAlias(user.getAlias());
-        mappedUser.setBio(user.getBio());
-        mappedUser.setCountry(user.getCountry());
-        mappedUser.setCity(user.getCity());
-        mappedUser.setStreet(user.getStreet());
-        mappedUser.setPostalCode(user.getPostalCode());
-        mappedUser.setProfilePicture(user.getProfilePicture());
-        mappedUser.setInscriptionDate(user.getInscriptionDate().toString());
+        // add other properties here if needed
+        return user;
+    }
+    
+    @Test
+    public void testGroupByTimesCorrectGrouping() {
+        // Mocking User Preferred Schedules data
+        User user = createUser(1L);
+        List<PreferredSchedule> preferredScheduleList = new ArrayList<>();
+        
+        PreferredSchedule preferredSchedule1 = new PreferredSchedule(WeekDays.LUNDI, LocalTime.of(18, 0), LocalTime.of(20, 0));
+        preferredSchedule1.setId(2L);
+        preferredSchedule1.setUser(user);
+        preferredScheduleList.add(preferredSchedule1);
+        
+        PreferredSchedule preferredSchedule2 = new PreferredSchedule(WeekDays.MARDI, LocalTime.of(18, 0), LocalTime.of(20, 0));
+        preferredSchedule2.setId(3L);
+        preferredSchedule2.setUser(user);
+        preferredScheduleList.add(preferredSchedule2);
+        
+        PreferredSchedule preferredSchedule3 = new PreferredSchedule(WeekDays.MERCREDI, LocalTime.of(8, 0), LocalTime.of(9, 0));
+        preferredSchedule3.setId(4L);
+        preferredSchedule3.setUser(user);
+        preferredScheduleList.add(preferredSchedule3);
+        
+        PreferredSchedule preferredSchedule4 = new PreferredSchedule(WeekDays.SAMEDI, LocalTime.of(12, 0), LocalTime.of(14, 0));
+        preferredSchedule4.setId(5L);
+        preferredSchedule4.setUser(user);
+        preferredScheduleList.add(preferredSchedule4);
+        
+        PreferredSchedule preferredSchedule5 = new PreferredSchedule(WeekDays.DIMANCHE, LocalTime.of(12, 0), LocalTime.of(14, 0));
+        preferredSchedule5.setId(6L);
+        preferredSchedule5.setUser(user);
+        preferredScheduleList.add(preferredSchedule5);
+        
+        // Mocking User Preferred Schedules DTO data
+        List<PreferredScheduleDTO> preferredScheduleListDTO = preferredScheduleList.stream().map(userMapper::mapPreferredScheduleToDTO).collect(Collectors.toList());
 
-        // Mocking repository behavior
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        // Mocking userMapper behavior
-        when(userMapper.mapUserToProfilePageUserDTO(any(User.class))).thenReturn(mappedUser);
         // Call the method to test
-        ProfilePageUserDTO userProfileInfo = userServiceImpl.findUserProfileInfoById(userId);
+        List<PreferredScheduleDTO> preferredSchedules = userServiceImpl.groupByTimes(preferredScheduleListDTO);
+        
         // Assertions
-        assertNotNull(userProfileInfo);
-        assertEquals(userId, userProfileInfo.getId());
-        assertEquals(user.getAlias(), userProfileInfo.getAlias());
-        assertEquals(user.getBio(), userProfileInfo.getBio());
-        assertEquals(user.getCountry(), userProfileInfo.getCountry());
-        assertEquals(user.getCity(), userProfileInfo.getCity());
-        assertEquals(user.getStreet(), userProfileInfo.getStreet());
-        assertEquals(user.getPostalCode(), userProfileInfo.getPostalCode());
-        assertEquals(user.getProfilePicture(), userProfileInfo.getProfilePicture());
-        assertEquals(user.getInscriptionDate(), userProfileInfo.getInscriptionDate());
+        assertNotNull(preferredSchedules);
+        assertFalse(preferredSchedules.isEmpty());
+        assertEquals(preferredSchedules.size(), 3); 
+        assertEquals(preferredSchedules.get(0).getDaysOfWeek().size(), 2); 
+        assertEquals(preferredSchedules.get(1).getDaysOfWeek().size(), 1);
+        assertEquals(preferredSchedules.get(2).getDaysOfWeek().size(), 2); 
     }
 
     @Test
-    public void testFindUserProfileInfoById_UserNotFound() {
-        // Mocking data
-        Long userId = 2L;
-        // Mocking repository behavior
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-        // Call the method to test
-        Throwable exception = assertThrows(EntityNotFoundException.class, 
-                    () -> userServiceImpl.findUserProfileInfoById(userId));
-        // Assertion
-        assertEquals("User with ID : 2 not Found", exception.getMessage());
-        }
+    public void testGroupByTimesWithEmptyList() {   
+        List<PreferredScheduleDTO> emptyList = new ArrayList<>();
+        List<PreferredScheduleDTO> result = userServiceImpl.groupByTimes(emptyList);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
-
+}

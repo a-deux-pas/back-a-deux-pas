@@ -15,12 +15,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 /**
  * Implementation class for the UserService interface.
@@ -130,26 +127,33 @@ public class UserServiceImpl implements UserService{
      * @return A list of PreferredScheduleDTO objects grouped by time.
      */
     public List<PreferredScheduleDTO> groupByTimes(List<PreferredScheduleDTO> preferredSchedules) {
-    List<PreferredScheduleDTO> result = new ArrayList<>();
-    // Grouping by start time and end time
-    Map<String, Map<String, List<PreferredScheduleDTO>>> groupedByTime = preferredSchedules.stream()
-            .collect(Collectors.groupingBy(PreferredScheduleDTO::getStartTime,
-                    Collectors.groupingBy(PreferredScheduleDTO::getEndTime)));
-    // Iterating through the groups
-    groupedByTime.forEach((startTime, endTimeMap) -> {
-        endTimeMap.forEach((endTime, schedules) -> {
-            // Retrieving the days of the week as a list of integers
-            List<Integer> daysOfWeek = schedules.stream()
-                .flatMap(dto -> dto.getDaysOfWeek().stream()) 
-                .collect(Collectors.toList()); 
-            Long id = schedules.get(0).getId();
-            Long userId = schedules.get(0).getUserId();
-
-            // Creating the new PreferredScheduleDto and adding it to the result list
-            result.add(new PreferredScheduleDTO(id, daysOfWeek, LocalTime.parse(startTime), LocalTime.parse(endTime), userId));
-        });
-    });
-        return result;
+        Map<String, PreferredScheduleDTO> resultMap = new HashMap<>();
+    
+    // Iterating through the list of PreferredScheduleDTOs
+    for (PreferredScheduleDTO dto : preferredSchedules) {
+        // Creating a key based on the user ID, start time, and end time
+        Long userId = dto.getUserId(); 
+        String key = userId + "-" + dto.getStartTime() + "-" + dto.getEndTime();
+        
+        // Retrieving the existing schedule for this key (if any)
+        PreferredScheduleDTO existingSchedule = resultMap.get(key);
+        
+        if (existingSchedule == null) {
+            // If no existing schedule, create a new one with the same properties
+            PreferredScheduleDTO newSchedule = new PreferredScheduleDTO();
+            newSchedule.setId(dto.getId());
+            newSchedule.setUserId(userId);
+            newSchedule.setStartTime(dto.getStartTime());
+            newSchedule.setEndTime(dto.getEndTime());
+            newSchedule.setDaysOfWeek(new ArrayList<>(dto.getDaysOfWeek()));
+            resultMap.put(key, newSchedule); // Use the constructed key
+        } else {
+            // If an existing schedule exists, merge the days of the week
+            existingSchedule.getDaysOfWeek().addAll(dto.getDaysOfWeek());
+        }
+    }
+        // Convert the map values to a list and return
+        return new ArrayList<>(resultMap.values());
     }
     
     /**
