@@ -187,6 +187,7 @@ public class DatabaseSeeder {
         firstAd.setPrice(BigDecimal.valueOf(999.99));
         firstAd.setTitle("Trail Bike");
         firstAd.setPublisher(users.get(0));
+        firstAd.setArticleState("Neuf avec étiquette");
         List<Ad> firstUserAds = new ArrayList<>();
         firstUserAds.add(firstAd);
         users.get(0).setAds(firstUserAds);
@@ -198,6 +199,7 @@ public class DatabaseSeeder {
         secondAd.setPrice(BigDecimal.valueOf(399.99));
         secondAd.setTitle("Vintage boxing gloves");
         secondAd.setPublisher(users.get(1));
+        secondAd.setArticleState("Neuf sans étiquette");
         List<Ad> secondUserAds = new ArrayList<>();
         secondUserAds.add(secondAd);
         users.get(1).setAds(secondUserAds);
@@ -209,6 +211,7 @@ public class DatabaseSeeder {
         thirdAd.setPrice(BigDecimal.valueOf(965));
         thirdAd.setTitle("3 piece suit");
         thirdAd.setPublisher(users.get(4));
+        thirdAd.setArticleState("Neuf avec étiquette");
         List<Ad> fifthUserAds = new ArrayList<>();
         fifthUserAds.add(thirdAd);
         users.get(4).setAds(fifthUserAds);
@@ -220,6 +223,7 @@ public class DatabaseSeeder {
         fourthAd.setPrice(BigDecimal.valueOf(2999.99));
         fourthAd.setTitle("Frédérique Constant 1988");
         fourthAd.setPublisher(users.get(0));
+        fourthAd.setArticleState("Satisfaisant");
         firstUserAds.add(fourthAd);
         users.get(0).setAds(firstUserAds);
         fourthAd.setStatus(AdStatus.AVAILABLE);
@@ -230,6 +234,7 @@ public class DatabaseSeeder {
         fifthAd.setPrice(BigDecimal.valueOf(150));
         fifthAd.setTitle("Bose headphones");
         fifthAd.setPublisher(users.get(2));
+        fifthAd.setArticleState("Bon état");
         List<Ad> thirdUserAds = new ArrayList<>();
         thirdUserAds.add(fifthAd);
         users.get(2).setAds(thirdUserAds);
@@ -241,6 +246,7 @@ public class DatabaseSeeder {
         sixthAd.setPrice(BigDecimal.valueOf(20));
         sixthAd.setTitle("Phone case");
         sixthAd.setPublisher(users.get(3));
+        sixthAd.setArticleState("Satisfaisant");
         List<Ad> fourthUserAds = new ArrayList<>();
         fourthUserAds.add(sixthAd);
         users.get(3).setAds(fourthUserAds);
@@ -252,6 +258,7 @@ public class DatabaseSeeder {
         seventhAd.setPrice(BigDecimal.valueOf(35));
         seventhAd.setTitle("Blue silk shirt");
         seventhAd.setPublisher(users.get(3));
+        seventhAd.setArticleState("Neuf avec étiquette");
         fourthUserAds.add(seventhAd);
         users.get(3).setAds(fourthUserAds);
         seventhAd.setStatus(AdStatus.AVAILABLE);
@@ -262,6 +269,7 @@ public class DatabaseSeeder {
         eighthAd.setPrice(BigDecimal.valueOf(150));
         eighthAd.setTitle("Incerto Book Collection");
         eighthAd.setPublisher(users.get(2));
+        eighthAd.setArticleState("Neuf sans étiquette");
         thirdUserAds.add(eighthAd);
         users.get(2).setAds(thirdUserAds);
         eighthAd.setStatus(AdStatus.AVAILABLE);
