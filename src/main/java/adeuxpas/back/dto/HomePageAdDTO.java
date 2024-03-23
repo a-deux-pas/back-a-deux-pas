@@ -2,6 +2,7 @@ package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class HomePageAdDTO {
     private String title;
@@ -104,5 +105,17 @@ public class HomePageAdDTO {
 
     public void setPublisherPostalCode(String publisherPostalCode) {
         this.publisherPostalCode = publisherPostalCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HomePageAdDTO that)) return false;
+        return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(articleState, that.articleState) && Objects.equals(category, that.category) && Objects.equals(subcategory, that.subcategory) && Objects.equals(articleGender, that.articleGender) && Objects.equals(creationDate, that.creationDate) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, articlePictureUrl, price, articleState, category, subcategory, articleGender, creationDate, publisher, publisherCity, publisherPostalCode);
     }
 }
