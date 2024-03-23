@@ -8,17 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AdServiceImpl implements AdService{
+public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
     private final MapStructMapper mapper;
 
     public AdServiceImpl(@Autowired AdRepository adRepository,
-                         @Autowired MapStructMapper mapper){
+                         @Autowired MapStructMapper mapper) {
         this.adRepository = adRepository;
         this.mapper = mapper;
     }
@@ -27,7 +28,7 @@ public class AdServiceImpl implements AdService{
     public List<HomePageAdDTO> findAllHomePageAds() {
         List<Ad> myAds = this.adRepository.findAll();
         List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
-        if(mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);
+        if (mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);
 
         return mappedAdsList;
     }
@@ -38,7 +39,7 @@ public class AdServiceImpl implements AdService{
                                                List<String> selectedSubcategories, List<String> selectedGender) {
 
         // if no filter is checked, return all ads
-        if(selectedPriceRanges.isEmpty() && citiesAndPostalCodes.isEmpty() &&
+        if (selectedPriceRanges.isEmpty() && citiesAndPostalCodes.isEmpty() &&
                 selectedArticleStates.isEmpty() && selectedCategories.isEmpty() &&
                 selectedSubcategories.isEmpty() && selectedGender.isEmpty())
             return this.findAllHomePageAds();
@@ -50,31 +51,62 @@ public class AdServiceImpl implements AdService{
         postalCodes.forEach(System.out::println);
 
         // preparing the price ranges
-        BigDecimal minPrice1;
-        BigDecimal maxPrice1;
-        BigDecimal minPrice2;
-        BigDecimal maxPrice2;
-        BigDecimal minPrice3;
-        BigDecimal maxPrice3;
-        BigDecimal minPrice4;
-        BigDecimal maxPrice4;
-        BigDecimal minPrice5;
-        BigDecimal maxPrice5;
-        BigDecimal minPrice6;
-        BigDecimal maxPrice6;
+        BigDecimal maxPrice1 = null;
+        BigDecimal minPrice2 = null;
+        BigDecimal maxPrice2 = null;
+        BigDecimal minPrice3 = null;
+        BigDecimal maxPrice3 = null;
+        BigDecimal minPrice4 = null;
+        BigDecimal maxPrice4 = null;
+        BigDecimal minPrice5 = null;
+        BigDecimal maxPrice5 = null;
+        BigDecimal minPrice6 = null;
 
-        List<Ad> myFilteredAds = this.adRepository.findFilteredAds(postalCodes.isEmpty()? null: postalCodes, selectedArticleStates.isEmpty() ? null :selectedArticleStates);
-        List<HomePageAdDTO> mappedAdsList = myFilteredAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
-        if(mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);
+        for (String selectedPriceRange : selectedPriceRanges) {
+            switch (selectedPriceRange) {
+                case "< 10€":
+                    maxPrice1 = BigDecimal.valueOf(10);
+                    break;
+                case "10€ - 20€":
+                    minPrice2 = BigDecimal.valueOf(10);
+                    maxPrice2 = BigDecimal.valueOf(19);
+                    break;
+                case "20€ - 30€":
+                    minPrice3 = BigDecimal.valueOf(20);
+                    maxPrice3 = BigDecimal.valueOf(29);
+                    break;
+                case "30€ - 40€":
+                    minPrice4 = BigDecimal.valueOf(30);
+                    maxPrice4 = BigDecimal.valueOf(39);
+                    break;
+                case "40€ - 60€":
+                    minPrice5 = BigDecimal.valueOf(40);
+                    maxPrice5 = BigDecimal.valueOf(59);
+                    break;
+                case "> 60€":
+                    minPrice6 = BigDecimal.valueOf(60);
+                    break;
+            }
+        }
 
-        return mappedAdsList;
+        List<Ad> filteredAds = this.adRepository.findFilteredAds(
+                postalCodes.isEmpty() ? null : postalCodes,
+                selectedArticleStates.isEmpty() ? null : selectedArticleStates,
+                maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
+                minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6
+        );
+
+        List<HomePageAdDTO> mappedFilteredAds = filteredAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
+        if (mappedFilteredAds.size() > 1) this.sortByCreationDateDesc(mappedFilteredAds);
+
+        return mappedFilteredAds;
+
     }
-
-    private void sortByCreationDateDesc(List<HomePageAdDTO> myAds) {
+    private void sortByCreationDateDesc (List < HomePageAdDTO > myAds) {
         myAds.sort((a, b) -> {
-           if (a.getCreationDate().isBefore(b.getCreationDate())) return 1;
-           else if (a.getCreationDate().isAfter(b.getCreationDate())) return -1;
-           else return 0;
+            if (a.getCreationDate().isBefore(b.getCreationDate())) return 1;
+            else if (a.getCreationDate().isAfter(b.getCreationDate())) return -1;
+            else return 0;
         });
     }
 }
