@@ -231,7 +231,7 @@ public class DatabaseSeeder {
         Ad fifthAd = new Ad();
         fifthAd.setArticleDescription("Bose quiet comfort, noise cancelling headphones");
         fifthAd.setCreationDate(LocalDateTime.now().minusMinutes(1));
-        fifthAd.setPrice(BigDecimal.valueOf(15));
+        fifthAd.setPrice(BigDecimal.valueOf(19));
         fifthAd.setTitle("Bose headphones");
         fifthAd.setPublisher(users.get(2));
         fifthAd.setArticleState("Bon état");

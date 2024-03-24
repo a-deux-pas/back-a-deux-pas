@@ -44,11 +44,9 @@ public class AdServiceImpl implements AdService {
                 selectedSubcategories.isEmpty() && selectedGender.isEmpty())
             return this.findAllHomePageAds();
 
-        // Formatting the request parameters (received from the controller) to be passed as query parameters (to the repository)
         // extracting the postal codes
         List<String> postalCodes = citiesAndPostalCodes.stream().map(city -> city.substring(city.indexOf('(') + 1, city.indexOf(')')))
                 .collect(Collectors.toList());
-        postalCodes.forEach(System.out::println);
 
         // preparing the price ranges
         BigDecimal maxPrice1 = null;
@@ -60,35 +58,40 @@ public class AdServiceImpl implements AdService {
         BigDecimal maxPrice4 = null;
         BigDecimal minPrice5 = null;
         BigDecimal maxPrice5 = null;
-        BigDecimal minPrice6 = null;
+        BigDecimal minPrice6 = BigDecimal.valueOf(0);
 
         for (String selectedPriceRange : selectedPriceRanges) {
             switch (selectedPriceRange) {
                 case "< 10€":
                     maxPrice1 = BigDecimal.valueOf(10);
+                    minPrice6 = null;
                     break;
                 case "10€ - 20€":
                     minPrice2 = BigDecimal.valueOf(10);
                     maxPrice2 = BigDecimal.valueOf(19);
+                    minPrice6 = null;
                     break;
                 case "20€ - 30€":
                     minPrice3 = BigDecimal.valueOf(20);
                     maxPrice3 = BigDecimal.valueOf(29);
+                    minPrice6 = null;
                     break;
                 case "30€ - 40€":
                     minPrice4 = BigDecimal.valueOf(30);
                     maxPrice4 = BigDecimal.valueOf(39);
+                    minPrice6 = null;
                     break;
                 case "40€ - 60€":
                     minPrice5 = BigDecimal.valueOf(40);
                     maxPrice5 = BigDecimal.valueOf(59);
+                    minPrice6 = null;
                     break;
                 case "> 60€":
                     minPrice6 = BigDecimal.valueOf(60);
                     break;
             }
         }
-
+        System.out.println("@@@@@@@@@@@@@@@ " + minPrice6);
         List<Ad> filteredAds = this.adRepository.findFilteredAds(
                 postalCodes.isEmpty() ? null : postalCodes,
                 selectedArticleStates.isEmpty() ? null : selectedArticleStates,

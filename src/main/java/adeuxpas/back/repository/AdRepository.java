@@ -19,7 +19,7 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
             "( :minPrice3  IS NOT NULL AND a.price BETWEEN :minPrice3 AND :maxPrice3 ) OR" +
             "( :minPrice4  IS NOT NULL AND a.price BETWEEN :minPrice4 AND :maxPrice4 ) OR" +
             "( :minPrice5  IS NOT NULL AND a.price BETWEEN :minPrice5 AND :maxPrice5 ) OR" +
-            "( :minPrice6  IS NOT NULL AND a.price > :minPrice6 ) )"
+            "( a.price > :minPrice6 ) )"
     )
   /*@Query(nativeQuery = true, value = "SELECT a.* FROM ad a JOIN user u ON a.publisher_id = u.id WHERE " +
            "((:postalCodes is null OR u.postal_code IN :postalCodes) AND :articleStates is null ) OR" +
