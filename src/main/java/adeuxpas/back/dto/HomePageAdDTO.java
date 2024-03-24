@@ -8,10 +8,6 @@ public class HomePageAdDTO {
     private String title;
     private String articlePictureUrl;
     private BigDecimal price;
-    private String articleState;
-    private String category;
-    private String subcategory;
-    private String articleGender;
     private LocalDateTime creationDate;
     private String publisher;
     private String publisherCity;
@@ -41,38 +37,6 @@ public class HomePageAdDTO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public String getArticleState() {
-        return articleState;
-    }
-
-    public void setArticleState(String articleState) {
-        this.articleState = articleState;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getSubcategory() {
-        return subcategory;
-    }
-
-    public void setSubcategory(String subcategory) {
-        this.subcategory = subcategory;
-    }
-
-    public String getArticleGender() {
-        return articleGender;
-    }
-
-    public void setArticleGender(String articleGender) {
-        this.articleGender = articleGender;
     }
 
     public LocalDateTime getCreationDate() {
@@ -111,11 +75,11 @@ public class HomePageAdDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof HomePageAdDTO that)) return false;
-        return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(articleState, that.articleState) && Objects.equals(category, that.category) && Objects.equals(subcategory, that.subcategory) && Objects.equals(articleGender, that.articleGender) && Objects.equals(creationDate, that.creationDate) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
+        return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(creationDate, that.creationDate) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, articlePictureUrl, price, articleState, category, subcategory, articleGender, creationDate, publisher, publisherCity, publisherPostalCode);
+        return Objects.hash(title, articlePictureUrl, price, creationDate, publisher, publisherCity, publisherPostalCode);
     }
 }
