@@ -184,7 +184,7 @@ public class DatabaseSeeder {
         Ad firstAd = new Ad();
         firstAd.setArticleDescription("Rocky Mountain Growler 40, perfect condition ");
         firstAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
-        firstAd.setPrice(BigDecimal.valueOf(999.99));
+        firstAd.setPrice(BigDecimal.valueOf(45));
         firstAd.setTitle("Trail Bike");
         firstAd.setPublisher(users.get(0));
         firstAd.setArticleState("Neuf avec étiquette");
@@ -196,7 +196,7 @@ public class DatabaseSeeder {
         Ad secondAd = new Ad();
         secondAd.setArticleDescription("Everlast leather boxing gloves, mint condition");
         secondAd.setCreationDate(LocalDateTime.now().plusMinutes(4));
-        secondAd.setPrice(BigDecimal.valueOf(399.99));
+        secondAd.setPrice(BigDecimal.valueOf(8));
         secondAd.setTitle("Vintage boxing gloves");
         secondAd.setPublisher(users.get(1));
         secondAd.setArticleState("Neuf sans étiquette");
@@ -208,7 +208,7 @@ public class DatabaseSeeder {
         Ad thirdAd = new Ad();
         thirdAd.setArticleDescription("Light grey, italian wool, size 48");
         thirdAd.setCreationDate(LocalDateTime.now().plusMinutes(2));
-        thirdAd.setPrice(BigDecimal.valueOf(965));
+        thirdAd.setPrice(BigDecimal.valueOf(9));
         thirdAd.setTitle("3 piece suit");
         thirdAd.setPublisher(users.get(4));
         thirdAd.setArticleState("Neuf avec étiquette");
@@ -220,7 +220,7 @@ public class DatabaseSeeder {
         Ad fourthAd = new Ad();
         fourthAd.setArticleDescription("mechanical swiss made, limited edition");
         fourthAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
-        fourthAd.setPrice(BigDecimal.valueOf(2999.99));
+        fourthAd.setPrice(BigDecimal.valueOf(10));
         fourthAd.setTitle("Frédérique Constant 1988");
         fourthAd.setPublisher(users.get(0));
         fourthAd.setArticleState("Satisfaisant");
@@ -231,7 +231,7 @@ public class DatabaseSeeder {
         Ad fifthAd = new Ad();
         fifthAd.setArticleDescription("Bose quiet comfort, noise cancelling headphones");
         fifthAd.setCreationDate(LocalDateTime.now().minusMinutes(1));
-        fifthAd.setPrice(BigDecimal.valueOf(150));
+        fifthAd.setPrice(BigDecimal.valueOf(15));
         fifthAd.setTitle("Bose headphones");
         fifthAd.setPublisher(users.get(2));
         fifthAd.setArticleState("Bon état");
