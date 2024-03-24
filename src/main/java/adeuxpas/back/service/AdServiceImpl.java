@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,27 +65,27 @@ public class AdServiceImpl implements AdService {
             switch (selectedPriceRange) {
                 case "< 10€":
                     maxPrice1 = BigDecimal.valueOf(10);
-                    minPrice6 = null;
+                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
                     break;
                 case "10€ - 20€":
                     minPrice2 = BigDecimal.valueOf(10);
                     maxPrice2 = BigDecimal.valueOf(19);
-                    minPrice6 = null;
+                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
                     break;
                 case "20€ - 30€":
                     minPrice3 = BigDecimal.valueOf(20);
                     maxPrice3 = BigDecimal.valueOf(29);
-                    minPrice6 = null;
+                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
                     break;
                 case "30€ - 40€":
                     minPrice4 = BigDecimal.valueOf(30);
                     maxPrice4 = BigDecimal.valueOf(39);
-                    minPrice6 = null;
+                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
                     break;
                 case "40€ - 60€":
                     minPrice5 = BigDecimal.valueOf(40);
                     maxPrice5 = BigDecimal.valueOf(59);
-                    minPrice6 = null;
+                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
                     break;
                 case "> 60€":
                     minPrice6 = BigDecimal.valueOf(60);
