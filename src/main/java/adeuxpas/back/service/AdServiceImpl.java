@@ -91,7 +91,8 @@ public class AdServiceImpl implements AdService {
                     break;
             }
         }
-        System.out.println("@@@@@@@@@@@@@@@ " + minPrice6);
+
+        // passing the necessary formatted filter criteria to the query and returning the result
         List<Ad> filteredAds = this.adRepository.findFilteredAds(
                 postalCodes.isEmpty() ? null : postalCodes,
                 selectedArticleStates.isEmpty() ? null : selectedArticleStates,
@@ -99,6 +100,7 @@ public class AdServiceImpl implements AdService {
                 minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6
         );
 
+        // converting the returned list of Ad entities into a list of HomePAgeAdDTOs
         List<HomePageAdDTO> mappedFilteredAds = filteredAds.stream().map(mapper::adToHomePageAdDTO).collect(Collectors.toList());
         if (mappedFilteredAds.size() > 1) this.sortByCreationDateDesc(mappedFilteredAds);
 

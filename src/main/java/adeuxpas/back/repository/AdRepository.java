@@ -11,22 +11,15 @@ import java.util.List;
 
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Long> {
-    @Query("SELECT a FROM Ad a JOIN User u ON a.publisher = u WHERE " +
+    @Query( "SELECT a FROM Ad a JOIN User u ON a.publisher = u WHERE " +
             "( :postalCodes IS NULL OR u.postalCode IN :postalCodes ) AND " +
             "( :articleStates IS NULL OR a.articleState IN :articleStates ) AND " +
-            "( ( :maxPrice1 IS NOT NULL AND a.price < :maxPrice1 ) OR " +
-            "( :minPrice2  IS NOT NULL AND a.price BETWEEN :minPrice2 AND :maxPrice2 ) OR" +
-            "( :minPrice3  IS NOT NULL AND a.price BETWEEN :minPrice3 AND :maxPrice3 ) OR" +
-            "( :minPrice4  IS NOT NULL AND a.price BETWEEN :minPrice4 AND :maxPrice4 ) OR" +
-            "( :minPrice5  IS NOT NULL AND a.price BETWEEN :minPrice5 AND :maxPrice5 ) OR" +
-            "( a.price > :minPrice6 ) )"
-    )
-  /*@Query(nativeQuery = true, value = "SELECT a.* FROM ad a JOIN user u ON a.publisher_id = u.id WHERE " +
-           "((:postalCodes is null OR u.postal_code IN :postalCodes) AND :articleStates is null ) OR" +
-          "((:postalCodes is null OR u.postal_code IN :postalCodes) AND a.article_state IN :articleStates )"
-
-   )*/
-
+            "( ( a.price < :maxPrice1 ) OR " +
+            "( a.price BETWEEN :minPrice2 AND :maxPrice2 ) OR" +
+            "( a.price BETWEEN :minPrice3 AND :maxPrice3 ) OR" +
+            "( a.price BETWEEN :minPrice4 AND :maxPrice4 ) OR" +
+            "( a.price BETWEEN :minPrice5 AND :maxPrice5 ) OR" +
+            "( a.price > :minPrice6 ) )" )
     List<Ad> findFilteredAds(@Param("postalCodes") List<String> postalCodes,
                              @Param("articleStates") List<String> articleStates,
                              @Param("maxPrice1") BigDecimal maxPrice1,
