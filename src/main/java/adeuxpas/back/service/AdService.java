@@ -9,5 +9,5 @@ public interface AdService {
 
     List<HomePageAdDTO> findAllHomePageAds();
 
-    List<HomePageAdDTO> findFilteredAds(List<String> selectedPrices, List<String> selectedCities, List<String> selectedArticleStates, List<String> selectedCategories, List<String> selectedSubcategories, List<String> selectedGender);
+    List<HomePageAdDTO> findFilteredAds(List<String> prices, List<String> cities, List<String> articleStates, String category);
 }

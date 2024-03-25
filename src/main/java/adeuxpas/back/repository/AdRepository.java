@@ -15,11 +15,15 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
             "( :postalCodes IS NULL OR u.postalCode IN :postalCodes ) AND " +
             "( :articleStates IS NULL OR a.articleState IN :articleStates ) AND " +
             "( ( a.price < :maxPrice1 ) OR " +
-            "( a.price BETWEEN :minPrice2 AND :maxPrice2 ) OR" +
-            "( a.price BETWEEN :minPrice3 AND :maxPrice3 ) OR" +
-            "( a.price BETWEEN :minPrice4 AND :maxPrice4 ) OR" +
-            "( a.price BETWEEN :minPrice5 AND :maxPrice5 ) OR" +
-            "( a.price > :minPrice6 ) )" )
+            "  ( a.price BETWEEN :minPrice2 AND :maxPrice2 ) OR" +
+            "  ( a.price BETWEEN :minPrice3 AND :maxPrice3 ) OR" +
+            "  ( a.price BETWEEN :minPrice4 AND :maxPrice4 ) OR" +
+            "  ( a.price BETWEEN :minPrice5 AND :maxPrice5 ) OR" +
+            "  ( a.price > :minPrice6 ) ) AND " +
+            "( ( :subcategory IS NULL AND :gender IS NULL AND :category IS NULL ) OR" +
+            "  ( :subcategory IS NULL AND :gender IS NULL AND a.category = :category) OR " +
+            "  ( :gender IS NULL AND a.category = :category AND a.subcategory = :subcategory) OR " +
+            "  ( a.subcategory = :subcategory AND a.articleGender = :gender ) )" )
     List<Ad> findFilteredAds(@Param("postalCodes") List<String> postalCodes,
                              @Param("articleStates") List<String> articleStates,
                              @Param("maxPrice1") BigDecimal maxPrice1,
@@ -31,8 +35,9 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                              @Param("maxPrice4") BigDecimal maxPrice4,
                              @Param("minPrice5") BigDecimal minPrice5,
                              @Param("maxPrice5") BigDecimal maxPrice5,
-                             @Param("minPrice6") BigDecimal minPrice6/*,
-                             @Param("categories") List<String> categories,
-                             @Param("subcategories") List<String> subcategories,
-                             @Param("gender") List<String> gender*/);
+                             @Param("minPrice6") BigDecimal minPrice6,
+                             @Param("category") String category,
+                             @Param("subcategory") String subcategory,
+                             @Param("gender") String gender
+                            );
 }

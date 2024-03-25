@@ -29,19 +29,17 @@ public class AdController {
         }
     }
 
-    @GetMapping(value = "/liste", params = {"priceRanges", "citiesAndPostalCodes", "articleStates", "categories", "subcategories", "gender"})
+    @GetMapping(value = "/liste", params = {"priceRanges", "citiesAndPostalCodes", "articleStates", "category"})
     public ResponseEntity<Object> findFilteredAds(
-            @RequestParam("priceRanges") List<String> selectedPriceRanges,
-            @RequestParam("citiesAndPostalCodes") List<String> citiesAndPostalCodes,
-            @RequestParam("articleStates") List<String> selectedArticleStates,
-            @RequestParam("categories") List<String> selectedCategories,
-            @RequestParam("subcategories") List<String> selectedSubcategories,
-            @RequestParam("gender") List<String> selectedGender) {
+            @RequestParam("priceRanges") List<String> priceRangesFilter,
+            @RequestParam("citiesAndPostalCodes") List<String> citiesAndPostalCodesFilter,
+            @RequestParam("articleStates") List<String> articleStatesFilter,
+            @RequestParam("category") String categoryFilter) {
 
-        System.out.println(selectedPriceRanges + " " + citiesAndPostalCodes + " " + selectedArticleStates + " " + selectedCategories + " " + selectedSubcategories + " " + selectedGender);
+        System.out.println(priceRangesFilter + " " + citiesAndPostalCodesFilter + " " + articleStatesFilter + " " + categoryFilter);
         try {
-            return ResponseEntity.ok(this.adService.findFilteredAds(selectedPriceRanges, citiesAndPostalCodes,
-                                    selectedArticleStates, selectedCategories, selectedSubcategories, selectedGender));
+            return ResponseEntity.ok(this.adService.findFilteredAds(priceRangesFilter, citiesAndPostalCodesFilter,
+                                    articleStatesFilter, categoryFilter));
         } catch(Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }

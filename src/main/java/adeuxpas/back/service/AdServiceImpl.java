@@ -35,18 +35,16 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public List<HomePageAdDTO> findFilteredAds(List<String> selectedPriceRanges, List<String> citiesAndPostalCodes,
-                                               List<String> selectedArticleStates, List<String> selectedCategories,
-                                               List<String> selectedSubcategories, List<String> selectedGender) {
+    public List<HomePageAdDTO> findFilteredAds(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
+                                               List<String> articleStatesFilter, String categoryFilter) {
 
         // if no filter is checked, return all ads
-        if (selectedPriceRanges.isEmpty() && citiesAndPostalCodes.isEmpty() &&
-                selectedArticleStates.isEmpty() && selectedCategories.isEmpty() &&
-                selectedSubcategories.isEmpty() && selectedGender.isEmpty())
+        if (priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
+                articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie"))
             return this.findAllHomePageAds();
 
         // extracting the postal codes
-        List<String> postalCodes = citiesAndPostalCodes.stream().map(city -> city.substring(city.indexOf('(') + 1, city.indexOf(')')))
+        List<String> postalCodes = citiesAndPostalCodesFilter.stream().map(city -> city.substring(city.indexOf('(') + 1, city.indexOf(')')))
                 .collect(Collectors.toList());
 
         // preparing the price ranges
@@ -61,8 +59,8 @@ public class AdServiceImpl implements AdService {
         BigDecimal maxPrice5 = null;
         BigDecimal minPrice6 = BigDecimal.valueOf(0);
 
-        for (String selectedPriceRange : selectedPriceRanges) {
-            switch (selectedPriceRange) {
+        for (String priceRange : priceRangesFilter) {
+            switch (priceRange) {
                 case "< 10€":
                     maxPrice1 = BigDecimal.valueOf(10);
                     if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
@@ -93,12 +91,29 @@ public class AdServiceImpl implements AdService {
             }
         }
 
+        // extracting the category filter criteria
+        String category;
+        String subcategory = null;
+        String gender = null;
+        if(categoryFilter.contains("/")){
+            category = categoryFilter.substring(0,categoryFilter.indexOf(" /"));
+            if(categoryFilter.indexOf("/") != categoryFilter.lastIndexOf("/")){
+                subcategory = categoryFilter.substring(categoryFilter.indexOf("/ ") + 1, categoryFilter.lastIndexOf(" /")).trim();
+                gender = categoryFilter.substring(categoryFilter.lastIndexOf("/ ") + 1).trim();
+            } else
+                subcategory = categoryFilter.substring(categoryFilter.indexOf("/ ") + 1).trim();
+        } else
+            category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
+
+        System.out.println(category + ", " + subcategory + ", " + gender);
+
         // passing the necessary formatted filter criteria to the query and returning the result
         List<Ad> filteredAds = this.adRepository.findFilteredAds(
                 postalCodes.isEmpty() ? null : postalCodes,
-                selectedArticleStates.isEmpty() ? null : selectedArticleStates,
+                articleStatesFilter.isEmpty() ? null : articleStatesFilter,
                 maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
-                minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6
+                minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
+                category, subcategory, gender
         );
 
         // converting the returned list of Ad entities into a list of HomePAgeAdDTOs
