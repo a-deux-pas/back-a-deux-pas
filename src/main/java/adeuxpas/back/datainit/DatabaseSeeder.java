@@ -258,12 +258,12 @@ public class DatabaseSeeder {
         sixthAd.setTitle("Phone case");
         sixthAd.setPublisher(users.get(3));
         sixthAd.setArticleState("Satisfaisant");
-        sixthAd.setCategory("Loisirs");
+        sixthAd.setCategory("Électronique");
         sixthAd.setSubcategory("Autre");
         List<Ad> fourthUserAds = new ArrayList<>();
         fourthUserAds.add(sixthAd);
         users.get(3).setAds(fourthUserAds);
-        sixthAd.setStatus(AdStatus.AVAILABLE);
+        sixthAd.setStatus(AdStatus.SUSPENDED);
 
         Ad seventhAd = new Ad();
         seventhAd.setArticleDescription("Blue satin silk shirt");
