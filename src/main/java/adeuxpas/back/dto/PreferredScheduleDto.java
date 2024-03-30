@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class PreferredScheduleDTO {
     private Long id;
-    private List<Integer> daysOfWeek;;
+    private List<Integer> daysOfWeek;
     private String startTime;
     private String endTime;
     private Long userId;
