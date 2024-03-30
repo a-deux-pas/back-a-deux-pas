@@ -1,11 +1,14 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.HomePageAdDTO;
+import adeuxpas.back.dto.ResponseAdDTO;
 import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,25 +29,19 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public List<HomePageAdDTO> findAllHomePageAds() {
-        List<Ad> myAds = this.adRepository.findAll();
-        List<HomePageAdDTO> mappedAdsList = myAds.stream()
-                                                    .filter(ad -> ad.getStatus().equals(AdStatus.AVAILABLE))
-                                                    .map(mapper::adToHomePageAdDTO)
-                                                    .collect(Collectors.toList());
-        if (mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);
-
-        return mappedAdsList;
+    public Page<ResponseAdDTO> findAllResponseAdDTOs(Pageable pageable) {
+        Page<Ad> myAds = this.adRepository.findAllByStatusOrderByCreationDateDesc(AdStatus.AVAILABLE, pageable);
+        return this.convertToPageOfResponseAdDTOs(pageable, myAds);
     }
 
     @Override
-    public List<HomePageAdDTO> findFilteredAds(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
-                                               List<String> articleStatesFilter, String categoryFilter) {
+    public Page<ResponseAdDTO> findFilteredResponseAdDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
+                                                          List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
         if (priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
                 articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie"))
-            return this.findAllHomePageAds();
+            return this.findAllResponseAdDTOs(pageable);
 
         // extracting the postal codes
         List<String> postalCodes = citiesAndPostalCodesFilter.stream()
@@ -111,30 +108,23 @@ public class AdServiceImpl implements AdService {
 
         System.out.println(category + ", " + subcategory + ", " + gender);
 
-        // passing the necessary formatted filter criteria to the query and saving the result to a list
-        List<Ad> filteredAds = this.adRepository.findFilteredAds(
+        // passing the formatted filtering criteria to the query and saving the result to a page
+        Page<Ad> filteredAds = this.adRepository.findFilteredAdsOrderedByCreationDateDesc(
                 postalCodes.isEmpty() ? null : postalCodes,
                 articleStatesFilter.isEmpty() ? null : articleStatesFilter,
                 maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
                 minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
-                category, subcategory, gender
+                category, subcategory, gender, AdStatus.AVAILABLE, pageable
         );
 
-        // converting the returned list of Ad entities into a list of HomePAgeAdDTOs
-        List<HomePageAdDTO> mappedFilteredAds = filteredAds.stream()
-                                                    .filter(ad -> ad.getStatus().equals(AdStatus.AVAILABLE))
-                                                    .map(mapper::adToHomePageAdDTO)
-                                                    .collect(Collectors.toList());
-        if (mappedFilteredAds.size() > 1) this.sortByCreationDateDesc(mappedFilteredAds);
-
-        return mappedFilteredAds;
-
+        return this.convertToPageOfResponseAdDTOs(pageable, filteredAds);
     }
-    private void sortByCreationDateDesc (List <HomePageAdDTO> myAds) {
-        myAds.sort((a, b) -> {
-            if (a.getCreationDate().isBefore(b.getCreationDate())) return 1;
-            else if (a.getCreationDate().isAfter(b.getCreationDate())) return -1;
-            else return 0;
-        });
+
+    private Page<ResponseAdDTO> convertToPageOfResponseAdDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<ResponseAdDTO> mappedAdsList = adsPage.stream()
+                .map(mapper::adToResponseAdDTO)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
 }

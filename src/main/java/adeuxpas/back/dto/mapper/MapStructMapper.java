@@ -1,6 +1,6 @@
 package adeuxpas.back.dto.mapper;
 
-import adeuxpas.back.dto.HomePageAdDTO;
+import adeuxpas.back.dto.ResponseAdDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import org.mapstruct.Mapper;
@@ -17,7 +17,7 @@ public interface MapStructMapper {
     @Mapping(source = "publisher.alias", target = "publisher")
     @Mapping(source = "publisher.city", target = "publisherCity")
     @Mapping(source = "publisher.postalCode", target = "publisherPostalCode")
-    HomePageAdDTO adToHomePageAdDTO(Ad ad);
+    ResponseAdDTO adToResponseAdDTO(Ad ad);
 
     @Named("findFirstArticlePictureUrl")
     default String findFirstArticlePictureUrl(List<ArticlePicture> articlePictures) {

@@ -170,7 +170,7 @@ public class DatabaseSeeder {
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"), ads.get(4)));
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRH_Z_65KbwGUDdA2KcCzqroUzVXmmq68NA&usqp=CAU"), ads.get(5)));
         this.articlePictureRepository.save(new ArticlePicture(("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"), ads.getLast()));
+        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"), ads.get(7)));
 
     }
 
@@ -263,7 +263,7 @@ public class DatabaseSeeder {
         List<Ad> fourthUserAds = new ArrayList<>();
         fourthUserAds.add(sixthAd);
         users.get(3).setAds(fourthUserAds);
-        sixthAd.setStatus(AdStatus.SUSPENDED);
+        sixthAd.setStatus(AdStatus.AVAILABLE);
 
         Ad seventhAd = new Ad();
         seventhAd.setArticleDescription("Blue satin silk shirt");
@@ -292,7 +292,20 @@ public class DatabaseSeeder {
         users.get(2).setAds(thirdUserAds);
         eighthAd.setStatus(AdStatus.AVAILABLE);
 
-        return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd);
+        Ad ninethAd = new Ad();
+        ninethAd.setArticleDescription("Vulgar description");
+        ninethAd.setCreationDate(LocalDateTime.now().plusMinutes(10));
+        ninethAd.setPrice(BigDecimal.valueOf(10.2));
+        ninethAd.setTitle("Vulgar Title");
+        ninethAd.setPublisher(users.get(2));
+        ninethAd.setArticleState("Neuf sans étiquette");
+        ninethAd.setCategory("Autre");
+        ninethAd.setSubcategory("Autre");
+        thirdUserAds.add(ninethAd);
+        users.get(2).setAds(thirdUserAds);
+        ninethAd.setStatus(AdStatus.SUSPENDED);
+
+        return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd, ninethAd);
     }
 
     /**

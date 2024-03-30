@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class HomePageAdDTO {
+public class ResponseAdDTO {
     private String title;
     private String articlePictureUrl;
     private BigDecimal price;
@@ -13,7 +13,7 @@ public class HomePageAdDTO {
     private String publisherCity;
     private String publisherPostalCode;
 
-    public HomePageAdDTO(){}
+    public ResponseAdDTO(){}
 
     public String getTitle() {
         return title;
@@ -74,7 +74,7 @@ public class HomePageAdDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof HomePageAdDTO that)) return false;
+        if (!(o instanceof ResponseAdDTO that)) return false;
         return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(creationDate, that.creationDate) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
     }
 

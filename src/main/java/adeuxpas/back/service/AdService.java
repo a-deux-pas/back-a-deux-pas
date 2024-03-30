@@ -1,13 +1,14 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.HomePageAdDTO;
-import adeuxpas.back.entity.Ad;
+import adeuxpas.back.dto.ResponseAdDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface AdService {
 
-    List<HomePageAdDTO> findAllHomePageAds();
+    Page<ResponseAdDTO> findAllResponseAdDTOs(Pageable pageable);
 
-    List<HomePageAdDTO> findFilteredAds(List<String> prices, List<String> cities, List<String> articleStates, String category);
+    Page<ResponseAdDTO> findFilteredResponseAdDTOs(List<String> prices, List<String> cities, List<String> articleStates, String category, Pageable pageable);
 }
