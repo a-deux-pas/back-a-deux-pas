@@ -17,7 +17,10 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Class responsible for seeding the database with initial sample data.
@@ -33,12 +36,13 @@ import java.util.List;
  * @author Mircea Bardan
  */
 @Component
-public class DatabaseSeeder {
+public class UserDatabaseSeeder {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
 
+    private Random random = new Random(); 
     /**
      * Constructs a new instance of DatabaseSeeder.
      *
@@ -46,10 +50,12 @@ public class DatabaseSeeder {
      * @param passwordEncoder The password encoder used to encode user passwords before storing them in the database.
      * @param preferredScheduleRepository
      */
-    public DatabaseSeeder(@Autowired UserRepository userRepository,
-                            @Autowired BCryptPasswordEncoder passwordEncoder,
-                            @Autowired PreferredScheduleRepository preferredScheduleRepository,
-                            @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository){
+    public UserDatabaseSeeder(
+        @Autowired UserRepository userRepository,
+        @Autowired BCryptPasswordEncoder passwordEncoder,
+        @Autowired PreferredScheduleRepository preferredScheduleRepository,
+        @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository
+        ){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.preferredScheduleRepository = preferredScheduleRepository;
@@ -112,7 +118,7 @@ public class DatabaseSeeder {
         third.setCity("Paris");
         third.setStreet("5, Av de la Liberte");
         third.setPostalCode("75020");
-        third.setProfilePicture("https://urlz.fr/pVV1");
+        third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
         third.setInscriptionDate(LocalDate.now());
         third.setAccountStatus(AccountStatus.SUSPENDED);
         third.setRole(UserRole.USER);
@@ -126,7 +132,7 @@ public class DatabaseSeeder {
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
         fourth.setPostalCode("69000");
-        fourth.setProfilePicture("https://urlz.fr/pVV3");
+        fourth.setProfilePicture("https://media.licdn.com/dms/image/C4D03AQEPCyzoBB3WHQ/profile-displayphoto-shrink_200_200/0/1559041227281?e=1717027200&v=beta&t=bo3fSv0ufHuLbS1IHuTLJ9YwwixGq-HCiF3CkcshrQc");
         fourth.setInscriptionDate(LocalDate.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
         fourth.setRole(UserRole.ADMIN);
@@ -157,27 +163,93 @@ public class DatabaseSeeder {
     }
 
 
+    /**
+     * Seeds the database with users preferred schedules.
+    */
     private void seedPreferredSchedules(){
-        User Lea = userRepository.findById(3L).orElse(null); 
-        PreferredSchedule preferredSchedule1 = new PreferredSchedule(WeekDays.LUNDI, LocalTime.of(8, 0), LocalTime.of(10, 0));
-        preferredSchedule1.setUser(Lea);
-        this.preferredScheduleRepository.save(preferredSchedule1);
-        PreferredSchedule preferredSchedule2 = new PreferredSchedule(WeekDays.MARDI, LocalTime.of(8, 0), LocalTime.of(10, 0));
-        preferredSchedule2.setUser(Lea);
-        this.preferredScheduleRepository.save(preferredSchedule2);
-        PreferredSchedule preferredSchedule3 = new PreferredSchedule(WeekDays.MERCREDI, LocalTime.of(18, 0), LocalTime.of(20, 0));
-        preferredSchedule3.setUser(Lea);
-        this.preferredScheduleRepository.save(preferredSchedule3);
-
-        User Eri = userRepository.findById(4L).orElse(null); 
-        PreferredSchedule preferredSchedule4 = new PreferredSchedule(WeekDays.SAMEDI, LocalTime.of(20, 0), LocalTime.of(21, 0));
-        preferredSchedule4.setUser(Eri);
-        this.preferredScheduleRepository.save(preferredSchedule4);
-        PreferredSchedule preferredSchedule5 = new PreferredSchedule(WeekDays.DIMANCHE, LocalTime.of(15, 0), LocalTime.of(20, 0));
-        preferredSchedule5.setUser(Eri);
-        this.preferredScheduleRepository.save(preferredSchedule5);
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            generateRandomSchedulesForUser(user);
+        }
     }
 
+    /**
+     * Generates random schedules for a given user.
+     * @param user The user for whom schedules are generated.
+     */
+    public void generateRandomSchedulesForUser(User user) {
+        for (int i = 0; i < 6; i++) {
+            // Generate a new set of schedules until there are no overlaps
+            Set<PreferredSchedule> newSchedules;
+            do {
+                newSchedules = generateRandomSchedule();
+            } while (isScheduleOverlapping(user, newSchedules));
+            for (PreferredSchedule schedule : newSchedules) {
+                schedule.setUser(user);
+                this.preferredScheduleRepository.save(schedule);
+            }
+        }
+    }
+
+    /**
+     * Checks if the new schedules overlap with existing schedules for a user.
+     * @param user The user for whom schedules are checked.
+     * @param newSchedules The new schedules to check for overlap.
+     * @return true if there is an overlap, false otherwise.
+     */
+    private boolean isScheduleOverlapping(User user, Set<PreferredSchedule> newSchedules) {
+        List<PreferredSchedule> existingSchedules = this.preferredScheduleRepository.findPreferredSchedulesByUser(user);
+        return existingSchedules.stream()
+            .flatMap(existingSchedule -> newSchedules.stream()
+                .filter(newSchedule -> existingSchedule.getWeekDay() == newSchedule.getWeekDay() &&
+                    existingSchedule.getEndTime().isAfter(newSchedule.getStartTime()) &&
+                    existingSchedule.getStartTime().isBefore(newSchedule.getEndTime())))
+            .findFirst()
+            .isPresent();
+    }
+    
+    /**
+     * Generates a set of random schedules.
+     * @return A set of random schedules.
+    */
+    private Set<PreferredSchedule> generateRandomSchedule() {
+        Set<PreferredSchedule> schedules = new HashSet<>();
+        WeekDays randomDay = WeekDays.values()[random.nextInt(WeekDays.values().length)]; 
+        LocalTime startTime = generateRandomTime();
+        LocalTime endTime = generateRandomEndTime(startTime);
+        PreferredSchedule schedule = new PreferredSchedule(randomDay, startTime, endTime);
+        schedules.add(schedule);
+        return schedules;
+    }
+    
+    /**
+     * Generates a random time between 8 AM and 9 PM.
+     * @return A random time between 8 AM and 9 PM.
+     */
+    private LocalTime generateRandomTime() {
+        // Generate a random hour between 8 and 21
+        int hour = random.nextInt(13) + 8;
+        return LocalTime.of(hour, 0); 
+    }
+
+    /**
+     * Generates a random end time based on the start time.
+     * @param startTime The start time of the schedule.
+     * @return A random end time based on the start time.
+     */
+    private LocalTime generateRandomEndTime(LocalTime startTime) {
+        // Generate a random hour between the start time and 12 hours later
+        int hour = startTime.getHour() + random.nextInt(12) + 1; 
+        // Ensure end time doesn't exceed 10:00 PM (22:00)
+        hour = Math.min(hour, 22); 
+        return LocalTime.of(hour, 0); 
+    }
+
+
+    /**
+     * Seeds the database with user's preferred meeting places.
+     * TODO : use an api such Mapbox or Google Map to generate ramdom existing address
+    */
     private void seedPreferredMeetingPlaces(){
         User Lea = userRepository.findById(3L).orElse(null); 
         PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", "Paris", "75020", "France");

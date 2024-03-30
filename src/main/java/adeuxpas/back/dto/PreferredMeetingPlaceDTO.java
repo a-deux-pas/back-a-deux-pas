@@ -1,5 +1,18 @@
 package adeuxpas.back.dto;
 
+/**
+ * Data Transfer Object (DTO) for representing preferred meeting places.
+ * <p>
+ * This DTO encapsulates information about a user's preferred meeting places,
+ * including country, postal code, city, street, name, and user ID.
+ * </p>
+ * <p>
+ * It is typically used to transfer preferred meeting place data between different layers of the application,
+ * such as between the controller and the service layer.
+ * </p>
+ * 
+ * @author Léa Hadida
+ */
 public class PreferredMeetingPlaceDTO {
     private Long id;
     private String country;
@@ -9,9 +22,23 @@ public class PreferredMeetingPlaceDTO {
     private String name;
     private Long userId;
 
+    /**
+     * Default constructor for PreferredMeetingPlaceDTO.
+     */
     public PreferredMeetingPlaceDTO() {
     }
-    
+
+    /**
+     * Constructor for PreferredMeetingPlaceDTO with all attributes.
+     *
+     * @param id          The unique identifier for the preferred meeting place.
+     * @param country     The country of the preferred meeting place.
+     * @param postalCode  The postal code or ZIP code of the preferred meeting place.
+     * @param city        The city of the preferred meeting place.
+     * @param street      The street address of the preferred meeting place.
+     * @param name        The name or description of the preferred meeting place.
+     * @param userId      The ID of the user associated with the preferred meeting place.
+     */
     public PreferredMeetingPlaceDTO(Long id, String country, String postalCode, String city, String street, String name,
             Long userId) {
         this.id = id;

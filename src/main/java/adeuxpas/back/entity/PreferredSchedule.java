@@ -41,9 +41,19 @@ public class PreferredSchedule {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    /**
+     * Default constructor for PreferredSchedule.
+     */
     public PreferredSchedule() {
     }
 
+    /**
+     * Constructor for PreferredSchedule with all attributes except ID.
+     *
+     * @param weekDay   The day of the week for the preferred schedule.
+     * @param startTime The start time of the preferred schedule.
+     * @param endTime   The end time of the preferred schedule.
+     */
     public PreferredSchedule(WeekDays weekDay, LocalTime startTime, LocalTime endTime) {
         this.weekDay = weekDay;
         this.startTime = startTime;

@@ -1,8 +1,18 @@
 package adeuxpas.back.dto;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
+/**
+ * Data Transfer Object (DTO) for representing user profile information on a profile page.
+ * <p>
+ * This DTO encapsulates various attributes of a user's profile, such as alias, biography, location details,
+ * profile picture URL, and inscription date.
+ * </p>
+ * <p>
+ * It is typically used to transfer user profile data between different layers of the application,
+ * such as between the controller and the service layer.
+ * </p>
+ * 
+ * @author Léa Hadida
+ */
 public class ProfilePageUserDTO {
     private Long id;
     private String alias;
@@ -14,11 +24,27 @@ public class ProfilePageUserDTO {
     private String profilePicture;
     private String inscriptionDate;
     
+    /**
+     * Default constructor for ProfilePageUserDTO.
+     */
     public ProfilePageUserDTO() {
     }
 
+    /**
+     * Constructor for ProfilePageUserDTO with all attributes.
+     *
+     * @param id              The unique identifier for the user.
+     * @param alias           The alias or username of the user.
+     * @param bio             The biography or description of the user.
+     * @param country         The country of residence.
+     * @param city            The city of residence.
+     * @param street          The street address.
+     * @param postalCode      The postal code or ZIP code.
+     * @param profilePicture  The URL of the user's profile picture.
+     * @param inscriptionDate The date of user's registration or inscription.
+     */
     public ProfilePageUserDTO(Long id, String alias, String bio, String country, String city, String street,
-            String postalCode, String profilePicture, LocalDate inscriptionDate) {
+            String postalCode, String profilePicture, String inscriptionDate) {
         this.id = id;
         this.alias = alias;
         this.bio = bio;
@@ -27,7 +53,7 @@ public class ProfilePageUserDTO {
         this.street = street;
         this.postalCode = postalCode;
         this.profilePicture = profilePicture;
-        this.inscriptionDate = formatTime(inscriptionDate);
+        this.inscriptionDate = inscriptionDate;
     }
 
     public Long getId() {
@@ -100,9 +126,5 @@ public class ProfilePageUserDTO {
 
     public void setInscriptionDate(String inscriptionDate) {
         this.inscriptionDate = inscriptionDate;
-    }
-
-    private String formatTime(LocalDate date) {
-        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 }

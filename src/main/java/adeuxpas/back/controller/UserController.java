@@ -8,6 +8,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import adeuxpas.back.service.UserService;
 
+import io.swagger.v3.oas.annotations.responses.*; 
+import io.swagger.v3.oas.annotations.Operation;
+
+/**
+ * Controller class for handling user-related endpoints.
+ * <p>
+ * This controller provides endpoints for user data.
+ * </p>
+ * <p>
+ * It interacts with the UserService to fetch and post user data.
+ * </p>
+ *
+ * @author Léa Hadida
+ */
 @RequestMapping("/api")
 @RestController
 public class UserController {
@@ -22,10 +36,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    // méthode à changer une fois le login réalisé
-    @GetMapping("/compte/profil/présentation")
+    // TODO : méthode à changer une fois le login réalisé
+    /**
+     * Endpoint to access a user's profile information.
+     *
+     * @return a ResponseEntity with the user profile information if successful,
+     * or a 500 Internal Server Error response if an exception occurs.
+     */
+    @Operation(summary = "User's profile information")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of user profile information"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/compte/profil/presentation")
     public ResponseEntity<Object> getUserInformation() {
-        Long userId = 4L; 
+        Long userId = 3L; 
         try {
             return ResponseEntity.ok(userService.findUserProfileInfoById(userId));
         } catch(Exception e) {
@@ -34,8 +59,19 @@ public class UserController {
     }
     
 
-    // méthode à changer une fois le login réalisé
-    @GetMapping("/compte/profil/disponibilités")
+    // TODO : méthode à changer une fois le login réalisé
+    /**
+     * Endpoint to access a user's preferred schedules.
+     *
+     * @return a ResponseEntity with the user preferred schedules if successful,
+     * or a 500 Internal Server Error response if an exception occurs.
+     */
+    @Operation(summary = "User's preferred schedules")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred schedules"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/compte/profil/disponibilites")
     public ResponseEntity<Object> getPreferredShedules() {
         Long userId = 3L;
         try {
@@ -45,7 +81,18 @@ public class UserController {
         }  
     }
 
-    // méthode à changer une fois le login réalisé
+    // TODO : méthode à changer une fois le login réalisé
+    /**
+     * Endpoint to access user's preferred meeting places.
+     *
+     * @return a ResponseEntity with the user preferred meeting places if successful,
+     * or a 500 Internal Server Error response if an exception occurs.
+     */
+    @Operation(summary = "User's preferred meeting places")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred meeting places"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/compte/profil/lieux-de-rdv")
     public ResponseEntity<Object> getPreferredMeetingPlaces() {
         Long userId = 3L;

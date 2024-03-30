@@ -38,10 +38,21 @@ public class PreferredMeetingPlace {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    /**
+     * Default constructor for PreferredMeetingPlace.
+     */
     public PreferredMeetingPlace() {
     }
     
-
+    /**
+     * Constructor for PreferredMeetingPlace with all attributes except ID.
+     *
+     * @param name       The name of the preferred meeting place.
+     * @param street     The street address of the preferred meeting place.
+     * @param city       The city of the preferred meeting place.
+     * @param postalCode The postal code of the preferred meeting place.
+     * @param country    The country of the preferred meeting place.
+     */
     public PreferredMeetingPlace(String name, String street, String city, String postalCode, String country) {
         this.name = name;
         this.street = street;
