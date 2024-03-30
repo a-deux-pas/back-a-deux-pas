@@ -43,15 +43,11 @@ public class ProfilePageUserDTO {
      * @param profilePicture  The URL of the user's profile picture.
      * @param inscriptionDate The date of user's registration or inscription.
      */
-    public ProfilePageUserDTO(Long id, String alias, String bio, String country, String city, String street,
-            String postalCode, String profilePicture, String inscriptionDate) {
+    public ProfilePageUserDTO(Long id, String alias, String bio, String city, String profilePicture, String inscriptionDate) {
         this.id = id;
         this.alias = alias;
         this.bio = bio;
-        this.country = country;
         this.city = city;
-        this.street = street;
-        this.postalCode = postalCode;
         this.profilePicture = profilePicture;
         this.inscriptionDate = inscriptionDate;
     }

@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
 
 /**
  * Implementation class for the UserService interface.
@@ -37,6 +35,8 @@ public class UserServiceImpl implements UserService{
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
     private final UserMapper userMapper;
+
+    private static final String USER_NOT_FOUND_MESSAGE = "User with ID : %d not Found";
 
     /**
      * Constructor for UserServiceImpl.
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService{
             ProfilePageUserDTO mappedUser = userMapper.mapUserToProfilePageUserDTO(user);
             return mappedUser;
         } else {
-            throw new EntityNotFoundException("User with ID : " + userId + " not Found");
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
     }
 
@@ -112,11 +112,10 @@ public class UserServiceImpl implements UserService{
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             List<PreferredSchedule> preferredSchedules = preferredScheduleRepository.findPreferredSchedulesByUser(user);
-            List<PreferredScheduleDTO> mappedPreferredSchedules = preferredSchedules.stream().map(userMapper::mapPreferredScheduleToDTO).collect(Collectors.toList());
-            List<PreferredScheduleDTO> filteredPreferredSchedules = this.groupByTimes(mappedPreferredSchedules);
-            return filteredPreferredSchedules;
+            List<PreferredScheduleDTO> mappedPreferredSchedules = preferredSchedules.stream().map(userMapper::mapPreferredScheduleToDTO).toList();
+            return this.groupByTimes(mappedPreferredSchedules);
         } else {
-            throw new EntityNotFoundException("User with ID : " + userId + " not Found");
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
     }
 
@@ -170,11 +169,10 @@ public class UserServiceImpl implements UserService{
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            List<PreferredMeetingPlace> PreferredMeetingPlaces = preferredMeetingPlaceRepository.findPreferredMeetingPlacesByUser(user);
-            List<PreferredMeetingPlaceDTO> mappedPreferredMeetingPlaces = PreferredMeetingPlaces.stream().map(userMapper::mapPreferredMettingPlaceToDTO).collect(Collectors.toList());
-            return mappedPreferredMeetingPlaces;
+            List<PreferredMeetingPlace> preferredMeetingPlaces = preferredMeetingPlaceRepository.findPreferredMeetingPlacesByUser(user);
+            return preferredMeetingPlaces.stream().map(userMapper::mapPreferredMettingPlaceToDTO).toList();
         } else {
-            throw new EntityNotFoundException("User with ID : " + userId + " not Found");
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
     }
 }

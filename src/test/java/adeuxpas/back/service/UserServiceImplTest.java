@@ -30,7 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class UserServiceImplTest {
+class UserServiceImplTest {
 
     // Create the instance of UserSerive and automatically inject the UserRepository mock
     @InjectMocks
@@ -60,7 +60,7 @@ public class UserServiceImplTest {
      * </p>
      */
     @Test
-    public void testGroupByTimesCorrectGrouping() {
+    void testGroupByTimesCorrectGrouping() {
         // Mocking User Preferred Schedules data
         User user = createUser(1L);
         List<PreferredSchedule> preferredScheduleList = new ArrayList<>();
@@ -100,10 +100,10 @@ public class UserServiceImplTest {
         // Assertions
         assertNotNull(preferredSchedules);
         assertFalse(preferredSchedules.isEmpty());
-        assertEquals(preferredSchedules.size(), 3); 
-        assertEquals(preferredSchedules.get(0).getDaysOfWeek().size(), 2); 
-        assertEquals(preferredSchedules.get(1).getDaysOfWeek().size(), 1);
-        assertEquals(preferredSchedules.get(2).getDaysOfWeek().size(), 2); 
+        assertEquals(3, preferredSchedules.size());
+        assertEquals(2, preferredSchedules.get(0).getDaysOfWeek().size()); 
+        assertEquals(1, preferredSchedules.get(1).getDaysOfWeek().size());
+        assertEquals(2, preferredSchedules.get(2).getDaysOfWeek().size()); 
     }
 
     /**
@@ -113,7 +113,7 @@ public class UserServiceImplTest {
      * </p>
      */
     @Test
-    public void testGroupByTimesWithEmptyList() {   
+    void testGroupByTimesWithEmptyList() {   
         List<PreferredScheduleDTO> emptyList = new ArrayList<>();
         List<PreferredScheduleDTO> result = userServiceImpl.groupByTimes(emptyList);
         assertNotNull(result);

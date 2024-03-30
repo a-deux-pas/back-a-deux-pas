@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
 import java.time.*;
 import java.util.*;
 
@@ -37,7 +38,7 @@ public class UserDatabaseSeeder {
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
 
-    private Random random = new Random(); 
+    private SecureRandom random = new SecureRandom(); 
     /**
      * Constructs a new instance of DatabaseSeeder.
      *
@@ -244,21 +245,21 @@ public class UserDatabaseSeeder {
      * TODO : use an api such Mapbox or Google Map to generate ramdom existing address
     */
     private void seedPreferredMeetingPlaces(){
-        User Lea = userRepository.findById(3L).orElse(null); 
+        User lea = userRepository.findById(3L).orElse(null); 
         PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", "Paris", "75020", "France");
-        meetingPlace1.setUser(Lea);
+        meetingPlace1.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace1);
         PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("Place Martin Nadaud", "Place Martin Nadaud", "Paris", "75020", "France");
-        meetingPlace2.setUser(Lea);
+        meetingPlace2.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace2);
         PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("Métro Pelleport", "120 rue Orfila", "Paris", "75020", "France");
-        meetingPlace3.setUser(Lea);
+        meetingPlace3.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace3);
         PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("Métro Père Lachaise", "Avenue de la République", "Paris", "75020", "France");
-        meetingPlace4.setUser(Lea);
+        meetingPlace4.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace4);
         PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("Métro Ménilmontant","Rue de Paris",  "Paris", "75020", "France");
-        meetingPlace5.setUser(Lea);
+        meetingPlace5.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace5);
     }
 }
