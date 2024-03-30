@@ -13,41 +13,50 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AdServiceImpl implements AdService{
+public class AdServiceImpl implements AdService {
 
-    private final AdRepository adRepository;
-    private AdMapper mapper;
     private MapStructMapper mapStruct;
+    private final AdRepository adRepository;
+    private UserService userService;
 
-    public AdServiceImpl(@Autowired AdMapper mapper,
-                         @Autowired MapStructMapper mapStruct,
-                         @Autowired AdRepository adRepository){
+    public AdServiceImpl(
+            @Autowired MapStructMapper mapStruct,
+            @Autowired AdRepository adRepository,
+            @Autowired UserService userService) {
+        this.mapStruct = mapStruct;
         this.adRepository = adRepository;
-        this.mapper = mapper;
-
+        this.userService = userService;
     }
 
     @Override
-    public List<HomePageAdDTO> findAllAds() {
+    public List<HomePageAdDTO> findAllHomePageAds() {
         List<Ad> myAds = this.adRepository.findAll();
-        List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapStruct::adToHomePageAdDTO).collect(Collectors.toList());
-        if(mappedAdsList.size() > 1) this.sortByCreationDateDesc(mappedAdsList);
+        List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapStruct::adToHomePageAdDTO)
+                .collect(Collectors.toList());
+        if (mappedAdsList.size() > 1)
+            this.sortByCreationDateDesc(mappedAdsList);
 
         return mappedAdsList;
     }
 
     private void sortByCreationDateDesc(List<HomePageAdDTO> myAds) {
         myAds.sort((a, b) -> {
-           if (a.getCreationDate().isBefore(b.getCreationDate())) return 1;
-           else if (a.getCreationDate().isAfter(b.getCreationDate())) return -1;
-           else return 0;
+            if (a.getCreationDate().isBefore(b.getCreationDate()))
+                return 1;
+            else if (a.getCreationDate().isAfter(b.getCreationDate()))
+                return -1;
+            else
+                return 0;
         });
     }
 
-    @Override
-    public Optional<Ad> postAd(AdPostDto adDto) {
-        Ad ad = this.mapper.TransformAdDtoInAdEntity(adDto);
-        Ad savedAd = adRepository.save(ad);
-        return Optional.ofNullable(savedAd);
+    // @Override
+    // public Optional<Ad>
+    // postAd(AdPostDto adDto)
+    {
+        // Ad ad = this.mapStruct.adPostDtoToAd(adDto, this.userService);
+        // Ad savedAd = adRepository.save(ad);
+        // return Optional.ofNullable(savedAd);
     }
+
 }

@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface AdService {
 
-    Optional<Ad> postAd(AdPostDto adDto);
-    List<HomePageAdDTO> findAllAds();
+    // s
+
+    List<HomePageAdDTO> findAllHomePageAds();
 }

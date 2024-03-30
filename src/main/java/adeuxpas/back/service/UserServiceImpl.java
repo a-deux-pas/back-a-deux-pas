@@ -52,4 +52,12 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email);
     }
 
+    /**
+     * 
+     */
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
 }

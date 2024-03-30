@@ -2,30 +2,33 @@ package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import adeuxpas.back.entity.User;
-import adeuxpas.back.enums.AdStatus;
+import adeuxpas.back.entity.ArticlePicture;
 
 public class AdPostDto {
-    // Long id;
-    String title;
-    String articleDescription;
-    String articleState;
-    LocalDateTime creationDate;
-    BigDecimal price;
-    AdStatus status;
-    String category;
-    String subcategory;
-    String articleGender;
-    User publisher;
-    
-    // public Long getId() {
-    //     return id;
-    // }
+    private Long id;
+    private String title;
+    private String articleDescription;
+    private LocalDateTime creationDate;
+    private BigDecimal price;
+    private String category;
+    private String subcategory;
+    private String articleGender;
+    private Long publisherId;
+    private List<ArticlePicture> articlePictures;
+    private String articleState;
 
-    // public void setId(Long id) {
-    //     this.id = id;
-    // }
+    public AdPostDto() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -67,13 +70,13 @@ public class AdPostDto {
         this.price = bigDecimal;
     }
 
-    public AdStatus getStatus() {
-        return status;
-    }
+    // public AdStatus getStatus() {
+    // return status;
+    // }
 
-    public void setStatus(AdStatus status) {
-        this.status = status;
-    }
+    // public void setStatus(AdStatus status) {
+    // this.status = status;
+    // }
 
     public String getCategory() {
         return category;
@@ -99,11 +102,37 @@ public class AdPostDto {
         this.articleGender = articleGender;
     }
 
-    public User getPublisher() {
-        return publisher;
+    public Long getPublisherId() {
+        return publisherId;
     }
 
-    public void setPublisher(User publisher) {
-        this.publisher = publisher;
+    public void setPublisherId(Long publisherId) {
+        this.publisherId = publisherId;
+    }
+
+    public List<ArticlePicture> getArticlePictures() {
+        return this.articlePictures;
+    }
+
+    public void setArticlePictures(List<ArticlePicture> articlePictures) {
+        this.articlePictures = articlePictures;
+    }
+
+    @Override
+    public String toString() {
+        return "AdPostDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", articleDescription='" + articleDescription + '\'' +
+                ", articleState='" + articleState + '\'' +
+                ", creationDate=" + creationDate +
+                ", price=" + price +
+                // ", status=" + status +
+                ", category='" + category + '\'' +
+                ", subcategory='" + subcategory + '\'' +
+                ", articleGender='" + articleGender + '\'' +
+                ", publisherId=" + publisherId +
+                ", articlePictures=" + articlePictures +
+                '}';
     }
 }
