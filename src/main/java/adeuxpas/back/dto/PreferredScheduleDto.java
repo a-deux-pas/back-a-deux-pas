@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Data Transfer Object (DTO) for representing preferred schedules.
+ * Data Transfer Object (DTO) for representing preferred schedule.
  * <p>
- * This DTO encapsulates information about a user's preferred schedules,
+ * This DTO encapsulates information about a user's preferred schedule,
  * including the days of the week, start time, end time, and user ID.
  * </p>
  * <p>
@@ -24,9 +24,6 @@ public class PreferredScheduleDTO {
     private String endTime;
     private Long userId;
 
-    /**
-     * Default constructor for PreferredScheduleDTO.
-     */
     public PreferredScheduleDTO() {
     }
 
@@ -97,3 +94,4 @@ public class PreferredScheduleDTO {
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 }
+

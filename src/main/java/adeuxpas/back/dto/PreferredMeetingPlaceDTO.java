@@ -1,9 +1,9 @@
 package adeuxpas.back.dto;
 
 /**
- * Data Transfer Object (DTO) for representing preferred meeting places.
+ * Data Transfer Object (DTO) for representing preferred meeting place.
  * <p>
- * This DTO encapsulates information about a user's preferred meeting places,
+ * This DTO encapsulates information about a user's preferred meeting place,
  * including country, postal code, city, street, name, and user ID.
  * </p>
  * <p>
