@@ -90,8 +90,7 @@ public class UserServiceImpl implements UserService{
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            ProfilePageUserDTO mappedUser = userMapper.mapUserToProfilePageUserDTO(user);
-            return mappedUser;
+            return userMapper.mapUserToProfilePageUserDTO(user);
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }

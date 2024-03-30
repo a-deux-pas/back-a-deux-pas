@@ -38,6 +38,9 @@ public class UserDatabaseSeeder {
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
 
+    private static final String FRANCE = "France";
+    private static final String PARIS = "Paris";
+    
     private SecureRandom random = new SecureRandom(); 
     /**
      * Constructs a new instance of DatabaseSeeder.
@@ -82,7 +85,7 @@ public class UserDatabaseSeeder {
         first.setAlias("Koroviev");
         first.setPassword(passwordEncoder.encode("pass1"));
         first.setBio("bio1");
-        first.setCountry("France");
+        first.setCountry(FRANCE);
         first.setCity("Maisons-Alfort");
         first.setStreet("Victor Hugo");
         first.setPostalCode("94700");
@@ -96,8 +99,8 @@ public class UserDatabaseSeeder {
         second.setPassword(passwordEncoder.encode("pass2"));
         second.setAlias("Dounia");
         second.setBio("bio2");
-        second.setCountry("France");
-        second.setCity("Paris");
+        second.setCountry(FRANCE);
+        second.setCity(PARIS);
         second.setStreet("5, Garibaldi");
         second.setPostalCode("75000");
         second.setProfilePicture("profilePictureUrl2");
@@ -110,8 +113,8 @@ public class UserDatabaseSeeder {
         third.setPassword(passwordEncoder.encode("pass3"));
         third.setAlias("Leahad");
         third.setBio("Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
-        third.setCountry("France");
-        third.setCity("Paris");
+        third.setCountry(FRANCE);
+        third.setCity(PARIS);
         third.setStreet("5, Av de la Liberte");
         third.setPostalCode("75020");
         third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
@@ -124,7 +127,7 @@ public class UserDatabaseSeeder {
         fourth.setPassword(passwordEncoder.encode("pass4"));
         fourth.setAlias("Eri");
         fourth.setBio("Passionnée de mode, je vends mes vêtements pour permettre aux plus grand nombre d’être stylé.");
-        fourth.setCountry("France");
+        fourth.setCountry(FRANCE);
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
         fourth.setPostalCode("69000");
@@ -138,7 +141,7 @@ public class UserDatabaseSeeder {
         fifth.setPassword(passwordEncoder.encode("pass5"));
         fifth.setAlias("theRabbi");
         fifth.setBio("bio5");
-        fifth.setCountry("France");
+        fifth.setCountry(FRANCE);
         fifth.setCity("Lyon");
         fifth.setStreet("7bis, rue de la Synagogue");
         fifth.setPostalCode("69000");
@@ -246,19 +249,19 @@ public class UserDatabaseSeeder {
     */
     private void seedPreferredMeetingPlaces(){
         User lea = userRepository.findById(3L).orElse(null); 
-        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", "Paris", "75020", "France");
+        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", PARIS, "75020", FRANCE);
         meetingPlace1.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace1);
-        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("Place Martin Nadaud", "Place Martin Nadaud", "Paris", "75020", "France");
+        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("Place Martin Nadaud", "Place Martin Nadaud", PARIS, "75020", FRANCE);
         meetingPlace2.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace2);
-        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("Métro Pelleport", "120 rue Orfila", "Paris", "75020", "France");
+        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("Métro Pelleport", "120 rue Orfila", PARIS, "75020", FRANCE);
         meetingPlace3.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace3);
-        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("Métro Père Lachaise", "Avenue de la République", "Paris", "75020", "France");
+        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("Métro Père Lachaise", "Avenue de la République", PARIS, "75020", FRANCE);
         meetingPlace4.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace4);
-        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("Métro Ménilmontant","Rue de Paris",  "Paris", "75020", "France");
+        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("Métro Ménilmontant","Rue de Paris",  PARIS, "75020", FRANCE);
         meetingPlace5.setUser(lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace5);
     }
