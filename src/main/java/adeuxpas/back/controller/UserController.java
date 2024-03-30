@@ -58,7 +58,6 @@ public class UserController {
         }  
     }
     
-
     // TODO : méthode à changer une fois le login réalisé
     /**
      * Endpoint to access a user's preferred schedules.
@@ -103,5 +102,3 @@ public class UserController {
         }  
     }
 }
-
-

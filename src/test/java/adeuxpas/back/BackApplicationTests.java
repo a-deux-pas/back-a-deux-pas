@@ -10,5 +10,4 @@ class BackApplicationTests {
 	void contextLoads() {
         System.out.println("Test successful");
 	}
-
 }

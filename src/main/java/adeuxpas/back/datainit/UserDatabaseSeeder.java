@@ -14,13 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.time.*;
+import java.util.*;
 
 /**
  * Class responsible for seeding the database with initial sample data.
@@ -162,7 +157,6 @@ public class UserDatabaseSeeder {
         this.userRepository.saveAll(users);
     }
 
-
     /**
      * Seeds the database with users preferred schedules.
     */
@@ -244,7 +238,6 @@ public class UserDatabaseSeeder {
         hour = Math.min(hour, 22); 
         return LocalTime.of(hour, 0); 
     }
-
 
     /**
      * Seeds the database with user's preferred meeting places.
