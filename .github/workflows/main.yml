@@ -51,7 +51,7 @@ jobs:
         run: mvn -B test
       # Package application
       - name: Package Application
-        run: mvn -B package -Dmaven.test.skip=tru
+        run: mvn -B package -Dmaven.test.skip=true
       # Upload artifact to repository
       - name: Upload Application Package
         uses: actions/upload-artifact@master
