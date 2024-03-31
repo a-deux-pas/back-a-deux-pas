@@ -70,7 +70,7 @@ public class SecurityConfig {
                .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         // Expose endpoints at "/api/signup" and "api/login", for "GET" and "POST" requests, for everybody
-                        .requestMatchers("/signup", "/login", "/compte/profil").permitAll() // TODO : à modifier une fois que le login sera fait
+                        .requestMatchers("/signup", "/login", "/account/profile/").permitAll() // TODO : à modifier une fois que le login sera fait
                         // Protect our other endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin-page").hasAuthority("ADMIN")

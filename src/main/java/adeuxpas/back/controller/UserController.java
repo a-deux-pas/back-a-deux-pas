@@ -48,7 +48,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of user profile information"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/compte/profil/presentation")
+    @GetMapping("/account/profile/presentation")
     public ResponseEntity<Object> getUserInformation() {
         Long userId = 3L; 
         try {
@@ -70,7 +70,7 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred schedules"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/compte/profil/disponibilites")
+    @GetMapping("/account/profile/schedules")
     public ResponseEntity<Object> getPreferredShedules() {
         Long userId = 3L;
         try {
@@ -92,7 +92,7 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred meeting places"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/compte/profil/lieux-de-rdv")
+    @GetMapping("/account/profile/meeting-places")
     public ResponseEntity<Object> getPreferredMeetingPlaces() {
         Long userId = 3L;
         try {
