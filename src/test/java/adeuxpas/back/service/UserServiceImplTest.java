@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -92,7 +91,7 @@ class UserServiceImplTest {
         preferredScheduleList.add(preferredSchedule5);
         
         // Mocking User Preferred Schedules DTO data
-        List<PreferredScheduleDTO> preferredScheduleListDTO = preferredScheduleList.stream().map(userMapper::mapPreferredScheduleToDTO).collect(Collectors.toList());
+        List<PreferredScheduleDTO> preferredScheduleListDTO = preferredScheduleList.stream().map(userMapper::mapPreferredScheduleToDTO).toList();
 
         // Call the method to test
         List<PreferredScheduleDTO> preferredSchedules = userServiceImpl.groupByTimes(preferredScheduleListDTO);
