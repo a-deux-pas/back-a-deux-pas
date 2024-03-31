@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.ResponseAdDTO;
+import adeuxpas.back.dto.AdResponseDTO;
 import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AdStatus;
@@ -29,13 +29,7 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Page<ResponseAdDTO> findAllResponseAdDTOs(Pageable pageable) {
-        Page<Ad> myAds = this.adRepository.findAllByStatusOrderByCreationDateDesc(AdStatus.AVAILABLE, pageable);
-        return this.convertToPageOfResponseAdDTOs(pageable, myAds);
-    }
-
-    @Override
-    public Page<ResponseAdDTO> findFilteredResponseAdDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
+    public Page<AdResponseDTO> findFilteredResponseAdDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
                                                           List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
@@ -120,8 +114,13 @@ public class AdServiceImpl implements AdService {
         return this.convertToPageOfResponseAdDTOs(pageable, filteredAds);
     }
 
-    private Page<ResponseAdDTO> convertToPageOfResponseAdDTOs(Pageable pageable, Page<Ad> adsPage) {
-        List<ResponseAdDTO> mappedAdsList = adsPage.stream()
+    private Page<AdResponseDTO> findAllResponseAdDTOs(Pageable pageable) {
+        Page<Ad> myAds = this.adRepository.findAllByStatusOrderByCreationDateDesc(AdStatus.AVAILABLE, pageable);
+        return this.convertToPageOfResponseAdDTOs(pageable, myAds);
+    }
+
+    private Page<AdResponseDTO> convertToPageOfResponseAdDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<AdResponseDTO> mappedAdsList = adsPage.stream()
                 .map(mapper::adToResponseAdDTO)
                 .collect(Collectors.toList());
 

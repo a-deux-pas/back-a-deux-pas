@@ -146,7 +146,21 @@ public class DatabaseSeeder {
         fifth.setAccountStatus(AccountStatus.ACTIVE);
         fifth.setRole(UserRole.ADMIN);
 
-        return Arrays.asList(first, second, third, fourth, fifth);
+        User sixth = new User();
+        sixth.setEmail("random@email.com");
+        sixth.setPassword(passwordEncoder.encode("pass6"));
+        sixth.setAlias("Rando");
+        sixth.setBio("bio6");
+        sixth.setCountry("France");
+        sixth.setCity("Grenoble");
+        sixth.setStreet("sous un pont");
+        sixth.setPostalCode("00000");
+        sixth.setProfilePicture("profilePictureUrl6");
+        sixth.setInscriptionDate(LocalDateTime.now());
+        sixth.setAccountStatus(AccountStatus.ACTIVE);
+        sixth.setRole(UserRole.USER);
+
+        return Arrays.asList(first, second, third, fourth, fifth, sixth);
     }
 
     /**
@@ -172,6 +186,20 @@ public class DatabaseSeeder {
         this.articlePictureRepository.save(new ArticlePicture(("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"), ads.get(7)));
 
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_00e44_XkRJUZhGUrNwxbLGfBs8erYr/f800/1711863484.jpeg?s=27fff3a33315f91019270a1a3bb53e9615c2f962"), ads.get(8)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_018e1_N2JsK2fxtrZn1xk16xNo9kyr/f800/1711856284.jpeg?s=091fb7a67a8dc1adab7bd7994442b87c7f7b112e"), ads.get(9)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_01ff4_Ly9usSkKK7x4ZLUNJYEJY7vV/f800/1711768613.jpeg?s=eda3db9c2dabce566e20a82b06293f490b7054f7"), ads.get(10)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_01441_xix4NLunHyRfpdhiqMyka3BL/f800/1711760473.jpeg?s=8abaf00255f5ec6a3422800b711dc43e8e3d7cfe"), ads.get(11)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_009bf_biwV7SSYALHvZjeMx9DzEgPF/f800/1711666972.jpeg?s=796daddfcb0cd0dec79c877ac08569f87e693da5"), ads.get(12)));
+
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_01107_AQkaWBDeUJWEFWcx4sxwaFTe/f800/1702265856.jpeg?s=19117baf0b87627abb81a9e27574b0ac30133f07"), ads.get(13)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_021d2_GVTqnTQ3oFnegSHv1mJU9Amz/f800/1686792993.jpeg?s=1451865905183fb060fd76197322267ae23cc159"), ads.get(14)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/02_009c7_eEKstfbvuKJyXRHLbJvUQhVy/f800/1711815268.jpeg?s=4b5e6eded4ab45c8c932850aa25179984646042b"), ads.get(15)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/02_020f4_3yFUxux5NH3ajCpZwWfR6P5n/f800/1707671737.jpeg?s=d603b47dc9eec529765f9eae6c152c752a0954bd"), ads.get(16)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_0017b_9CsbxFBTWrpcWW1YRLbLaiuk/f800/1711794225.jpeg?s=e8e59ac218eeba65a2b6f543f20c0ae7e526c60e"), ads.get(5)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_01b2f_QECcdvwJTvYk5dWoHqheetyQ/f800/1707104826.jpeg?s=d8b8a122fd856daf5a0141ab2a7083418509a327"), ads.get(6)));
+        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_003bc_zRPMb8VY3YDhXxrghu6gJcUM/f800/1710778480.jpeg?s=e35e3cb9915ac7f628d1d00785971d264e31f47e"), ads.get(17)));
+
     }
 
     /**
@@ -184,10 +212,10 @@ public class DatabaseSeeder {
         Ad firstAd = new Ad();
         firstAd.setArticleDescription("Rocky Mountain Growler 40, perfect condition ");
         firstAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
-        firstAd.setPrice(BigDecimal.valueOf(45));
+        firstAd.setPrice(BigDecimal.valueOf(1999));
         firstAd.setTitle("Trail Bike");
         firstAd.setPublisher(users.get(0));
-        firstAd.setArticleState("Neuf avec étiquette");
+        firstAd.setArticleState("Très bon état");
         firstAd.setCategory("Loisirs");
         firstAd.setSubcategory("Sport");
         List<Ad> firstUserAds = new ArrayList<>();
@@ -201,7 +229,7 @@ public class DatabaseSeeder {
         secondAd.setPrice(BigDecimal.valueOf(8));
         secondAd.setTitle("Vintage boxing gloves");
         secondAd.setPublisher(users.get(1));
-        secondAd.setArticleState("Neuf sans étiquette");
+        secondAd.setArticleState("Satisfaisant");
         secondAd.setCategory("Loisirs");
         secondAd.setSubcategory("Sport");
         List<Ad> secondUserAds = new ArrayList<>();
@@ -227,7 +255,7 @@ public class DatabaseSeeder {
         Ad fourthAd = new Ad();
         fourthAd.setArticleDescription("mechanical swiss made, limited edition");
         fourthAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
-        fourthAd.setPrice(BigDecimal.valueOf(10));
+        fourthAd.setPrice(BigDecimal.valueOf(999));
         fourthAd.setTitle("Frédérique Constant 1988");
         fourthAd.setPublisher(users.get(0));
         fourthAd.setArticleState("Satisfaisant");
@@ -240,7 +268,7 @@ public class DatabaseSeeder {
         Ad fifthAd = new Ad();
         fifthAd.setArticleDescription("Bose quiet comfort, noise cancelling headphones");
         fifthAd.setCreationDate(LocalDateTime.now().minusMinutes(1));
-        fifthAd.setPrice(BigDecimal.valueOf(19));
+        fifthAd.setPrice(BigDecimal.valueOf(199));
         fifthAd.setTitle("Bose headphones");
         fifthAd.setPublisher(users.get(2));
         fifthAd.setArticleState("Bon état");
@@ -268,7 +296,7 @@ public class DatabaseSeeder {
         Ad seventhAd = new Ad();
         seventhAd.setArticleDescription("Blue satin silk shirt");
         seventhAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
-        seventhAd.setPrice(BigDecimal.valueOf(35));
+        seventhAd.setPrice(BigDecimal.valueOf(15));
         seventhAd.setTitle("Blue silk shirt");
         seventhAd.setPublisher(users.get(3));
         seventhAd.setArticleState("Neuf avec étiquette");
@@ -294,18 +322,139 @@ public class DatabaseSeeder {
 
         Ad ninethAd = new Ad();
         ninethAd.setArticleDescription("Vulgar description");
-        ninethAd.setCreationDate(LocalDateTime.now().plusMinutes(10));
+        ninethAd.setCreationDate(LocalDateTime.now().minusMinutes(10));
         ninethAd.setPrice(BigDecimal.valueOf(10.2));
-        ninethAd.setTitle("Vulgar Title");
-        ninethAd.setPublisher(users.get(2));
+        ninethAd.setTitle("Handmade bracelet");
+        ninethAd.setPublisher(users.get(5));
         ninethAd.setArticleState("Neuf sans étiquette");
         ninethAd.setCategory("Autre");
         ninethAd.setSubcategory("Autre");
-        thirdUserAds.add(ninethAd);
-        users.get(2).setAds(thirdUserAds);
+        List<Ad> sixthUserAds = new ArrayList<>();
+        sixthUserAds.add(ninethAd);
+        users.get(5).setAds(sixthUserAds);
         ninethAd.setStatus(AdStatus.SUSPENDED);
 
-        return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd, ninethAd);
+
+        Ad tenthAd = new Ad();
+        tenthAd.setArticleDescription("Maroon leather handbag");
+        tenthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
+        tenthAd.setPrice(BigDecimal.valueOf(45));
+        tenthAd.setTitle("Handbag");
+        tenthAd.setPublisher(users.get(0));
+        tenthAd.setArticleState("Très bon état");
+        tenthAd.setCategory("Mode");
+        tenthAd.setSubcategory("Accessoires");
+        firstUserAds.add(tenthAd);
+        users.get(0).setAds(firstUserAds);
+        tenthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad eleventhAd = new Ad();
+        eleventhAd.setArticleDescription("Baoding balls");
+        eleventhAd.setCreationDate(LocalDateTime.now().plusMinutes(4));
+        eleventhAd.setPrice(BigDecimal.valueOf(8));
+        eleventhAd.setTitle("Chinese stress balls");
+        eleventhAd.setPublisher(users.get(1));
+        eleventhAd.setArticleState("Neuf sans étiquette");
+        eleventhAd.setCategory("Loisirs");
+        eleventhAd.setSubcategory("Sport");
+        secondUserAds.add(eleventhAd);
+        users.get(1).setAds(secondUserAds);
+        eleventhAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad twelfthAd = new Ad();
+        twelfthAd.setArticleDescription("Travel suitcase");
+        twelfthAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
+        twelfthAd.setPrice(BigDecimal.valueOf(59));
+        twelfthAd.setTitle("Travel suitcase");
+        twelfthAd.setPublisher(users.get(4));
+        twelfthAd.setArticleState("Neuf sans étiquette");
+        twelfthAd.setCategory("Autre");
+        twelfthAd.setSubcategory("Autre");
+        fifthUserAds.add(twelfthAd);
+        users.get(4).setAds(fifthUserAds);
+        twelfthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad thirteenthAd = new Ad();
+        thirteenthAd.setArticleDescription("blue back pack");
+        thirteenthAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
+        thirteenthAd.setPrice(BigDecimal.valueOf(20));
+        thirteenthAd.setTitle("Blue Backpack");
+        thirteenthAd.setPublisher(users.get(0));
+        thirteenthAd.setArticleState("Satisfaisant");
+        thirteenthAd.setCategory("Mode");
+        thirteenthAd.setSubcategory("Accessoires");
+        firstUserAds.add(thirteenthAd);
+        users.get(0).setAds(firstUserAds);
+        thirteenthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad fourteenthAd = new Ad();
+        fourteenthAd.setArticleDescription("Original cowboy hat");
+        fourteenthAd.setCreationDate(LocalDateTime.now().minusMinutes(1));
+        fourteenthAd.setPrice(BigDecimal.valueOf(49));
+        fourteenthAd.setTitle("Cowboy hat");
+        fourteenthAd.setPublisher(users.get(2));
+        fourteenthAd.setArticleState("Satisfaissant");
+        fourteenthAd.setCategory("Mode");
+        fourteenthAd.setSubcategory("Accessoires");
+        thirdUserAds.add(fourteenthAd);
+        users.get(2).setAds(thirdUserAds);
+        fourteenthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad fifteenthAd = new Ad();
+        fifteenthAd.setArticleDescription("slick cap");
+        fifteenthAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
+        fifteenthAd.setPrice(BigDecimal.valueOf(20));
+        fifteenthAd.setTitle("Marlboro cap");
+        fifteenthAd.setPublisher(users.get(3));
+        fifteenthAd.setArticleState("Mode");
+        fifteenthAd.setCategory("Accessoires");
+        fifteenthAd.setSubcategory("Autre");
+        fourthUserAds.add(fifteenthAd);
+        users.get(3).setAds(fourthUserAds);
+        fifteenthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad sixteenthAd = new Ad();
+        sixteenthAd.setArticleDescription("hippie bracelet");
+        sixteenthAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
+        sixteenthAd.setPrice(BigDecimal.valueOf(5));
+        sixteenthAd.setTitle("Tree of Life Bracelet");
+        sixteenthAd.setPublisher(users.get(3));
+        sixteenthAd.setArticleState("Bon état");
+        sixteenthAd.setCategory("Mode");
+        sixteenthAd.setSubcategory("Accessoires");
+        fourthUserAds.add(sixteenthAd);
+        users.get(3).setAds(fourthUserAds);
+        sixteenthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad seventeenthAd = new Ad();
+        seventeenthAd.setArticleDescription(" etc ");
+        seventeenthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
+        seventeenthAd.setPrice(BigDecimal.valueOf(39));
+        seventeenthAd.setTitle("Murano glass bracelet");
+        seventeenthAd.setPublisher(users.get(2));
+        seventeenthAd.setArticleState("Neuf avec étiquette");
+        seventeenthAd.setCategory("Mode");
+        seventeenthAd.setSubcategory("Accessoires");
+        thirdUserAds.add(seventeenthAd);
+        users.get(2).setAds(thirdUserAds);
+        seventeenthAd.setStatus(AdStatus.AVAILABLE);
+
+        Ad eighteenthAd = new Ad();
+        eighteenthAd.setArticleDescription("Walter White Coaster");
+        eighteenthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
+        eighteenthAd.setPrice(BigDecimal.valueOf(4.99));
+        eighteenthAd.setTitle("Heisenberg Cork Coaster");
+        eighteenthAd.setPublisher(users.get(2));
+        eighteenthAd.setArticleState("Neuf sans étiquette");
+        eighteenthAd.setCategory("Maison");
+        eighteenthAd.setSubcategory("Autre");
+        thirdUserAds.add(eighteenthAd);
+        users.get(2).setAds(thirdUserAds);
+        eighteenthAd.setStatus(AdStatus.AVAILABLE);
+
+
+        return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd, ninethAd,
+                tenthAd, eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd, seventeenthAd, eighteenthAd);
     }
 
     /**

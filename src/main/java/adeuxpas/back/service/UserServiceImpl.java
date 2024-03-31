@@ -1,10 +1,16 @@
 package adeuxpas.back.service;
 
+import adeuxpas.back.dto.CityAndPostalCodeDTO;
+import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Implementation class for the UserService interface.
@@ -21,14 +27,16 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final MapStructMapper mapper;
 
     /**
      * Constructor for UserServiceImpl.
      *
      * @param userRepository The UserRepository for interacting with user-related database operations.
      */
-    public UserServiceImpl(@Autowired UserRepository userRepository){
+    public UserServiceImpl(@Autowired UserRepository userRepository, @Autowired MapStructMapper mapper){
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     /**
@@ -52,4 +60,9 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email);
     }
 
+    @Override
+    public Set<CityAndPostalCodeDTO> getUniqueCitiesAndPostalCodes() {
+        List<User> users = this.userRepository.findAll();
+        return users.stream().map(mapper::userToCityAndPostalCodeDTO).collect(Collectors.toSet());
+    }
 }

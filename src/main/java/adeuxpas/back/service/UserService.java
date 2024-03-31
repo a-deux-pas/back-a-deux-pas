@@ -1,7 +1,9 @@
 package adeuxpas.back.service;
 
+import adeuxpas.back.dto.CityAndPostalCodeDTO;
 import adeuxpas.back.entity.User;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Interface defining user-related operations for the application.
@@ -24,4 +26,6 @@ public interface UserService {
      * @param email The email address used in the search.
      */
     Optional<User> findUserByEmail(String email);
+
+    Set<CityAndPostalCodeDTO> getUniqueCitiesAndPostalCodes();
 }
