@@ -10,6 +10,7 @@ import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.ArticlePictureRepository;
 import adeuxpas.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +39,17 @@ public class DatabaseSeeder {
     private final AdRepository adRepository;
     private final ArticlePictureRepository articlePictureRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+
+    @Value("${first.pass}")
+    private String pass1;
+    @Value("${second.pass}")
+    private String pass2;
+    @Value("${third.pass}")
+    private String pass3;
+    @Value("${fourth.pass}")
+    private String pass4;
+    @Value("${fifth.pass}")
+    private String pass5;
 
     /**
      * Constructs a new instance of DatabaseSeeder.
@@ -79,7 +91,7 @@ public class DatabaseSeeder {
         User first = new User();
         first.setEmail("mbardan@email.ro");
         first.setAlias("Koroviev");
-        first.setPassword(passwordEncoder.encode("pass1"));
+        first.setPassword(passwordEncoder.encode(pass1));
         first.setBio("bio1");
         first.setCountry("France");
         first.setCity("Maisons-Alfort");
@@ -92,7 +104,7 @@ public class DatabaseSeeder {
 
         User second = new User();
         second.setEmail("daouali@email.com");
-        second.setPassword(passwordEncoder.encode("pass2"));
+        second.setPassword(passwordEncoder.encode(pass2));
         second.setAlias("Dounia");
         second.setBio("bio2");
         second.setCountry("France");
@@ -106,7 +118,7 @@ public class DatabaseSeeder {
 
         User third = new User();
         third.setEmail("lhadida@email.com");
-        third.setPassword(passwordEncoder.encode("pass3"));
+        third.setPassword(passwordEncoder.encode(pass3));
         third.setAlias("Leahad");
         third.setBio("bio3");
         third.setCountry("France");
@@ -120,7 +132,7 @@ public class DatabaseSeeder {
 
         User fourth = new User();
         fourth.setEmail("erikaike@email.fr");
-        fourth.setPassword(passwordEncoder.encode("pass4"));
+        fourth.setPassword(passwordEncoder.encode(pass4));
         fourth.setAlias("Eri");
         fourth.setBio("bio4");
         fourth.setCountry("France");
@@ -134,7 +146,7 @@ public class DatabaseSeeder {
 
         User fifth = new User();
         fifth.setEmail("jmoukmir@email.com");
-        fifth.setPassword(passwordEncoder.encode("pass5"));
+        fifth.setPassword(passwordEncoder.encode(pass5));
         fifth.setAlias("theRabbi");
         fifth.setBio("bio5");
         fifth.setCountry("France");
