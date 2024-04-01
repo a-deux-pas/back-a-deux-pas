@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/annonces")
+@RequestMapping("/ads")
 public class AdController {
 
     private final AdService adService;
@@ -24,7 +24,7 @@ public class AdController {
         this.adService = adService;
     }
 
-    @GetMapping(value = "/liste", params = {"priceRanges", "citiesAndPostalCodes", "articleStates", "category"})
+    @GetMapping(value = "/list", params = {"priceRanges", "citiesAndPostalCodes", "articleStates", "category"})
     public ResponseEntity<Object> getAdsPage(
             @RequestParam("priceRanges") List<String> priceRangesFilter,
             @RequestParam("citiesAndPostalCodes") List<String> citiesAndPostalCodesFilter,

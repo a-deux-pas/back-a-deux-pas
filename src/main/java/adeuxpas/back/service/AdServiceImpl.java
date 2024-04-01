@@ -3,6 +3,7 @@ package adeuxpas.back.service;
 import adeuxpas.back.dto.AdResponseDTO;
 import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.Ad;
+import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdServiceImpl implements AdService {
+
+    // ad and associated user account accepted statuses
+    private final List<AdStatus> acceptedAdStatuses = List.of(AdStatus.AVAILABLE);
+    private final List<AccountStatus> acceptedAccountStatuses = List.of(AccountStatus.ACTIVE, AccountStatus.REPORTED);
 
     private final AdRepository adRepository;
     private final MapStructMapper mapper;
@@ -100,22 +105,20 @@ public class AdServiceImpl implements AdService {
         } else
             category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
 
-        System.out.println(category + ", " + subcategory + ", " + gender);
-
         // passing the formatted filtering criteria to the query and saving the result to a page
-        Page<Ad> filteredAds = this.adRepository.findFilteredAdsOrderedByCreationDateDesc(
+        Page<Ad> filteredAds = this.adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes.isEmpty() ? null : postalCodes,
                 articleStatesFilter.isEmpty() ? null : articleStatesFilter,
                 maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
                 minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
-                category, subcategory, gender, AdStatus.AVAILABLE, pageable
+                category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
         );
 
         return this.convertToPageOfResponseAdDTOs(pageable, filteredAds);
     }
 
     private Page<AdResponseDTO> findAllResponseAdDTOs(Pageable pageable) {
-        Page<Ad> myAds = this.adRepository.findAllByStatusOrderByCreationDateDesc(AdStatus.AVAILABLE, pageable);
+        Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses, acceptedAccountStatuses, pageable);
         return this.convertToPageOfResponseAdDTOs(pageable, myAds);
     }
 

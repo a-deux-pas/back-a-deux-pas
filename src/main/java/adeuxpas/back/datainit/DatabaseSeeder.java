@@ -127,7 +127,7 @@ public class DatabaseSeeder {
         third.setPostalCode("75018");
         third.setProfilePicture("profilePictureUrl3");
         third.setInscriptionDate(LocalDateTime.now());
-        third.setAccountStatus(AccountStatus.SUSPENDED);
+        third.setAccountStatus(AccountStatus.ACTIVE);
         third.setRole(UserRole.USER);
 
         User fourth = new User();
@@ -152,7 +152,7 @@ public class DatabaseSeeder {
         fifth.setCountry("France");
         fifth.setCity("Lyon");
         fifth.setStreet("7bis, rue de la Synagogue");
-        fifth.setPostalCode("69000");
+        fifth.setPostalCode("66000");
         fifth.setProfilePicture("profilePictureUrl5");
         fifth.setInscriptionDate(LocalDateTime.now());
         fifth.setAccountStatus(AccountStatus.ACTIVE);
@@ -164,9 +164,9 @@ public class DatabaseSeeder {
         sixth.setAlias("Rando");
         sixth.setBio("bio6");
         sixth.setCountry("France");
-        sixth.setCity("Grenoble");
+        sixth.setCity("Lyon");
         sixth.setStreet("sous un pont");
-        sixth.setPostalCode("00000");
+        sixth.setPostalCode("66000");
         sixth.setProfilePicture("profilePictureUrl6");
         sixth.setInscriptionDate(LocalDateTime.now());
         sixth.setAccountStatus(AccountStatus.ACTIVE);
@@ -430,12 +430,12 @@ public class DatabaseSeeder {
         sixteenthAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
         sixteenthAd.setPrice(BigDecimal.valueOf(5));
         sixteenthAd.setTitle("Tree of Life Bracelet");
-        sixteenthAd.setPublisher(users.get(3));
+        sixteenthAd.setPublisher(users.get(5));
         sixteenthAd.setArticleState("Bon état");
         sixteenthAd.setCategory("Mode");
         sixteenthAd.setSubcategory("Accessoires");
-        fourthUserAds.add(sixteenthAd);
-        users.get(3).setAds(fourthUserAds);
+        sixthUserAds.add(sixteenthAd);
+        users.get(5).setAds(fourthUserAds);
         sixteenthAd.setStatus(AdStatus.AVAILABLE);
 
         Ad seventeenthAd = new Ad();

@@ -1,6 +1,7 @@
 package adeuxpas.back.repository;
 
 import adeuxpas.back.entity.Ad;
+import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,25 +28,33 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
             "    ( :subcategory IS NULL AND :gender IS NULL AND a.category = :category) OR " +
             "    ( :gender IS NULL AND a.category = :category AND a.subcategory = :subcategory) OR " +
             "    ( a.subcategory = :subcategory AND a.articleGender = :gender ) )AND " +
-            "  ( :status IS NULL OR a.status = :status )" +
+            "  ( :acceptedAdStatuses IS NULL OR a.status IN :acceptedAdStatuses ) AND" +
+            "  ( :acceptedAccountStatuses IS NULL OR u.accountStatus IN :acceptedAccountStatuses ) " +
             "ORDER BY a.creationDate DESC" )
-    Page<Ad> findFilteredAdsOrderedByCreationDateDesc(@Param("postalCodes") List<String> postalCodes,
-                                                      @Param("articleStates") List<String> articleStates,
-                                                      @Param("maxPrice1") BigDecimal maxPrice1,
-                                                      @Param("minPrice2") BigDecimal minPrice2,
-                                                      @Param("maxPrice2") BigDecimal maxPrice2,
-                                                      @Param("minPrice3") BigDecimal minPrice3,
-                                                      @Param("maxPrice3") BigDecimal maxPrice3,
-                                                      @Param("minPrice4") BigDecimal minPrice4,
-                                                      @Param("maxPrice4") BigDecimal maxPrice4,
-                                                      @Param("minPrice5") BigDecimal minPrice5,
-                                                      @Param("maxPrice5") BigDecimal maxPrice5,
-                                                      @Param("minPrice6") BigDecimal minPrice6,
-                                                      @Param("category") String category,
-                                                      @Param("subcategory") String subcategory,
-                                                      @Param("gender") String gender,
-                                                      @Param("status") AdStatus status,
-                                                      Pageable pageable
+    Page<Ad> findByAcceptedStatusesFilteredOrderedByCreationDateDesc(@Param("postalCodes") List<String> postalCodes,
+                                                                     @Param("articleStates") List<String> articleStates,
+                                                                     @Param("maxPrice1") BigDecimal maxPrice1,
+                                                                     @Param("minPrice2") BigDecimal minPrice2,
+                                                                     @Param("maxPrice2") BigDecimal maxPrice2,
+                                                                     @Param("minPrice3") BigDecimal minPrice3,
+                                                                     @Param("maxPrice3") BigDecimal maxPrice3,
+                                                                     @Param("minPrice4") BigDecimal minPrice4,
+                                                                     @Param("maxPrice4") BigDecimal maxPrice4,
+                                                                     @Param("minPrice5") BigDecimal minPrice5,
+                                                                     @Param("maxPrice5") BigDecimal maxPrice5,
+                                                                     @Param("minPrice6") BigDecimal minPrice6,
+                                                                     @Param("category") String category,
+                                                                     @Param("subcategory") String subcategory,
+                                                                     @Param("gender") String gender,
+                                                                     @Param("acceptedAdStatuses") List<AdStatus> adStatuses,
+                                                                     @Param("acceptedAccountStatuses") List<AccountStatus> accountStatuses,
+                                                                     Pageable pageable
     );
     Page<Ad> findAllByStatusOrderByCreationDateDesc(AdStatus status, Pageable pageable);
+
+
+    @Query("SELECT ad FROM Ad ad JOIN ad.publisher u WHERE ad.status IN :adStatuses AND u.accountStatus IN :accountStatuses ORDER BY ad.creationDate DESC")
+    Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(List<AdStatus> adStatuses,
+                                                             List<AccountStatus> accountStatuses,
+                                                             Pageable pageable);
 }
