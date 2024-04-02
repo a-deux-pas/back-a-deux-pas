@@ -5,23 +5,36 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import adeuxpas.back.entity.ArticlePicture;
+import adeuxpas.back.entity.User;
+import adeuxpas.back.enums.AdStatus;
+import adeuxpas.back.repository.UserRepository;
 
 public class AdPostDto {
     private Long id;
     private String title;
     private String articleDescription;
-    private LocalDateTime creationDate;
+    private String creationDate;
     private BigDecimal price;
     private String category;
     private String subcategory;
     private String articleGender;
-    private Long publisherId;
+    private long publisherId;
     private List<ArticlePicture> articlePictures;
     private String articleState;
+    private AdStatus status = AdStatus.AVAILABLE;
 
+    private UserRepository userRepository;
+
+    // no-args constructor
     public AdPostDto() {
     }
 
+    // args constructor
+    public AdPostDto(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // getters and setters
     public Long getId() {
         return id;
     }
@@ -54,11 +67,11 @@ public class AdPostDto {
         this.articleState = articleState;
     }
 
-    public LocalDateTime getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -70,13 +83,13 @@ public class AdPostDto {
         this.price = bigDecimal;
     }
 
-    // public AdStatus getStatus() {
-    // return status;
-    // }
+    public AdStatus getStatus() {
+        return status;
+    }
 
-    // public void setStatus(AdStatus status) {
-    // this.status = status;
-    // }
+    public void setStatus(AdStatus status) {
+        this.status = status;
+    }
 
     public String getCategory() {
         return category;
@@ -102,11 +115,11 @@ public class AdPostDto {
         this.articleGender = articleGender;
     }
 
-    public Long getPublisherId() {
+    public long getPublisherId() {
         return publisherId;
     }
 
-    public void setPublisherId(Long publisherId) {
+    public void setPublisherId(long publisherId) {
         this.publisherId = publisherId;
     }
 
@@ -135,4 +148,13 @@ public class AdPostDto {
                 ", articlePictures=" + articlePictures +
                 '}';
     }
+
+    // private LocalDateTime convertStringToLocalDateTime(String data) {
+    // return LocalDateTime.parse(data);
+    // }
+
+    // private User getUserMircea(Long publisherId) {
+    // return userRepository.findById(publisherId).orElse(null);
+    // }
+
 }

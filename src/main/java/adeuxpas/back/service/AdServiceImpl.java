@@ -5,6 +5,8 @@ import adeuxpas.back.dto.HomePageAdDTO;
 import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class AdServiceImpl implements AdService {
     private MapStructMapper mapStruct;
     private final AdRepository adRepository;
     private UserService userService;
+    private UserRepository userRepository;
 
     public AdServiceImpl(
             @Autowired MapStructMapper mapStruct,
@@ -50,13 +53,11 @@ public class AdServiceImpl implements AdService {
         });
     }
 
-    // @Override
-    // public Optional<Ad>
-    // postAd(AdPostDto adDto)
-    {
-        // Ad ad = this.mapStruct.adPostDtoToAd(adDto, this.userService);
-        // Ad savedAd = adRepository.save(ad);
-        // return Optional.ofNullable(savedAd);
+    @Override
+    public Optional<Ad> postAd(AdPostDto adDto) {
+        Ad ad = this.mapStruct.adPostDtoToAd(adDto, this.userRepository);
+        Ad savedAd = adRepository.save(ad);
+        return Optional.ofNullable(savedAd);
     }
 
 }

@@ -5,8 +5,10 @@ import adeuxpas.back.dto.HomePageAdDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.entity.User;
+import adeuxpas.back.repository.UserRepository;
 import adeuxpas.back.service.UserService;
 
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -31,16 +33,13 @@ public interface MapStructMapper {
         return null;
     }
 
-    // @Mapping(expression = "java(findUserById(adPostDto.getPublisherId(),
-    // userService))", target = "publisher")
-    // // @Mapping(target = "id", ignore = true)
-    // // @Mapping(source = "publisherId", target = "publisher", qualifiedByName =
-    // // "findUserById")
-    // Ad adPostDtoToAd(AdPostDto adPostDto, UserService userService);
+    @Mapping(source = "adPostDto.publisherId", target = "publisher.id")
+    Ad adPostDtoToAd(AdPostDto adPostDto, UserRepository userRepository);
 
-    // @Named("findUserById")
-    // default User findUserById(Long id, UserService userService) {
-    // Optional<User> userOptional = userService.findUserById(id);
-    // return userOptional.orElse(null);
+    // @Named("getUserMircea")
+    // default User getUserMircea(Long publisherId, @Context UserRepository
+    // userRepository) {
+    // return userRepository.findById(publisherId).orElse(null);
     // }
+
 }

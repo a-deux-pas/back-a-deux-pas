@@ -15,7 +15,8 @@ public class ArticlePicture {
     private Ad ad;
 
     // constructors
-    public ArticlePicture(){}
+    public ArticlePicture() {
+    }
 
     public ArticlePicture(String url, Ad ad) {
         this.url = url;
@@ -50,8 +51,10 @@ public class ArticlePicture {
     // equals
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ArticlePicture that)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof ArticlePicture that))
+            return false;
         return Objects.equals(url, that.url) && Objects.equals(ad, that.ad);
     }
 

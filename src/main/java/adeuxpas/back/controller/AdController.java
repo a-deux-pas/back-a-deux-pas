@@ -1,7 +1,6 @@
 package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.AdPostDto;
-import adeuxpas.back.dto.HomePageAdDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
@@ -9,11 +8,14 @@ import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.service.AdService;
 import adeuxpas.back.service.UserService;
 
-import java.util.Optional;
+import java.net.URI;
+import java.time.LocalDateTime;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping("/annonce")
+@RequestMapping("/ad")
 public class AdController {
 
     private final AdService adService;
@@ -37,7 +39,7 @@ public class AdController {
         this.adRepo = adRepo;
     }
 
-    @GetMapping("/liste")
+    @GetMapping("/list")
     public ResponseEntity<Object> findAllAds() {
         try {
             return ResponseEntity.ok(this.adService.findAllHomePageAds());
@@ -48,38 +50,36 @@ public class AdController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdController.class);
 
-    @PostMapping("/creer-une-annonce")
+    @PostMapping("/create")
     public ResponseEntity<?> postAd(@RequestBody AdPostDto adDto) {
+        try {
+            User publisher = userService.findUserById(adDto.getPublisherId())
+                    .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
-        User publisher = new User();
-        Ad newAd = new Ad();
-        publisher = this.userService.findUserById(adDto.getPublisherId()).get();
+            Ad newAd = new Ad();
+            newAd.setTitle(adDto.getTitle());
+            newAd.setArticleDescription(adDto.getArticleDescription());
+            newAd.setCreationDate(LocalDateTime.now());
+            newAd.setPrice(adDto.getPrice());
+            newAd.setCategory(adDto.getCategory());
+            newAd.setSubcategory(adDto.getSubcategory());
+            newAd.setArticleGender(adDto.getArticleGender());
+            newAd.setPublisher(publisher);
+            newAd.setArticlePictures(adDto.getArticlePictures());
+            newAd.setArticleState(adDto.getArticleState());
+            newAd.setStatus(AdStatus.AVAILABLE);
 
-        newAd.setPublisher(publisher);
-        newAd.setStatus(AdStatus.AVAILABLE);
-        newAd.setArticleDescription(adDto.getArticleDescription());
-        newAd.setArticleState(adDto.getArticleState());
-        newAd.setPrice(adDto.getPrice());
-        newAd.setArticlePictures(adDto.getArticlePictures());
+            Ad savedAd = adRepo.save(newAd);
 
-        this.adRepo.save(newAd);
+            logger.info("Requête POST reçue pour la création d'une annonce.");
+            logger.info("Contenu du corps de la requête : {}", savedAd.toString());
 
-        System.err.println("@@@@@@@@");
-        System.out.println("newAd:");
-        System.out.println("id: " + newAd.getId());
-        System.out.println("title: " + newAd.getTitle());
-        logger.info("Requête POST reçue pour la création d'une annonce.");
-        logger.info("Contenu du corps de la requête : {}", newAd.toString());
-        System.err.println("@@@@@@@@");
-
-        // Optional<Ad> savedAd = this.adService.postAd(adDto);
-        // if (savedAd.isPresent()) {
-        // return ResponseEntity.ok(savedAd.get());
-        // } else {
-        // return ResponseEntity.status(500).body("Failed to create ad.");
-        // }
-
-        return ResponseEntity.ok(newAd);
-
+            return ResponseEntity.created(new URI("/ads/" + savedAd.getId())).build();
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
+        }
     }
+
 }
