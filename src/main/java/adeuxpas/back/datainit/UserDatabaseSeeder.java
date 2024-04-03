@@ -263,7 +263,7 @@ public class UserDatabaseSeeder {
 
     /**
      * Seeds the database with user's preferred meeting places.
-     *  todo : Utiliser une api comme Mapbox ou Google Map pour générer des adresses existantes aléatoires
+     *  RAF : Utiliser une api comme Mapbox ou Google Map pour générer des adresses existantes aléatoires
      *  en fonction de l'adresse du user
     */
     private void seedPreferredMeetingPlaces(){

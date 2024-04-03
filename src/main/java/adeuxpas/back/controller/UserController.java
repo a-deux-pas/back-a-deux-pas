@@ -36,7 +36,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // todo : méthodes à changer une fois le login réalisé
+    // RAF : méthodes à changer une fois le login réalisé
     /**
      * Endpoint to access a user's profile information.
      *
