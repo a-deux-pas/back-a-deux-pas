@@ -36,7 +36,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // TODO : méthode à changer une fois le login réalisé
+    // todo : méthodes à changer une fois le login réalisé
     /**
      * Endpoint to access a user's profile information.
      *
@@ -58,7 +58,6 @@ public class UserController {
         }  
     }
     
-    // TODO : méthode à changer une fois le login réalisé
     /**
      * Endpoint to access a user's preferred schedules.
      *
@@ -80,7 +79,6 @@ public class UserController {
         }  
     }
 
-    // TODO : méthode à changer une fois le login réalisé
     /**
      * Endpoint to access user's preferred meeting places.
      *

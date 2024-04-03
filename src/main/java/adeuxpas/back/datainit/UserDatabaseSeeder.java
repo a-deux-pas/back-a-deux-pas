@@ -263,7 +263,8 @@ public class UserDatabaseSeeder {
 
     /**
      * Seeds the database with user's preferred meeting places.
-     * TODO : use an api such Mapbox or Google Map to generate ramdom existing address
+     *  todo : Utiliser une api comme Mapbox ou Google Map pour générer des adresses existantes aléatoires
+     *  en fonction de l'adresse du user
     */
     private void seedPreferredMeetingPlaces(){
         User lea = userRepository.findById(3L).orElse(null); 
