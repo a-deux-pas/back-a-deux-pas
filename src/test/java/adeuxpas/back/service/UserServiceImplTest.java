@@ -6,17 +6,16 @@ import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.WeekDays;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalTime;
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+
 
 /**
  * Test class for UserServiceImpl.
@@ -28,15 +27,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Léa Hadida
  */
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class UserServiceImplTest {
 
-    // Create the instance of UserSerive and automatically inject the UserRepository mock
+    // Create an instance of UserServiceImpl and automatically inject its dependencies
     @InjectMocks
     private UserServiceImpl userServiceImpl;
-
-    @Autowired
-    private UserMapper userMapper;
 
     /**
      * Creates a user entity with the given user ID.
@@ -62,36 +57,34 @@ class UserServiceImplTest {
     void testGroupByTimesCorrectGrouping() {
         // Mocking User Preferred Schedules data
         User user = createUser(1L);
+
+        // Mocking preferred schedules
         List<PreferredSchedule> preferredScheduleList = new ArrayList<>();
-        
-        // Creating and adding preferred schedules with different days and times
-        PreferredSchedule preferredSchedule1 = new PreferredSchedule(WeekDays.LUNDI, LocalTime.of(18, 0), LocalTime.of(20, 0));
+        PreferredSchedule preferredSchedule1 = new PreferredSchedule(WeekDays.LUNDI, LocalTime.of(18, 0), LocalTime.of(20, 0), user);
         preferredSchedule1.setId(2L);
-        preferredSchedule1.setUser(user);
         preferredScheduleList.add(preferredSchedule1);
         
-        PreferredSchedule preferredSchedule2 = new PreferredSchedule(WeekDays.MARDI, LocalTime.of(18, 0), LocalTime.of(20, 0));
+        PreferredSchedule preferredSchedule2 = new PreferredSchedule(WeekDays.MARDI, LocalTime.of(18, 0), LocalTime.of(20, 0), user);
         preferredSchedule2.setId(3L);
-        preferredSchedule2.setUser(user);
         preferredScheduleList.add(preferredSchedule2);
         
-        PreferredSchedule preferredSchedule3 = new PreferredSchedule(WeekDays.MERCREDI, LocalTime.of(8, 0), LocalTime.of(9, 0));
+        PreferredSchedule preferredSchedule3 = new PreferredSchedule(WeekDays.MERCREDI, LocalTime.of(8, 0), LocalTime.of(9, 0), user);
         preferredSchedule3.setId(4L);
-        preferredSchedule3.setUser(user);
         preferredScheduleList.add(preferredSchedule3);
         
-        PreferredSchedule preferredSchedule4 = new PreferredSchedule(WeekDays.SAMEDI, LocalTime.of(12, 0), LocalTime.of(14, 0));
+        PreferredSchedule preferredSchedule4 = new PreferredSchedule(WeekDays.SAMEDI, LocalTime.of(12, 0), LocalTime.of(14, 0), user);
         preferredSchedule4.setId(5L);
-        preferredSchedule4.setUser(user);
         preferredScheduleList.add(preferredSchedule4);
         
-        PreferredSchedule preferredSchedule5 = new PreferredSchedule(WeekDays.DIMANCHE, LocalTime.of(12, 0), LocalTime.of(14, 0));
+        PreferredSchedule preferredSchedule5 = new PreferredSchedule(WeekDays.DIMANCHE, LocalTime.of(12, 0), LocalTime.of(14, 0), user);
         preferredSchedule5.setId(6L);
-        preferredSchedule5.setUser(user);
         preferredScheduleList.add(preferredSchedule5);
-        
+
         // Mocking User Preferred Schedules DTO data
-        List<PreferredScheduleDTO> preferredScheduleListDTO = preferredScheduleList.stream().map(userMapper::mapPreferredScheduleToDTO).toList();
+        List<PreferredScheduleDTO> preferredScheduleListDTO = new ArrayList<>();
+        preferredScheduleList.forEach( schedule ->  {
+            preferredScheduleListDTO.add(UserMapper.INSTANCE.mapPreferredScheduleToDTO(schedule));
+        });
 
         // Call the method to test
         List<PreferredScheduleDTO> preferredSchedules = userServiceImpl.groupByTimes(preferredScheduleListDTO);

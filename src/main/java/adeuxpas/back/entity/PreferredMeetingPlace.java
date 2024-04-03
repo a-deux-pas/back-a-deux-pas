@@ -53,12 +53,13 @@ public class PreferredMeetingPlace {
      * @param postalCode The postal code of the preferred meeting place.
      * @param country    The country of the preferred meeting place.
      */
-    public PreferredMeetingPlace(String name, String street, String city, String postalCode, String country) {
+    public PreferredMeetingPlace(String name, String street, String city, String postalCode, String country, User user) {
         this.name = name;
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
         this.country = country;
+        this.user = user;
     }
 
     public Long getId() {

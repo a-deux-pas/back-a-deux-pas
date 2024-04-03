@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
@@ -36,6 +37,11 @@ import adeuxpas.back.enums.WeekDays;
     componentModel = "spring"
 )
 public interface UserMapper {
+
+    /**
+     * Singleton mapper instance for {@code User} to {@code UserDto} conversion.
+     */
+    public static final UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     /**
      * Maps a User entity to a ProfilePageUserDTO.

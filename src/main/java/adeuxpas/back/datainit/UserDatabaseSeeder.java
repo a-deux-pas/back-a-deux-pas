@@ -11,6 +11,7 @@ import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -37,13 +38,28 @@ public class UserDatabaseSeeder {
     private final BCryptPasswordEncoder passwordEncoder;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
-
+    
     private static final String FRANCE = "France";
     private static final String POSTAL_CODE_PARIS_20 = "75020";
     private static final String PARIS = "Paris";
-    
 
     private SecureRandom random = new SecureRandom(); 
+
+    @Value("${first.pass}")
+    private String pass1;
+
+    @Value("${second.pass}")
+    private String pass2;
+
+    @Value("${third.pass}")
+    private String pass3;
+
+    @Value("${fourth.pass}")
+    private String pass4;
+
+    @Value("${fifth.pass}")
+    private String pass5;
+    
     /**
      * Constructs a new instance of DatabaseSeeder.
      *
@@ -85,7 +101,7 @@ public class UserDatabaseSeeder {
         User first = new User();
         first.setEmail("mbardan@email.ro");
         first.setAlias("Koroviev");
-        first.setPassword(passwordEncoder.encode("pass1"));
+        first.setPassword(passwordEncoder.encode(pass1));
         first.setBio("bio1");
         first.setCountry(FRANCE);
         first.setCity("Maisons-Alfort");
@@ -98,7 +114,7 @@ public class UserDatabaseSeeder {
 
         User second = new User();
         second.setEmail("daouali@email.com");
-        second.setPassword(passwordEncoder.encode("pass2"));
+        second.setPassword(passwordEncoder.encode(pass2));
         second.setAlias("Dounia");
         second.setBio("bio2");
         second.setCountry(FRANCE);
@@ -112,7 +128,7 @@ public class UserDatabaseSeeder {
 
         User third = new User();
         third.setEmail("lhadida@email.com");
-        third.setPassword(passwordEncoder.encode("pass3"));
+        third.setPassword(passwordEncoder.encode(pass3));
         third.setAlias("Leahad");
         third.setBio("Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
         third.setCountry(FRANCE);
@@ -126,7 +142,7 @@ public class UserDatabaseSeeder {
 
         User fourth = new User();
         fourth.setEmail("erikaike@email.fr");
-        fourth.setPassword(passwordEncoder.encode("pass4"));
+        fourth.setPassword(passwordEncoder.encode(pass4));
         fourth.setAlias("Eri");
         fourth.setBio("Passionnée de mode, je vends mes vêtements pour permettre aux plus grand nombre d’être stylé.");
         fourth.setCountry(FRANCE);
@@ -140,7 +156,7 @@ public class UserDatabaseSeeder {
 
         User fifth = new User();
         fifth.setEmail("jmoukmir@email.com");
-        fifth.setPassword(passwordEncoder.encode("pass5"));
+        fifth.setPassword(passwordEncoder.encode(pass5));
         fifth.setAlias("theRabbi");
         fifth.setBio("bio5");
         fifth.setCountry(FRANCE);
@@ -169,7 +185,7 @@ public class UserDatabaseSeeder {
     private void seedPreferredSchedules(){
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            generateRandomSchedulesForUser(user);
+            generateSchedulesForUser(user);
         }
     }
 
@@ -177,12 +193,12 @@ public class UserDatabaseSeeder {
      * Generates random schedules for a given user.
      * @param user The user for whom schedules are generated.
      */
-    public void generateRandomSchedulesForUser(User user) {
+    public void generateSchedulesForUser(User user) {
         for (int i = 0; i < 6; i++) {
             // Generate a new set of schedules until there are no overlaps
             Set<PreferredSchedule> newSchedules;
             do {
-                newSchedules = generateRandomSchedule();
+                newSchedules = generateRandomScheduleForUser(user);
             } while (isScheduleOverlapping(user, newSchedules));
             for (PreferredSchedule schedule : newSchedules) {
                 schedule.setUser(user);
@@ -212,12 +228,12 @@ public class UserDatabaseSeeder {
      * Generates a set of random schedules.
      * @return A set of random schedules.
     */
-    private Set<PreferredSchedule> generateRandomSchedule() {
+    private Set<PreferredSchedule> generateRandomScheduleForUser(User user) {
         Set<PreferredSchedule> schedules = new HashSet<>();
         WeekDays randomDay = WeekDays.values()[random.nextInt(WeekDays.values().length)]; 
         LocalTime startTime = generateRandomTime();
         LocalTime endTime = generateRandomEndTime(startTime);
-        PreferredSchedule schedule = new PreferredSchedule(randomDay, startTime, endTime);
+        PreferredSchedule schedule = new PreferredSchedule(randomDay, startTime, endTime, user);
         schedules.add(schedule);
         return schedules;
     }
@@ -251,20 +267,15 @@ public class UserDatabaseSeeder {
     */
     private void seedPreferredMeetingPlaces(){
         User lea = userRepository.findById(3L).orElse(null); 
-        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", PARIS, POSTAL_CODE_PARIS_20, FRANCE);
-        meetingPlace1.setUser(lea);
+        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace1);
-        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("Place Martin Nadaud", "Place Martin Nadaud", PARIS, POSTAL_CODE_PARIS_20, FRANCE);
-        meetingPlace2.setUser(lea);
+        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("Place Martin Nadaud", "Place Martin Nadaud", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace2);
-        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("Métro Pelleport", "120 rue Orfila", PARIS, POSTAL_CODE_PARIS_20, FRANCE);
-        meetingPlace3.setUser(lea);
+        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("Métro Pelleport", "120 rue Orfila", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace3);
-        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("Métro Père Lachaise", "Avenue de la République", PARIS, POSTAL_CODE_PARIS_20, FRANCE);
-        meetingPlace4.setUser(lea);
+        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("Métro Père Lachaise", "Avenue de la République", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace4);
-        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("Métro Ménilmontant","Rue de Paris",  PARIS, POSTAL_CODE_PARIS_20, FRANCE);
-        meetingPlace5.setUser(lea);
+        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("Métro Ménilmontant","Rue de Paris",  PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
         this.preferredMeetingPlaceRepository.save(meetingPlace5);
     }
 }

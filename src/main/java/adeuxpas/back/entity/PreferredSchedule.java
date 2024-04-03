@@ -54,10 +54,11 @@ public class PreferredSchedule {
      * @param startTime The start time of the preferred schedule.
      * @param endTime   The end time of the preferred schedule.
      */
-    public PreferredSchedule(WeekDays weekDay, LocalTime startTime, LocalTime endTime) {
+    public PreferredSchedule(WeekDays weekDay, LocalTime startTime, LocalTime endTime, User user) {
         this.weekDay = weekDay;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.user = user;
     }
 
     public Long getId() {
