@@ -15,7 +15,6 @@ package adeuxpas.back.dto;
  */
 public class PreferredMeetingPlaceDTO {
     private Long id;
-    private String country;
     private String postalCode;
     private String city;
     private String street;
@@ -32,17 +31,15 @@ public class PreferredMeetingPlaceDTO {
      * Constructor for PreferredMeetingPlaceDTO with all attributes.
      *
      * @param id          The unique identifier for the preferred meeting place.
-     * @param country     The country of the preferred meeting place.
      * @param postalCode  The postal code or ZIP code of the preferred meeting place.
      * @param city        The city of the preferred meeting place.
      * @param street      The street address of the preferred meeting place.
      * @param name        The name or description of the preferred meeting place.
      * @param userId      The ID of the user associated with the preferred meeting place.
      */
-    public PreferredMeetingPlaceDTO(Long id, String country, String postalCode, String city, String street, String name,
+    public PreferredMeetingPlaceDTO(Long id, String postalCode, String city, String street, String name,
             Long userId) {
         this.id = id;
-        this.country = country;
         this.postalCode = postalCode;
         this.city = city;
         this.street = street;
@@ -56,14 +53,6 @@ public class PreferredMeetingPlaceDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getPostalCode() {

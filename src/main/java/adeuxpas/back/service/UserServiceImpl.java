@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService{
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             List<PreferredMeetingPlace> preferredMeetingPlaces = preferredMeetingPlaceRepository.findPreferredMeetingPlacesByUser(user);
-            return preferredMeetingPlaces.stream().map(userMapper::mapPreferredMettingPlaceToDTO).toList();
+            return preferredMeetingPlaces.stream().map(userMapper::mapPreferredMeettingPlaceToDTO).toList();
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }

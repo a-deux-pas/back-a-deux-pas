@@ -32,8 +32,6 @@ public class PreferredMeetingPlace {
     private String city;
     @Column(name = "postal_code", length = 50)
     private String postalCode;
-    @Column(length = 150) 
-    private String country;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -51,14 +49,12 @@ public class PreferredMeetingPlace {
      * @param street     The street address of the preferred meeting place.
      * @param city       The city of the preferred meeting place.
      * @param postalCode The postal code of the preferred meeting place.
-     * @param country    The country of the preferred meeting place.
      */
-    public PreferredMeetingPlace(String name, String street, String city, String postalCode, String country, User user) {
+    public PreferredMeetingPlace(String name, String street, String city, String postalCode, User user) {
         this.name = name;
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
-        this.country = country;
         this.user = user;
     }
 
@@ -76,14 +72,6 @@ public class PreferredMeetingPlace {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getCity() {

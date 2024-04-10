@@ -10,11 +10,14 @@ import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 
+import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
+import java.net.*;
 import java.security.SecureRandom;
 import java.time.*;
 import java.util.*;
@@ -40,7 +43,6 @@ public class UserDatabaseSeeder {
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
     
     private static final String FRANCE = "France";
-    private static final String POSTAL_CODE_PARIS_20 = "75020";
     private static final String PARIS = "Paris";
 
     private SecureRandom random = new SecureRandom(); 
@@ -87,9 +89,12 @@ public class UserDatabaseSeeder {
         List<User> users = createUsers();
         seedUsers(users);
 
-        seedPreferredSchedules();
-        
-        seedPreferredMeetingPlaces();
+        for (User user : users) {
+            //Seeds the database with users preferred schedules
+            generateSchedulesForUser(user);
+            //Seeds the database with users preferred meeting places
+            generatePreferredMeetingPlacesForUser(user);
+        }
     }
 
     /**
@@ -120,7 +125,7 @@ public class UserDatabaseSeeder {
         second.setCountry(FRANCE);
         second.setCity(PARIS);
         second.setStreet("5, Garibaldi");
-        second.setPostalCode("75000");
+        second.setPostalCode("75001");
         second.setProfilePicture("profilePictureUrl2");
         second.setInscriptionDate(LocalDate.now());
         second.setAccountStatus(AccountStatus.REPORTED);
@@ -134,7 +139,7 @@ public class UserDatabaseSeeder {
         third.setCountry(FRANCE);
         third.setCity(PARIS);
         third.setStreet("5, Av de la Liberte");
-        third.setPostalCode(POSTAL_CODE_PARIS_20);
+        third.setPostalCode("75020");
         third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
         third.setInscriptionDate(LocalDate.now());
         third.setAccountStatus(AccountStatus.SUSPENDED);
@@ -148,7 +153,7 @@ public class UserDatabaseSeeder {
         fourth.setCountry(FRANCE);
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
-        fourth.setPostalCode("69000");
+        fourth.setPostalCode("69002");
         fourth.setProfilePicture("https://media.licdn.com/dms/image/C4D03AQEPCyzoBB3WHQ/profile-displayphoto-shrink_200_200/0/1559041227281?e=1717027200&v=beta&t=bo3fSv0ufHuLbS1IHuTLJ9YwwixGq-HCiF3CkcshrQc");
         fourth.setInscriptionDate(LocalDate.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
@@ -162,7 +167,7 @@ public class UserDatabaseSeeder {
         fifth.setCountry(FRANCE);
         fifth.setCity("Lyon");
         fifth.setStreet("7bis, rue de la Synagogue");
-        fifth.setPostalCode("69000");
+        fifth.setPostalCode("69003");
         fifth.setProfilePicture("profilePictureUrl5");
         fifth.setInscriptionDate(LocalDate.now());
         fifth.setAccountStatus(AccountStatus.ACTIVE);
@@ -177,16 +182,6 @@ public class UserDatabaseSeeder {
     */
     private void seedUsers(List<User> users){
         this.userRepository.saveAll(users);
-    }
-
-    /**
-     * Seeds the database with users preferred schedules.
-    */
-    private void seedPreferredSchedules(){
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            generateSchedulesForUser(user);
-        }
     }
 
     /**
@@ -262,21 +257,58 @@ public class UserDatabaseSeeder {
     }
 
     /**
-     * Seeds the database with user's preferred meeting places.
-     *  RAF : Utiliser une api comme Mapbox ou Google Map pour générer des adresses existantes aléatoires
-     *  en fonction de l'adresse du user
-    */
-    private void seedPreferredMeetingPlaces(){
-        User lea = userRepository.findById(3L).orElse(null); 
-        PreferredMeetingPlace meetingPlace1 = new PreferredMeetingPlace("Mairie du 20e arrondissement", "61 place Gambetta", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
-        this.preferredMeetingPlaceRepository.save(meetingPlace1);
-        PreferredMeetingPlace meetingPlace2 = new PreferredMeetingPlace("Place Martin Nadaud", "Place Martin Nadaud", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
-        this.preferredMeetingPlaceRepository.save(meetingPlace2);
-        PreferredMeetingPlace meetingPlace3 = new PreferredMeetingPlace("Métro Pelleport", "120 rue Orfila", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
-        this.preferredMeetingPlaceRepository.save(meetingPlace3);
-        PreferredMeetingPlace meetingPlace4 = new PreferredMeetingPlace("Métro Père Lachaise", "Avenue de la République", PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
-        this.preferredMeetingPlaceRepository.save(meetingPlace4);
-        PreferredMeetingPlace meetingPlace5 = new PreferredMeetingPlace("Métro Ménilmontant","Rue de Paris",  PARIS, POSTAL_CODE_PARIS_20, FRANCE, lea);
-        this.preferredMeetingPlaceRepository.save(meetingPlace5);
+     * Fetches addresses from the data.gouv.fr api and returns them as a list of PreferredMeetingPlace objects.
+     * @return List of PreferredMeetingPlace objects fetched from the API
+     */
+    private void generatePreferredMeetingPlacesForUser(User user){
+        //List<PreferredMeetingPlace> preferredMeetingPlaces = new ArrayList<>();
+        String userPostalCode = user.getPostalCode();
+        try {
+            // Construct URI for API endpoint
+            URI uri = new URI("https://api-adresse.data.gouv.fr/search/?q=8+bd+du+port&postcode=" + userPostalCode); 
+            
+            // Open connection to the API
+            HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            // Check the response code
+            int responsecode = connection.getResponseCode();
+
+            if (responsecode != 200) {
+                throw new RuntimeException("HttpResponseCode: " + responsecode);
+            } else {
+                // Read the response from the API
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                reader.close();
+
+                // Parse JSON response
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                JSONArray featuresArray = jsonResponse.getJSONArray("features");
+                for (int i = 0; i < featuresArray.length(); i++) {
+                    JSONObject featureObject = featuresArray.getJSONObject(i);
+                    JSONObject propertiesObject = featureObject.getJSONObject("properties");
+
+                    // Extract data and create PreferredMeetingPlace object
+                    String name = propertiesObject.getString("street");
+                    String street = propertiesObject.getString("name");
+                    String city = propertiesObject.getString("city");
+                    String postalCode = propertiesObject.getString("postcode");
+
+                    PreferredMeetingPlace preferredMeetingPlace = new PreferredMeetingPlace(name, street, city, postalCode, user);
+                    this.preferredMeetingPlaceRepository.save(preferredMeetingPlace);
+                }
+            }
+                
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }

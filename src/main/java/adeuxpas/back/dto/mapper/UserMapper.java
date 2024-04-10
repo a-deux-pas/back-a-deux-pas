@@ -93,5 +93,5 @@ public interface UserMapper {
      * @return The mapped PreferredMeetingPlaceDTO.
      */
     @Mapping(source = "user.id", target = "userId")
-    PreferredMeetingPlaceDTO mapPreferredMettingPlaceToDTO(PreferredMeetingPlace preferredMeetingPlace);
+    PreferredMeetingPlaceDTO mapPreferredMeettingPlaceToDTO(PreferredMeetingPlace preferredMeetingPlace);
 }
