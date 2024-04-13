@@ -1,15 +1,20 @@
 package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.AdPostDto;
+import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.entity.Ad;
+import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.ArticlePictureRepository;
 import adeuxpas.back.service.AdService;
 import adeuxpas.back.service.UserService;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +36,15 @@ public class AdController {
     private final AdService adService;
     private final UserService userService;
     private final AdRepository adRepo;
+    private final ArticlePictureRepository adPicRepo;
 
     public AdController(
-            @Autowired AdService adService, @Autowired UserService userService, @Autowired AdRepository adRepo) {
+            @Autowired AdService adService, @Autowired UserService userService, @Autowired AdRepository adRepo,
+            @Autowired ArticlePictureRepository adPicRepo) {
         this.adService = adService;
         this.userService = userService;
         this.adRepo = adRepo;
+        this.adPicRepo = adPicRepo;
     }
 
     @GetMapping("/list")
@@ -53,6 +61,7 @@ public class AdController {
     @PostMapping("/create")
     public ResponseEntity<?> postAd(@RequestBody AdPostDto adDto) {
         try {
+            // A enlever apres installation de MapStruct
             User publisher = userService.findUserById(adDto.getPublisherId())
                     .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
@@ -65,14 +74,28 @@ public class AdController {
             newAd.setSubcategory(adDto.getSubcategory());
             newAd.setArticleGender(adDto.getArticleGender());
             newAd.setPublisher(publisher);
-            newAd.setArticlePictures(adDto.getArticlePictures());
             newAd.setArticleState(adDto.getArticleState());
             newAd.setStatus(AdStatus.AVAILABLE);
+
+            List<ArticlePicture> articlePictures = new ArrayList<>();
+
+            List<ArticlePictureDTO> adPics = adDto.getArticlePictures();
+
+            for (ArticlePictureDTO adPic : adPics) {
+                ArticlePicture newArticlePicture = new ArticlePicture();
+                newArticlePicture.setUrl(adPic.getUrl());
+                newArticlePicture.setAd(newAd);
+                articlePictures.add(newArticlePicture);
+            }
+
+            newAd.setArticlePictures(articlePictures);
 
             Ad savedAd = adRepo.save(newAd);
 
             logger.info("Requête POST reçue pour la création d'une annonce.");
             logger.info("Contenu du corps de la requête : {}", savedAd.toString());
+            logger.info("Contenu du corps du DTO : {}", adDto.toString());
+            // A enlever apres installation de MapStruct
 
             return ResponseEntity.created(new URI("/ads/" + savedAd.getId())).build();
         } catch (UsernameNotFoundException e) {

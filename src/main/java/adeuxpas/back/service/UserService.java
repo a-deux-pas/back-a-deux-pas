@@ -28,5 +28,11 @@ public interface UserService {
      */
     Optional<User> findUserByEmail(String email);
 
+    /**
+     * Abstract method that attempts to find the user by its id.
+     * 
+     * @param id
+     * @return
+     */
     Optional<User> findUserById(Long id);
 }

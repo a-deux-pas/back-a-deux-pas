@@ -19,10 +19,11 @@ public class AdPostDto {
     private String subcategory;
     private String articleGender;
     private long publisherId;
-    private List<ArticlePicture> articlePictures;
+    private List<ArticlePictureDTO> articlePictures;
     private String articleState;
     private AdStatus status = AdStatus.AVAILABLE;
 
+    // A enlever une fois la partie connexion integré
     private UserRepository userRepository;
 
     // no-args constructor
@@ -30,9 +31,27 @@ public class AdPostDto {
     }
 
     // args constructor
-    public AdPostDto(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AdPostDto(Long id, String title, String articleDescription, String creationDate, BigDecimal price,
+            String category, String articleGender, long publisherId, List<ArticlePictureDTO> articlePictures,
+            String articleState, AdStatus status) {
+        this.id = id;
+        this.title = title;
+        this.articleDescription = articleDescription;
+        this.creationDate = creationDate;
+        this.price = price;
+        this.category = category;
+        this.articleGender = articleGender;
+        this.publisherId = publisherId;
+        this.articlePictures = articlePictures;
+        this.articleState = articleState;
+        this.status = status;
+
     }
+
+    // args constructor
+    // public AdPostDto(UserRepository userRepository) {
+    // this.userRepository = userRepository;
+    // }
 
     // getters and setters
     public Long getId() {
@@ -123,11 +142,11 @@ public class AdPostDto {
         this.publisherId = publisherId;
     }
 
-    public List<ArticlePicture> getArticlePictures() {
+    public List<ArticlePictureDTO> getArticlePictures() {
         return this.articlePictures;
     }
 
-    public void setArticlePictures(List<ArticlePicture> articlePictures) {
+    public void setArticlePictures(List<ArticlePictureDTO> articlePictures) {
         this.articlePictures = articlePictures;
     }
 

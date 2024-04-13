@@ -18,6 +18,7 @@ public class ArticlePicture {
     public ArticlePicture() {
     }
 
+    // constructor with arguments
     public ArticlePicture(String url, Ad ad) {
         this.url = url;
         this.ad = ad;

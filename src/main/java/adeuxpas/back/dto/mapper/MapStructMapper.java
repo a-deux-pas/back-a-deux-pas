@@ -1,6 +1,7 @@
 package adeuxpas.back.dto.mapper;
 
 import adeuxpas.back.dto.AdPostDto;
+import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.dto.HomePageAdDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
@@ -12,6 +13,7 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,10 +38,7 @@ public interface MapStructMapper {
     @Mapping(source = "adPostDto.publisherId", target = "publisher.id")
     Ad adPostDtoToAd(AdPostDto adPostDto, UserRepository userRepository);
 
-    // @Named("getUserMircea")
-    // default User getUserMircea(Long publisherId, @Context UserRepository
-    // userRepository) {
-    // return userRepository.findById(publisherId).orElse(null);
-    // }
+    // Article Picture
+    ArticlePicture articlePictureDTOToaArticlePicture(ArticlePictureDTO articlePictureDTO);
 
 }

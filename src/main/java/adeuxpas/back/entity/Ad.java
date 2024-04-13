@@ -42,6 +42,22 @@ public class Ad {
     public Ad() {
     }
 
+    public Ad(String title, String articleDescription, String articleState, LocalDateTime creationDate,
+            BigDecimal price, AdStatus status, String category, String subcategory, String articleGender,
+            User publisher, List<ArticlePicture> articlePictures) {
+        this.title = title;
+        this.articleDescription = articleDescription;
+        this.articleState = articleState;
+        this.creationDate = creationDate;
+        this.price = price;
+        this.status = status;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.articleGender = articleGender;
+        this.publisher = publisher;
+        this.articlePictures = articlePictures;
+    }
+
     // getters and setters
     public Long getId() {
         return id;
