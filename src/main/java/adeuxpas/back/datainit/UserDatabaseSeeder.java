@@ -11,6 +11,7 @@ import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 
 import org.json.*;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,6 +47,7 @@ public class UserDatabaseSeeder {
     private static final String PARIS = "Paris";
 
     private SecureRandom random = new SecureRandom(); 
+    final Logger logger = LoggerFactory.getLogger(UserDatabaseSeeder.class);
 
     @Value("${first.pass}")
     private String pass1;
@@ -278,8 +280,9 @@ public class UserDatabaseSeeder {
             if (responsecode != 200) {
                 throw new RuntimeException("HttpResponseCode: " + responsecode);
             } else {
-                // Read the response from the API
+                // Simplify reading text from a character input stream
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                // String concatenation
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -305,10 +308,8 @@ public class UserDatabaseSeeder {
                     this.preferredMeetingPlaceRepository.save(preferredMeetingPlace);
                 }
             }
-                
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.atError().log("Error occurred while fetching data from the API: " + e.getMessage());
         }
     }
-
 }
