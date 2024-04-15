@@ -264,7 +264,7 @@ public class UserDatabaseSeeder {
     private void generatePreferredMeetingPlacesForUser(User user){
         String userPostalCode = user.getPostalCode();
         try {
-            // Construct URI (Uniform Resource Identifier) for API endpoint
+            // Construct URI for API endpoint
             URI uri = new URI("https://api-adresse.data.gouv.fr/search/?q=8+bd+du+port&postcode=" + userPostalCode); 
             
             // Open connection to the API
