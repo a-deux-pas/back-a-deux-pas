@@ -104,9 +104,19 @@ public class UserDatabaseSeeder {
      * @return a list of users.
      */
     private List<User> createUsers(){
-        User first = new User("mbardan@email.ro", "Koroviev", passwordEncoder.encode(pass1), "bio1", FRANCE,
-        "Maisons-Alfort", "Victor Hugo", "94700", "profilePictureUrl1", LocalDate.now(),
-        AccountStatus.ACTIVE, UserRole.USER);
+        User first = new User();
+        first.setEmail("mbardan@email.ro");
+        first.setAlias("Koroviev");
+        first.setPassword(passwordEncoder.encode(pass1));
+        first.setBio("bio1");
+        first.setCountry(FRANCE);
+        first.setCity("Maisons-Alfort");
+        first.setStreet("Victor Hugo");
+        first.setPostalCode("94700");
+        first.setProfilePicture("profilePictureUrl1");
+        first.setInscriptionDate(LocalDate.now());
+        first.setAccountStatus(AccountStatus.ACTIVE);
+        first.setRole(UserRole.USER);
 
         User second = new User();
         second.setEmail("daouali@email.com");
