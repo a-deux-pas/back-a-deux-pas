@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.net.*;
 import java.security.SecureRandom;
@@ -105,19 +108,19 @@ public class UserDatabaseSeeder {
      * @return a list of users.
      */
     private List<User> createUsers(){
-        User first = new User();
-        first.setEmail("mbardan@email.ro");
-        first.setAlias("Koroviev");
-        first.setPassword(passwordEncoder.encode(pass1));
-        first.setBio("bio1");
-        first.setCountry(FRANCE);
-        first.setCity("Maisons-Alfort");
-        first.setStreet("Victor Hugo");
-        first.setPostalCode("94700");
-        first.setProfilePicture("profilePictureUrl1");
-        first.setInscriptionDate(LocalDate.now());
-        first.setAccountStatus(AccountStatus.ACTIVE);
-        first.setRole(UserRole.USER);
+        User first = new User("mbardan@email.ro", "Koroviev", passwordEncoder.encode(pass1), "bio1", FRANCE, "Maisons-Alfort", "Victor Hugo", "94700", "profilePictureUrl1", LocalDate.now(), AccountStatus.ACTIVE, UserRole.USER);
+        // first.setEmail("mbardan@email.ro");
+        // first.setAlias("Koroviev");
+        // first.setPassword(passwordEncoder.encode(pass1));
+        // first.setBio("bio1");
+        // first.setCountry(FRANCE);
+        // first.setCity("Maisons-Alfort");
+        // first.setStreet("Victor Hugo");
+        // first.setPostalCode("94700");
+        // first.setProfilePicture("profilePictureUrl1");
+        // first.setInscriptionDate(LocalDate.now());
+        // first.setAccountStatus(AccountStatus.ACTIVE);
+        // first.setRole(UserRole.USER);
 
         User second = new User();
         second.setEmail("daouali@email.com");
@@ -263,7 +266,6 @@ public class UserDatabaseSeeder {
      * @return List of PreferredMeetingPlace objects fetched from the API
      */
     private void generatePreferredMeetingPlacesForUser(User user){
-        //List<PreferredMeetingPlace> preferredMeetingPlaces = new ArrayList<>();
         String userPostalCode = user.getPostalCode();
         try {
             // Construct URI for API endpoint
@@ -292,18 +294,18 @@ public class UserDatabaseSeeder {
                 reader.close();
 
                 // Parse JSON response
-                JSONObject jsonResponse = new JSONObject(response.toString());
-                JSONArray featuresArray = jsonResponse.getJSONArray("features");
-                for (int i = 0; i < featuresArray.length(); i++) {
-                    JSONObject featureObject = featuresArray.getJSONObject(i);
-                    JSONObject propertiesObject = featureObject.getJSONObject("properties");
-
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonResponse = objectMapper.readTree(response.toString());
+                JsonNode addresses = jsonResponse.get("features");
+                for (JsonNode address : addresses) {
+                    JsonNode addressDetails = address.get("properties");
+                
                     // Extract data and create PreferredMeetingPlace object
-                    String name = propertiesObject.getString("street");
-                    String street = propertiesObject.getString("name");
-                    String city = propertiesObject.getString("city");
-                    String postalCode = propertiesObject.getString("postcode");
-
+                    String name = addressDetails.get("street").asText();
+                    String street = addressDetails.get("name").asText();
+                    String city = addressDetails.get("city").asText();
+                    String postalCode = addressDetails.get("postcode").asText();
+                
                     PreferredMeetingPlace preferredMeetingPlace = new PreferredMeetingPlace(name, street, city, postalCode, user);
                     this.preferredMeetingPlaceRepository.save(preferredMeetingPlace);
                 }
