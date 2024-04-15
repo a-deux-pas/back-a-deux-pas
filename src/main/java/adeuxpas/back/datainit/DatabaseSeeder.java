@@ -21,14 +21,18 @@ import java.util.List;
 
 /**
  * Class responsible for seeding the database with initial sample data.
- * It contains methods to seed different entities in the database, such as users.
+ * It contains methods to seed different entities in the database, such as
+ * users.
  * <p>
- * The {@code seedDatabase()} method orchestrates the seeding process by calling individual seeding methods for each entity.
+ * The {@code seedDatabase()} method orchestrates the seeding process by calling
+ * individual seeding methods for each entity.
  * </p>
  * <p>
- * This component is annotated with {@code @Component} to mark it as a Spring-managed component
- * and enable automatic detection and registration by Spring's component scanning mechanism.
- *</p>
+ * This component is annotated with {@code @Component} to mark it as a
+ * Spring-managed component
+ * and enable automatic detection and registration by Spring's component
+ * scanning mechanism.
+ * </p>
  *
  * @author Mircea Bardan
  */
@@ -43,13 +47,14 @@ public class DatabaseSeeder {
      * Constructs a new instance of DatabaseSeeder.
      *
      * @param userRepository  The repository for managing user entities.
-     * @param adRepository  The repository for managing ad entities.
-     * @param passwordEncoder The password encoder used to encode user passwords before storing them in the database.
+     * @param adRepository    The repository for managing ad entities.
+     * @param passwordEncoder The password encoder used to encode user passwords
+     *                        before storing them in the database.
      */
     public DatabaseSeeder(@Autowired UserRepository userRepository,
-                          @Autowired AdRepository adRepository,
-                          @Autowired ArticlePictureRepository articlePictureRepository,
-                          @Autowired BCryptPasswordEncoder passwordEncoder){
+            @Autowired AdRepository adRepository,
+            @Autowired ArticlePictureRepository articlePictureRepository,
+            @Autowired BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
         this.passwordEncoder = passwordEncoder;
@@ -58,9 +63,10 @@ public class DatabaseSeeder {
 
     /**
      * Seeds the database with initial sample data.
-     * This method delegates the seeding process to individual seeding methods for different entities.
+     * This method delegates the seeding process to individual seeding methods for
+     * different entities.
      */
-    public void seedDatabase(){
+    public void seedDatabase() {
         List<User> users = createUsers();
         seedUsers(users);
 
@@ -72,10 +78,12 @@ public class DatabaseSeeder {
 
     /**
      * This method creates user entities.
-     * Each user is initialized with sample data such as email, password, role, status, and creation timestamp.
+     * Each user is initialized with sample data such as email, password, role,
+     * status, and creation timestamp.
+     * 
      * @return a list of users.
      */
-    private List<User> createUsers(){
+    private List<User> createUsers() {
         User first = new User();
         first.setEmail("mbardan@email.ro");
         first.setAlias("Koroviev");
@@ -151,36 +159,59 @@ public class DatabaseSeeder {
 
     /**
      * Seeds the database with sample user data.
+     * 
      * @param users the list of users to save.
-    */
-    private void seedUsers(List<User> users){
+     */
+    private void seedUsers(List<User> users) {
         this.userRepository.saveAll(users);
     }
 
     private void seedArticlePictures(List<Ad> ads) {
-        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/90b00509-dd97-46e3-b832-24eb8eaa8e0b_large.jpg"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://d2yn9m4p3q9iyv.cloudfront.net/rockymountain/2023/growler-40/thumbs/1000/62903.webp"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/13185af6-1f03-4cdc-8545-af767b7e6bb3_large.jpg"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://i.ytimg.com/vi/2B1bWKBTROE/sddefault.jpg"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/cf15ac41-1979-4264-9193-3b0c2d302907_large.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/90b00509-dd97-46e3-b832-24eb8eaa8e0b_large.jpg"),
+                ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d2yn9m4p3q9iyv.cloudfront.net/rockymountain/2023/growler-40/thumbs/1000/62903.webp"),
+                ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/13185af6-1f03-4cdc-8545-af767b7e6bb3_large.jpg"),
+                ads.getFirst()));
+        this.articlePictureRepository
+                .save(new ArticlePicture(("https://i.ytimg.com/vi/2B1bWKBTROE/sddefault.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/cf15ac41-1979-4264-9193-3b0c2d302907_large.jpg"),
+                ads.getFirst()));
 
-        this.articlePictureRepository.save(new ArticlePicture(("https://i.ebayimg.com/images/g/5DMAAOSwpIVldRxH/s-l1200.webp"), ads.get(1)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://andreemilio.com/wp-content/uploads/2021/03/Mens-Light-gray-3-Piece-Suit-2.jpg"), ads.get(2)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"), ads.get(3)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"), ads.get(4)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRH_Z_65KbwGUDdA2KcCzqroUzVXmmq68NA&usqp=CAU"), ads.get(5)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"), ads.getLast()));
+        this.articlePictureRepository
+                .save(new ArticlePicture(("https://i.ebayimg.com/images/g/5DMAAOSwpIVldRxH/s-l1200.webp"), ads.get(1)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://andreemilio.com/wp-content/uploads/2021/03/Mens-Light-gray-3-Piece-Suit-2.jpg"), ads.get(2)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"),
+                ads.get(3)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"),
+                ads.get(4)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRH_Z_65KbwGUDdA2KcCzqroUzVXmmq68NA&usqp=CAU"),
+                ads.get(5)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"),
+                ads.getLast()));
 
     }
 
     /**
      * This method creates ad entities.
-     * Each ad is initialized with sample data such as title, price, creation date, publisher etc.
+     * Each ad is initialized with sample data such as title, price, creation date,
+     * publisher etc.
+     * 
      * @param users the list of potential ad publishers.
      * @return a list of ads.
      */
-    private List<Ad> createAds(List<User> users){
+    private List<Ad> createAds(List<User> users) {
         Ad firstAd = new Ad();
         firstAd.setArticleDescription("Rocky Mountain Growler 40, perfect condition ");
         firstAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
@@ -191,6 +222,10 @@ public class DatabaseSeeder {
         firstUserAds.add(firstAd);
         users.get(0).setAds(firstUserAds);
         firstAd.setStatus(AdStatus.AVAILABLE);
+        firstAd.setCategory("Electronique");
+        firstAd.setSubcategory("Autre");
+        firstAd.setArticleState("Bon état");
+        firstAd.setArticleGender("Homme");
 
         Ad secondAd = new Ad();
         secondAd.setArticleDescription("Everlast leather boxing gloves, mint condition");
@@ -257,7 +292,8 @@ public class DatabaseSeeder {
         seventhAd.setStatus(AdStatus.AVAILABLE);
 
         Ad eighthAd = new Ad();
-        eighthAd.setArticleDescription("Nassim N. Taleb's best selling collection; includes: Anti-Fragile, The Black San, Skin in the Game etc ");
+        eighthAd.setArticleDescription(
+                "Nassim N. Taleb's best selling collection; includes: Anti-Fragile, The Black San, Skin in the Game etc ");
         eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
         eighthAd.setPrice(BigDecimal.valueOf(150));
         eighthAd.setTitle("Incerto Book Collection");
@@ -271,9 +307,10 @@ public class DatabaseSeeder {
 
     /**
      * Seeds the database with sample ad data.
+     * 
      * @param ads the list of ads to save.
      */
-    private void seedAds(List<Ad> ads){
+    private void seedAds(List<Ad> ads) {
         this.adRepository.saveAll(ads);
     }
 

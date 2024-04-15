@@ -42,6 +42,21 @@ public class Ad {
     public Ad() {
     }
 
+    /**
+     * args - constructor
+     * 
+     * @param title
+     * @param articleDescription
+     * @param articleState
+     * @param creationDate
+     * @param price
+     * @param status
+     * @param category
+     * @param subcategory
+     * @param articleGender
+     * @param publisher
+     * @param articlePictures
+     */
     public Ad(String title, String articleDescription, String articleState, LocalDateTime creationDate,
             BigDecimal price, AdStatus status, String category, String subcategory, String articleGender,
             User publisher, List<ArticlePicture> articlePictures) {

@@ -30,7 +30,21 @@ public class AdPostDto {
     public AdPostDto() {
     }
 
-    // args constructor
+    /**
+     * args constructor
+     * 
+     * @param id
+     * @param title
+     * @param articleDescription
+     * @param creationDate
+     * @param price
+     * @param category
+     * @param articleGender
+     * @param publisherId
+     * @param articlePictures
+     * @param articleState
+     * @param status
+     */
     public AdPostDto(Long id, String title, String articleDescription, String creationDate, BigDecimal price,
             String category, String articleGender, long publisherId, List<ArticlePictureDTO> articlePictures,
             String articleState, AdStatus status) {
@@ -45,13 +59,7 @@ public class AdPostDto {
         this.articlePictures = articlePictures;
         this.articleState = articleState;
         this.status = status;
-
     }
-
-    // args constructor
-    // public AdPostDto(UserRepository userRepository) {
-    // this.userRepository = userRepository;
-    // }
 
     // getters and setters
     public Long getId() {
@@ -159,7 +167,6 @@ public class AdPostDto {
                 ", articleState='" + articleState + '\'' +
                 ", creationDate=" + creationDate +
                 ", price=" + price +
-                // ", status=" + status +
                 ", category='" + category + '\'' +
                 ", subcategory='" + subcategory + '\'' +
                 ", articleGender='" + articleGender + '\'' +
@@ -167,13 +174,4 @@ public class AdPostDto {
                 ", articlePictures=" + articlePictures +
                 '}';
     }
-
-    // private LocalDateTime convertStringToLocalDateTime(String data) {
-    // return LocalDateTime.parse(data);
-    // }
-
-    // private User getUserMircea(Long publisherId) {
-    // return userRepository.findById(publisherId).orElse(null);
-    // }
-
 }

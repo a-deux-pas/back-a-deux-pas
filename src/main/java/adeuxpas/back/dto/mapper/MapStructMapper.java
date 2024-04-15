@@ -38,7 +38,4 @@ public interface MapStructMapper {
     @Mapping(source = "adPostDto.publisherId", target = "publisher.id")
     Ad adPostDtoToAd(AdPostDto adPostDto, UserRepository userRepository);
 
-    // Article Picture
-    ArticlePicture articlePictureDTOToaArticlePicture(ArticlePictureDTO articlePictureDTO);
-
 }
