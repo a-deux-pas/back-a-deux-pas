@@ -36,7 +36,7 @@ public class AdController {
         System.out.println(priceRangesFilter + " " + citiesAndPostalCodesFilter + " " + articleStatesFilter + " " + categoryFilter);
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdResponseDTO> adsPage = this.adService.findFilteredResponseAdDTOs(priceRangesFilter, citiesAndPostalCodesFilter,
+            Page<AdResponseDTO> adsPage = this.adService.findFilteredAdResponseDTOs(priceRangesFilter, citiesAndPostalCodesFilter,
                                                                                     articleStatesFilter, categoryFilter, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch(Exception e) {

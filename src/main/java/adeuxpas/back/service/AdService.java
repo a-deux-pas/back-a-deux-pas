@@ -7,5 +7,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface AdService {
-    Page<AdResponseDTO> findFilteredResponseAdDTOs(List<String> prices, List<String> cities, List<String> articleStates, String category, Pageable pageable);
+    Page<AdResponseDTO> findAllAdResponseDTOs(Pageable pageable);
+    Page<AdResponseDTO> findFilteredAdResponseDTOs(List<String> prices, List<String> cities, List<String> articleStates, String category, Pageable pageable);
 }

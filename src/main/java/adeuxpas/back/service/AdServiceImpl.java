@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdServiceImpl implements AdService {
-
-    // ad and associated user account accepted statuses
     private final List<AdStatus> acceptedAdStatuses = List.of(AdStatus.AVAILABLE);
     private final List<AccountStatus> acceptedAccountStatuses = List.of(AccountStatus.ACTIVE, AccountStatus.REPORTED);
 
@@ -34,13 +32,13 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Page<AdResponseDTO> findFilteredResponseAdDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
+    public Page<AdResponseDTO> findFilteredAdResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
                                                           List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
         if (priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
                 articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie"))
-            return this.findAllResponseAdDTOs(pageable);
+            return this.findAllAdResponseDTOs(pageable);
 
         // extracting the postal codes
         List<String> postalCodes = citiesAndPostalCodesFilter.stream()
@@ -114,17 +112,18 @@ public class AdServiceImpl implements AdService {
                 category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
         );
 
-        return this.convertToPageOfResponseAdDTOs(pageable, filteredAds);
+        return this.convertToPageOfAdResponseDTOs(pageable, filteredAds);
     }
 
-    private Page<AdResponseDTO> findAllResponseAdDTOs(Pageable pageable) {
+    @Override
+    public Page<AdResponseDTO> findAllAdResponseDTOs(Pageable pageable) {
         Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses, acceptedAccountStatuses, pageable);
-        return this.convertToPageOfResponseAdDTOs(pageable, myAds);
+        return this.convertToPageOfAdResponseDTOs(pageable, myAds);
     }
 
-    private Page<AdResponseDTO> convertToPageOfResponseAdDTOs(Pageable pageable, Page<Ad> adsPage) {
+    private Page<AdResponseDTO> convertToPageOfAdResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
         List<AdResponseDTO> mappedAdsList = adsPage.stream()
-                .map(mapper::adToResponseAdDTO)
+                .map(mapper::adToAdResponseDTO)
                 .collect(Collectors.toList());
 
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());

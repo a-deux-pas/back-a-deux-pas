@@ -19,7 +19,7 @@ public interface MapStructMapper {
     @Mapping(source = "publisher.alias", target = "publisher")
     @Mapping(source = "publisher.city", target = "publisherCity")
     @Mapping(source = "publisher.postalCode", target = "publisherPostalCode")
-    AdResponseDTO adToResponseAdDTO(Ad ad);
+    AdResponseDTO adToAdResponseDTO(Ad ad);
 
     @Named("findFirstArticlePictureUrl")
     default String findFirstArticlePictureUrl(List<ArticlePicture> articlePictures) {

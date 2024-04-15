@@ -252,7 +252,7 @@ public class DatabaseSeeder {
         Ad thirdAd = new Ad();
         thirdAd.setArticleDescription("Light grey, italian wool, size 48");
         thirdAd.setCreationDate(LocalDateTime.now().plusMinutes(2));
-        thirdAd.setPrice(BigDecimal.valueOf(9));
+        thirdAd.setPrice(BigDecimal.valueOf(59));
         thirdAd.setTitle("3 piece suit");
         thirdAd.setPublisher(users.get(4));
         thirdAd.setArticleState("Neuf avec étiquette");
@@ -321,7 +321,7 @@ public class DatabaseSeeder {
 
         Ad eighthAd = new Ad();
         eighthAd.setArticleDescription("Nassim N. Taleb's best selling collection; includes: Anti-Fragile, The Black San, Skin in the Game etc ");
-        eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
+        eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(6));
         eighthAd.setPrice(BigDecimal.valueOf(150));
         eighthAd.setTitle("Incerto Book Collection");
         eighthAd.setPublisher(users.get(2));
@@ -376,7 +376,7 @@ public class DatabaseSeeder {
         Ad twelfthAd = new Ad();
         twelfthAd.setArticleDescription("Travel suitcase");
         twelfthAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
-        twelfthAd.setPrice(BigDecimal.valueOf(59));
+        twelfthAd.setPrice(BigDecimal.valueOf(9));
         twelfthAd.setTitle("Travel suitcase");
         twelfthAd.setPublisher(users.get(4));
         twelfthAd.setArticleState("Neuf sans étiquette");
@@ -405,7 +405,7 @@ public class DatabaseSeeder {
         fourteenthAd.setPrice(BigDecimal.valueOf(49));
         fourteenthAd.setTitle("Cowboy hat");
         fourteenthAd.setPublisher(users.get(2));
-        fourteenthAd.setArticleState("Satisfaissant");
+        fourteenthAd.setArticleState("Satisfaisant");
         fourteenthAd.setCategory("Mode");
         fourteenthAd.setSubcategory("Accessoires");
         thirdUserAds.add(fourteenthAd);
@@ -418,7 +418,7 @@ public class DatabaseSeeder {
         fifteenthAd.setPrice(BigDecimal.valueOf(20));
         fifteenthAd.setTitle("Marlboro cap");
         fifteenthAd.setPublisher(users.get(3));
-        fifteenthAd.setArticleState("Mode");
+        fifteenthAd.setArticleState("Bon état");
         fifteenthAd.setCategory("Accessoires");
         fifteenthAd.setSubcategory("Autre");
         fourthUserAds.add(fifteenthAd);
