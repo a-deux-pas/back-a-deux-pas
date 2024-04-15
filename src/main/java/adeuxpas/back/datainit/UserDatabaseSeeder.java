@@ -10,15 +10,11 @@ import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 
-import org.json.*;
 import org.slf4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.fasterxml.jackson.databind.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.net.*;
