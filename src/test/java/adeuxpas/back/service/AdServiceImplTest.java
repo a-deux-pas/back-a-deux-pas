@@ -1,7 +1,7 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.AdResponseDTO;
-import adeuxpas.back.dto.mapper.MapStructMapper;
+import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AccountStatus;
@@ -72,7 +72,7 @@ public class AdServiceImplTest {
     @Mock
     private AdRepository adRepositoryMock;
     @Mock
-    private MapStructMapper mapper;
+    private AdMapper mapper;
     @InjectMocks
     private AdServiceImpl adService;
 

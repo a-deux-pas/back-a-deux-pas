@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper(
         componentModel = "spring"
 )
-public interface MapStructMapper {
+public interface AdMapper {
     @Mapping(source = "articlePictures", target = "articlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "publisher.alias", target = "publisher")
     @Mapping(source = "publisher.city", target = "publisherCity")
@@ -28,6 +28,4 @@ public interface MapStructMapper {
         }
         return null;
     }
-
-    CityAndPostalCodeDTO userToCityAndPostalCodeDTO(User user);
 }

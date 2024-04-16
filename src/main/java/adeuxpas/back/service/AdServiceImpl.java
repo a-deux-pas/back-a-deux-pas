@@ -1,7 +1,7 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.AdResponseDTO;
-import adeuxpas.back.dto.mapper.MapStructMapper;
+import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
@@ -23,10 +23,10 @@ public class AdServiceImpl implements AdService {
     private final List<AccountStatus> acceptedAccountStatuses = List.of(AccountStatus.ACTIVE, AccountStatus.REPORTED);
 
     private final AdRepository adRepository;
-    private final MapStructMapper mapper;
+    private final AdMapper mapper;
 
     public AdServiceImpl(@Autowired AdRepository adRepository,
-                         @Autowired MapStructMapper mapper) {
+                         @Autowired AdMapper mapper) {
         this.adRepository = adRepository;
         this.mapper = mapper;
     }

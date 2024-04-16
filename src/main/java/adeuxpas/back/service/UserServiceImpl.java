@@ -1,7 +1,8 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.CityAndPostalCodeDTO;
-import adeuxpas.back.dto.mapper.MapStructMapper;
+import adeuxpas.back.dto.mapper.AdMapper;
+import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private final MapStructMapper mapper;
+    private final UserMapper mapper;
 
     /**
      * Constructor for UserServiceImpl.
      *
      * @param userRepository The UserRepository for interacting with user-related database operations.
      */
-    public UserServiceImpl(@Autowired UserRepository userRepository, @Autowired MapStructMapper mapper){
+    public UserServiceImpl(@Autowired UserRepository userRepository, @Autowired UserMapper mapper){
         this.userRepository = userRepository;
         this.mapper = mapper;
     }
