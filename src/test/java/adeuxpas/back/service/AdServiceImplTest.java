@@ -10,6 +10,8 @@ import adeuxpas.back.repository.AdRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,8 +24,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -37,6 +37,37 @@ public class AdServiceImplTest {
     private List<String> priceRanges;
     private List<String> citiesAndPostalCodes;
     private List<String> articleStates;
+
+    @Captor
+    private ArgumentCaptor<List<String>> postalCodesCaptor;
+    @Captor
+    private ArgumentCaptor<List<String>> articleStatesCaptor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> maxPrice1Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> minPrice2Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> maxPrice2Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> minPrice3Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> maxPrice3Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> minPrice4Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> maxPrice4Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> minPrice5Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> maxPrice5Captor;
+    @Captor
+    private ArgumentCaptor<BigDecimal> minPrice6Captor;
+    @Captor
+    private ArgumentCaptor<String> categoryCaptor;
+    @Captor
+    private ArgumentCaptor<String> subCategoryCaptor;
+    @Captor
+    private ArgumentCaptor<String> genderCaptor;
 
     @Mock
     private AdRepository adRepositoryMock;
@@ -69,9 +100,13 @@ public class AdServiceImplTest {
                 new ArrayList<>(), "Catégorie", pageable);
 
         // Assert :
-                 // that this method was called inside the tested filter method
+            // that the result is not null
+        assertNotNull(result);
+            // that the result contains all the ads
+        assertEquals(this.adsList.size(), result.getTotalElements());
+            // that this method was called inside the tested filter method
         verify(adRepositoryMock).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
-                 // that this method was never called
+            // that this method was never called
         verify(adRepositoryMock, times(0)).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 anyList(), anyList(),
                 any(), any(), any(), any(), any(), any(),
@@ -80,12 +115,6 @@ public class AdServiceImplTest {
                 anyList(), anyList(),
                 any()
         );
-                 // that the returned result is not null
-        assertNotNull(result);
-                 // that the returned page contains all the Ads
-        assertEquals(adsList.size(), result.getContent().size());
-                 // descending order by creation date
-        assertTrue(result.getContent().get(0).getCreationDate().isAfter(result.getContent().get(1).getCreationDate()));
     }
 
     @Test
@@ -99,28 +128,39 @@ public class AdServiceImplTest {
                 articleStates, "Catégorie", pageable);
 
         // Assert:
-                 // that this method was called inside the tested filter method
-        verify(adRepositoryMock).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
-                anyList(), anyList(),
-                any(), any(), any(), any(), any(), any(),
-                any(), any(), any(), any(),
-                any(), any(), any(),
-                anyList(), anyList(),
-                any()
-        );
-                 // that this method was never called
-        verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
-
-                 // that the returned result is not null
+            // that the result is not null
         assertNotNull(result);
-                 // that the returned page contains all Ads
-        assertEquals(adsList.size(), result.getContent().size());
-                 // descending order by creation date
-        assertTrue(result.getContent().get(0).getCreationDate().isAfter(result.getContent().get(1).getCreationDate()));
+            // that this method was called inside the tested filter method
+        verify(adRepositoryMock).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
+                postalCodesCaptor.capture(), articleStatesCaptor.capture(),
+                maxPrice1Captor.capture(), minPrice2Captor.capture(), maxPrice2Captor.capture(), minPrice3Captor.capture(), maxPrice3Captor.capture(),
+                minPrice4Captor.capture(), maxPrice4Captor.capture(), minPrice5Captor.capture(), maxPrice5Captor.capture(), minPrice6Captor.capture(),
+                categoryCaptor.capture(), subCategoryCaptor.capture(), genderCaptor.capture(),
+                anyList(), anyList(), any()
+        );
+            // that this method was never called
+        verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
+            // that all the expected parameters are passed, in the right format, to the repository method
+        assertNull(categoryCaptor.getValue());
+        assertNull(subCategoryCaptor.getValue());
+        assertNull(genderCaptor.getValue());
+        assertEquals(BigDecimal.TEN, maxPrice1Captor.getValue());
+        assertEquals(BigDecimal.TEN, minPrice2Captor.getValue());
+        assertEquals(BigDecimal.valueOf(19), maxPrice2Captor.getValue());
+        assertEquals(BigDecimal.valueOf(20), minPrice3Captor.getValue());
+        assertEquals(BigDecimal.valueOf(29), maxPrice3Captor.getValue());
+        assertEquals(BigDecimal.valueOf(30), minPrice4Captor.getValue());
+        assertEquals(BigDecimal.valueOf(39), maxPrice4Captor.getValue());
+        assertEquals(BigDecimal.valueOf(40), minPrice5Captor.getValue());
+        assertEquals(BigDecimal.valueOf(59), maxPrice5Captor.getValue());
+        assertEquals(BigDecimal.valueOf(60), minPrice6Captor.getValue());
+        assertEquals(this.articleStates, articleStatesCaptor.getValue());
+        assertTrue(postalCodesCaptor.getValue().containsAll(List.of(this.adsList.get(0).getPublisher().getPostalCode(),
+                                                                    this.adsList.get(1).getPublisher().getPostalCode())));
     }
 
     @Test
-    public void testFindFilteredResponseAdDTOs_CategoryAndSingleCriteriaForEachFilterApplied() {
+    public void testFindFilteredResponseAdDTOs_CategoryAndCriteriaForEachFilterApplied() {
         // Additional set-up
         this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
         this.mockMapperBehaviour();
@@ -130,31 +170,71 @@ public class AdServiceImplTest {
                 List.of(articleStates.getFirst()), "Mode", pageable);
 
         // Assert:
+            // that this method was called inside the tested filter method
+        verify(adRepositoryMock).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
+                postalCodesCaptor.capture(), articleStatesCaptor.capture(),
+                maxPrice1Captor.capture(), minPrice2Captor.capture(), maxPrice2Captor.capture(), minPrice3Captor.capture(), maxPrice3Captor.capture(),
+                minPrice4Captor.capture(), maxPrice4Captor.capture(), minPrice5Captor.capture(), maxPrice5Captor.capture(), minPrice6Captor.capture(),
+                categoryCaptor.capture(), subCategoryCaptor.capture(), genderCaptor.capture(),
+                anyList(), anyList(), any()
+        );
+            // that this method was never called
+        verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
+            // that all the expected parameters are passed, in the right format, to the repository method
+        assertEquals(BigDecimal.TEN, maxPrice1Captor.getValue());
+        assertNull(minPrice2Captor.getValue());
+        assertNull(maxPrice2Captor.getValue());
+        assertNull(minPrice3Captor.getValue());
+        assertNull(maxPrice3Captor.getValue());
+        assertNull(minPrice4Captor.getValue());
+        assertNull(maxPrice4Captor.getValue());
+        assertNull(minPrice5Captor.getValue());
+        assertNull(maxPrice5Captor.getValue());
+        assertNull(minPrice6Captor.getValue());
+        assertEquals(List.of(this.adsList.getFirst().getPublisher().getPostalCode()), postalCodesCaptor.getValue());
+        assertEquals(List.of(this.articleStates.getFirst()), articleStatesCaptor.getValue());
+        assertEquals("Mode", categoryCaptor.getValue());
+        assertNull(subCategoryCaptor.getValue());
+        assertNull(genderCaptor.getValue());
+    }
+
+    @Test
+    public void testFindFilteredResponseAdDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
+        // Additional set-up
+        this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
+        this.mockMapperBehaviour();
+
+        // Act
+        Page<AdResponseDTO> result = adService.findFilteredAdResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
+                List.of(articleStates.getFirst()), "Mode ▸ Hauts ▸ Homme", pageable);
+
+        // Assert:
         // that this method was called inside the tested filter method
         verify(adRepositoryMock).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
-                anyList(), anyList(),
-                any(), any(), any(), any(), any(), any(),
-                any(), any(), any(), any(),
-                any(), any(), any(),
-                anyList(), anyList(),
-                any()
+                postalCodesCaptor.capture(), articleStatesCaptor.capture(),
+                maxPrice1Captor.capture(), minPrice2Captor.capture(), maxPrice2Captor.capture(), minPrice3Captor.capture(), maxPrice3Captor.capture(),
+                minPrice4Captor.capture(), maxPrice4Captor.capture(), minPrice5Captor.capture(), maxPrice5Captor.capture(), minPrice6Captor.capture(),
+                categoryCaptor.capture(), subCategoryCaptor.capture(), genderCaptor.capture(),
+                anyList(), anyList(), any()
         );
         // that this method was never called
         verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
-
-        // that the returned result is not null
-        assertNotNull(result);
-        // that the returned page contains only Ads with a price < 10, that belong to the Fashion category and are new (with price tag)
-        List<Ad> filteredAds = adsList.stream().
-                filter(ad -> ad.getPrice().compareTo(BigDecimal.TEN) < 0).
-                filter(ad -> ad.getCategory().equals("Mode")).
-                filter(ad -> ad.getArticleState().equals("Neuf avec étiquette"))
-                .toList();
-        assertEquals(filteredAds.size(), result.getContent().size());
-        // that the returned page doesn't contain any Ads with a price > 9
-        assertTrue(result.stream().filter(ad -> ad.getPrice().compareTo(BigDecimal.valueOf(9)) > 0).toList().isEmpty());
-        // descending order by creation date
-        assertTrue(result.getContent().get(0).getCreationDate().isAfter(result.getContent().get(1).getCreationDate()));
+        // that all the expected parameters are passed, in the right format, to the repository method
+        assertEquals(BigDecimal.TEN, maxPrice1Captor.getValue());
+        assertNull(minPrice2Captor.getValue());
+        assertNull(maxPrice2Captor.getValue());
+        assertNull(minPrice3Captor.getValue());
+        assertNull(maxPrice3Captor.getValue());
+        assertNull(minPrice4Captor.getValue());
+        assertNull(maxPrice4Captor.getValue());
+        assertNull(minPrice5Captor.getValue());
+        assertNull(maxPrice5Captor.getValue());
+        assertNull(minPrice6Captor.getValue());
+        assertEquals(List.of(this.adsList.getFirst().getPublisher().getPostalCode()), postalCodesCaptor.getValue());
+        assertEquals(List.of(this.articleStates.getFirst()), articleStatesCaptor.getValue());
+        assertEquals("Mode", categoryCaptor.getValue());
+        assertEquals("Hauts", subCategoryCaptor.getValue());
+        assertEquals("Homme", genderCaptor.getValue());
     }
 
     // Mock behavior for adRepository methods
@@ -164,11 +244,12 @@ public class AdServiceImplTest {
     }
     private void mockRepositoryFindByFiltersAndAcceptedStatusesMethod(){
         when(adRepositoryMock.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(anyList(), anyList(),
-                any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
+                any(), any(), any(), any(), any(),
+                any(), any(), any(), any(), any(),
+                any(), any(), any(),
                 anyList(), anyList(), any())).
                 thenReturn(this.adsPage);
     }
-
 
     // Mock behavior for mapper
     private void mockMapperBehaviour() {
@@ -182,27 +263,6 @@ public class AdServiceImplTest {
             return adResponseDTO;
         });
     }
-
-    /*@Test
-    public void testFindFilteredResponseAdDTOs_NoFiltersApplied_ReturnsAllAvailableAdsWithActiveAccounts() {
-        // Arrange
-        List<Ad> mockAds = createMockAdsSorted();
-        Page<Ad> mockPage = new PageImpl<>(mockAds);
-
-        // set up the behaviour of the adRepo method to return a page of mock ads
-        when(adRepositoryMock.findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any(Pageable.class)))
-                .thenReturn(mockPage);
-
-        // Act
-        Page<AdResponseDTO> result = adService.findFilteredAdResponseDTOs(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "Catégorie", pageableMock);
-
-        // Assert
-        assertEquals(mockAds.size(), result.getContent().size());
-        assertEquals(mockAds.get(0).getTitle(), result.getContent().get(0).getTitle());
-        assertEquals(mockAds.get(1).getTitle(), result.getContent().get(1).getTitle());
-        // Ensure descending order by creation date
-        assertTrue(result.getContent().get(0).getCreationDate().isAfter(result.getContent().get(1).getCreationDate()));
-    }*/
 
     private List<Ad> createMockAdsSorted() {
         List<Ad> ads = new ArrayList<>();
