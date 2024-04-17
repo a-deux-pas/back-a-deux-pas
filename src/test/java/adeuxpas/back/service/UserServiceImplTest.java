@@ -12,8 +12,10 @@ import java.util.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-import org.mockito.InjectMocks;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
@@ -32,6 +34,9 @@ class UserServiceImplTest {
     // Create an instance of UserServiceImpl and automatically inject its dependencies
     @InjectMocks
     private UserServiceImpl userServiceImpl;
+
+    @Mock
+    UserMapper userMapper;
 
     /**
      * Creates a user entity with the given user ID.
@@ -82,8 +87,20 @@ class UserServiceImplTest {
 
         // Mocking User Preferred Schedules DTO data
         List<PreferredScheduleDTO> preferredScheduleListDTO = new ArrayList<>();
+
+        // Mocking UserMapper behavior
+        when(userMapper.mapPreferredScheduleToDTO(any(PreferredSchedule.class))).thenAnswer(invocation -> {
+            PreferredSchedule preferredSchedule = invocation.getArgument(0);
+            PreferredScheduleDTO preferredScheduleDTO = new PreferredScheduleDTO();
+            preferredScheduleDTO.setDaysOfWeek(List.of(preferredSchedule.getWeekDay().getDayOfWeek()));
+            preferredScheduleDTO.setStartTime(preferredSchedule.getStartTime().toString());
+            preferredScheduleDTO.setEndTime(preferredSchedule.getEndTime().toString());
+            preferredScheduleDTO.setUserId(preferredSchedule.getUser().getId());
+            return preferredScheduleDTO;
+        });
+
         preferredScheduleList.forEach( schedule ->  {
-            preferredScheduleListDTO.add(UserMapper.INSTANCE.mapPreferredScheduleToDTO(schedule));
+            preferredScheduleListDTO.add(userMapper.mapPreferredScheduleToDTO(schedule));
         });
 
         // Call the method to test
