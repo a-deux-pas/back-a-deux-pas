@@ -50,8 +50,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                                                                      @Param("acceptedAccountStatuses") List<AccountStatus> accountStatuses,
                                                                      Pageable pageable
     );
-    Page<Ad> findAllByStatusOrderByCreationDateDesc(AdStatus status, Pageable pageable);
-
 
     @Query("SELECT ad FROM Ad ad JOIN ad.publisher u WHERE ad.status IN :adStatuses AND u.accountStatus IN :accountStatuses ORDER BY ad.creationDate DESC")
     Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(List<AdStatus> adStatuses,

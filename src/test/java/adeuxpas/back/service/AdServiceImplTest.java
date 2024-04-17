@@ -69,14 +69,13 @@ public class AdServiceImplTest {
     @Mock
     private AdRepository adRepositoryMock;
     @Mock
-    private AdMapper adMapper;
+    private AdMapper adMapperMock;
     @InjectMocks
     private AdServiceImpl adService;
 
     @BeforeEach
     public void setUp() {
         // Arrange
-        adService = new AdServiceImpl(adRepositoryMock, adMapper);
         adsList = TestUtils.createMockAds();
         adsPage = new PageImpl<>(adsList);
         pageable = PageRequest.of(0, 8);
@@ -241,7 +240,7 @@ public class AdServiceImplTest {
 
     // Mock behavior for mapper
     private void mockAdMapperBehaviour() {
-        when(adMapper.adToAdResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
+        when(adMapperMock.adToAdResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
             Ad ad = invocation.getArgument(0);
             AdResponseDTO adResponseDTO = new AdResponseDTO();
             adResponseDTO.setTitle(ad.getTitle());
