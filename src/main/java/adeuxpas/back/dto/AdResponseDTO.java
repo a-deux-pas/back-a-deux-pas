@@ -8,7 +8,6 @@ public class AdResponseDTO {
     private String title;
     private String articlePictureUrl;
     private BigDecimal price;
-    private LocalDateTime creationDate;
     private String publisher;
     private String publisherCity;
     private String publisherPostalCode;
@@ -39,14 +38,6 @@ public class AdResponseDTO {
         this.price = price;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public String getPublisher() {
         return publisher;
     }
@@ -75,11 +66,11 @@ public class AdResponseDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AdResponseDTO that)) return false;
-        return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(creationDate, that.creationDate) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
+        return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, articlePictureUrl, price, creationDate, publisher, publisherCity, publisherPostalCode);
+        return Objects.hash(title, articlePictureUrl, price, publisher, publisherCity, publisherPostalCode);
     }
 }

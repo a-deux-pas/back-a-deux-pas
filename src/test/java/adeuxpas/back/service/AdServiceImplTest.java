@@ -247,7 +247,6 @@ public class AdServiceImplTest {
             adResponseDTO.setTitle(ad.getTitle());
             adResponseDTO.setPrice(ad.getPrice());
             adResponseDTO.setPublisher(ad.getPublisher().getAlias());
-            adResponseDTO.setCreationDate(ad.getCreationDate());
             return adResponseDTO;
         });
     }
