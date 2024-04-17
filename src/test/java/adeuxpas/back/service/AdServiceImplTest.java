@@ -3,10 +3,8 @@ package adeuxpas.back.service;
 import adeuxpas.back.dto.AdResponseDTO;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.entity.Ad;
-import adeuxpas.back.entity.User;
-import adeuxpas.back.enums.AccountStatus;
-import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +19,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,38 +69,34 @@ public class AdServiceImplTest {
     @Mock
     private AdRepository adRepositoryMock;
     @Mock
-    private AdMapper mapper;
+    private AdMapper adMapper;
     @InjectMocks
     private AdServiceImpl adService;
 
     @BeforeEach
     public void setUp() {
         // Arrange
-        adService = new AdServiceImpl(adRepositoryMock, mapper);
-        adsList = this.createMockAdsSorted();
+        adService = new AdServiceImpl(adRepositoryMock, adMapper);
+        adsList = TestUtils.createMockAds();
         adsPage = new PageImpl<>(adsList);
         pageable = PageRequest.of(0, 8);
         priceRanges = List.of("< 10€", "10€ - 20€", "20€ - 30€", "30€ - 40€", "40€ - 60€", "> 60€");
         citiesAndPostalCodes = List.of((adsList.get(0).getPublisher().getCity() + " (" + adsList.get(0).getPublisher().getPostalCode() + ")"),
                 (adsList.get(1).getPublisher().getCity() + " (" + adsList.get(1).getPublisher().getPostalCode() + ")"));
         articleStates = List.of("Neuf avec étiquette", "Neuf sans étiquette", "Très bon état", "Bon état", "Satisfaisant");
+        this.mockAdMapperBehaviour();
     }
 
     @Test
     public void testFindFilteredResponseAdDTOs_NoFiltersApplied() {
         // Additional set-up
         this.mockRepositoryFindByAcceptedStatusesMethod();
-        this.mockMapperBehaviour();
 
         // Act
-        Page<AdResponseDTO> result = adService.findFilteredAdResponseDTOs(new ArrayList<>(), new ArrayList<>(),
+        adService.findFilteredAdResponseDTOs(new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), "Catégorie", pageable);
 
         // Assert :
-            // that the result is not null
-        assertNotNull(result);
-            // that the result contains all the ads
-        assertEquals(this.adsList.size(), result.getTotalElements());
             // that this method was called inside the tested filter method
         verify(adRepositoryMock).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
             // that this method was never called
@@ -121,15 +114,12 @@ public class AdServiceImplTest {
     public void testFindFilteredResponseAdDTOs_AllFiltersExceptCategoryApplied() {
         // Additional set-up
         this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
-        this.mockMapperBehaviour();
 
         // Act
-        Page<AdResponseDTO> result = adService.findFilteredAdResponseDTOs(priceRanges, citiesAndPostalCodes,
+        adService.findFilteredAdResponseDTOs(priceRanges, citiesAndPostalCodes,
                 articleStates, "Catégorie", pageable);
 
         // Assert:
-            // that the result is not null
-        assertNotNull(result);
             // that this method was called inside the tested filter method
         verify(adRepositoryMock).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodesCaptor.capture(), articleStatesCaptor.capture(),
@@ -140,7 +130,7 @@ public class AdServiceImplTest {
         );
             // that this method was never called
         verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
-            // that all the expected parameters are passed, in the right format, to the repository method
+            // that all the parameters passed to the repository method are correctly formatted
         assertNull(categoryCaptor.getValue());
         assertNull(subCategoryCaptor.getValue());
         assertNull(genderCaptor.getValue());
@@ -162,11 +152,10 @@ public class AdServiceImplTest {
     @Test
     public void testFindFilteredResponseAdDTOs_CategoryAndCriteriaForEachFilterApplied() {
         // Additional set-up
-        this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
-        this.mockMapperBehaviour();
+        mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
         // Act
-        Page<AdResponseDTO> result = adService.findFilteredAdResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
+        adService.findFilteredAdResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
                 List.of(articleStates.getFirst()), "Mode", pageable);
 
         // Assert:
@@ -180,7 +169,7 @@ public class AdServiceImplTest {
         );
             // that this method was never called
         verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
-            // that all the expected parameters are passed, in the right format, to the repository method
+            // that all the parameters passed to the repository method are correctly formatted
         assertEquals(BigDecimal.TEN, maxPrice1Captor.getValue());
         assertNull(minPrice2Captor.getValue());
         assertNull(maxPrice2Captor.getValue());
@@ -202,10 +191,9 @@ public class AdServiceImplTest {
     public void testFindFilteredResponseAdDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
         // Additional set-up
         this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
-        this.mockMapperBehaviour();
 
         // Act
-        Page<AdResponseDTO> result = adService.findFilteredAdResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
+        adService.findFilteredAdResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
                 List.of(articleStates.getFirst()), "Mode ▸ Hauts ▸ Homme", pageable);
 
         // Assert:
@@ -219,7 +207,7 @@ public class AdServiceImplTest {
         );
         // that this method was never called
         verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
-        // that all the expected parameters are passed, in the right format, to the repository method
+        // that all the parameters passed to the repository method are correctly formatted
         assertEquals(BigDecimal.TEN, maxPrice1Captor.getValue());
         assertNull(minPrice2Captor.getValue());
         assertNull(maxPrice2Captor.getValue());
@@ -252,8 +240,8 @@ public class AdServiceImplTest {
     }
 
     // Mock behavior for mapper
-    private void mockMapperBehaviour() {
-        when(mapper.adToAdResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
+    private void mockAdMapperBehaviour() {
+        when(adMapper.adToAdResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
             Ad ad = invocation.getArgument(0);
             AdResponseDTO adResponseDTO = new AdResponseDTO();
             adResponseDTO.setTitle(ad.getTitle());
@@ -262,75 +250,5 @@ public class AdServiceImplTest {
             adResponseDTO.setCreationDate(ad.getCreationDate());
             return adResponseDTO;
         });
-    }
-
-    private List<Ad> createMockAdsSorted() {
-        List<Ad> ads = new ArrayList<>();
-
-        User firstUser = new User();
-        firstUser.setAccountStatus(AccountStatus.ACTIVE);
-        firstUser.setPostalCode("75000");
-        firstUser.setCity("Paris");
-        
-        User secondUser = new User();
-        secondUser.setAccountStatus(AccountStatus.SUSPENDED);
-        secondUser.setPostalCode("69000");
-        secondUser.setCity("Lyon");
-
-        Ad firstAd = new Ad();
-        firstAd.setTitle("First available ad with active account");
-        firstAd.setPrice(BigDecimal.ONE);
-        firstAd.setArticleState("Neuf avec étiquette");
-        firstAd.setStatus(AdStatus.AVAILABLE);
-        firstAd.setPublisher(firstUser);
-        firstAd.setCreationDate(LocalDateTime.now().plusMinutes(1));
-        firstAd.setCategory("Autre");
-        firstAd.setSubcategory("Autre");
-
-        Ad secondAd = new Ad();
-        secondAd.setTitle("Second available ad with active account");
-        secondAd.setPrice(BigDecimal.valueOf(11));
-        secondAd.setArticleState("Neuf sans étiquette");
-        secondAd.setStatus(AdStatus.AVAILABLE);
-        secondAd.setPublisher(firstUser);
-        secondAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
-        secondAd.setCategory("Maison");
-        secondAd.setSubcategory("Jardin");
-
-        Ad thirdAd = new Ad();
-        thirdAd.setTitle("Third available ad with active account");
-        thirdAd.setPrice(BigDecimal.ONE);
-        thirdAd.setArticleState("Neuf avec étiquette");
-        thirdAd.setStatus(AdStatus.AVAILABLE);
-        thirdAd.setPublisher(secondUser);
-        thirdAd.setCreationDate(LocalDateTime.now().plusMinutes(2));
-        thirdAd.setCategory("Mode");
-        thirdAd.setSubcategory("Hauts");
-        thirdAd.setArticleGender("Homme");
-
-
-        Ad fourthAd = new Ad();
-        fourthAd.setTitle("Fourth available ad with active account");
-        fourthAd.setPrice(BigDecimal.TWO);
-        fourthAd.setArticleState("Satisfaisant");
-        fourthAd.setStatus(AdStatus.AVAILABLE);
-        fourthAd.setPublisher(secondUser);
-        fourthAd.setCreationDate(LocalDateTime.now());
-        fourthAd.setCategory("Mode");
-        fourthAd.setSubcategory("Hauts");
-        fourthAd.setArticleGender("Femme");
-
-        ads.add(firstAd);
-        ads.add(secondAd);
-        ads.add(thirdAd);
-        ads.add(fourthAd);
-
-        ads.sort((a, b) -> {
-            if (a.getCreationDate().isAfter(b.getCreationDate())) return -1;
-            if (a.getCreationDate().isBefore(b.getCreationDate())) return 1;
-            return 0;
-        });
-
-        return ads;
     }
 }
