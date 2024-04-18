@@ -2,6 +2,9 @@ package adeuxpas.back.entity;
 
 import adeuxpas.back.enums.AdStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,20 +17,26 @@ public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     @Column(length = 150)
     private String title;
+    @NotNull
     @Column(name = "article_description", columnDefinition = "TEXT")
     private String articleDescription;
+    @NotNull
+    @Size(max = 150, message = "title must be at most 150 characters long")
     @Column(name = "article_state", length = 150)
     private String articleState;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
+    @NotNull
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private AdStatus status;
     @Column(length = 100)
     private String category;
+    @NotNull
     @Column(length = 100)
     private String subcategory;
     @Column(name = "article_gender", length = 10)
@@ -35,6 +44,7 @@ public class Ad {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private User publisher;
+    @NotEmpty
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
 

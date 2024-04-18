@@ -11,7 +11,7 @@ public interface AdService {
 
     List<HomePageAdDTO> findAllHomePageAds();
 
-    void postAd(AdPostDto adDto);
+    Ad postAd(AdPostDto adDto);
 
     Optional<Ad> findById(Long adId);
 

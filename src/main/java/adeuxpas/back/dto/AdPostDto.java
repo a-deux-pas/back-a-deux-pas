@@ -1,13 +1,17 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import adeuxpas.back.entity.ArticlePicture;
-import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
-import adeuxpas.back.repository.UserRepository;
+
+/*
+ * This a data transfer object (DTO) that is used when receiving 
+ * an Ad object from the front 
+ * to tranform it into an AdPostDto during 
+ * the Ad creation process in order 
+ * to save it into the database
+ */
 
 public class AdPostDto {
     private Long id;
@@ -18,13 +22,10 @@ public class AdPostDto {
     private String category;
     private String subcategory;
     private String articleGender;
-    private long publisherId;
+    private Long publisherId;
     private List<ArticlePictureDTO> articlePictures;
     private String articleState;
     private AdStatus status = AdStatus.AVAILABLE;
-
-    // A enlever une fois la partie connexion integré
-    private UserRepository userRepository;
 
     // no-args constructor
     public AdPostDto() {
@@ -46,7 +47,7 @@ public class AdPostDto {
      * @param status
      */
     public AdPostDto(Long id, String title, String articleDescription, String creationDate, BigDecimal price,
-            String category, String articleGender, long publisherId, List<ArticlePictureDTO> articlePictures,
+            String category, String articleGender, Long publisherId, List<ArticlePictureDTO> articlePictures,
             String articleState, AdStatus status) {
         this.id = id;
         this.title = title;
@@ -142,11 +143,11 @@ public class AdPostDto {
         this.articleGender = articleGender;
     }
 
-    public long getPublisherId() {
+    public Long getPublisherId() {
         return publisherId;
     }
 
-    public void setPublisherId(long publisherId) {
+    public void setPublisherId(Long publisherId) {
         this.publisherId = publisherId;
     }
 

@@ -1,16 +1,22 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.AdPostDto;
-import adeuxpas.back.dto.HomePageAdDTO;
-import adeuxpas.back.dto.mapper.MapStructMapper;
 import adeuxpas.back.entity.Ad;
+import adeuxpas.back.entity.ArticlePicture;
+import adeuxpas.back.entity.User;
+import adeuxpas.back.enums.AdStatus;
+import adeuxpas.back.dto.mapper.AdMapper;
+import adeuxpas.back.dto.AdPostDto;
+import adeuxpas.back.dto.ArticlePictureDTO;
+import adeuxpas.back.dto.HomePageAdDTO;
+
 import adeuxpas.back.repository.AdRepository;
-import adeuxpas.back.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,16 +24,15 @@ import java.util.stream.Collectors;
 @Service
 public class AdServiceImpl implements AdService {
 
-    private MapStructMapper mapStruct;
+    private AdMapper mapper;
     private final AdRepository adRepository;
-    private UserService userService;
-    private UserRepository userRepository;
+    private final UserService userService;
 
     public AdServiceImpl(
-            @Autowired MapStructMapper mapStruct,
+            @Autowired AdMapper mapper,
             @Autowired AdRepository adRepository,
             @Autowired UserService userService) {
-        this.mapStruct = mapStruct;
+        this.mapper = mapper;
         this.adRepository = adRepository;
         this.userService = userService;
     }
@@ -35,11 +40,10 @@ public class AdServiceImpl implements AdService {
     @Override
     public List<HomePageAdDTO> findAllHomePageAds() {
         List<Ad> myAds = this.adRepository.findAll();
-        List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapStruct::adToHomePageAdDTO)
+        List<HomePageAdDTO> mappedAdsList = myAds.stream().map(mapper::adToHomePageAdDTO)
                 .collect(Collectors.toList());
         if (mappedAdsList.size() > 1)
             this.sortByCreationDateDesc(mappedAdsList);
-
         return mappedAdsList;
     }
 
@@ -55,13 +59,38 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public void postAd(AdPostDto adDto) {
-        try {
-            Ad ad = this.mapStruct.adPostDtoToAd(adDto, this.userRepository);
-            this.adRepository.save(ad);
-        } catch (Exception e) {
-            throw new RuntimeException("Unexpected database server error");
+    public Ad postAd(AdPostDto adDto) {
+        // TODO:: A revoir apres utilisation de MapStruct ET implémentation du processus
+        // de connexion
+        User publisher = userService.findUserById(adDto.getPublisherId())
+                .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
+
+        Ad newAd = new Ad();
+        newAd.setTitle(adDto.getTitle());
+        newAd.setArticleDescription(adDto.getArticleDescription());
+        newAd.setCreationDate(LocalDateTime.now());
+        newAd.setPrice(adDto.getPrice());
+        newAd.setCategory(adDto.getCategory());
+        newAd.setSubcategory(adDto.getSubcategory());
+        newAd.setArticleGender(adDto.getArticleGender());
+        newAd.setPublisher(publisher);
+        newAd.setArticleState(adDto.getArticleState());
+        newAd.setStatus(AdStatus.AVAILABLE);
+
+        // Ad newAd = mapper.adPostDtoToAd(adDto);
+
+        List<ArticlePicture> articlePictures = new ArrayList<>();
+        List<ArticlePictureDTO> adPics = adDto.getArticlePictures();
+
+        for (ArticlePictureDTO adPic : adPics) {
+            ArticlePicture newArticlePicture = new ArticlePicture();
+            newArticlePicture.setUrl(adPic.getUrl());
+            newArticlePicture.setAd(newAd);
+            articlePictures.add(newArticlePicture);
         }
+
+        newAd.setArticlePictures(articlePictures);
+        return newAd;
     }
 
     @Override
@@ -72,5 +101,4 @@ public class AdServiceImpl implements AdService {
             throw new RuntimeException("Unexpected database server error");
         }
     }
-
 }

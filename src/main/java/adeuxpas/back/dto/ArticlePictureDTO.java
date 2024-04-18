@@ -51,5 +51,4 @@ public class ArticlePictureDTO {
                 ", ad=" + ad +
                 '}';
     }
-
 }
