@@ -2,13 +2,15 @@ package adeuxpas.back.datainit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
  * Executes custom logic or tasks at the start of the application,
  * after the Spring application context is initialized and before the application starts serving requests.
  * <p>
- * This class implements the {@code CommandLineRunner} interface, allowing it to be executed as part of the application startup sequence.
+ * This class implements the {@code CommandLineRunner} interface, allowing it to be executed as part of the application startup sequence,
+ * when the "default profile" is active.
  * </p>
  * <p>
  * The run method is invoked by Spring Boot when the application is started.
@@ -24,14 +26,15 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class CommandLineRunnerImpl implements CommandLineRunner {
+@Profile("default")
+public class CmdLinePopulateDatabase implements CommandLineRunner {
     private final DatabaseSeeder seeder;
 
     /**
-     * Constructor for CommandLineRunnerImpl.
+     * Constructor for CmdLinePopulateDatabase.
      * @param seeder The {@code DatabaseSeeder} for populating the database.
      */
-    public CommandLineRunnerImpl(@Autowired DatabaseSeeder seeder){
+    public CmdLinePopulateDatabase(@Autowired DatabaseSeeder seeder){
         this.seeder = seeder;
     }
 

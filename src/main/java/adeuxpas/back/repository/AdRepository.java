@@ -51,7 +51,9 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                                                                      Pageable pageable
     );
 
-    @Query("SELECT ad FROM Ad ad JOIN ad.publisher u WHERE ad.status IN :adStatuses AND u.accountStatus IN :accountStatuses ORDER BY ad.creationDate DESC")
+    @Query("SELECT ad FROM Ad ad JOIN ad.publisher u " +
+            "WHERE ad.status IN :adStatuses AND u.accountStatus IN :accountStatuses " +
+            "ORDER BY ad.creationDate DESC")
     Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(List<AdStatus> adStatuses,
                                                              List<AccountStatus> accountStatuses,
                                                              Pageable pageable);

@@ -30,10 +30,10 @@ import static org.mockito.Mockito.*;
 public class AdServiceImplTest {
     private List<Ad> adsList;
     private Page<Ad> adsPage;
-    private Pageable pageable;
-    private List<String> priceRanges;
-    private List<String> citiesAndPostalCodes;
-    private List<String> articleStates;
+    private final List<String> priceRanges = List.of("< 10€", "10€ - 20€", "20€ - 30€", "30€ - 40€", "40€ - 60€", "> 60€");
+    private final List<String> articleStates = List.of("Neuf avec étiquette", "Neuf sans étiquette", "Très bon état", "Bon état", "Satisfaisant");
+    private final List<String> citiesAndPostalCodes = new ArrayList<>();
+    private final Pageable pageable = PageRequest.of(0, 8);
 
     @Captor
     private ArgumentCaptor<List<String>> postalCodesCaptor;
@@ -75,14 +75,11 @@ public class AdServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        // Arrange
         adsList = TestUtils.createMockAds();
         adsPage = new PageImpl<>(adsList);
-        pageable = PageRequest.of(0, 8);
-        priceRanges = List.of("< 10€", "10€ - 20€", "20€ - 30€", "30€ - 40€", "40€ - 60€", "> 60€");
-        citiesAndPostalCodes = List.of((adsList.get(0).getPublisher().getCity() + " (" + adsList.get(0).getPublisher().getPostalCode() + ")"),
-                (adsList.get(1).getPublisher().getCity() + " (" + adsList.get(1).getPublisher().getPostalCode() + ")"));
-        articleStates = List.of("Neuf avec étiquette", "Neuf sans étiquette", "Très bon état", "Bon état", "Satisfaisant");
+        adsList.forEach(ad -> {
+            citiesAndPostalCodes.add(ad.getPublisher().getCity() + " (" + ad.getPublisher().getPostalCode() + ")" );
+        });
         this.mockAdMapperBehaviour();
     }
 
@@ -96,7 +93,7 @@ public class AdServiceImplTest {
                 new ArrayList<>(), "Catégorie", pageable);
 
         // Assert :
-            // that this method was called inside the tested filter method
+            // that this method was called by the repository mock inside the tested filter method
         verify(adRepositoryMock).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
             // that this method was never called
         verify(adRepositoryMock, times(0)).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
