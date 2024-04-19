@@ -1,4 +1,4 @@
-package adeuxpas.back.datainit;
+package adeuxpas.back.testdatainit;
 
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
@@ -20,6 +20,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class responsible for seeding the database with initial sample data.
+ * It contains methods to seed different entities in the database, such as users.
+ * <p>
+ * The {@code seedDatabase()} method orchestrates the seeding process by calling individual seeding methods for each entity.
+ * </p>
+ * <p>
+ * This component is annotated with {@code @Component} to mark it as a Spring-managed component
+ * and enable automatic detection and registration by Spring's component scanning mechanism.
+ *</p>
+ *
+ * @author Mircea Bardan
+ */
 @Component
 public class TestDatabaseSeeder {
     private final UserRepository userRepository;

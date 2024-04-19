@@ -22,7 +22,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
+@ActiveProfiles("test") // Activates the 'test' profile, telling Spring to load the application-test.properties configuration
 @SpringBootTest
 @Transactional // Ensures each test runs within a transaction, which is rolled back after the test
 public class AdRepositoryIntegrationTest {

@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@Profile("default")
+@Profile("default") // only loads this class when the default profile is active
 public class CmdLinePopulateDatabase implements CommandLineRunner {
     private final DatabaseSeeder seeder;
 
