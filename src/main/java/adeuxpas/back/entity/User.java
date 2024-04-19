@@ -4,14 +4,16 @@ import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * Entity class representing a user in the application.
- * This class encapsulates user-related information, such as email, password, profile details, account status etc.
- * Instances of this class are persisted in the database and typically interact with the UserRepository.
+ * This class encapsulates user-related information, such as email, password,
+ * profile details, account status etc.
+ * Instances of this class are persisted in the database and typically interact
+ * with the UserRepository.
  *
  * @author Mircea Bardan
  */
@@ -40,7 +42,7 @@ public class User {
     @Column(name = "profile_picture")
     private String profilePicture;
     @Column(name = "inscription_date")
-    private LocalDateTime inscriptionDate;
+    private LocalDate inscriptionDate;
     @Column(name = "account_status")
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
@@ -50,7 +52,42 @@ public class User {
     private List<Ad> ads;
 
     // no args constructor
-    public User() {}
+    public User() {
+    }
+
+    /**
+     * All args constructor for {@code User}.
+     * 
+     * @param email           The {@code User}'s email.
+     * @param password        The {@code User}'s password.
+     * @param alias           The {@code User}'s alias.
+     * @param bio             The {@code User}'s bio.
+     * @param country         The {@code User}'s country.
+     * @param city            The {@code User}'s city.
+     * @param street          The {@code User}'s street.
+     * @param postalCode      The {@code User}'s postal code.
+     * @param profilePicture  The {@code User}'s profile picture.
+     * @param inscriptionDate The {@code User}'s inscription date.
+     * @param accountStatus   The {@code User}'s account status.
+     * @param role            The {@code User}'s role.
+     */
+    // all args constructor
+    public User(String email, String password, String alias, String bio, String country, String city,
+            String street, String postalCode, String profilePicture, LocalDate inscriptionDate,
+            AccountStatus accountStatus, UserRole role) {
+        this.email = email;
+        this.password = password;
+        this.alias = alias;
+        this.bio = bio;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.profilePicture = profilePicture;
+        this.inscriptionDate = inscriptionDate;
+        this.accountStatus = accountStatus;
+        this.role = role;
+    }
 
     // getters and setters
     public long getId() {
@@ -86,7 +123,7 @@ public class User {
     }
 
     public String getBio() {
-         return bio;
+        return bio;
     }
 
     public void setBio(String bio) {
@@ -133,11 +170,11 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public LocalDateTime getInscriptionDate() {
+    public LocalDate getInscriptionDate() {
         return inscriptionDate;
     }
 
-    public void setInscriptionDate(LocalDateTime inscriptionDate) {
+    public void setInscriptionDate(LocalDate inscriptionDate) {
         this.inscriptionDate = inscriptionDate;
     }
 
@@ -165,7 +202,6 @@ public class User {
         this.ads = ads;
     }
 
-
     // toString
     @Override
     public String toString() {
@@ -183,15 +219,17 @@ public class User {
                 ", inscriptionDate=" + inscriptionDate +
                 ", accountStatus=" + accountStatus +
                 ", role=" + role +
-                //", ads=" + ads +
+                // ", ads=" + ads +
                 '}';
     }
 
     // equals
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof User user))
+            return false;
         return Objects.equals(email, user.email);
     }
 

@@ -10,18 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
  * Implementation class for the AuthenticationService interface.
  * <p>
- * This service class provides implementations for user authentication operations, such as signup and login.
+ * This service class provides implementations for user authentication
+ * operations, such as signup and login.
  * </p>
  * <p>
- * It interacts with the UserService, BCryptPasswordEncoder, and JWTService to perform authentication tasks.
+ * It interacts with the UserService, BCryptPasswordEncoder, and JWTService to
+ * perform authentication tasks.
  * </p>
- * This class is responsible for validating signup requests, creating new user accounts,
+ * This class is responsible for validating signup requests, creating new user
+ * accounts,
  * and generating authentication tokens for login requests.
  *
  * @author Mircea Bardan
@@ -36,28 +39,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * Constructor for AuthenticationServiceImpl.
      *
-     * @param userService The UserService for interacting with user-related operations.
+     * @param userService The UserService for interacting with user-related
+     *                    operations.
      * @param encoder     The BCryptPasswordEncoder for encoding passwords.
      * @param jwtService  The JWTService for generating authentication tokens.
      */
     public AuthenticationServiceImpl(@Autowired UserService userService,
-                                     @Autowired BCryptPasswordEncoder encoder,
-                                     @Autowired JWTService jwtService){
+            @Autowired BCryptPasswordEncoder encoder,
+            @Autowired JWTService jwtService) {
         this.userService = userService;
         this.encoder = encoder;
         this.jwtService = jwtService;
     }
 
     /**
-     * Validates the signup request and creates a new user account if the user does not already exist.
+     * Validates the signup request and creates a new user account if the user does
+     * not already exist.
      *
      * @param signupRequestDTO The signup request containing user information.
-     * @return {@code true} if the user is successfully signed up, {@code false} otherwise.
+     * @return {@code true} if the user is successfully signed up, {@code false}
+     *         otherwise.
      */
     @Override
-    public boolean canDoSignup(SignupRequestDTO signupRequestDTO){
+    public boolean canDoSignup(SignupRequestDTO signupRequestDTO) {
         Optional<User> userFromDB = this.userService.findUserByEmail(signupRequestDTO.getEmail());
-        if (userFromDB.isEmpty()){
+        if (userFromDB.isEmpty()) {
             User userToSave = new User();
             userToSave.setEmail(signupRequestDTO.getEmail());
             userToSave.setPassword(encoder.encode(signupRequestDTO.getPassword()));
@@ -68,7 +74,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userToSave.setStreet(signupRequestDTO.getStreet());
             userToSave.setPostalCode(signupRequestDTO.getPostalCode());
             userToSave.setProfilePicture(signupRequestDTO.getProfilePicture());
-            userToSave.setInscriptionDate(LocalDateTime.now());
+            userToSave.setInscriptionDate(LocalDate.now());
             userToSave.setRole(UserRole.USER);
             userToSave.setAccountStatus(AccountStatus.ACTIVE);
 
@@ -81,16 +87,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     /**
      * Validates the login request and attempts to authenticate the user.
-     * If authentication is successful, it generates and returns a JWT token representing the user's session.
+     * If authentication is successful, it generates and returns a JWT token
+     * representing the user's session.
      * If authentication fails, it returns an empty optional.
      *
      * @param loginRequestDTO The login request containing user credentials.
-     * @return An optional containing the JWT token if authentication is successful, or an empty optional otherwise.
+     * @return An optional containing the JWT token if authentication is successful,
+     *         or an empty optional otherwise.
      */
     @Override
     public Optional<String> login(LoginRequestDTO loginRequestDTO) {
         Optional<User> userFromDB = this.userService.findUserByEmail(loginRequestDTO.getEmail());
-        if (userFromDB.isPresent() && encoder.matches(loginRequestDTO.getPassword(), userFromDB.get().getPassword())){
+        if (userFromDB.isPresent() && encoder.matches(loginRequestDTO.getPassword(), userFromDB.get().getPassword())) {
             String token = this.jwtService.generateToken(userFromDB.get().getEmail(), userFromDB.get().getRole());
             return Optional.of(token);
         }
