@@ -1,4 +1,4 @@
-package adeuxpas.back.testdatainit;
+package adeuxpas.back.datainit.testdatainit;
 
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;

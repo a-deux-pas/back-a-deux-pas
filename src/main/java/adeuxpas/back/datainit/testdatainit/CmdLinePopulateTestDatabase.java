@@ -1,4 +1,4 @@
-package adeuxpas.back.testdatainit;
+package adeuxpas.back.datainit.testdatainit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
