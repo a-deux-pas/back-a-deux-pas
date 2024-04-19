@@ -16,7 +16,7 @@ public class Ad {
     private Long id;
     @Column(length = 150)
     private String title;
-    @Column(name = "article_description", columnDefinition = "TEXT")
+    @Column(name = "article_description")
     private String articleDescription;
     @Column(name = "article_state", length = 150)
     private String articleState;

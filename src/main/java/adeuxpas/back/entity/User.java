@@ -27,7 +27,6 @@ public class User {
     private String password;
     @Column(length = 150)
     private String alias;
-    @Column(columnDefinition = "TEXT")
     private String bio;
     @Column(length = 150)
     private String country;

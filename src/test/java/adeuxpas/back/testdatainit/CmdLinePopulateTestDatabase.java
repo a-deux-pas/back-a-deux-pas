@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author Mircea Bardan
  */
 @Component
-@Profile("test")
+@Profile("test") // tells Spring to only run this code when the 'test' profile is active
 public class CmdLinePopulateTestDatabase implements CommandLineRunner {
     private final TestDatabaseSeeder seeder;
 
