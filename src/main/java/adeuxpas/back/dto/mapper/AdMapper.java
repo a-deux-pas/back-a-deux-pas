@@ -1,10 +1,8 @@
 package adeuxpas.back.dto.mapper;
 
 import adeuxpas.back.dto.AdResponseDTO;
-import adeuxpas.back.dto.CityAndPostalCodeDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
-import adeuxpas.back.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

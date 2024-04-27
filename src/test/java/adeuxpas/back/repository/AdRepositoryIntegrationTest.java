@@ -9,13 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -50,8 +48,9 @@ public class AdRepositoryIntegrationTest {
         this.seeder.seedTestDatabase();
     }
 
+
     @Test
-    void databaseConnectionEstablished(){
+    void testDatabaseConnectionIsEstablished(){
         assertThat(mySQLContainer.isCreated()).isTrue();
         assertThat(mySQLContainer.isRunning()).isTrue();
     }

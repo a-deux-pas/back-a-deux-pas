@@ -58,7 +58,7 @@ public class TestDatabaseSeeder {
     }
 
     /**
-     * Seeds the database with initial sample data.
+     * Seeds the test database with initial sample data.
      * This method delegates the seeding process to individual seeding methods for different entities.
      */
     public void seedTestDatabase(){
@@ -165,7 +165,7 @@ public class TestDatabaseSeeder {
     }
 
     /**
-     * Seeds the database with sample user data.
+     * Seeds the test database with sample user data.
      * @param users the list of users to save.
      */
     private void seedUsers(List<User> users){
@@ -459,7 +459,7 @@ public class TestDatabaseSeeder {
     }
 
     /**
-     * Seeds the database with sample ad data.
+     * Seeds the test database with sample ad data.
      * @param ads the list of ads to save.
      */
     private void seedAds(List<Ad> ads){
