@@ -50,6 +50,8 @@ public class DatabaseSeeder {
     private String pass4;
     @Value("${fifth.pass}")
     private String pass5;
+    @Value("${sixth.pass}")
+    private String pass6;
 
     /**
      * Constructs a new instance of DatabaseSeeder.
@@ -160,7 +162,7 @@ public class DatabaseSeeder {
 
         User sixth = new User();
         sixth.setEmail("random@email.com");
-        sixth.setPassword(passwordEncoder.encode("pass6"));
+        sixth.setPassword(passwordEncoder.encode(pass6));
         sixth.setAlias("Rando");
         sixth.setBio("bio6");
         sixth.setCountry("France");
