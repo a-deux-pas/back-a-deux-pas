@@ -3,13 +3,18 @@ package adeuxpas.back.repository;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
+import adeuxpas.back.testdatainit.TestDatabaseSeeder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -21,9 +26,8 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test") // Activates the 'test' profile, telling Spring to only execute the CmdLineRunner annotated with @Profile("test")
-@SpringBootTest
-//@Transactional // Ensures each test runs within a transaction, which is rolled back after the test
+@DataJpaTest
+@Import({TestDatabaseSeeder.class, BCryptPasswordEncoder.class})
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class AdRepositoryIntegrationTest {
@@ -34,14 +38,20 @@ public class AdRepositoryIntegrationTest {
 
     @Autowired
     AdRepository adRepository;
+    @Autowired
+    TestDatabaseSeeder seeder;
 
     @Container
     @ServiceConnection
     static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0");
 
+    @BeforeEach
+    void seedTestDatabase(){
+        this.seeder.seedTestDatabase();
+    }
 
     @Test
-    void connectionEstablished(){
+    void databaseConnectionEstablished(){
         assertThat(mySQLContainer.isCreated()).isTrue();
         assertThat(mySQLContainer.isRunning()).isTrue();
     }
