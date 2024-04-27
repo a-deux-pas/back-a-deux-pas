@@ -12,7 +12,6 @@ public class AdResponseDTO {
     private String publisherCity;
     private String publisherPostalCode;
 
-    public AdResponseDTO(){}
 
     public String getTitle() {
         return title;

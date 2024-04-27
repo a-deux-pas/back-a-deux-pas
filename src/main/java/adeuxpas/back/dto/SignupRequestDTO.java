@@ -23,9 +23,6 @@ public class SignupRequestDTO {
     private String postalCode;
     private String profilePicture;
 
-    // constructor
-    public SignupRequestDTO(){}
-
 
     public String getEmail() {
         return email;

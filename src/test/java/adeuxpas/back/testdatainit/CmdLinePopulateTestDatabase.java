@@ -29,6 +29,6 @@ public class CmdLinePopulateTestDatabase implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        this.seeder.seedDatabase();
+        this.seeder.seedTestDatabase();
     }
 }

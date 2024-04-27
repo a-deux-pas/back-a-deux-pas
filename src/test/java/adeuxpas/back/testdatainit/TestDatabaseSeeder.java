@@ -21,18 +21,18 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class responsible for seeding the database with initial sample data.
- * It contains methods to seed different entities in the database, such as users.
+ * Class responsible for seeding the test database with initial sample data.
  * <p>
- * The {@code seedDatabase()} method orchestrates the seeding process by calling individual seeding methods for each entity.
+ * The {@code seedTestDatabase()} method orchestrates the seeding process by calling individual seeding methods for each entity.
  * </p>
- * <p>
- * This component is annotated with {@code @Component} to mark it as a Spring-managed component
- * and enable automatic detection and registration by Spring's component scanning mechanism.
- *</p>
  *
  * @author Mircea Bardan
  */
+
+// DO NOT CREATE ANY MORE ADS !
+// DO NOT MODIFY THE ALREADY CREATED OBJECTS' PROPERTIES !
+// IF MODIFICATION IS NEEDED, SEE Mircea Bardan
+
 @Component
 public class TestDatabaseSeeder {
     private final UserRepository userRepository;
@@ -72,7 +72,7 @@ public class TestDatabaseSeeder {
      * Seeds the database with initial sample data.
      * This method delegates the seeding process to individual seeding methods for different entities.
      */
-    public void seedDatabase(){
+    public void seedTestDatabase(){
         List<User> users = createUsers();
         seedUsers(users);
 

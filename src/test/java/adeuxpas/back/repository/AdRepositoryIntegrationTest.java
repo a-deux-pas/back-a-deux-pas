@@ -3,28 +3,32 @@ package adeuxpas.back.repository;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
+import adeuxpas.back.testdatainit.TestDatabaseSeeder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test") // Activates the 'test' profile, telling Spring to load the application-test.properties configuration
+@ActiveProfiles("test") // Activates the 'test' profile, telling Spring to only execute the CmdLineRunner annotated with @Profile("test")
 @SpringBootTest
-@Transactional // Ensures each test runs within a transaction, which is rolled back after the test
+//@Transactional // Ensures each test runs within a transaction, which is rolled back after the test
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class AdRepositoryIntegrationTest {
     private final List<String> postalCodes = List.of("94700", "75000", "75018", "69000", "66000");
     private final List <String> articleStates =  List.of("Neuf avec étiquette", "Neuf sans étiquette", "Très bon état", "Bon état", "Satisfaisant");
@@ -33,6 +37,17 @@ public class AdRepositoryIntegrationTest {
 
     @Autowired
     AdRepository adRepository;
+
+    @Container
+    @ServiceConnection
+    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0");
+
+
+    @Test
+    void connectionEstablished(){
+        assertThat(mySQLContainer.isCreated()).isTrue();
+        assertThat(mySQLContainer.isRunning()).isTrue();
+    }
 
     @Test
     public void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_allFiltersExceptCategoryApplied() {

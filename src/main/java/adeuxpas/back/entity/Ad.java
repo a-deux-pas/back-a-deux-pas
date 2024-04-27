@@ -16,7 +16,7 @@ public class Ad {
     private Long id;
     @Column(length = 150)
     private String title;
-    @Column(name = "article_description")
+    @Column(name = "article_description", columnDefinition = "TEXT")
     private String articleDescription;
     @Column(name = "article_state", length = 150)
     private String articleState;
@@ -37,11 +37,6 @@ public class Ad {
     private User publisher;
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
-
-
-    // no-args constructor
-    public Ad(){}
-
 
     // getters and setters
     public Long getId() {
