@@ -22,11 +22,11 @@ import java.util.Date;
 @Service
 public class JWTService {
 
-    @Value("${app.jwt.secret}")
-    private String jwtSecret;
+    //@Value("${app.jwt.secret}")
+    private final String jwtSecret = "8c3af27e3bae4f1f82a5c663841f0e33d8456a52416f2b5f5248b9406ebbea37";
 
-    @Value("${app.jwt.expiration}")
-    private int jwtExpiration;
+    //@Value("${app.jwt.expiration}")
+    private final int jwtExpiration = 43400000;
 
     /**
      * Generates a JWT token based on the provided user email and role.
