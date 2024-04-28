@@ -23,6 +23,20 @@ public class SignupRequest {
     private String postalCode;
     private String profilePicture;
 
+     // Default constructor
+     public SignupRequest() {
+        // Initialize any default values or perform any necessary setup here
+        this.email = "";
+        this.password = "";
+        this.alias = "";
+        this.bio = "";
+        this.country = "";
+        this.city = "";
+        this.street = "";
+        this.postalCode = "";
+        this.profilePicture = "";
+    }
+
     /**
      * Constructor for {@code SignupRequest}.
      * @param email The {@code SignupRequest} sender's email.
