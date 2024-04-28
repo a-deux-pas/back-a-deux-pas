@@ -33,8 +33,7 @@ public class AdController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize ) {
 
-        System.out.println(priceRangesFilter + " " + citiesAndPostalCodesFilter + " " + articleStatesFilter + " " + categoryFilter);
-        try {
+       try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
             Page<AdResponseDTO> adsPage = this.adService.findFilteredAdResponseDTOs(priceRangesFilter, citiesAndPostalCodesFilter,
                                                                                     articleStatesFilter, categoryFilter, pageable);

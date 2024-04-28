@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import({TestDatabaseSeeder.class, BCryptPasswordEncoder.class})
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AdRepositoryIntegrationTest {
+class AdRepositoryIntegrationTest {
     private final List<String> postalCodes = List.of("94700", "75000", "75018", "69000", "66000");
     private final List <String> articleStates =  List.of("Neuf avec étiquette", "Neuf sans étiquette", "Très bon état", "Bon état", "Satisfaisant");
     private final List<AdStatus> acceptedAdStatuses = List.of(AdStatus.AVAILABLE);

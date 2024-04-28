@@ -1,7 +1,6 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.CityAndPostalCodeDTO;
-import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.repository.UserRepository;

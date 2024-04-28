@@ -125,7 +125,7 @@ public class AdServiceImpl implements AdService {
     private Page<AdResponseDTO> convertToPageOfAdResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
         List<AdResponseDTO> mappedAdsList = adsPage.stream()
                 .map(mapper::adToAdResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
