@@ -74,7 +74,7 @@ public class AdServiceImplTest {
     private AdServiceImpl adService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         adsList = TestUtils.createMockAds();
         adsPage = new PageImpl<>(adsList);
         adsList.forEach(ad -> {
@@ -84,7 +84,7 @@ public class AdServiceImplTest {
     }
 
     @Test
-    public void testFindFilteredResponseAdDTOs_NoFiltersApplied() {
+    void testFindFilteredResponseAdDTOs_NoFiltersApplied() {
         // Additional set-up
         this.mockRepositoryFindByAcceptedStatusesMethod();
 
@@ -107,7 +107,7 @@ public class AdServiceImplTest {
     }
 
     @Test
-    public void testFindFilteredResponseAdDTOs_AllFiltersExceptCategoryApplied() {
+    void testFindFilteredResponseAdDTOs_AllFiltersExceptCategoryApplied() {
         // Additional set-up
         this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
@@ -146,7 +146,7 @@ public class AdServiceImplTest {
     }
 
     @Test
-    public void testFindFilteredResponseAdDTOs_CategoryAndCriteriaForEachFilterApplied() {
+    void testFindFilteredResponseAdDTOs_CategoryAndCriteriaForEachFilterApplied() {
         // Additional set-up
         mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
@@ -184,7 +184,7 @@ public class AdServiceImplTest {
     }
 
     @Test
-    public void testFindFilteredResponseAdDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
+    void testFindFilteredResponseAdDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
         // Additional set-up
         this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 

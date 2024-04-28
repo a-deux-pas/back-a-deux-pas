@@ -56,7 +56,7 @@ public class AdRepositoryIntegrationTest {
     }
 
     @Test
-    public void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_allFiltersExceptCategoryApplied() {
+    void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_allFiltersExceptCategoryApplied() {
         // Act
         Page<Ad> result = adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes, articleStates, BigDecimal.TEN, BigDecimal.TEN, BigDecimal.valueOf(19), BigDecimal.valueOf(20), BigDecimal.valueOf(29),
@@ -78,7 +78,7 @@ public class AdRepositoryIntegrationTest {
     }
 
     @Test
-    public void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_filtersWithCategoryApplied() {
+    void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_filtersWithCategoryApplied() {
         // Act
         Page<Ad> result = adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes, articleStates, BigDecimal.TEN, BigDecimal.TEN, BigDecimal.valueOf(19), BigDecimal.valueOf(20), BigDecimal.valueOf(29),
@@ -97,7 +97,7 @@ public class AdRepositoryIntegrationTest {
     }
 
     @Test
-    public void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_filtersWithCategoryAndSubcategoryApplied() {
+    void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_filtersWithCategoryAndSubcategoryApplied() {
         // Act
         Page<Ad> result = adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes, articleStates, BigDecimal.TEN, BigDecimal.TEN, BigDecimal.valueOf(19), BigDecimal.valueOf(20), BigDecimal.valueOf(29),
@@ -119,7 +119,7 @@ public class AdRepositoryIntegrationTest {
     }
 
     @Test
-    public void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_filtersWithCategorySubcategoryAndGenderApplied() {
+    void testFindByAcceptedStatusesFilteredOrderedByCreationDateDesc_filtersWithCategorySubcategoryAndGenderApplied() {
         // Act
         Page<Ad> result = adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes, articleStates, BigDecimal.TEN, BigDecimal.TEN, BigDecimal.valueOf(19), BigDecimal.valueOf(20), BigDecimal.valueOf(29),
@@ -139,7 +139,7 @@ public class AdRepositoryIntegrationTest {
     }
 
     @Test
-    public void testFindByAcceptedStatusesOrderedByCreationDateDesc_AKANoFiltersAppliedFromService(){
+    void testFindByAcceptedStatusesOrderedByCreationDateDesc_AKANoFiltersAppliedFromService(){
         // Act
         Page<Ad> result = adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses,
                 acceptedAccountStatuses,

@@ -421,8 +421,8 @@ public class DatabaseSeeder {
         fifteenthAd.setTitle("Marlboro cap");
         fifteenthAd.setPublisher(users.get(3));
         fifteenthAd.setArticleState("Bon état");
-        fifteenthAd.setCategory("Accessoires");
-        fifteenthAd.setSubcategory("Autre");
+        fifteenthAd.setCategory("Mode");
+        fifteenthAd.setSubcategory("Accessoires");
         fourthUserAds.add(fifteenthAd);
         users.get(3).setAds(fourthUserAds);
         fifteenthAd.setStatus(AdStatus.AVAILABLE);

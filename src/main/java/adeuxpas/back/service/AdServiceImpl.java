@@ -43,7 +43,7 @@ public class AdServiceImpl implements AdService {
         // extracting the postal codes
         List<String> postalCodes = citiesAndPostalCodesFilter.stream()
                                         .map(city -> city.substring(city.indexOf('(') + 1, city.indexOf(')')))
-                                        .collect(Collectors.toList());
+                                        .toList();
 
         // preparing the price ranges
         BigDecimal maxPrice1 = null;
@@ -57,7 +57,7 @@ public class AdServiceImpl implements AdService {
         BigDecimal maxPrice5 = null;
         BigDecimal minPrice6 = BigDecimal.ZERO;
 
-        for (String priceRange : priceRangesFilter) {
+        for (String priceRange : priceRangesFilter)
             switch (priceRange) {
                 case "< 10€":
                     maxPrice1 = BigDecimal.valueOf(10);
@@ -86,8 +86,9 @@ public class AdServiceImpl implements AdService {
                 case "> 60€":
                     minPrice6 = BigDecimal.valueOf(60);
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + priceRange);
             }
-        }
 
         // extracting the category filter criteria
         String category;
