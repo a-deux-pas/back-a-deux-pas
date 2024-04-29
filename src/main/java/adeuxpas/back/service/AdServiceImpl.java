@@ -6,7 +6,7 @@ import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
-import adeuxpas.back.dto.AdPostRequestDTO:
+import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 
 import adeuxpas.back.repository.AdRepository;
