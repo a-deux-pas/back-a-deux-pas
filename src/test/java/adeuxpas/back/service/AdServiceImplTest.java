@@ -61,7 +61,7 @@ class AdServiceImplTest {
 
         User user = new User();
         user.setId(1L);
-        when(userService.findUserById(1L)).thenReturn((Optional.of(user)));
+        when(userRepository.findById(1L)).thenReturn((Optional.of(user)));
 
         Ad createdAd = adService.postAd(adDto);
 

@@ -10,6 +10,7 @@ import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,21 +28,24 @@ public class AdServiceImpl implements AdService {
     private AdMapper mapper;
     private final AdRepository adRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     public AdServiceImpl(
             @Autowired AdMapper mapper,
             @Autowired AdRepository adRepository,
-            @Autowired UserService userService) {
+            @Autowired UserService userService,
+            @Autowired UserRepository userRepository) {
         this.mapper = mapper;
         this.adRepository = adRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Ad postAd(AdPostRequestDTO adDto) {
         // TODO:: A revoir apres utilisation de MapStruct ET implémentation du processus
         // de connexion
-        User publisher = userService.findUserById(adDto.getPublisherId())
+        User publisher = userRepository.findById(adDto.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
         Ad newAd = new Ad();
