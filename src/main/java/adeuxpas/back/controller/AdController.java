@@ -1,5 +1,7 @@
 package adeuxpas.back.controller;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.entity.Ad;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 public class AdController {
@@ -19,11 +23,11 @@ public class AdController {
      * @return also a Dto
      */
     @PostMapping("/create")
-    public ResponseEntity<?> postAd(@RequestBody AdPostDto adDto) {
+    public ResponseEntity<?> postAd(@RequestBody AdPostRequestDTO adDto) {
         try {
             Ad newAd = service.postAd(adDto);
             Ad savedAd = repo.save(newAd);
-            AdResponseDTO responseDto = mapper.adToAdResponseDTO(savedAd);
+            AdPostResponseDTO responseDto = mapper.adToAdResponseDTO(savedAd);
 
             return ResponseEntity.ok().body(responseDto);
         } catch (UsernameNotFoundException e) {
