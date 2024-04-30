@@ -6,7 +6,9 @@ import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
+import adeuxpas.back.controller.AdController;
 import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 
 import adeuxpas.back.repository.AdRepository;
@@ -20,31 +22,33 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class AdServiceImpl implements AdService {
 
     private AdMapper mapper;
-    private final AdRepository adRepository;
-    private final UserService userService;
+    private final AdRepository repo;
     private final UserRepository userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(AdController.class);
 
     public AdServiceImpl(
             @Autowired AdMapper mapper,
-            @Autowired AdRepository adRepository,
-            @Autowired UserService userService,
+            @Autowired AdRepository repo,
             @Autowired UserRepository userRepository) {
         this.mapper = mapper;
-        this.adRepository = adRepository;
-        this.userService = userService;
+        this.repo = repo;
         this.userRepository = userRepository;
     }
 
     @Override
     public Ad postAd(AdPostRequestDTO adDto) {
-        // TODO:: A revoir apres utilisation de MapStruct ET implémentation du processus
-        // de connexion
+        logger.info("adDto get by postAd Method: {}", adDto);
+        // TODO:: A revoir apres implémentation du processus de connexion pour l'
+        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);) =>
         User publisher = userRepository.findById(adDto.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
@@ -60,8 +64,6 @@ public class AdServiceImpl implements AdService {
         newAd.setArticleState(adDto.getArticleState());
         newAd.setStatus(AdStatus.AVAILABLE);
 
-        // Ad newAd = mapper.adPostDtoToAd(adDto);
-
         List<ArticlePicture> articlePictures = new ArrayList<>();
         List<ArticlePictureDTO> adPics = adDto.getArticlePictures();
 
@@ -73,16 +75,16 @@ public class AdServiceImpl implements AdService {
         }
 
         newAd.setArticlePictures(articlePictures);
-        return newAd;
+        // <= TODO:: A revoir apres implémentation du processus de connexion pour l'
+        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);)
+
+        Ad savedAd = repo.save(newAd);
+        logger.info("New Ad created: {}", savedAd);
+        return savedAd;
     }
 
     @Override
-    public Optional<Ad> findById(Long id) {
-        try {
-            return this.adRepository.findById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Unexpected database server error");
-        }
+    public Optional<Ad> findAdById(Long id) {
+        return repo.findById(id);
     }
 }
-

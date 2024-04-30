@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface AdService {
     Ad postAd(AdPostRequestDTO adDto);
 
-    Optional<Ad> findById(Long adId);
+    Optional<Ad> findAdById(Long adId);
 
 }

@@ -67,5 +67,7 @@ public interface AdMapper {
 
     @Mapping(source = "publisherId", target = "publisher.id")
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
-}
 
+    @Mapping(source = "publisher.id", target = "publisherId")
+    AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
+}
