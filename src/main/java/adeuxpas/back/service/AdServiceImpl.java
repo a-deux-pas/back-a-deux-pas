@@ -6,13 +6,13 @@ import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
-import adeuxpas.back.controller.AdController;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 
 import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +33,7 @@ public class AdServiceImpl implements AdService {
     private final AdRepository repo;
     private final UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(AdController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
 
     public AdServiceImpl(
             @Autowired AdMapper mapper,
@@ -84,7 +84,14 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Optional<Ad> findAdById(Long id) {
-        return repo.findById(id);
+    public AdPostResponseDTO findAdById(Long id) {
+        Optional<Ad> optionalAd = repo.findById(id);
+        if (optionalAd.isPresent()) {
+            Ad ad = optionalAd.get();
+            return mapper.adToAdResponseDTO(ad);
+
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }

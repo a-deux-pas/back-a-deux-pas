@@ -162,7 +162,7 @@ public class AdPostRequestDTO {
 
     @Override
     public String toString() {
-        return "AdPostDto{" +
+        return "AdPostRequestDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", articleDescription='" + articleDescription + '\'' +

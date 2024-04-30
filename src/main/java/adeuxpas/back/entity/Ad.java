@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Ad {
 
@@ -46,6 +48,7 @@ public class Ad {
     @JoinColumn(name = "publisher_id")
     private User publisher;
     @NotEmpty
+    @JsonBackReference
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
 
@@ -181,24 +184,6 @@ public class Ad {
         this.articlePictures = articlePictures;
     }
 
-    // toString
-    @Override
-    public String toString() {
-        return "Ad{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", articleDescription='" + articleDescription + '\'' +
-                ", articleState='" + articleState + '\'' +
-                ", creationDate=" + creationDate +
-                ", price=" + price +
-                ", status=" + status +
-                ", category='" + category + '\'' +
-                ", subcategory='" + subcategory + '\'' +
-                ", articleGender='" + articleGender + '\'' +
-                ", publisher=" + publisher +
-                '}';
-    }
-
     // equals
     @Override
     public boolean equals(Object o) {
@@ -220,4 +205,3 @@ public class Ad {
                 articleGender, publisher);
     }
 }
-

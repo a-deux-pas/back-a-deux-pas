@@ -1,5 +1,7 @@
 package adeuxpas.back.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,18 +12,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.service.AdService;
 
+import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.Operation;
+
+//AJouter doc swagger que Lea a mis dans son userController
 @RestController
 @RequestMapping("/ad")
 public class AdController {
     private final AdService service;
     private final AdMapper mapper;
+
+    final Logger logger = LoggerFactory.getLogger(AdController.class);
 
     public AdController(
             @Autowired AdService service,
@@ -39,6 +45,7 @@ public class AdController {
      */
     @PostMapping("/create")
     public ResponseEntity<?> postAd(@RequestBody AdPostRequestDTO adDto) {
+        logger.atInfo().log("adDto: " + adDto);
         try {
             return ResponseEntity.ok(service.postAd(adDto));
         } catch (UsernameNotFoundException e) {
