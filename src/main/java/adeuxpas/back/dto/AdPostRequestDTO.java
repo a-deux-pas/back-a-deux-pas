@@ -3,8 +3,6 @@ package adeuxpas.back.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
-import adeuxpas.back.enums.AdStatus;
-
 /*
  * This a data transfer object (DTO) that is used when receiving 
  * an Ad object from the front 
@@ -42,11 +40,10 @@ public class AdPostRequestDTO {
      * @param publisherId
      * @param articlePictures
      * @param articleState
-     * @param status
      */
-    public AdPostRequestDTO(Long id, String title, String articleDescription, String creationDate, BigDecimal price,
+    public AdPostRequestDTO(String title, String articleDescription, String creationDate, BigDecimal price,
             String category, String articleGender, Long publisherId, List<ArticlePictureDTO> articlePictures,
-            String articleState, AdStatus status) {
+            String articleState) {
         this.title = title;
         this.articleDescription = articleDescription;
         this.creationDate = creationDate;
