@@ -33,7 +33,7 @@ public class Ad {
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
-    private AdStatus status;
+    private AdStatus status = AdStatus.AVAILABLE;
     @Column(length = 100)
     private String category;
     @NotNull

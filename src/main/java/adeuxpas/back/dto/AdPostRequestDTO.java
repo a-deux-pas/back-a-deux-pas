@@ -14,7 +14,6 @@ import adeuxpas.back.enums.AdStatus;
  */
 
 public class AdPostRequestDTO {
-    private Long id;
     private String title;
     private String articleDescription;
     private String creationDate;
@@ -25,7 +24,6 @@ public class AdPostRequestDTO {
     private Long publisherId;
     private List<ArticlePictureDTO> articlePictures;
     private String articleState;
-    private AdStatus status = AdStatus.AVAILABLE;
 
     // no-args constructor
     public AdPostRequestDTO() {
@@ -49,7 +47,6 @@ public class AdPostRequestDTO {
     public AdPostRequestDTO(Long id, String title, String articleDescription, String creationDate, BigDecimal price,
             String category, String articleGender, Long publisherId, List<ArticlePictureDTO> articlePictures,
             String articleState, AdStatus status) {
-        this.id = id;
         this.title = title;
         this.articleDescription = articleDescription;
         this.creationDate = creationDate;
@@ -59,18 +56,9 @@ public class AdPostRequestDTO {
         this.publisherId = publisherId;
         this.articlePictures = articlePictures;
         this.articleState = articleState;
-        this.status = status;
     }
 
     // getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -109,14 +97,6 @@ public class AdPostRequestDTO {
 
     public void setPrice(BigDecimal bigDecimal) {
         this.price = bigDecimal;
-    }
-
-    public AdStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AdStatus status) {
-        this.status = status;
     }
 
     public String getCategory() {
