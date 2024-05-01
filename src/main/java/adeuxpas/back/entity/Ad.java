@@ -2,8 +2,6 @@ package adeuxpas.back.entity;
 
 import adeuxpas.back.enums.AdStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,25 +15,20 @@ public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     @Column(length = 150)
     private String title;
-    @NotNull
     @Column(name = "article_description", columnDefinition = "TEXT")
     private String articleDescription;
-    @NotNull
     @Column(name = "article_state", length = 150)
     private String articleState;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
-    @NotNull
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private AdStatus status = AdStatus.AVAILABLE;
     @Column(length = 100)
     private String category;
-    @NotNull
     @Column(length = 100)
     private String subcategory;
     @Column(name = "article_gender", length = 10)
@@ -43,7 +36,6 @@ public class Ad {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private User publisher;
-    @NotEmpty
     @JsonBackReference
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
@@ -179,4 +171,23 @@ public class Ad {
     public void setArticlePictures(List<ArticlePicture> articlePictures) {
         this.articlePictures = articlePictures;
     }
+
+    @Override
+    public String toString() {
+        return "Ad{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", articleDescription='" + articleDescription + '\'' +
+                ", articleState='" + articleState + '\'' +
+                ", creationDate=" + creationDate +
+                ", price=" + price +
+                ", status=" + status +
+                ", category='" + category + '\'' +
+                ", subcategory='" + subcategory + '\'' +
+                ", articleGender='" + articleGender + '\'' +
+                ", publisher=" + (publisher != null ? publisher.getId() : "null") +
+                ", articlePictures=" + (articlePictures != null ? articlePictures.size() : 0) +
+                '}';
+    }
+
 }

@@ -3,6 +3,10 @@ package adeuxpas.back.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 /*
  * This a data transfer object (DTO) that is used when receiving 
  * an Ad object from the front 
@@ -12,15 +16,23 @@ import java.util.List;
  */
 
 public class AdPostRequestDTO {
+    @NotBlank
     private String title;
+    @NotBlank
     private String articleDescription;
+    @NotNull
     private String creationDate;
+    @NotNull
     private BigDecimal price;
     private String category;
+    @NotBlank
     private String subcategory;
     private String articleGender;
+    @NotNull
     private Long publisherId;
+    @NotEmpty
     private List<ArticlePictureDTO> articlePictures;
+    @NotBlank
     private String articleState;
 
     // no-args constructor

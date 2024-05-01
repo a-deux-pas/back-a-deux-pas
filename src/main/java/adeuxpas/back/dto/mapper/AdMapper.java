@@ -19,10 +19,12 @@ import org.mapstruct.Named;
  * such as its multiple article picture DTO
  * </p>
  * <p>
- * It uses MapStruct annotations for mapping and Spring component model for integration with Spring.
+ * It uses MapStruct annotations for mapping and Spring component model for
+ * integration with Spring.
  * </p>
  * <p>
- * This interface defines mapping methods for converting Ad entity attributes to corresponding DTO fields.
+ * This interface defines mapping methods for converting Ad entity attributes to
+ * corresponding DTO fields.
  * </p>
  * <p>
  * It also includes helper methods.

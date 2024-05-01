@@ -1,7 +1,6 @@
 package adeuxpas.back.entity;
 
 import jakarta.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -49,5 +48,14 @@ public class ArticlePicture {
 
     public void setAd(Ad ad) {
         this.ad = ad;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticlePicture{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", ad=" + (ad != null ? "Ad{id=" + ad.getId() + "}" : "null") +
+                '}';
     }
 }
