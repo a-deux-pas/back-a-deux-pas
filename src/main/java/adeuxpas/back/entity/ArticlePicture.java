@@ -1,4 +1,3 @@
-
 package adeuxpas.back.entity;
 
 import jakarta.persistence.*;
@@ -12,6 +11,7 @@ public class ArticlePicture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 150)
     private String url;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,21 +51,5 @@ public class ArticlePicture {
 
     public void setAd(Ad ad) {
         this.ad = ad;
-    }
-
-    // equals
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof ArticlePicture that))
-            return false;
-        return Objects.equals(url, that.url) && Objects.equals(ad, that.ad);
-    }
-
-    // hashCode
-    @Override
-    public int hashCode() {
-        return Objects.hash(url, ad);
     }
 }

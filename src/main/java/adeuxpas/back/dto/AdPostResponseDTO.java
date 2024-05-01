@@ -1,4 +1,3 @@
-
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
@@ -153,25 +152,4 @@ public class AdPostResponseDTO {
     public void setArticleDescription(String articleDescription) {
         this.articleDescription = articleDescription;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof AdPostResponseDTO that))
-            return false;
-        return Objects.equals(title, that.title) && Objects.equals(firstArticlePictureUrl, that.firstArticlePictureUrl)
-                && Objects.equals(secondArticlePictureUrl, that.secondArticlePictureUrl)
-                && Objects.equals(price, that.price) && Objects.equals(creationDate, that.creationDate)
-                && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity)
-                && Objects.equals(publisherPostalCode, that.publisherPostalCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, firstArticlePictureUrl, secondArticlePictureUrl, price, creationDate, publisher,
-                publisherCity,
-                publisherPostalCode);
-    }
 }
-

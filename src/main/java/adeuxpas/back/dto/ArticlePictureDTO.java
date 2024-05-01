@@ -1,4 +1,3 @@
-
 package adeuxpas.back.dto;
 
 import adeuxpas.back.entity.Ad;

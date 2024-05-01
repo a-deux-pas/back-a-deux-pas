@@ -1,4 +1,3 @@
-
 package adeuxpas.back.service;
 
 import adeuxpas.back.entity.Ad;
@@ -23,17 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Service
 public class AdServiceImpl implements AdService {
 
     private AdMapper mapper;
     private final AdRepository repo;
     private final UserRepository userRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
 
     public AdServiceImpl(
             @Autowired AdMapper mapper,
@@ -78,7 +72,6 @@ public class AdServiceImpl implements AdService {
         // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);)
 
         Ad savedAd = repo.save(newAd);
-        logger.info("New Ad created: {}", savedAd.getTitle());
         return savedAd;
     }
 

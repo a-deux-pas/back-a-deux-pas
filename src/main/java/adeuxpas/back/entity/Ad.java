@@ -1,4 +1,3 @@
-
 package adeuxpas.back.entity;
 
 import adeuxpas.back.enums.AdStatus;
@@ -182,26 +181,5 @@ public class Ad {
 
     public void setArticlePictures(List<ArticlePicture> articlePictures) {
         this.articlePictures = articlePictures;
-    }
-
-    // equals
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Ad ad))
-            return false;
-        return Objects.equals(title, ad.title) && Objects.equals(articleDescription, ad.articleDescription)
-                && Objects.equals(articleState, ad.articleState) && Objects.equals(creationDate, ad.creationDate)
-                && Objects.equals(price, ad.price) && status == ad.status && Objects.equals(category, ad.category)
-                && Objects.equals(subcategory, ad.subcategory) && Objects.equals(articleGender, ad.articleGender)
-                && Objects.equals(publisher, ad.publisher);
-    }
-
-    // hashCode
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, articleDescription, articleState, creationDate, price, status, category, subcategory,
-                articleGender, publisher);
     }
 }
