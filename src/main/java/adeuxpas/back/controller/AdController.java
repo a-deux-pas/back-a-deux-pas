@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("/ad")
+@RequestMapping("/ads")
 public class AdController {
     private final AdService service;
 

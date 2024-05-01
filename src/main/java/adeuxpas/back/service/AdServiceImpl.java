@@ -26,15 +26,15 @@ import java.util.Optional;
 public class AdServiceImpl implements AdService {
 
     private AdMapper mapper;
-    private final AdRepository repo;
+    private final AdRepository adRepository;
     private final UserRepository userRepository;
 
     public AdServiceImpl(
             @Autowired AdMapper mapper,
-            @Autowired AdRepository repo,
+            @Autowired AdRepository adRepository,
             @Autowired UserRepository userRepository) {
         this.mapper = mapper;
-        this.repo = repo;
+        this.adRepository = adRepository;
         this.userRepository = userRepository;
     }
 
@@ -71,16 +71,16 @@ public class AdServiceImpl implements AdService {
         // <= TODO:: A revoir apres implémentation du processus de connexion pour l'
         // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);)
 
-        Ad savedAd = repo.save(newAd);
+        Ad savedAd = adRepository.save(newAd);
         return savedAd;
     }
 
     @Override
     public AdPostResponseDTO findAdById(Long id) {
-        Optional<Ad> optionalAd = repo.findById(id);
+        Optional<Ad> optionalAd = adRepository.findById(id);
         if (optionalAd.isPresent()) {
             Ad ad = optionalAd.get();
-            return mapper.adToAdResponseDTO(ad);
+            return mapper.adToAdPostResponeDTO(ad);
 
         } else {
             throw new EntityNotFoundException();

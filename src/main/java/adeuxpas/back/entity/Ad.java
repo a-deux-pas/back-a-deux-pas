@@ -25,7 +25,6 @@ public class Ad {
     @Column(name = "article_description", columnDefinition = "TEXT")
     private String articleDescription;
     @NotNull
-    @Size(max = 150, message = "title must be at most 150 characters long")
     @Column(name = "article_state", length = 150)
     private String articleState;
     @Column(name = "creation_date")
