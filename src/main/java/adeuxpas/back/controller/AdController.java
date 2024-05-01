@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.service.AdService;
 
 import io.swagger.v3.oas.annotations.responses.*;
@@ -44,7 +45,7 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/create")
-    public ResponseEntity<?> postAd(@RequestBody AdPostRequestDTO adDto) {
+    public ResponseEntity<Object>  postAd(@RequestBody AdPostRequestDTO adDto) {
         logger.atInfo().log("adDto: " + adDto);
         try {
             return ResponseEntity.ok(service.postAd(adDto));
@@ -67,7 +68,7 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable long id) {
+    public ResponseEntity<Object> findById(@PathVariable long id) {
         try {
             return ResponseEntity.ok(service.findAdById(id));
         } catch (EntityNotFoundException e) {
