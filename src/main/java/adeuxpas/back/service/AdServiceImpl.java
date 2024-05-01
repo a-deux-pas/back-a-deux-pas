@@ -46,7 +46,6 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Ad postAd(AdPostRequestDTO adDto) {
-        logger.info("adDto get by postAd Method: {}", adDto);
         // TODO:: A revoir apres implémentation du processus de connexion pour l'
         // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);) =>
         User publisher = userRepository.findById(adDto.getPublisherId())
@@ -79,7 +78,7 @@ public class AdServiceImpl implements AdService {
         // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);)
 
         Ad savedAd = repo.save(newAd);
-        logger.info("New Ad created: {}", savedAd);
+        logger.info("New Ad created: {}", savedAd.getTitle());
         return savedAd;
     }
 

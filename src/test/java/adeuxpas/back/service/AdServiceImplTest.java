@@ -3,6 +3,7 @@ package adeuxpas.back.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
+import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UserRepository;
 
 import java.math.BigDecimal;
@@ -35,6 +37,9 @@ class AdServiceImplTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private AdRepository repo;
 
     /**
      * Test for postAd method in AdServiceImpl.
@@ -62,6 +67,20 @@ class AdServiceImplTest {
         User user = new User();
         user.setId(1L);
         when(userRepository.findById(1L)).thenReturn((Optional.of(user)));
+
+        Ad expectedAd = new Ad();
+        expectedAd.setTitle(adDto.getTitle());
+        expectedAd.setArticleDescription(adDto.getArticleDescription());
+        expectedAd.setPrice(adDto.getPrice());
+        expectedAd.setCategory(adDto.getCategory());
+        expectedAd.setSubcategory(adDto.getSubcategory());
+        expectedAd.setArticleGender(adDto.getArticleGender());
+        expectedAd.setPublisher(user);
+        expectedAd.setArticleState(adDto.getArticleState());
+        expectedAd.setStatus(AdStatus.AVAILABLE);
+        expectedAd.setArticlePictures(new ArrayList<>());
+
+        when(repo.save(any(Ad.class))).thenReturn(expectedAd);
 
         Ad createdAd = adService.postAd(adDto);
 

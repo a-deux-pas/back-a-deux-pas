@@ -43,13 +43,4 @@ public class ArticlePictureDTO {
     public void setAd(Ad ad) {
         this.ad = ad;
     }
-
-    @Override
-    public String toString() {
-        return "ArticlePictureDTO{" +
-                "id=" + id +
-                ", url='" + url + '\'' +
-                ", ad=" + ad +
-                '}';
-    }
 }

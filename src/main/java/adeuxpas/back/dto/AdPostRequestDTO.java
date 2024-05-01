@@ -159,21 +159,4 @@ public class AdPostRequestDTO {
     public void setArticlePictures(List<ArticlePictureDTO> articlePictures) {
         this.articlePictures = articlePictures;
     }
-
-    @Override
-    public String toString() {
-        return "AdPostRequestDTO{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", articleDescription='" + articleDescription + '\'' +
-                ", articleState='" + articleState + '\'' +
-                ", creationDate=" + creationDate +
-                ", price=" + price +
-                ", category='" + category + '\'' +
-                ", subcategory='" + subcategory + '\'' +
-                ", articleGender='" + articleGender + '\'' +
-                ", publisherId=" + publisherId +
-                ", articlePictures=" + articlePictures +
-                '}';
-    }
 }

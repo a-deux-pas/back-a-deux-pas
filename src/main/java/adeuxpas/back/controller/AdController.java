@@ -14,26 +14,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.service.AdService;
 
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
 
-//AJouter doc swagger que Lea a mis dans son userController
 @RestController
 @RequestMapping("/ad")
 public class AdController {
     private final AdService service;
-    private final AdMapper mapper;
 
     final Logger logger = LoggerFactory.getLogger(AdController.class);
 
     public AdController(
-            @Autowired AdService service,
-            @Autowired AdMapper mapper) {
+            @Autowired AdService service) {
         this.service = service;
-        this.mapper = mapper;
     }
 
     /**
@@ -43,6 +38,11 @@ public class AdController {
      * @param adDto
      * @return also a Dto
      */
+    @Operation(summary = "new Ad creation")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful ad creation"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping("/create")
     public ResponseEntity<?> postAd(@RequestBody AdPostRequestDTO adDto) {
         logger.atInfo().log("adDto: " + adDto);
@@ -61,6 +61,11 @@ public class AdController {
      * @param id
      * @return ResponseEntity indicating if the Ad has been found
      */
+    @Operation(summary = "ad details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of ad information"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable long id) {
         try {
