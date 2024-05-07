@@ -41,7 +41,7 @@ public interface AdMapper {
     @Mapping(source = "publisher.alias", target = "publisher")
     @Mapping(source = "publisher.city", target = "publisherCity")
     @Mapping(source = "publisher.postalCode", target = "publisherPostalCode")
-    AdPostResponseDTO adToAdPostResponeDTO(Ad ad);
+    AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
 
     @Named("findFirstArticlePictureUrl")
     default String findFirstArticlePictureUrl(List<ArticlePicture> articlePictures) {
