@@ -189,5 +189,4 @@ public class Ad {
                 ", articlePictures=" + (articlePictures != null ? articlePictures.size() : 0) +
                 '}';
     }
-
 }
