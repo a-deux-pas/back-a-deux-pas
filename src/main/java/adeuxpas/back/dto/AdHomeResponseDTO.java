@@ -3,7 +3,7 @@ package adeuxpas.back.dto;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class AdResponseDTO {
+public class AdHomeResponseDTO {
     private String title;
     private String articlePictureUrl;
     private BigDecimal price;
@@ -63,7 +63,7 @@ public class AdResponseDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AdResponseDTO that)) return false;
+        if (!(o instanceof AdHomeResponseDTO that)) return false;
         return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
     }
 

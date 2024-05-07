@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.AdResponseDTO;
+import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +35,7 @@ public class AdController {
 
        try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdResponseDTO> adsPage = this.adService.findFilteredAdResponseDTOs(priceRangesFilter, citiesAndPostalCodesFilter,
+            Page<AdHomeResponseDTO> adsPage = this.adService.findFilteredAdResponseDTOs(priceRangesFilter, citiesAndPostalCodesFilter,
                                                                                     articleStatesFilter, categoryFilter, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch(Exception e) {

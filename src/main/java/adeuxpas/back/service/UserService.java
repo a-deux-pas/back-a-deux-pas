@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.CityAndPostalCodeDTO;
+import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.entity.User;
 import java.util.Optional;
 import java.util.Set;
@@ -27,5 +27,5 @@ public interface UserService {
      */
     Optional<User> findUserByEmail(String email);
 
-    Set<CityAndPostalCodeDTO> getUniqueCitiesAndPostalCodes();
+    Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes();
 }

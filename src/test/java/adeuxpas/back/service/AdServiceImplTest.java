@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.AdResponseDTO;
+import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.repository.AdRepository;
@@ -237,13 +237,13 @@ class AdServiceImplTest {
 
     // Mock behavior for mapper
     private void mockAdMapperBehaviour() {
-        when(adMapperMock.adToAdResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
+        when(adMapperMock.adToAdHomeResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
             Ad ad = invocation.getArgument(0);
-            AdResponseDTO adResponseDTO = new AdResponseDTO();
-            adResponseDTO.setTitle(ad.getTitle());
-            adResponseDTO.setPrice(ad.getPrice());
-            adResponseDTO.setPublisher(ad.getPublisher().getAlias());
-            return adResponseDTO;
+            AdHomeResponseDTO adHomeResponseDTO = new AdHomeResponseDTO();
+            adHomeResponseDTO.setTitle(ad.getTitle());
+            adHomeResponseDTO.setPrice(ad.getPrice());
+            adHomeResponseDTO.setPublisher(ad.getPublisher().getAlias());
+            return adHomeResponseDTO;
         });
     }
 }

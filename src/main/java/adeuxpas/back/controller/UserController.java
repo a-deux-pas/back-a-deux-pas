@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.CityAndPostalCodeDTO;
+import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +23,8 @@ public class UserController {
     @GetMapping("/citiesAndPostalCodes")
     public ResponseEntity<Object> getUniqueCitiesAndPostalCodes() {
         try {
-            Set<CityAndPostalCodeDTO> cityAndPostalCodeDTOS = this.userService.getUniqueCitiesAndPostalCodes();
-            return ResponseEntity.ok(cityAndPostalCodeDTOS);
+            Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOS = this.userService.getUniqueCitiesAndPostalCodes();
+            return ResponseEntity.ok(cityAndPostalCodeResponseDTOS);
         } catch(Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }

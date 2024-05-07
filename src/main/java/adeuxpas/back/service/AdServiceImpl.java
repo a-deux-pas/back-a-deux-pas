@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.AdResponseDTO;
+import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AccountStatus;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class AdServiceImpl implements AdService {
@@ -32,8 +31,8 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Page<AdResponseDTO> findFilteredAdResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
-                                                          List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
+    public Page<AdHomeResponseDTO> findFilteredAdResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
+                                                              List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
         if (priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
@@ -117,14 +116,14 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Page<AdResponseDTO> findAllAdResponseDTOs(Pageable pageable) {
+    public Page<AdHomeResponseDTO> findAllAdResponseDTOs(Pageable pageable) {
         Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses, acceptedAccountStatuses, pageable);
         return this.convertToPageOfAdResponseDTOs(pageable, myAds);
     }
 
-    private Page<AdResponseDTO> convertToPageOfAdResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
-        List<AdResponseDTO> mappedAdsList = adsPage.stream()
-                .map(mapper::adToAdResponseDTO)
+    private Page<AdHomeResponseDTO> convertToPageOfAdResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<AdHomeResponseDTO> mappedAdsList = adsPage.stream()
+                .map(mapper::adToAdHomeResponseDTO)
                 .toList();
 
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());

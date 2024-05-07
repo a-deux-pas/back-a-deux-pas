@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.CityAndPostalCodeDTO;
+import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.repository.UserRepository;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Set<CityAndPostalCodeDTO> getUniqueCitiesAndPostalCodes() {
+    public Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
         return users.stream().map(mapper::userToCityAndPostalCodeDTO).collect(Collectors.toSet());
     }

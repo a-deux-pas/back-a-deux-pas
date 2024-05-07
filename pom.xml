@@ -97,7 +97,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- assertj-core -->
+		<!-- AssertJ -->
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
