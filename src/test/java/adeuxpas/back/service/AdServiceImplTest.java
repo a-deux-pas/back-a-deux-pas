@@ -90,12 +90,12 @@ class AdServiceImplTest {
         adResponse.setArticleState(expectedAd.getArticleState());
         adResponse.setStatus(expectedAd.getStatus());
 
-
         when(adMapper.adToAdPostResponseDTO(any(Ad.class))).thenReturn(adResponse);
 
+        AdPostResponseDTO result = this.adService.postAd(adPostRequestDTO);
 
-        assertEquals(adPostRequestDTO.getTitle(), adResponse.getTitle());
-        assertEquals(adPostRequestDTO.getArticleDescription(), adResponse.getArticleDescription());
-        assertEquals(AdStatus.AVAILABLE, adResponse.getStatus());
+        assertEquals(result.getTitle(), adResponse.getTitle());
+        assertEquals(result.getArticleDescription(), adResponse.getArticleDescription());
+        assertEquals(result.getStatus(), adResponse.getStatus());
     }
 }
