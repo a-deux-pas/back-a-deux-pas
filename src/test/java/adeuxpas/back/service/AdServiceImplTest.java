@@ -35,9 +35,6 @@ class AdServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private UserService userService;
-
-    @Mock
     private AdRepository repo;
 
     /**
