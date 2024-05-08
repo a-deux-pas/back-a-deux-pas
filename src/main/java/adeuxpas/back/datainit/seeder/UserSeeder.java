@@ -9,21 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class UserSeeder {
-
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
-    public UserSeeder(@Autowired BCryptPasswordEncoder passwordEncoder,
-                      @Autowired UserRepository userRepository){
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Value("${first.pass}")
     private String pass1;
@@ -35,9 +28,15 @@ public class UserSeeder {
     private String pass4;
     @Value("${fifth.pass}")
     private String pass5;
+    @Value("${sixth.pass}")
+    private String pass6;
 
-    private static final String FRANCE = "France";
-    private static final String PARIS = "Paris";
+    public UserSeeder(@Autowired BCryptPasswordEncoder passwordEncoder,
+                      @Autowired UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
+
 
     /**
      * This method creates user entities.
@@ -50,12 +49,12 @@ public class UserSeeder {
         first.setAlias("Koroviev");
         first.setPassword(passwordEncoder.encode(pass1));
         first.setBio("bio1");
-        first.setCountry(FRANCE);
+        first.setCountry("France");
         first.setCity("Maisons-Alfort");
         first.setStreet("Victor Hugo");
         first.setPostalCode("94700");
         first.setProfilePicture("profilePictureUrl1");
-        first.setInscriptionDate(LocalDate.now());
+        first.setInscriptionDate(LocalDateTime.now());
         first.setAccountStatus(AccountStatus.ACTIVE);
         first.setRole(UserRole.USER);
 
@@ -64,12 +63,12 @@ public class UserSeeder {
         second.setPassword(passwordEncoder.encode(pass2));
         second.setAlias("Dounia");
         second.setBio("bio2");
-        second.setCountry(FRANCE);
-        second.setCity(PARIS);
+        second.setCountry("France");
+        second.setCity("Paris");
         second.setStreet("5, Garibaldi");
-        second.setPostalCode("75001");
+        second.setPostalCode("75000");
         second.setProfilePicture("profilePictureUrl2");
-        second.setInscriptionDate(LocalDate.now());
+        second.setInscriptionDate(LocalDateTime.now());
         second.setAccountStatus(AccountStatus.REPORTED);
         second.setRole(UserRole.USER);
 
@@ -78,13 +77,13 @@ public class UserSeeder {
         third.setPassword(passwordEncoder.encode(pass3));
         third.setAlias("Leahad");
         third.setBio("Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
-        third.setCountry(FRANCE);
-        third.setCity(PARIS);
+        third.setCountry("France");
+        third.setCity("Charenton");
         third.setStreet("5, Av de la Liberte");
-        third.setPostalCode("75020");
-        third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
-        third.setInscriptionDate(LocalDate.now());
-        third.setAccountStatus(AccountStatus.SUSPENDED);
+        third.setPostalCode("75018");
+        third.setProfilePicture("profilePictureUrl3");
+        third.setInscriptionDate(LocalDateTime.now());
+        third.setAccountStatus(AccountStatus.ACTIVE);
         third.setRole(UserRole.USER);
 
         User fourth = new User();
@@ -92,12 +91,12 @@ public class UserSeeder {
         fourth.setPassword(passwordEncoder.encode(pass4));
         fourth.setAlias("Eri");
         fourth.setBio("Passionnée de mode, je vends mes vêtements pour permettre aux plus grand nombre d’être stylé.");
-        fourth.setCountry(FRANCE);
+        fourth.setCountry("France");
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
-        fourth.setPostalCode("69002");
-        fourth.setProfilePicture("https://media.licdn.com/dms/image/C4D03AQEPCyzoBB3WHQ/profile-displayphoto-shrink_200_200/0/1559041227281?e=1717027200&v=beta&t=bo3fSv0ufHuLbS1IHuTLJ9YwwixGq-HCiF3CkcshrQc");
-        fourth.setInscriptionDate(LocalDate.now());
+        fourth.setPostalCode("69000");
+        fourth.setProfilePicture("profilePictureUrl4");
+        fourth.setInscriptionDate(LocalDateTime.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
         fourth.setRole(UserRole.ADMIN);
 
@@ -106,16 +105,30 @@ public class UserSeeder {
         fifth.setPassword(passwordEncoder.encode(pass5));
         fifth.setAlias("theRabbi");
         fifth.setBio("bio5");
-        fifth.setCountry(FRANCE);
+        fifth.setCountry("France");
         fifth.setCity("Lyon");
         fifth.setStreet("7bis, rue de la Synagogue");
-        fifth.setPostalCode("69003");
+        fifth.setPostalCode("66000");
         fifth.setProfilePicture("profilePictureUrl5");
-        fifth.setInscriptionDate(LocalDate.now());
+        fifth.setInscriptionDate(LocalDateTime.now());
         fifth.setAccountStatus(AccountStatus.ACTIVE);
         fifth.setRole(UserRole.ADMIN);
 
-        return Arrays.asList(first, second, third, fourth, fifth);
+        User sixth = new User();
+        sixth.setEmail("random@email.com");
+        sixth.setPassword(passwordEncoder.encode(pass6));
+        sixth.setAlias("Rando");
+        sixth.setBio("bio6");
+        sixth.setCountry("France");
+        sixth.setCity("Lyon");
+        sixth.setStreet("sous un pont");
+        sixth.setPostalCode("66000");
+        sixth.setProfilePicture("profilePictureUrl6");
+        sixth.setInscriptionDate(LocalDateTime.now());
+        sixth.setAccountStatus(AccountStatus.ACTIVE);
+        sixth.setRole(UserRole.USER);
+
+        return Arrays.asList(first, second, third, fourth, fifth, sixth);
     }
 
     /**

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -68,7 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userToSave.setStreet(signupRequest.getStreet());
             userToSave.setPostalCode(signupRequest.getPostalCode());
             userToSave.setProfilePicture(signupRequest.getProfilePicture());
-            userToSave.setInscriptionDate(LocalDate.now());
+            userToSave.setInscriptionDate(LocalDateTime.now());
             userToSave.setRole(UserRole.USER);
             userToSave.setAccountStatus(AccountStatus.ACTIVE);
 

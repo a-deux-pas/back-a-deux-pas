@@ -1,6 +1,6 @@
 package adeuxpas.back.dto.mapper;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -53,7 +53,7 @@ public interface UserMapper {
      * @return The converted String representation of the date.
      */
     @Named("convertDateToString")
-    default String dateToString(LocalDate date) {
+    default String dateToString(LocalDateTime date) {
         return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
@@ -87,5 +87,5 @@ public interface UserMapper {
      * @return The mapped PreferredMeetingPlaceDTO.
      */
     @Mapping(source = "user.id", target = "userId")
-    PreferredMeetingPlaceDTO mapPreferredMeettingPlaceToDTO(PreferredMeetingPlace preferredMeetingPlace);
+    PreferredMeetingPlaceDTO mapPreferredMeetingPlaceToDTO(PreferredMeetingPlace preferredMeetingPlace);
 }

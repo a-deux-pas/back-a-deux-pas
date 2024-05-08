@@ -5,6 +5,7 @@ import adeuxpas.back.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -38,7 +39,7 @@ public class User {
     @Column(name = "profile_picture")
     private String profilePicture;
     @Column(name = "inscription_date")
-    private LocalDate inscriptionDate;
+    private LocalDateTime inscriptionDate;
     @Column(name = "account_status")
     private AccountStatus accountStatus;
     private UserRole role;
@@ -64,7 +65,7 @@ public class User {
      */
     // all args constructor
     public User(String email, String password, String alias, String bio, String country, String city,
-                String street, String postalCode, String profilePicture, LocalDate inscriptionDate,
+                String street, String postalCode, String profilePicture, LocalDateTime inscriptionDate,
                 AccountStatus accountStatus, UserRole role) {
         this.email = email;
         this.password = password;
@@ -161,11 +162,11 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public LocalDate getInscriptionDate() {
+    public LocalDateTime getInscriptionDate() {
         return inscriptionDate;
     }
 
-    public void setInscriptionDate(LocalDate inscriptionDate) {
+    public void setInscriptionDate(LocalDateTime inscriptionDate) {
         this.inscriptionDate = inscriptionDate;
     }
 
