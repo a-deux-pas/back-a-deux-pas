@@ -10,7 +10,6 @@ public class ArticlePicture {
     private Long id;
     @Column(length = 150)
     private String url;
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_id")
     private Ad ad;
