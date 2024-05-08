@@ -25,40 +25,40 @@ import java.util.Optional;
 @Service
 public class AdServiceImpl implements AdService {
 
-    private AdMapper mapper;
+    private final AdMapper adMapper;
     private final AdRepository adRepository;
     private final UserRepository userRepository;
 
     public AdServiceImpl(
-            @Autowired AdMapper mapper,
+            @Autowired AdMapper adMapper,
             @Autowired AdRepository adRepository,
             @Autowired UserRepository userRepository) {
-        this.mapper = mapper;
+        this.adMapper = adMapper;
         this.adRepository = adRepository;
         this.userRepository = userRepository;
     }
 
     @Override
-    public Ad postAd(AdPostRequestDTO adDto) {
+    public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
         // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);) =>
-        User publisher = userRepository.findById(adDto.getPublisherId())
+        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);) =>
+        User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
         Ad newAd = new Ad();
-        newAd.setTitle(adDto.getTitle());
-        newAd.setArticleDescription(adDto.getArticleDescription());
+        newAd.setTitle(adPostRequestDTO.getTitle());
+        newAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
         newAd.setCreationDate(LocalDateTime.now());
-        newAd.setPrice(adDto.getPrice());
-        newAd.setCategory(adDto.getCategory());
-        newAd.setSubcategory(adDto.getSubcategory());
-        newAd.setArticleGender(adDto.getArticleGender());
+        newAd.setPrice(adPostRequestDTO.getPrice());
+        newAd.setCategory(adPostRequestDTO.getCategory());
+        newAd.setSubcategory(adPostRequestDTO.getSubcategory());
+        newAd.setArticleGender(adPostRequestDTO.getArticleGender());
         newAd.setPublisher(publisher);
-        newAd.setArticleState(adDto.getArticleState());
+        newAd.setArticleState(adPostRequestDTO.getArticleState());
         newAd.setStatus(AdStatus.AVAILABLE);
 
         List<ArticlePicture> articlePictures = new ArrayList<>();
-        List<ArticlePictureDTO> adPics = adDto.getArticlePictures();
+        List<ArticlePictureDTO> adPics = adPostRequestDTO.getArticlePictures();
 
         for (ArticlePictureDTO adPic : adPics) {
             ArticlePicture newArticlePicture = new ArticlePicture();
@@ -69,9 +69,10 @@ public class AdServiceImpl implements AdService {
 
         newAd.setArticlePictures(articlePictures);
         // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adDto);)
+        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
 
-        return adRepository.save(newAd);
+        Ad savedAd = adRepository.save(newAd);
+        return adMapper.adToAdPostResponseDTO(savedAd);
     }
 
     @Override
@@ -79,10 +80,11 @@ public class AdServiceImpl implements AdService {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (optionalAd.isPresent()) {
             Ad ad = optionalAd.get();
-            return mapper.adToAdPostResponeDTO(ad);
+            return adMapper.adToAdPostResponseDTO(ad);
 
         } else {
             throw new EntityNotFoundException();
         }
     }
 }
+

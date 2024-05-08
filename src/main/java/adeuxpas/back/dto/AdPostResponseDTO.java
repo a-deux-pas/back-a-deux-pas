@@ -22,15 +22,10 @@ public class AdPostResponseDTO {
     private BigDecimal price;
     private LocalDateTime creationDate;
     private String publisher;
-    private String publisherCity;
-    private String publisherPostalCode;
     private AdStatus status;
     private String articleDescription;
     private String articleState;
 
-    public AdPostResponseDTO() {
-        // no-args constructor
-    }
 
     public Long getId() {
         return id;
@@ -110,22 +105,6 @@ public class AdPostResponseDTO {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
-    }
-
-    public String getPublisherCity() {
-        return publisherCity;
-    }
-
-    public void setPublisherCity(String publisherCity) {
-        this.publisherCity = publisherCity;
-    }
-
-    public String getPublisherPostalCode() {
-        return publisherPostalCode;
-    }
-
-    public void setPublisherPostalCode(String publisherPostalCode) {
-        this.publisherPostalCode = publisherPostalCode;
     }
 
     public AdStatus getStatus() {
