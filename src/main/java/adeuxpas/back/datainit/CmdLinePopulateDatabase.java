@@ -1,8 +1,15 @@
 package adeuxpas.back.datainit;
 
+import adeuxpas.back.datainit.seeder.AdSeeder;
+import adeuxpas.back.datainit.seeder.ArticlePictureSeeder;
+import adeuxpas.back.datainit.seeder.UserSeeder;
+import adeuxpas.back.entity.Ad;
+import adeuxpas.back.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Executes custom logic or tasks at the start of the application,
@@ -26,26 +33,41 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CmdLinePopulateDatabase implements CommandLineRunner {
-    private final DatabaseSeeder seeder;
+    private final UserSeeder userSeeder;
+    private final AdSeeder adSeeder;
+    private final ArticlePictureSeeder articlePictureSeeder;
+
 
     /**
      * Constructor for CmdLinePopulateDatabase.
-     * @param seeder The {@code DatabaseSeeder} for populating the database.
+     * @param userSeeder
+     * @param adSeeder
+     * @param articlePictureSeeder
      */
-    public CmdLinePopulateDatabase(@Autowired DatabaseSeeder seeder){
-        this.seeder = seeder;
+    public CmdLinePopulateDatabase(@Autowired UserSeeder userSeeder,
+                                   @Autowired AdSeeder adSeeder,
+                                   @Autowired ArticlePictureSeeder articlePictureSeeder){
+        this.userSeeder = userSeeder;
+        this.adSeeder =adSeeder;
+        this.articlePictureSeeder = articlePictureSeeder;
     }
 
     /**
      * Executes custom logic or tasks at the start of the application.
      * This method is invoked by Spring Boot when the application is started.
-     * It delegates the seeding of the database to the DatabaseSeeder component.
+     * It delegates the seeding of the database to the individual Seeder components.
      *
      * @param args Command-line arguments passed to the application.
      * @throws Exception If an error occurs during the execution of the run method.
      */
     @Override
     public void run(String... args) throws Exception {
-        seeder.seedDatabase();
+        List<User> users = this.userSeeder.createUsers();
+        this.userSeeder.seedUsers(users);
+
+        List<Ad> ads = this.adSeeder.createAds(users);
+        this.adSeeder.seedAds(ads);
+
+        this.articlePictureSeeder.seedArticlePictures(ads);
     }
 }

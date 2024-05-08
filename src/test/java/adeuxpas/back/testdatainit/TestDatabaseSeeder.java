@@ -41,7 +41,7 @@ public class TestDatabaseSeeder {
 
 
     /**
-     * Constructs a new instance of DatabaseSeeder.
+     * Constructs a new instance of TestDatabaseSeeder.
      *
      * @param userRepository  The repository for managing user entities.
      * @param adRepository  The repository for managing ad entities.
