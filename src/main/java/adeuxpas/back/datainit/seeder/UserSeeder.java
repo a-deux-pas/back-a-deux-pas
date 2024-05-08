@@ -66,7 +66,7 @@ public class UserSeeder {
         second.setCountry("France");
         second.setCity("Paris");
         second.setStreet("5, Garibaldi");
-        second.setPostalCode("75000");
+        second.setPostalCode("75001");
         second.setProfilePicture("profilePictureUrl2");
         second.setInscriptionDate(LocalDateTime.now());
         second.setAccountStatus(AccountStatus.REPORTED);
@@ -94,7 +94,7 @@ public class UserSeeder {
         fourth.setCountry("France");
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
-        fourth.setPostalCode("69000");
+        fourth.setPostalCode("69002");
         fourth.setProfilePicture("profilePictureUrl4");
         fourth.setInscriptionDate(LocalDateTime.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
@@ -108,7 +108,7 @@ public class UserSeeder {
         fifth.setCountry("France");
         fifth.setCity("Lyon");
         fifth.setStreet("7bis, rue de la Synagogue");
-        fifth.setPostalCode("66000");
+        fifth.setPostalCode("69004");
         fifth.setProfilePicture("profilePictureUrl5");
         fifth.setInscriptionDate(LocalDateTime.now());
         fifth.setAccountStatus(AccountStatus.ACTIVE);
@@ -122,7 +122,7 @@ public class UserSeeder {
         sixth.setCountry("France");
         sixth.setCity("Lyon");
         sixth.setStreet("sous un pont");
-        sixth.setPostalCode("66000");
+        sixth.setPostalCode("69008");
         sixth.setProfilePicture("profilePictureUrl6");
         sixth.setInscriptionDate(LocalDateTime.now());
         sixth.setAccountStatus(AccountStatus.ACTIVE);
