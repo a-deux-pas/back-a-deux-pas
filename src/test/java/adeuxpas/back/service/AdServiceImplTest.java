@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.dto.mapper.AdMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,14 +30,17 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 class AdServiceImplTest {
 
-    @InjectMocks
-    private AdServiceImpl adService;
-
     @Mock
     private UserRepository userRepository;
 
     @Mock
-    private AdRepository repo;
+    private AdRepository adRepository;
+
+    @Mock
+    private AdMapper adMapper;
+
+    @InjectMocks
+    private AdServiceImpl adService;
 
     /**
      * Test for postAd method in AdServiceImpl.
@@ -43,46 +48,54 @@ class AdServiceImplTest {
     @Test
     void testPostAd() {
         // Mock Dto data
-        AdPostRequestDTO adDto = new AdPostRequestDTO();
-        adDto.setTitle("Test Ad");
-        adDto.setArticleDescription("Test description");
-        adDto.setCreationDate(LocalDateTime.now().toString());
-        adDto.setPrice(BigDecimal.valueOf(100));
-        adDto.setCategory("Test Category");
-        adDto.setSubcategory("Test Subcategory");
-        adDto.setArticleGender("Test Gender");
-        adDto.setPublisherId(1L);
-        adDto.setArticleState("Test State");
+        AdPostRequestDTO adPostRequestDTO = new AdPostRequestDTO();
+        adPostRequestDTO.setTitle("Test Ad");
+        adPostRequestDTO.setArticleDescription("Test description");
+        adPostRequestDTO.setCreationDate(LocalDateTime.now().toString());
+        adPostRequestDTO.setPrice(BigDecimal.valueOf(100));
+        adPostRequestDTO.setCategory("Test Category");
+        adPostRequestDTO.setSubcategory("Test Subcategory");
+        adPostRequestDTO.setArticleGender("Test Gender");
+        adPostRequestDTO.setPublisherId(1L);
+        adPostRequestDTO.setArticleState("Test State");
 
         List<ArticlePictureDTO> articlePictures = new ArrayList<>();
         ArticlePictureDTO singleAdPic = new ArticlePictureDTO();
         singleAdPic.setUrl("https://www.pexels.com/fr-fr/photo/mer-vacances-femme-ocean-16953646/");
         articlePictures.add(singleAdPic);
-        adDto.setArticlePictures(articlePictures);
+        adPostRequestDTO.setArticlePictures(articlePictures);
 
         User user = new User();
         user.setId(1L);
         when(userRepository.findById(1L)).thenReturn((Optional.of(user)));
 
         Ad expectedAd = new Ad();
-        expectedAd.setTitle(adDto.getTitle());
-        expectedAd.setArticleDescription(adDto.getArticleDescription());
-        expectedAd.setPrice(adDto.getPrice());
-        expectedAd.setCategory(adDto.getCategory());
-        expectedAd.setSubcategory(adDto.getSubcategory());
-        expectedAd.setArticleGender(adDto.getArticleGender());
+        expectedAd.setTitle(adPostRequestDTO.getTitle());
+        expectedAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
+        expectedAd.setPrice(adPostRequestDTO.getPrice());
+        expectedAd.setCategory(adPostRequestDTO.getCategory());
+        expectedAd.setSubcategory(adPostRequestDTO.getSubcategory());
+        expectedAd.setArticleGender(adPostRequestDTO.getArticleGender());
         expectedAd.setPublisher(user);
-        expectedAd.setArticleState(adDto.getArticleState());
+        expectedAd.setArticleState(adPostRequestDTO.getArticleState());
         expectedAd.setStatus(AdStatus.AVAILABLE);
-        expectedAd.setArticlePictures(new ArrayList<>());
 
-        when(repo.save(any(Ad.class))).thenReturn(expectedAd);
+        when(adRepository.save(any(Ad.class))).thenReturn(expectedAd);
 
-        Ad createdAd = adService.postAd(adDto);
+        AdPostResponseDTO adResponse = new AdPostResponseDTO();
+        adResponse.setTitle(expectedAd.getTitle());
+        adResponse.setArticleDescription(expectedAd.getArticleDescription());
+        adResponse.setPrice(expectedAd.getPrice());
+        adResponse.setPublisher(expectedAd.getPublisher().getAlias());
+        adResponse.setArticleState(expectedAd.getArticleState());
+        adResponse.setStatus(expectedAd.getStatus());
 
-        assertEquals(adDto.getTitle(), createdAd.getTitle());
-        assertEquals(adDto.getArticleDescription(), createdAd.getArticleDescription());
-        assertEquals(AdStatus.AVAILABLE, createdAd.getStatus());
-        assertNotNull(createdAd.getArticlePictures());
+        when(adMapper.adToAdPostResponseDTO(any(Ad.class))).thenReturn(adResponse);
+
+        AdPostResponseDTO result = this.adService.postAd(adPostRequestDTO);
+
+        assertEquals(result.getTitle(), adResponse.getTitle());
+        assertEquals(result.getArticleDescription(), adResponse.getArticleDescription());
+        assertEquals(result.getStatus(), adResponse.getStatus());
     }
 }

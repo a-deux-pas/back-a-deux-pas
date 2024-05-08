@@ -43,6 +43,7 @@ public class AdPostRequestDTO {
      * args constructor
      * 
      * @param id
+     * 
      * @param title
      * @param articleDescription
      * @param creationDate
