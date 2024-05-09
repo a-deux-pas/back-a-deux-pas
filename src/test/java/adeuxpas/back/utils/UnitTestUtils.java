@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestUtils {
+public class UnitTestUtils {
     public static List<Ad> createMockAds() {
         List<Ad> ads = new ArrayList<>();
 

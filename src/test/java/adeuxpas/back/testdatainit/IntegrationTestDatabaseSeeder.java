@@ -33,7 +33,7 @@ import java.util.List;
 // IF MODIFICATION IS NEEDED, SEE Mircea Bardan
 
 @Component
-public class TestDatabaseSeeder {
+public class IntegrationTestDatabaseSeeder {
     private final UserRepository userRepository;
     private final AdRepository adRepository;
     private final ArticlePictureRepository articlePictureRepository;
@@ -41,16 +41,16 @@ public class TestDatabaseSeeder {
 
 
     /**
-     * Constructs a new instance of TestDatabaseSeeder.
+     * Constructs a new instance of IntegrationTestDatabaseSeeder.
      *
      * @param userRepository  The repository for managing user entities.
      * @param adRepository  The repository for managing ad entities.
      * @param passwordEncoder The password encoder used to encode user passwords before storing them in the database.
      */
-    public TestDatabaseSeeder(@Autowired UserRepository userRepository,
-                          @Autowired AdRepository adRepository,
-                          @Autowired ArticlePictureRepository articlePictureRepository,
-                          @Autowired BCryptPasswordEncoder passwordEncoder){
+    public IntegrationTestDatabaseSeeder(@Autowired UserRepository userRepository,
+                                         @Autowired AdRepository adRepository,
+                                         @Autowired ArticlePictureRepository articlePictureRepository,
+                                         @Autowired BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.adRepository = adRepository;
         this.passwordEncoder = passwordEncoder;

@@ -4,7 +4,7 @@ import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.repository.AdRepository;
-import adeuxpas.back.utils.TestUtils;
+import adeuxpas.back.utils.UnitTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,7 +75,7 @@ class AdServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        adsList = TestUtils.createMockAds();
+        adsList = UnitTestUtils.createMockAds();
         adsPage = new PageImpl<>(adsList);
         adsList.forEach(ad -> {
             citiesAndPostalCodes.add(ad.getPublisher().getCity() + " (" + ad.getPublisher().getPostalCode() + ")" );

@@ -3,7 +3,7 @@ package adeuxpas.back.repository;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
-import adeuxpas.back.testdatainit.TestDatabaseSeeder;
+import adeuxpas.back.testdatainit.IntegrationTestDatabaseSeeder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import({TestDatabaseSeeder.class, BCryptPasswordEncoder.class})
+@Import({IntegrationTestDatabaseSeeder.class, BCryptPasswordEncoder.class})
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdRepositoryIntegrationTest {
@@ -37,7 +37,7 @@ class AdRepositoryIntegrationTest {
     @Autowired
     AdRepository adRepository;
     @Autowired
-    TestDatabaseSeeder seeder;
+    IntegrationTestDatabaseSeeder seeder;
 
     @Container
     @ServiceConnection
