@@ -86,7 +86,10 @@ class AdServiceImplTest {
         adResponse.setTitle(expectedAd.getTitle());
         adResponse.setArticleDescription(expectedAd.getArticleDescription());
         adResponse.setPrice(expectedAd.getPrice());
-        adResponse.setPublisher(expectedAd.getPublisher().getAlias());
+        /**
+         * TO DO :: à changer pour setPublisher une fois la connexion implémentée
+         */
+        adResponse.setPublisherId(expectedAd.getPublisher().getId());
         adResponse.setArticleState(expectedAd.getArticleState());
         adResponse.setStatus(expectedAd.getStatus());
 

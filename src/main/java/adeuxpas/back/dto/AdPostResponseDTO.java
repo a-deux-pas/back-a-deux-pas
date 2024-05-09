@@ -21,7 +21,7 @@ public class AdPostResponseDTO {
     private String fifthArticlePictureUrl;
     private BigDecimal price;
     private LocalDateTime creationDate;
-    private String publisher;
+    private Long publisherId;
     private AdStatus status;
     private String articleDescription;
     private String articleState;
@@ -98,12 +98,12 @@ public class AdPostResponseDTO {
         this.creationDate = creationDate;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public Long getPublisherId() {
+        return publisherId;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setPublisherId(Long publisher) {
+        this.publisherId = publisher;
     }
 
     public AdStatus getStatus() {

@@ -87,4 +87,15 @@ public class AdServiceImpl implements AdService {
             throw new EntityNotFoundException();
         }
     }
+
+    @Override
+    public List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            List<Ad> adList = adRepository.findAdsByPublisherId(publisherId);
+            return adList.stream().map(adMapper::adToAdPostResponseDTO).toList();
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
 }

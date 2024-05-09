@@ -38,7 +38,7 @@ public interface AdMapper {
     @Mapping(source = "articlePictures", target = "thirdArticlePictureUrl", qualifiedByName = "findThirdArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "fourthArticlePictureUrl", qualifiedByName = "findFourthArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "fifthArticlePictureUrl", qualifiedByName = "findFifthArticlePictureUrl")
-    @Mapping(source = "publisher.alias", target = "publisher")
+    @Mapping(source = "publisher.id", target = "publisherId")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
 
     @Named("findFirstArticlePictureUrl")
