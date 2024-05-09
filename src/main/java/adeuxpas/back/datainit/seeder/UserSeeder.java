@@ -94,7 +94,7 @@ public class UserSeeder {
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
         fourth.setPostalCode("69002");
-        fourth.setProfilePicture("profilePictureUrl4");
+        fourth.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
         fourth.setInscriptionDate(LocalDateTime.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
         fourth.setRole(UserRole.ADMIN);
