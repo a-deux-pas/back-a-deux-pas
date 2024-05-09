@@ -90,7 +90,7 @@ public class AdController {
      * @param userId
      * @return ResponseEntity indicating if the Ads have been found
      */
-    @Operation(summary = "ad list")
+    @Operation(summary = "ads list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of a user's ad list"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -103,5 +103,4 @@ public class AdController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
-
 }

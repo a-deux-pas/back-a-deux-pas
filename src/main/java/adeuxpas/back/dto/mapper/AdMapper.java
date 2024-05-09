@@ -33,6 +33,12 @@ import org.mapstruct.Named;
  */
 @Mapper(componentModel = "spring")
 public interface AdMapper {
+    /**
+     * Maps an ad entity to an adPostResponseDTO
+     * 
+     * @param ad
+     * @return adPostResponseDTO
+     */
     @Mapping(source = "articlePictures", target = "firstArticlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "secondArticlePictureUrl", qualifiedByName = "findSecondArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "thirdArticlePictureUrl", qualifiedByName = "findThirdArticlePictureUrl")
@@ -83,7 +89,4 @@ public interface AdMapper {
 
     @Mapping(source = "publisherId", target = "publisher.id")
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
-
-    @Mapping(source = "publisher.id", target = "publisherId")
-    AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
 }

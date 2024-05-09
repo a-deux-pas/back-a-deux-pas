@@ -21,6 +21,7 @@ public class AdPostResponseDTO {
     private String fifthArticlePictureUrl;
     private BigDecimal price;
     private LocalDateTime creationDate;
+    // TO DO :: à peut-être changer une fois le processus de connexion implémenté
     private Long publisherId;
     private AdStatus status;
     private String articleDescription;
