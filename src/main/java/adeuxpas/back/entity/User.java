@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -43,6 +44,8 @@ public class User {
     @Column(name = "account_status")
     private AccountStatus accountStatus;
     private UserRole role;
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Ad> ads;
 
 
     // no args constructor
@@ -184,6 +187,18 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Ad> getAds() {
+        return ads;
+    }
+
+    public void setAds(List<Ad> ads) {
+        this.ads = ads;
     }
 
     // toString
