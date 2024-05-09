@@ -13,12 +13,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Seeder class responsible for generating sample ad entities.
+ * Each ad is initialized with sample data such as title, price, creation date, publisher, etc.
+ */
 @Component
 public class AdSeeder {
 
     private final AdRepository adRepository;
 
-
+    /**
+     * Constructs a new AdSeeder with the provided AdRepository.
+     * @param adRepository the AdRepository to be used for database operations.
+     */
     AdSeeder(@Autowired AdRepository adRepository){
         this.adRepository = adRepository;
     }
