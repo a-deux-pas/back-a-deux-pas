@@ -48,42 +48,6 @@ public class User {
     private List<Ad> ads;
 
 
-    // no args constructor
-    public User() {}
-
-    /**
-     * All args constructor for {@code User}.
-     * @param email The {@code User}'s email.
-     * @param password The {@code User}'s password.
-     * @param alias The {@code User}'s alias.
-     * @param bio The {@code User}'s bio.
-     * @param country The {@code User}'s country.
-     * @param city The {@code User}'s city.
-     * @param street The {@code User}'s street.
-     * @param postalCode The {@code User}'s postal code.
-     * @param profilePicture The {@code User}'s profile picture.
-     * @param inscriptionDate The {@code User}'s inscription date.
-     * @param accountStatus The {@code User}'s account status.
-     * @param role The {@code User}'s role.
-     */
-    // all args constructor
-    public User(String email, String password, String alias, String bio, String country, String city,
-                String street, String postalCode, String profilePicture, LocalDateTime inscriptionDate,
-                AccountStatus accountStatus, UserRole role) {
-        this.email = email;
-        this.password = password;
-        this.alias = alias;
-        this.bio = bio;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.postalCode = postalCode;
-        this.profilePicture = profilePicture;
-        this.inscriptionDate = inscriptionDate;
-        this.accountStatus = accountStatus;
-        this.role = role;
-    }
-
     // getters and setters
     public long getId() {
         return id;
