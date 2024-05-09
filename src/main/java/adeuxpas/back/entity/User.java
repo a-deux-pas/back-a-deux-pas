@@ -189,10 +189,6 @@ public class User {
         this.role = role;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public List<Ad> getAds() {
         return ads;
     }
