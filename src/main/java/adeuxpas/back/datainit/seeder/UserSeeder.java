@@ -80,7 +80,7 @@ public class UserSeeder {
         third.setCity("Charenton");
         third.setStreet("5, Av de la Liberte");
         third.setPostalCode("75018");
-        third.setProfilePicture("profilePictureUrl3");
+        third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
         third.setInscriptionDate(LocalDateTime.now());
         third.setAccountStatus(AccountStatus.ACTIVE);
         third.setRole(UserRole.USER);
@@ -94,7 +94,7 @@ public class UserSeeder {
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
         fourth.setPostalCode("69002");
-        fourth.setProfilePicture("profilePictureUrl4");
+        fourth.setProfilePicture("https://media.licdn.com/dms/image/C4D03AQEPCyzoBB3WHQ/profile-displayphoto-shrink_200_200/0/1559041227281?e=1717027200&v=beta&t=bo3fSv0ufHuLbS1IHuTLJ9YwwixGq-HCiF3CkcshrQc");
         fourth.setInscriptionDate(LocalDateTime.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
         fourth.setRole(UserRole.ADMIN);
