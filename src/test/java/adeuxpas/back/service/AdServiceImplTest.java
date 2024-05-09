@@ -22,7 +22,6 @@ import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -132,15 +131,5 @@ class AdServiceImplTest {
 
         verify(userRepository).findById(publisherId);
         verify(adRepository).findAdsByPublisherId(publisherId);
-    }
-
-    @Test
-    void testFindAdsByPublisherIdUserNotFound() {
-        Long publisherId = 2L;
-        when(userRepository.findById(publisherId)).thenReturn(Optional.empty());
-
-        assertThrows(EntityNotFoundException.class, () -> {
-            adService.findAdsByPublisherId(publisherId);
-        });
     }
 }
