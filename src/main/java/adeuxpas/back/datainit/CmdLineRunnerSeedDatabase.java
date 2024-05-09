@@ -1,8 +1,7 @@
 package adeuxpas.back.datainit;
 
-import adeuxpas.back.datainit.seeder.PreferredMeetingPlaceSeeder;
-import adeuxpas.back.datainit.seeder.PreferredScheduleSeeder;
-import adeuxpas.back.datainit.seeder.UserSeeder;
+import adeuxpas.back.datainit.seeder.*;
+import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,6 +29,8 @@ import java.util.List;
 @Component
 public class CmdLineRunnerSeedDatabase implements CommandLineRunner {
     private final UserSeeder userSeeder;
+    private final AdSeeder adSeeder;
+    private final ArticlePictureSeeder articlePictureSeeder;
     private final PreferredScheduleSeeder preferredScheduleSeeder;
     private final PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder;
 
@@ -37,13 +38,18 @@ public class CmdLineRunnerSeedDatabase implements CommandLineRunner {
     /**
      * Constructor for CmdLineRunnerSeedDatabase.
      * @param userSeeder
+     * @param adSeeder
      * @param preferredScheduleSeeder
      * @param preferredMeetingPlaceSeeder
      */
     public CmdLineRunnerSeedDatabase(@Autowired UserSeeder userSeeder,
+                                     @Autowired AdSeeder adSeeder,
+                                     @Autowired ArticlePictureSeeder articlePictureSeeder,
                                      @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
                                      @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder){
         this.userSeeder = userSeeder;
+        this.adSeeder = adSeeder;
+        this.articlePictureSeeder = articlePictureSeeder;
         this.preferredScheduleSeeder = preferredScheduleSeeder;
         this.preferredMeetingPlaceSeeder = preferredMeetingPlaceSeeder;
     }
@@ -60,6 +66,11 @@ public class CmdLineRunnerSeedDatabase implements CommandLineRunner {
     public void run(String... args) throws Exception {
         List<User> users = this.userSeeder.createUsers();
         this.userSeeder.seedUsers(users);
+
+        List<Ad> ads = this.adSeeder.createAds(users);
+        this.adSeeder.seedAds(ads);
+
+        this.articlePictureSeeder.seedArticlePictures(ads);
 
         for (User user : users) {
             //Seeds the database with users preferred schedules
