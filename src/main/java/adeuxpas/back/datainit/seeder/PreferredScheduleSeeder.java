@@ -13,6 +13,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Seeder class responsible for generating random preferred schedules for users.
+ */
 @Component
 public class PreferredScheduleSeeder {
 
@@ -20,6 +23,10 @@ public class PreferredScheduleSeeder {
 
     private final SecureRandom random = new SecureRandom();
 
+    /**
+     * Constructs a new PreferredScheduleSeeder with the specified PreferredScheduleRepository.
+     * @param preferredScheduleRepository The repository for preferred schedules.
+     */
     public PreferredScheduleSeeder(@Autowired PreferredScheduleRepository preferredScheduleRepository){
         this.preferredScheduleRepository = preferredScheduleRepository;
     }

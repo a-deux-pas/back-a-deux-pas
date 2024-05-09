@@ -15,6 +15,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 
+/**
+ * A component responsible for generating preferred meeting places for a user
+ * by fetching addresses from the data.gouv.fr API, based on the user's postal code.
+ */
 @Component
 public class PreferredMeetingPlaceSeeder {
 
@@ -22,6 +26,10 @@ public class PreferredMeetingPlaceSeeder {
     private final Logger logger = LoggerFactory.getLogger(PreferredMeetingPlaceSeeder.class);
 
 
+    /**
+     * Constructs a new PreferredMeetingPlaceSeeder with the specified PreferredMeetingPlaceRepository.
+     * @param preferredMeetingPlaceRepository The repository for preferred meeting places.
+     */
     public PreferredMeetingPlaceSeeder(@Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository){
         this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
     }

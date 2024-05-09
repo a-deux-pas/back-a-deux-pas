@@ -24,14 +24,19 @@ public class PreferredMeetingPlace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 200) 
+
+    @Column(length = 200)
     private String name;
-    @Column(length = 150) 
+
+    @Column(length = 150)
     private String street;
-    @Column(length = 150) 
+
+    @Column(length = 150)
     private String city;
+
     @Column(name = "postal_code", length = 50)
     private String postalCode;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

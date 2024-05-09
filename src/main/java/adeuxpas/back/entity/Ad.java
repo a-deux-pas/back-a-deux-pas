@@ -15,27 +15,38 @@ public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 150)
     private String title;
+
     @Column(name = "article_description", columnDefinition = "TEXT")
     private String articleDescription;
+
     @Column(name = "article_state", length = 150)
     private String articleState;
+
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
+
     @Enumerated(EnumType.STRING)
     private AdStatus status = AdStatus.AVAILABLE;
+
     @Column(length = 100)
     private String category;
+
     @Column(length = 100)
     private String subcategory;
+
     @Column(name = "article_gender", length = 10)
     private String articleGender;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private User publisher;
+
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
 

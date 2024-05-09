@@ -22,27 +22,40 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 150) 
+
+    @Column(length = 150)
     private String email;
+
     private String password;
-    @Column(length = 150) 
+
+    @Column(length = 150)
     private String alias;
+
     private String bio;
-    @Column(length = 150) 
+
+    @Column(length = 150)
     private String country;
-    @Column(length = 150) 
+
+    @Column(length = 150)
     private String city;
-    @Column(length = 200) 
+
+    @Column(length = 200)
     private String street;
+
     @Column(name = "postal_code")
     private String postalCode;
+
     @Column(name = "profile_picture")
     private String profilePicture;
+
     @Column(name = "inscription_date")
     private LocalDateTime inscriptionDate;
+
     @Column(name = "account_status")
     private AccountStatus accountStatus;
+
     private UserRole role;
+
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ad> ads;
 

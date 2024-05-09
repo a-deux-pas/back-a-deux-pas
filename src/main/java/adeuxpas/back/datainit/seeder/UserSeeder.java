@@ -37,7 +37,6 @@ public class UserSeeder {
         this.userRepository = userRepository;
     }
 
-
     /**
      * This method creates user entities.
      * Each user is initialized with sample data such as email, password, role, status, and creation timestamp.
@@ -138,5 +137,4 @@ public class UserSeeder {
     public void seedUsers(List<User> users){
         this.userRepository.saveAll(users);
     }
-
 }
