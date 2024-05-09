@@ -1,7 +1,5 @@
 package adeuxpas.back.dto;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -23,26 +21,6 @@ public class PreferredScheduleDTO {
     private String startTime;
     private String endTime;
     private Long userId;
-
-    public PreferredScheduleDTO() {
-    }
-
-    /**
-     * Constructor for PreferredScheduleDTO with all attributes.
-     *
-     * @param id          The unique identifier for the preferred schedule.
-     * @param daysOfWeek  The days of the week for the preferred schedule.
-     * @param startTime   The start time of the preferred schedule.
-     * @param endTime     The end time of the preferred schedule.
-     * @param userId      The ID of the user associated with the preferred schedule.
-     */
-    public PreferredScheduleDTO(Long id, List<Integer> daysOfWeek, LocalTime startTime, LocalTime endTime, Long userId) {
-        this.id = id;
-        this.daysOfWeek = daysOfWeek;
-        this.startTime = formatTime(startTime);
-        this.endTime = formatTime(endTime);
-        this.userId = userId;
-    }
 
     public Long getId() {
         return id;
@@ -82,16 +60,6 @@ public class PreferredScheduleDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-    
-    /**
-     * Formats a LocalTime object to a String representation in "HH:mm" format.
-     *
-     * @param time The LocalTime object to be formatted.
-     * @return The formatted time string.
-     */
-    private String formatTime(LocalTime time) {
-        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 }
 

@@ -35,36 +35,6 @@ public class AdPostRequestDTO {
     @NotBlank
     private String articleState;
 
-    // no-args constructor
-    public AdPostRequestDTO() {
-    }
-
-    /**
-     * args constructor
-     *
-     * @param title
-     * @param articleDescription
-     * @param creationDate
-     * @param price
-     * @param category
-     * @param articleGender
-     * @param publisherId
-     * @param articlePictures
-     * @param articleState
-     */
-    public AdPostRequestDTO(String title, String articleDescription, String creationDate, BigDecimal price,
-            String category, String articleGender, Long publisherId, List<ArticlePictureDTO> articlePictures,
-            String articleState) {
-        this.title = title;
-        this.articleDescription = articleDescription;
-        this.creationDate = creationDate;
-        this.price = price;
-        this.category = category;
-        this.articleGender = articleGender;
-        this.publisherId = publisherId;
-        this.articlePictures = articlePictures;
-        this.articleState = articleState;
-    }
 
     // getters and setters
     public String getTitle() {
