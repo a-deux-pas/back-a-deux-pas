@@ -6,14 +6,6 @@ public class CityAndPostalCodeResponseDTO {
     String city;
     String postalCode;
 
-    public CityAndPostalCodeResponseDTO(String city, String postalCode) {
-        this.city = city;
-        this.postalCode = postalCode;
-    }
-
-    public CityAndPostalCodeResponseDTO() {
-    }
-
     public String getCity() {
         return city;
     }

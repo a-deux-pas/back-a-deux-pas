@@ -32,21 +32,21 @@ import java.util.List;
  */
 
 @Component
-public class CmdLinePopulateDatabase implements CommandLineRunner {
+public class CmdLineSeedDatabase implements CommandLineRunner {
     private final UserSeeder userSeeder;
     private final AdSeeder adSeeder;
     private final ArticlePictureSeeder articlePictureSeeder;
 
 
     /**
-     * Constructor for CmdLinePopulateDatabase.
+     * Constructor for CmdLineSeedDatabase.
      * @param userSeeder
      * @param adSeeder
      * @param articlePictureSeeder
      */
-    public CmdLinePopulateDatabase(@Autowired UserSeeder userSeeder,
-                                   @Autowired AdSeeder adSeeder,
-                                   @Autowired ArticlePictureSeeder articlePictureSeeder){
+    public CmdLineSeedDatabase(@Autowired UserSeeder userSeeder,
+                               @Autowired AdSeeder adSeeder,
+                               @Autowired ArticlePictureSeeder articlePictureSeeder){
         this.userSeeder = userSeeder;
         this.adSeeder =adSeeder;
         this.articlePictureSeeder = articlePictureSeeder;
