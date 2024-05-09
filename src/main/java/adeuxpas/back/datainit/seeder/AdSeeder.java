@@ -24,7 +24,7 @@ public class AdSeeder {
 
     /**
      * Constructs a new AdSeeder with the provided AdRepository.
-     * @param adRepository the AdRepository to be used for database operations.
+     * @param adRepository the AdRepository to be used for database seeding operations.
      */
     AdSeeder(@Autowired AdRepository adRepository){
         this.adRepository = adRepository;
