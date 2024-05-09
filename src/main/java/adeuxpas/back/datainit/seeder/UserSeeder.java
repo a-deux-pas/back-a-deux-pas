@@ -77,7 +77,7 @@ public class UserSeeder {
         third.setAlias("Leahad");
         third.setBio("Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
         third.setCountry("France");
-        third.setCity("Charenton");
+        third.setCity("Paris");
         third.setStreet("5, Av de la Liberte");
         third.setPostalCode("75018");
         third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
