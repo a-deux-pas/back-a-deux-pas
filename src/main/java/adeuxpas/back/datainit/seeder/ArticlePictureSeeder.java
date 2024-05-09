@@ -34,7 +34,7 @@ public class ArticlePictureSeeder {
         this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/13185af6-1f03-4cdc-8545-af767b7e6bb3_large.jpg"), ads.getFirst()));
         this.articlePictureRepository.save(new ArticlePicture(("https://i.ytimg.com/vi/2B1bWKBTROE/sddefault.jpg"), ads.getFirst()));
         this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/cf15ac41-1979-4264-9193-3b0c2d302907_large.jpg"), ads.getFirst()));
-        // saves 1 article picture for each remaining ad
+        // saves 1 article picture for every remaining ad
         this.articlePictureRepository.save(new ArticlePicture(("https://i.ebayimg.com/images/g/5DMAAOSwpIVldRxH/s-l1200.webp"), ads.get(1)));
         this.articlePictureRepository.save(new ArticlePicture(("https://andreemilio.com/wp-content/uploads/2021/03/Mens-Light-gray-3-Piece-Suit-2.jpg"), ads.get(2)));
         this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"), ads.get(3)));
