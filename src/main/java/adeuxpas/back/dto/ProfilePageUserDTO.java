@@ -23,34 +23,7 @@ public class ProfilePageUserDTO {
     private String postalCode;
     private String profilePicture;
     private String inscriptionDate;
-    
-    /**
-     * Default constructor for ProfilePageUserDTO.
-     */
-    public ProfilePageUserDTO() {
-    }
 
-    /**
-     * Constructor for ProfilePageUserDTO with all attributes.
-     *
-     * @param id              The unique identifier for the user.
-     * @param alias           The alias or username of the user.
-     * @param bio             The biography or description of the user.
-     * @param country         The country of residence.
-     * @param city            The city of residence.
-     * @param street          The street address.
-     * @param postalCode      The postal code or ZIP code.
-     * @param profilePicture  The URL of the user's profile picture.
-     * @param inscriptionDate The date of user's registration or inscription.
-     */
-    public ProfilePageUserDTO(Long id, String alias, String bio, String city, String profilePicture, String inscriptionDate) {
-        this.id = id;
-        this.alias = alias;
-        this.bio = bio;
-        this.city = city;
-        this.profilePicture = profilePicture;
-        this.inscriptionDate = inscriptionDate;
-    }
 
     public Long getId() {
         return id;

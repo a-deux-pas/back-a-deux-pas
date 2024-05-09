@@ -7,16 +7,6 @@ public class ArticlePictureDTO {
     private String url;
     private Ad ad;
 
-    // no-args constructor
-    public ArticlePictureDTO() {
-    }
-
-    // constructor with arguments
-    public ArticlePictureDTO(Long id, String url, Ad ad) {
-        this.id = id;
-        this.url = url;
-        this.ad = ad;
-    }
 
     // getters and setters
     public Long getId() {

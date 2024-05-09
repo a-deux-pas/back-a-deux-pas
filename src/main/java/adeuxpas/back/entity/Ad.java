@@ -7,72 +7,45 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 public class Ad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 150)
     private String title;
+
     @Column(name = "article_description", columnDefinition = "TEXT")
     private String articleDescription;
+
     @Column(name = "article_state", length = 150)
     private String articleState;
+
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
+
     @Enumerated(EnumType.STRING)
     private AdStatus status = AdStatus.AVAILABLE;
+
     @Column(length = 100)
     private String category;
+
     @Column(length = 100)
     private String subcategory;
+
     @Column(name = "article_gender", length = 10)
     private String articleGender;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private User publisher;
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
-
-    // no-args constructor
-    public Ad() {
-    }
-
-    /**
-     * args - constructor
-     * 
-     * @param title
-     * @param articleDescription
-     * @param articleState
-     * @param creationDate
-     * @param price
-     * @param status
-     * @param category
-     * @param subcategory
-     * @param articleGender
-     * @param publisher
-     * @param articlePictures
-     */
-    public Ad(String title, String articleDescription, String articleState, LocalDateTime creationDate,
-            BigDecimal price, AdStatus status, String category, String subcategory, String articleGender,
-            User publisher, List<ArticlePicture> articlePictures) {
-        this.title = title;
-        this.articleDescription = articleDescription;
-        this.articleState = articleState;
-        this.creationDate = creationDate;
-        this.price = price;
-        this.status = status;
-        this.category = category;
-        this.subcategory = subcategory;
-        this.articleGender = articleGender;
-        this.publisher = publisher;
-        this.articlePictures = articlePictures;
-    }
 
     // getters and setters
     public Long getId() {

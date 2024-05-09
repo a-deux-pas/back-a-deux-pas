@@ -72,7 +72,8 @@ public class AdServiceImpl implements AdService {
         // TODO:: A revoir apres implémentation du processus de connexion pour l'
         // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
 
-        return adMapper.adToAdPostResponseDTO(adRepository.save(newAd));
+        Ad savedAd = adRepository.save(newAd);
+        return adMapper.adToAdPostResponseDTO(savedAd);
     }
 
     @Override
