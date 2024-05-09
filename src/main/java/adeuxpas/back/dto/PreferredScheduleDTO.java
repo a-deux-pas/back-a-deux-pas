@@ -24,25 +24,6 @@ public class PreferredScheduleDTO {
     private String endTime;
     private Long userId;
 
-    public PreferredScheduleDTO() {
-    }
-
-    /**
-     * Constructor for PreferredScheduleDTO with all attributes.
-     *
-     * @param id          The unique identifier for the preferred schedule.
-     * @param daysOfWeek  The days of the week for the preferred schedule.
-     * @param startTime   The start time of the preferred schedule.
-     * @param endTime     The end time of the preferred schedule.
-     * @param userId      The ID of the user associated with the preferred schedule.
-     */
-    public PreferredScheduleDTO(Long id, List<Integer> daysOfWeek, LocalTime startTime, LocalTime endTime, Long userId) {
-        this.id = id;
-        this.daysOfWeek = daysOfWeek;
-        this.startTime = formatTime(startTime);
-        this.endTime = formatTime(endTime);
-        this.userId = userId;
-    }
 
     public Long getId() {
         return id;
