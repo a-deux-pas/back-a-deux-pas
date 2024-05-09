@@ -27,7 +27,7 @@ import java.util.List;
  */
 
 @Component
-public class CmdLineRunnerSeedDatabase implements CommandLineRunner {
+public class CmdLineSeedDatabase implements CommandLineRunner {
     private final UserSeeder userSeeder;
     private final AdSeeder adSeeder;
     private final ArticlePictureSeeder articlePictureSeeder;
@@ -36,17 +36,17 @@ public class CmdLineRunnerSeedDatabase implements CommandLineRunner {
 
 
     /**
-     * Constructor for CmdLineRunnerSeedDatabase.
+     * Constructor for CmdLineSeedDatabase.
      * @param userSeeder
      * @param adSeeder
      * @param preferredScheduleSeeder
      * @param preferredMeetingPlaceSeeder
      */
-    public CmdLineRunnerSeedDatabase(@Autowired UserSeeder userSeeder,
-                                     @Autowired AdSeeder adSeeder,
-                                     @Autowired ArticlePictureSeeder articlePictureSeeder,
-                                     @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
-                                     @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder){
+    public CmdLineSeedDatabase(@Autowired UserSeeder userSeeder,
+                               @Autowired AdSeeder adSeeder,
+                               @Autowired ArticlePictureSeeder articlePictureSeeder,
+                               @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
+                               @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder){
         this.userSeeder = userSeeder;
         this.adSeeder = adSeeder;
         this.articlePictureSeeder = articlePictureSeeder;
