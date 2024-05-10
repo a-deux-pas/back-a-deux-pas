@@ -1,7 +1,6 @@
 package adeuxpas.back.repository;
 
 import adeuxpas.back.entity.Ad;
-import adeuxpas.back.entity.User;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
