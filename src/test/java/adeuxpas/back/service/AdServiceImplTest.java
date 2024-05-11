@@ -105,7 +105,7 @@ class AdServiceImplTest {
     }
 
     /**
-     * Test for findAdsByPublisherI method in AdServiceImpl.
+     * Test for findAdsByPublisher method in AdServiceImpl.
      */
     @Test
     void testFindAdsByPublisherIdUserExists() {
