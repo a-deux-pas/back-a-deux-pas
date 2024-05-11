@@ -6,6 +6,8 @@ import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.mapstruct.Mapper;
@@ -44,6 +46,7 @@ public interface AdMapper {
     @Mapping(source = "articlePictures", target = "thirdArticlePictureUrl", qualifiedByName = "findThirdArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "fourthArticlePictureUrl", qualifiedByName = "findFourthArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "fifthArticlePictureUrl", qualifiedByName = "findFifthArticlePictureUrl")
+    @Mapping(source = "creationDate", target = "creationDate", qualifiedByName = "convertDateToString")
     @Mapping(source = "publisher.id", target = "publisherId")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
 
@@ -85,6 +88,11 @@ public interface AdMapper {
             return articlePictures.get(4).getUrl();
         }
         return null;
+    }
+
+    @Named("convertDateToString")
+    default String dateToString(LocalDateTime date) {
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     @Mapping(source = "publisherId", target = "publisher.id")

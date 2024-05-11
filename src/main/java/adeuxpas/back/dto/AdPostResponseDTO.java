@@ -1,7 +1,6 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import org.springframework.lang.Nullable;
 
@@ -20,7 +19,7 @@ public class AdPostResponseDTO {
     @Nullable
     private String fifthArticlePictureUrl;
     private BigDecimal price;
-    private LocalDateTime creationDate;
+    private String creationDate;
     // TO DO :: à peut-être changer une fois le processus de connexion implémenté
     private Long publisherId;
     private AdStatus status;
@@ -91,11 +90,11 @@ public class AdPostResponseDTO {
         this.price = price;
     }
 
-    public LocalDateTime getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
