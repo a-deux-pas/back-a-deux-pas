@@ -5,7 +5,6 @@ import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.ProfilePageUserDTO;
-import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
