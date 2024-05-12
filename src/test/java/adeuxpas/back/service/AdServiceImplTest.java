@@ -137,6 +137,7 @@ class AdServiceImplTest {
             // that this method was never called
         verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
             // that all the parameters passed to the repository method are correctly formatted
+            // using Captors to capture and check the params' values at runtime
         assertNull(categoryCaptor.getValue());
         assertNull(subCategoryCaptor.getValue());
         assertNull(genderCaptor.getValue());
@@ -233,15 +234,6 @@ class AdServiceImplTest {
         assertEquals("Homme", genderCaptor.getValue());
     }
 
-    private void setUp() {
-        adsList = UnitTestUtils.createMockAds();
-        adsPage = new PageImpl<>(adsList);
-        adsList.forEach(ad -> {
-            citiesAndPostalCodes.add(ad.getPublisher().getCity() + " (" + ad.getPublisher().getPostalCode() + ")" );
-        });
-        this.mockAdMapperBehaviour();
-    }
-
     /**
      * Test for postAd method in AdServiceImpl.
      */
@@ -331,6 +323,15 @@ class AdServiceImplTest {
         verify(adRepositoryMock).findAdsByPublisherId(publisherId);
     }
 
+    // common set-up, used by several test methods
+    private void setUp() {
+        adsList = UnitTestUtils.createMockAds();
+        adsPage = new PageImpl<>(adsList);
+        adsList.forEach(ad -> {
+            citiesAndPostalCodes.add(ad.getPublisher().getCity() + " (" + ad.getPublisher().getPostalCode() + ")" );
+        });
+        this.mockAdMapperBehaviour();
+    }
 
     // Mock behavior for adRepository methods
     private void mockRepositoryFindByAcceptedStatusesMethod() {
