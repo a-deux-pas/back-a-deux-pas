@@ -1,5 +1,6 @@
 package adeuxpas.back.controller;
 
+import adeuxpas.back.service.AdService;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.service.AdService;
 
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -80,6 +80,26 @@ public class AdController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no ad found for this id");
         } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    /**
+     * endpoint that get all the ads created by a user
+     *
+     * @param userId
+     * @return ResponseEntity indicating if the Ads have been found
+     */
+    @Operation(summary = "user's ads list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a user's ad list"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/list/{userId}")
+    public ResponseEntity<Object> getMyAds(@PathVariable long userId) {
+        try {
+            return ResponseEntity.ok(service.findAdsByPublisherId(userId));
+        } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }

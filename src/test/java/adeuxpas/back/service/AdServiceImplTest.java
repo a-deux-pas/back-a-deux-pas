@@ -2,7 +2,9 @@ package adeuxpas.back.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import adeuxpas.back.dto.AdPostResponseDTO;
@@ -86,7 +88,10 @@ class AdServiceImplTest {
         adResponse.setTitle(expectedAd.getTitle());
         adResponse.setArticleDescription(expectedAd.getArticleDescription());
         adResponse.setPrice(expectedAd.getPrice());
-        adResponse.setPublisher(expectedAd.getPublisher().getAlias());
+        /**
+         * TO DO :: à changer pour setPublisher une fois la connexion implémentée
+         */
+        adResponse.setPublisherId(expectedAd.getPublisher().getId());
         adResponse.setArticleState(expectedAd.getArticleState());
         adResponse.setStatus(expectedAd.getStatus());
 
@@ -97,5 +102,34 @@ class AdServiceImplTest {
         assertEquals(result.getTitle(), adResponse.getTitle());
         assertEquals(result.getArticleDescription(), adResponse.getArticleDescription());
         assertEquals(result.getStatus(), adResponse.getStatus());
+    }
+
+    /**
+     * Test for findAdsByPublisher method in AdServiceImpl.
+     */
+    @Test
+    void testFindAdsByPublisherIdUserExists() {
+        Long publisherId = 1L;
+        User user = new User();
+        when(userRepository.findById(publisherId)).thenReturn(Optional.of(user));
+
+        Ad ad1 = new Ad();
+        Ad ad2 = new Ad();
+        List<Ad> adList = List.of(ad1, ad2);
+        when(adRepository.findAdsByPublisherId(publisherId)).thenReturn(adList);
+
+        AdPostResponseDTO dto1 = new AdPostResponseDTO();
+        AdPostResponseDTO dto2 = new AdPostResponseDTO();
+        when(adMapper.adToAdPostResponseDTO(ad1)).thenReturn(dto1);
+        when(adMapper.adToAdPostResponseDTO(ad2)).thenReturn(dto2);
+
+        List<AdPostResponseDTO> result = adService.findAdsByPublisherId(publisherId);
+
+        assertEquals(2, result.size());
+        assertEquals(dto1, result.get(0));
+        assertEquals(dto2, result.get(1));
+
+        verify(userRepository).findById(publisherId);
+        verify(adRepository).findAdsByPublisherId(publisherId);
     }
 }

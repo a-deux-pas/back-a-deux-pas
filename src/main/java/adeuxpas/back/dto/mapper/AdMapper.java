@@ -6,6 +6,8 @@ import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.mapstruct.Mapper;
@@ -33,12 +35,19 @@ import org.mapstruct.Named;
  */
 @Mapper(componentModel = "spring")
 public interface AdMapper {
+    /**
+     * Maps an ad entity to an adPostResponseDTO
+     * 
+     * @param ad
+     * @return adPostResponseDTO
+     */
     @Mapping(source = "articlePictures", target = "firstArticlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "secondArticlePictureUrl", qualifiedByName = "findSecondArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "thirdArticlePictureUrl", qualifiedByName = "findThirdArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "fourthArticlePictureUrl", qualifiedByName = "findFourthArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "fifthArticlePictureUrl", qualifiedByName = "findFifthArticlePictureUrl")
-    @Mapping(source = "publisher.alias", target = "publisher")
+    @Mapping(source = "creationDate", target = "creationDate", qualifiedByName = "convertDateToString")
+    @Mapping(source = "publisher.id", target = "publisherId")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
 
     @Named("findFirstArticlePictureUrl")
@@ -81,9 +90,11 @@ public interface AdMapper {
         return null;
     }
 
+    @Named("convertDateToString")
+    default String dateToString(LocalDateTime date) {
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+
     @Mapping(source = "publisherId", target = "publisher.id")
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
-
-    @Mapping(source = "publisher.id", target = "publisherId")
-    AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
 }

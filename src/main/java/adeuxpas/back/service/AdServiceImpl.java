@@ -22,6 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation class for the AdService interface.
+ * <p>
+ * This service class provides implementations for ad-related operations.
+ * </p>
+ * <p>
+ * It interacts with the AdRepository to perform database operations related to
+ * ads.
+ * </p>
+ */
 @Service
 public class AdServiceImpl implements AdService {
 
@@ -38,10 +48,17 @@ public class AdServiceImpl implements AdService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * persist an Ad object in database
+     *
+     * @param adPostRequestDTO coming from the front end application
+     * @return an adPostResponseDTO to the front
+     */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
         // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);) =>
+        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
+        // =>
         User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
@@ -75,6 +92,12 @@ public class AdServiceImpl implements AdService {
         return adMapper.adToAdPostResponseDTO(savedAd);
     }
 
+    /**
+     * Retrieves an ad information by a user's id
+     *
+     * @param id the concerned user.
+     * @return an ad
+     */
     @Override
     public AdPostResponseDTO findAdById(Long id) {
         Optional<Ad> optionalAd = adRepository.findById(id);
@@ -86,5 +109,21 @@ public class AdServiceImpl implements AdService {
             throw new EntityNotFoundException();
         }
     }
-}
 
+    /**
+     * Retrieves a user's ads list
+     *
+     * @param publisherId the concerned user's id.
+     * @return a list of ads.
+     */
+    @Override
+    public List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            List<Ad> adList = adRepository.findAdsByPublisherId(publisherId);
+            return adList.stream().map(adMapper::adToAdPostResponseDTO).toList();
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+}

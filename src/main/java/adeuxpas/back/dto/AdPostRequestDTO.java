@@ -35,7 +35,6 @@ public class AdPostRequestDTO {
     @NotBlank
     private String articleState;
 
-
     // getters and setters
     public String getTitle() {
         return title;

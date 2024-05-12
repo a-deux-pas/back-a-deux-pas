@@ -2,12 +2,11 @@ package adeuxpas.back.entity;
 
 import adeuxpas.back.enums.AdStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Ad {
@@ -16,7 +15,8 @@ public class Ad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150)
+    @Column
+    @Size(min = 4, max = 150)
     private String title;
 
     @Column(name = "article_description", columnDefinition = "TEXT")
@@ -46,10 +46,8 @@ public class Ad {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private User publisher;
-
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
-
 
     // getters and setters
     public Long getId() {
