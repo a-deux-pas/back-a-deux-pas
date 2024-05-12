@@ -15,7 +15,6 @@ import java.util.List;
 
 @Component
 public class UserSeeder {
-
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -37,7 +36,6 @@ public class UserSeeder {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
-
 
     /**
      * This method creates user entities.
@@ -77,12 +75,12 @@ public class UserSeeder {
         third.setEmail("lhadida@email.com");
         third.setPassword(passwordEncoder.encode(pass3));
         third.setAlias("Leahad");
-        third.setBio("bio3");
+        third.setBio("Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
         third.setCountry("France");
-        third.setCity("Charenton");
+        third.setCity("Paris");
         third.setStreet("5, Av de la Liberte");
         third.setPostalCode("75018");
-        third.setProfilePicture("profilePictureUrl3");
+        third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
         third.setInscriptionDate(LocalDateTime.now());
         third.setAccountStatus(AccountStatus.ACTIVE);
         third.setRole(UserRole.USER);
@@ -91,12 +89,12 @@ public class UserSeeder {
         fourth.setEmail("erikaike@email.fr");
         fourth.setPassword(passwordEncoder.encode(pass4));
         fourth.setAlias("Eri");
-        fourth.setBio("bio4");
+        fourth.setBio("Passionnée de mode, je vends mes vêtements pour permettre aux plus grand nombre d’être stylé.");
         fourth.setCountry("France");
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
         fourth.setPostalCode("69002");
-        fourth.setProfilePicture("profilePictureUrl4");
+        fourth.setProfilePicture("https://media.licdn.com/dms/image/C4D03AQEPCyzoBB3WHQ/profile-displayphoto-shrink_200_200/0/1559041227281?e=1717027200&v=beta&t=bo3fSv0ufHuLbS1IHuTLJ9YwwixGq-HCiF3CkcshrQc");
         fourth.setInscriptionDate(LocalDateTime.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
         fourth.setRole(UserRole.ADMIN);
@@ -109,7 +107,7 @@ public class UserSeeder {
         fifth.setCountry("France");
         fifth.setCity("Lyon");
         fifth.setStreet("7bis, rue de la Synagogue");
-        fifth.setPostalCode("66004");
+        fifth.setPostalCode("69004");
         fifth.setProfilePicture("profilePictureUrl5");
         fifth.setInscriptionDate(LocalDateTime.now());
         fifth.setAccountStatus(AccountStatus.ACTIVE);
@@ -123,7 +121,7 @@ public class UserSeeder {
         sixth.setCountry("France");
         sixth.setCity("Lyon");
         sixth.setStreet("sous un pont");
-        sixth.setPostalCode("66008");
+        sixth.setPostalCode("69008");
         sixth.setProfilePicture("profilePictureUrl6");
         sixth.setInscriptionDate(LocalDateTime.now());
         sixth.setAccountStatus(AccountStatus.ACTIVE);

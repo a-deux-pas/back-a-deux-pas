@@ -57,4 +57,12 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
     Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(List<AdStatus> adStatuses,
                                                              List<AccountStatus> accountStatuses,
                                                              Pageable pageable);
+
+    /**
+     * Find a user's ad list
+     * 
+     * @param publisherId
+     * @return a list of ads
+     */
+    List<Ad> findAdsByPublisherId(Long publisherId);
 }

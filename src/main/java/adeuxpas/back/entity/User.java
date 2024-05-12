@@ -22,30 +22,43 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 150)
     private String email;
+
     private String password;
+
     @Column(length = 150)
     private String alias;
+
     @Column(columnDefinition = "TEXT")
     private String bio;
+
     @Column(length = 150)
     private String country;
+
     @Column(length = 150)
     private String city;
+
     @Column(length = 200)
     private String street;
+
     @Column(name = "postal_code", length = 15)
     private String postalCode;
+
     @Column(name = "profile_picture")
     private String profilePicture;
+
     @Column(name = "inscription_date")
     private LocalDateTime inscriptionDate;
+
     @Column(name = "account_status")
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ad> ads;
 
@@ -84,7 +97,7 @@ public class User {
     }
 
     public String getBio() {
-         return bio;
+        return bio;
     }
 
     public void setBio(String bio) {
@@ -163,26 +176,10 @@ public class User {
         this.ads = ads;
     }
 
-
     // toString
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", alias='" + alias + '\'' +
-                ", bio='" + bio + '\'' +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", profilePicture='" + profilePicture + '\'' +
-                ", inscriptionDate=" + inscriptionDate +
-                ", accountStatus=" + accountStatus +
-                ", role=" + role +
-                //", ads=" + ads +
-                '}';
+    public String toString(){
+        return this.email;
     }
 
     // equals
@@ -198,4 +195,5 @@ public class User {
     public int hashCode() {
         return Objects.hash(email);
     }
+
 }

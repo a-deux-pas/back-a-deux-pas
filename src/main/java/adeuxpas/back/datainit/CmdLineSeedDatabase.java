@@ -1,8 +1,6 @@
 package adeuxpas.back.datainit;
 
-import adeuxpas.back.datainit.seeder.AdSeeder;
-import adeuxpas.back.datainit.seeder.ArticlePictureSeeder;
-import adeuxpas.back.datainit.seeder.UserSeeder;
+import adeuxpas.back.datainit.seeder.*;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +13,13 @@ import java.util.List;
  * Executes custom logic or tasks at the start of the application,
  * after the Spring application context is initialized and before the application starts serving requests.
  * <p>
- * This class implements the {@code CommandLineRunner} interface, allowing it to be executed as part of the application startup sequence,
- * when the "default profile" is active.
+ * This class implements the {@code CommandLineRunner} interface, allowing it to be executed as part of the application startup sequence.
  * </p>
  * <p>
  * The run method is invoked by Spring Boot when the application is started.
- * It delegates the seeding of the database to the DatabaseSeeder component.
+ * It delegates the seeding of the database to the Seeder components.
  * </p>
  * <p>
- * The {@code DatabaseSeeder} is injected via constructor-based dependency injection.
- * Upon execution, the run method calls the seedDatabase method of the injected {@code DatabaseSeeder} instance to populate the database with initial data.
  * </p>
  * This class is annotated with {@code @Component} to mark it as a Spring-managed component and enable automatic detection and registration by Spring's component scanning mechanism.
  *
@@ -36,26 +31,33 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
     private final UserSeeder userSeeder;
     private final AdSeeder adSeeder;
     private final ArticlePictureSeeder articlePictureSeeder;
+    private final PreferredScheduleSeeder preferredScheduleSeeder;
+    private final PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder;
 
 
     /**
      * Constructor for CmdLineSeedDatabase.
      * @param userSeeder
      * @param adSeeder
-     * @param articlePictureSeeder
+     * @param preferredScheduleSeeder
+     * @param preferredMeetingPlaceSeeder
      */
     public CmdLineSeedDatabase(@Autowired UserSeeder userSeeder,
                                @Autowired AdSeeder adSeeder,
-                               @Autowired ArticlePictureSeeder articlePictureSeeder){
+                               @Autowired ArticlePictureSeeder articlePictureSeeder,
+                               @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
+                               @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder){
         this.userSeeder = userSeeder;
-        this.adSeeder =adSeeder;
+        this.adSeeder = adSeeder;
         this.articlePictureSeeder = articlePictureSeeder;
+        this.preferredScheduleSeeder = preferredScheduleSeeder;
+        this.preferredMeetingPlaceSeeder = preferredMeetingPlaceSeeder;
     }
 
     /**
      * Executes custom logic or tasks at the start of the application.
      * This method is invoked by Spring Boot when the application is started.
-     * It delegates the seeding of the database to the individual Seeder components.
+     * It delegates the seeding of the database to the specific Seeder components.
      *
      * @param args Command-line arguments passed to the application.
      * @throws Exception If an error occurs during the execution of the run method.
@@ -69,5 +71,12 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
         this.adSeeder.seedAds(ads);
 
         this.articlePictureSeeder.seedArticlePictures(ads);
+
+        for (User user : users) {
+            //Seeds the database with users preferred schedules
+            this.preferredScheduleSeeder.generateSchedulesForUser(user);
+            //Seeds the database with users preferred meeting places
+            this.preferredMeetingPlaceSeeder.generatePreferredMeetingPlacesForUser(user);
+        }
     }
 }

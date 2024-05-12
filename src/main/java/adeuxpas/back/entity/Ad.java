@@ -135,7 +135,6 @@ public class Ad {
         this.articlePictures = articlePictures;
     }
 
-    // toString
     @Override
     public String toString() {
         return "Ad{" +
@@ -149,11 +148,11 @@ public class Ad {
                 ", category='" + category + '\'' +
                 ", subcategory='" + subcategory + '\'' +
                 ", articleGender='" + articleGender + '\'' +
-                ", publisher=" + publisher +
+                ", publisher=" + (publisher != null ? publisher.getId() : "null") +
+                ", articlePictures=" + (articlePictures != null ? articlePictures.size() : 0) +
                 '}';
     }
 
-    // equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -161,7 +160,6 @@ public class Ad {
         return Objects.equals(title, ad.title) && Objects.equals(articleDescription, ad.articleDescription) && Objects.equals(articleState, ad.articleState) && Objects.equals(creationDate, ad.creationDate) && Objects.equals(price, ad.price) && status == ad.status && Objects.equals(category, ad.category) && Objects.equals(subcategory, ad.subcategory) && Objects.equals(articleGender, ad.articleGender) && Objects.equals(publisher, ad.publisher);
     }
 
-    // hashCode
     @Override
     public int hashCode() {
         return Objects.hash(title, articleDescription, articleState, creationDate, price, status, category, subcategory, articleGender, publisher);

@@ -9,7 +9,10 @@ public class ArticlePicture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 150)
     private String url;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_id")
     private Ad ad;
@@ -47,7 +50,7 @@ public class ArticlePicture {
         this.ad = ad;
     }
 
-    // equals
+    // equals, hashCode, toString
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,9 +58,17 @@ public class ArticlePicture {
         return Objects.equals(url, that.url) && Objects.equals(ad, that.ad);
     }
 
-    // hashCode
     @Override
     public int hashCode() {
         return Objects.hash(url, ad);
+    }
+
+    @Override
+    public String toString() {
+        return "ArticlePicture{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", ad=" + (ad != null ? "Ad{id=" + ad.getId() + "}" : "null") +
+                '}';
     }
 }

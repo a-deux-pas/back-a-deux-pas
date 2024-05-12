@@ -70,11 +70,11 @@ public class SecurityConfig {
                .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         // Explicitly expose these endpoints to everybody
-                        .requestMatchers("/signup", "/login", "ads/list").permitAll()
+                        .requestMatchers("/signup", "/login", "ads/list", "/account/profile/").permitAll()
                         // Protect these endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin-page").hasAuthority("ADMIN")
-                        // Permit any other endpoints to be accessed freely, e.g.:'/swagger-ui/' (during development only)
+                        // Permit any other endpoints to be accessed freely, e.g.:'/swagger-ui/' (during development only
                         .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
