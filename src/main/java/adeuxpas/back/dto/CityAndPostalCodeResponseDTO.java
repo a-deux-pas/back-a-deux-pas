@@ -2,6 +2,16 @@ package adeuxpas.back.dto;
 
 import java.util.Objects;
 
+/**
+ * Data Transfer Object (DTO) representing a unique postal code and its city.
+ * <p>
+ * This DTO class contains fields for representing a unique postal code and its associated city.
+ * It is used for populating the city filter component of the front end client application,
+ * in order to let the user filter the ads by any postal code that exists in the Database.
+ * </p>
+ *
+ * @author Mircea Bardan
+ */
 public class CityAndPostalCodeResponseDTO {
     String city;
     String postalCode;

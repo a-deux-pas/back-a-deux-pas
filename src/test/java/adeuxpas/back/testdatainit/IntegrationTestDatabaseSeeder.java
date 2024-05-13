@@ -28,9 +28,9 @@ import java.util.List;
  * @author Mircea Bardan
  */
 
-// DO NOT CREATE ANY MORE ADS !
-// DO NOT MODIFY THE ALREADY CREATED OBJECTS' PROPERTIES !
-// IF MODIFICATION IS NEEDED, SEE Mircea Bardan
+// In order for the tests to remain relevant, please :
+// - do not add or remove the existing objects
+// - do not modify the existing objects properties' values (feel free to add new properties, along with their values, when needed)
 
 @Component
 public class IntegrationTestDatabaseSeeder {

@@ -29,7 +29,6 @@ import java.util.Optional;
 
 import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.utils.UnitTestUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.data.domain.Page;
@@ -41,6 +40,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test class for AdServiceImpl.
+ * <p>
+ * This class tests the functionalities of the AdServiceImpl class.
+ * It uses Mockito for mocking dependencies and runtime parameter access.
+ * </p>
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 class AdServiceImplTest {
     private List<Ad> adsList;
@@ -91,14 +98,19 @@ class AdServiceImplTest {
     private AdServiceImpl adService;
 
 
+    /**
+     * This method tests the {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+     * method with no filters applied.
+     * </p>
+     */
     @Test
-    void testFindFilteredResponseAdDTOs_NoFiltersApplied() {
+    void testFindFilteredAdHomeResponseDTOs_NoFiltersApplied() {
         // Set-up
         this.setUp();
         this.mockRepositoryFindByAcceptedStatusesMethod();
 
         // Act
-        adService.findFilteredAdResponseDTOs(new ArrayList<>(), new ArrayList<>(),
+        adService.findFilteredAdHomeResponseDTOs(new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), "Catégorie", pageable);
 
         // Assert :
@@ -115,14 +127,19 @@ class AdServiceImplTest {
         );
     }
 
+    /**
+     * This method tests the {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+     * method with all filters applied, except category.
+     * </p>
+     */
     @Test
-    void testFindFilteredResponseAdDTOs_AllFiltersExceptCategoryApplied() {
+    void testFindFilteredAdHomeResponseDTOs_AllFiltersExceptCategoryApplied() {
         // Set-up
         this.setUp();
         this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
         // Act
-        adService.findFilteredAdResponseDTOs(priceRanges, citiesAndPostalCodes,
+        adService.findFilteredAdHomeResponseDTOs(priceRanges, citiesAndPostalCodes,
                 articleStates, "Catégorie", pageable);
 
         // Assert:
@@ -156,14 +173,19 @@ class AdServiceImplTest {
                                                                     this.adsList.get(1).getPublisher().getPostalCode())));
     }
 
+    /**
+     * This method tests the {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+     * method with all filters, including category, applied.
+     * </p>
+     */
     @Test
-    void testFindFilteredResponseAdDTOs_CategoryAndCriteriaForEachFilterApplied() {
+    void testFindFilteredAdHomeResponseDTOs_CategoryAndCriteriaForEachFilterApplied() {
         // Set-up
         this.setUp();
         mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
         // Act
-        adService.findFilteredAdResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
+        adService.findFilteredAdHomeResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
                 List.of(articleStates.getFirst()), "Mode", pageable);
 
         // Assert:
@@ -195,14 +217,19 @@ class AdServiceImplTest {
         assertNull(genderCaptor.getValue());
     }
 
+    /**
+     * This method tests the {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+     * method with all filters, including category, subcategory and gender, applied.
+     * </p>
+     */
     @Test
-    void testFindFilteredResponseAdDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
+    void testFindFilteredAdHomeResponseDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
         // Set-up
         this.setUp();
         this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
         // Act
-        adService.findFilteredAdResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
+        adService.findFilteredAdHomeResponseDTOs(List.of(priceRanges.getFirst()), List.of(citiesAndPostalCodes.getFirst()),
                 List.of(articleStates.getFirst()), "Mode ▸ Hauts ▸ Homme", pageable);
 
         // Assert:

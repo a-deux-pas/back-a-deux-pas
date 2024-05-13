@@ -54,13 +54,13 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Page<AdHomeResponseDTO> findFilteredAdResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
-                                                              List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
+    public Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
+                                                                  List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
         if (priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
                 articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie"))
-            return this.findAllAdResponseDTOs(pageable);
+            return this.findAllAdHomeResponseDTOs(pageable);
 
         // extracting the postal codes
         List<String> postalCodes = citiesAndPostalCodesFilter.stream()
@@ -135,16 +135,16 @@ public class AdServiceImpl implements AdService {
                 category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
         );
 
-        return this.convertToPageOfAdResponseDTOs(pageable, filteredAds);
+        return this.convertToPageOfAdHomeResponseDTOs(pageable, filteredAds);
     }
 
     @Override
-    public Page<AdHomeResponseDTO> findAllAdResponseDTOs(Pageable pageable) {
+    public Page<AdHomeResponseDTO> findAllAdHomeResponseDTOs(Pageable pageable) {
         Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses, acceptedAccountStatuses, pageable);
-        return this.convertToPageOfAdResponseDTOs(pageable, myAds);
+        return this.convertToPageOfAdHomeResponseDTOs(pageable, myAds);
     }
 
-    private Page<AdHomeResponseDTO> convertToPageOfAdResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
+    private Page<AdHomeResponseDTO> convertToPageOfAdHomeResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
         List<AdHomeResponseDTO> mappedAdsList = adsPage.stream()
                 .map(adMapper::adToAdHomeResponseDTO)
                 .toList();

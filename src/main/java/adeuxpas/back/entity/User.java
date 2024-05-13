@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Entity class representing a user in the application.
  * This class encapsulates user-related information, such as email, password, profile details, account status etc.
- * Instances of this class are persisted in the database and typically interact with the UserRepository.
+ * Instances of this class are persisted to the database by the UserRepository.
  *
  * @author Mircea Bardan
  */

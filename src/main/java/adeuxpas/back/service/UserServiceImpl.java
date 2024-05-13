@@ -176,6 +176,13 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    /**
+     * Retrieves the users' unique postal codes along with their cities.
+     *
+     * This method retrieves all the users from the DB;
+     * It then maps them to CityAndPostalCodeResponseDTO objects.
+     * @return a set of CityAndPostalCodeResponseDTOs
+     */
     @Override
     public Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();

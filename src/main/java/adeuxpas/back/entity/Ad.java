@@ -6,8 +6,13 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
+/**
+ * Entity class representing an ad in the application.
+ * This class encapsulates ad-related information, such as title, article description, article state etc.
+ * Instances of this class are persisted to the database by the AdRepository.
+ * @author Mircea Bardan
+ */
 @Entity
 public class Ad {
 

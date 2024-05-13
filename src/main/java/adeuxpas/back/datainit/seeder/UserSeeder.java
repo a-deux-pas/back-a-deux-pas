@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Seeder class responsible for generating sample user entities.
+ * Each user is initialized with sample data such as email, password, alias, bio etc.
+ */
 @Component
 public class UserSeeder {
     private final UserRepository userRepository;

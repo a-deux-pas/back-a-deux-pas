@@ -38,76 +38,30 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Retrieves a set of unique cities and postal codes.
+     *
+     * <p>This endpoint fetches unique combinations of cities and postal codes from the UserService.
+     * If successful, it returns a ResponseEntity containing the set of CityAndPostalCodeResponseDTO objects.
+     * If an exception occurs during the operation, it returns a 500 Internal Server Error response
+     * with an error message in the response body.</p>
+     *
+     * @return a ResponseEntity containing a set of unique CityAndPostalCodeResponseDTO objects
+     *         if successful, or a 500 Internal Server Error response if an exception occurs
+     *
+     * @see CityAndPostalCodeResponseDTO
+     */
+    @Operation(summary = "Retrieves a set of unique cities and postal codes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of unique cities and postal codes"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/citiesAndPostalCodes")
     public ResponseEntity<Object> getUniqueCitiesAndPostalCodes() {
         try {
             Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOS = this.userService.getUniqueCitiesAndPostalCodes();
             return ResponseEntity.ok(cityAndPostalCodeResponseDTOS);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
-        }
-    }
-
-    // RAF : méthodes à changer une fois le login réalisé
-    /**
-     * Endpoint to access a user's profile information.
-     *
-     * @return a ResponseEntity with the user profile information if successful,
-     * or a 500 Internal Server Error response if an exception occurs.
-     */
-    @Operation(summary = "User's profile information")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of user profile information"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/account/profile/presentation")
-    public ResponseEntity<Object> getUserInformation() {
-        Long userId = 3L; 
-        try {
-            return ResponseEntity.ok(userService.findUserProfileInfoById(userId));
-        } catch(Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
-        }  
-    }
-    
-    /**
-     * Endpoint to access a user's preferred schedules.
-     *
-     * @return a ResponseEntity with the user preferred schedules if successful,
-     * or a 500 Internal Server Error response if an exception occurs.
-     */
-    @Operation(summary = "User's preferred schedules")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred schedules"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/account/profile/schedules")
-    public ResponseEntity<Object> getPreferredShedules() {
-        Long userId = 3L;
-        try {
-            return ResponseEntity.ok(userService.findPreferredSchedulesByUserId(userId));
-        } catch(Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
-        }  
-    }
-
-    /**
-     * Endpoint to access user's preferred meeting places.
-     *
-     * @return a ResponseEntity with the user preferred meeting places if successful,
-     * or a 500 Internal Server Error response if an exception occurs.
-     */
-    @Operation(summary = "User's preferred meeting places")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred meeting places"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/account/profile/meeting-places")
-    public ResponseEntity<Object> getPreferredMeetingPlaces() {
-        Long userId = 3L;
-        try {
-            return ResponseEntity.ok(userService.findPreferredMeetingPlacesByUserId(userId));
-        } catch(Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }

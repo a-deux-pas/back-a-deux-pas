@@ -8,9 +8,9 @@ import adeuxpas.back.dto.AdPostResponseDTO;
 import java.util.List;
 
 public interface AdService {
-    Page<AdHomeResponseDTO> findAllAdResponseDTOs(Pageable pageable);
+    Page<AdHomeResponseDTO> findAllAdHomeResponseDTOs(Pageable pageable);
 
-    Page<AdHomeResponseDTO> findFilteredAdResponseDTOs(List<String> prices, List<String> cities, List<String> articleStates, String category, Pageable pageable);
+    Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> prices, List<String> cities, List<String> articleStates, String category, Pageable pageable);
 
     AdPostResponseDTO postAd(AdPostRequestDTO adDto);
 

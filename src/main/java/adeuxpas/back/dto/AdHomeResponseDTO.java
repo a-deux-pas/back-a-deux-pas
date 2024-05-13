@@ -3,6 +3,10 @@ package adeuxpas.back.dto;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/*
+ * Data transfer object (DTO) class that is used when sending
+ * Ad data to the front end home page
+ */
 public class AdHomeResponseDTO {
     private String title;
     private String articlePictureUrl;

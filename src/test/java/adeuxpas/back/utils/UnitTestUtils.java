@@ -10,7 +10,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class that provides utility methods for unit testing.
+ * @author Mircea Bardan
+ */
+
+// In order for the tests to remain relevant, please :
+// - do not add or remove the existing objects
+// - do not modify the existing objects properties' values (feel free to add new properties, along with their values, when needed)
+
 public class UnitTestUtils {
+
+    /**
+     * Utility method that provides sample data for unit testing.
+     * It can be used as a set-up by any unit test method
+     *
+     * @author Mircea Bardan
+     */
     public static List<Ad> createMockAds() {
         List<Ad> ads = new ArrayList<>();
 

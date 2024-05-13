@@ -1,6 +1,7 @@
 package adeuxpas.back.dto.mapper;
 
 import adeuxpas.back.dto.AdHomeResponseDTO;
+import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.dto.AdPostRequestDTO;
@@ -36,6 +37,13 @@ import org.mapstruct.Named;
 )
 public interface AdMapper {
 
+    /**
+     * Maps an ad entity to an adHomeResponseDTO
+     *
+     * @param ad
+     * @return adHomeResponseDTO
+     * @see AdHomeResponseDTO
+     */
     @Mapping(source = "articlePictures", target = "articlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "publisher.alias", target = "publisher")
     AdHomeResponseDTO adToAdHomeResponseDTO(Ad ad);
@@ -45,6 +53,7 @@ public interface AdMapper {
      * 
      * @param ad
      * @return adPostResponseDTO
+     * @see AdPostResponseDTO
      */
     @Mapping(source = "articlePictures", target = "firstArticlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "secondArticlePictureUrl", qualifiedByName = "findSecondArticlePictureUrl")

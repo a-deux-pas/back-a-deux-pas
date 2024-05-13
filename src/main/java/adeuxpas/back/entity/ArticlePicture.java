@@ -4,6 +4,12 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
+/**
+ * Entity class representing an article picture in the application.
+ * This class encapsulates article picture related information, such as its url.
+ * Instances of this class are persisted to the database by the ArticlePictureRepository.
+ * @author Mircea Bardan
+ */
 @Entity
 public class ArticlePicture {
     @Id
