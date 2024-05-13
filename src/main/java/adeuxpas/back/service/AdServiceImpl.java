@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * Implementation class for the AdService interface.
  * <p>
- * This service class provides implementations for ad-related operations.
+ * Provides implementations for ad-related operations.
  * </p>
  * <p>
  * It interacts with the AdRepository to perform database operations related to
@@ -53,6 +53,16 @@ public class AdServiceImpl implements AdService {
         this.adMapper = adMapper;
     }
 
+    /**
+     * Finds filtered ads and maps them to AdHomeResponseDTOs.
+     *
+     * @param priceRangesFilter        The list of price range filters.
+     * @param citiesAndPostalCodesFilter The list of city and postal code filters.
+     * @param articleStatesFilter      The list of article state filters.
+     * @param categoryFilter           The category filter.
+     * @param pageable                 The pagination information.
+     * @return The page of AdHomeResponseDTOs.
+     */
     @Override
     public Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
                                                                   List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
@@ -138,12 +148,25 @@ public class AdServiceImpl implements AdService {
         return this.convertToPageOfAdHomeResponseDTOs(pageable, filteredAds);
     }
 
+    /**
+     * Finds all ads and maps them to AdHomeResponseDTOs.
+     *
+     * @param pageable The pagination information.
+     * @return The page of AdHomeResponseDTOs.
+     */
     @Override
     public Page<AdHomeResponseDTO> findAllAdHomeResponseDTOs(Pageable pageable) {
         Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses, acceptedAccountStatuses, pageable);
         return this.convertToPageOfAdHomeResponseDTOs(pageable, myAds);
     }
 
+    /**
+     * Converts a page of Ad entities to a page of AdHomeResponseDTOs.
+     *
+     * @param pageable The pagination information.
+     * @param adsPage  The page of Ad entities.
+     * @return The page of AdHomeResponseDTOs.
+     */
     private Page<AdHomeResponseDTO> convertToPageOfAdHomeResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
         List<AdHomeResponseDTO> mappedAdsList = adsPage.stream()
                 .map(adMapper::adToAdHomeResponseDTO)

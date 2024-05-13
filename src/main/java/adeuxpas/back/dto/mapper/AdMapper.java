@@ -1,7 +1,6 @@
 package adeuxpas.back.dto.mapper;
 
 import adeuxpas.back.dto.AdHomeResponseDTO;
-import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.dto.AdPostRequestDTO;
