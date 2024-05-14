@@ -40,6 +40,20 @@ import java.util.Objects;
 public class AdServiceImpl implements AdService {
     private final List<AdStatus> acceptedAdStatuses = List.of(AdStatus.AVAILABLE);
     private final List<AccountStatus> acceptedAccountStatuses = List.of(AccountStatus.ACTIVE, AccountStatus.REPORTED);
+    private BigDecimal maxPrice1 = null;
+    private BigDecimal minPrice2 = null;
+    private BigDecimal maxPrice2 = null;
+    private BigDecimal minPrice3 = null;
+    private BigDecimal maxPrice3 = null;
+    private BigDecimal minPrice4 = null;
+    private BigDecimal maxPrice4 = null;
+    private BigDecimal minPrice5 = null;
+    private BigDecimal maxPrice5 = null;
+    private BigDecimal minPrice6 = BigDecimal.ZERO;
+    private String category;
+    private String subcategory = null;
+    private String gender = null;
+
 
     private final UserRepository userRepository;
     private final AdRepository adRepository;
@@ -68,9 +82,9 @@ public class AdServiceImpl implements AdService {
                                                                   List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
-        if (priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
-                articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie"))
-            return this.findAllAdHomeResponseDTOs(pageable);
+        if (shouldReturnAllAds(priceRangesFilter, citiesAndPostalCodesFilter, articleStatesFilter, categoryFilter)) {
+            return findAllAdHomeResponseDTOs(pageable);
+        }
 
         // extracting the postal codes
         List<String> postalCodes = citiesAndPostalCodesFilter.stream()
@@ -78,70 +92,29 @@ public class AdServiceImpl implements AdService {
                 .toList();
 
         // preparing the price ranges
-        BigDecimal maxPrice1 = null;
-        BigDecimal minPrice2 = null;
-        BigDecimal maxPrice2 = null;
-        BigDecimal minPrice3 = null;
-        BigDecimal maxPrice3 = null;
-        BigDecimal minPrice4 = null;
-        BigDecimal maxPrice4 = null;
-        BigDecimal minPrice5 = null;
-        BigDecimal maxPrice5 = null;
-        BigDecimal minPrice6 = BigDecimal.ZERO;
-
-        for (String priceRange : priceRangesFilter)
-            switch (priceRange) {
-                case "< 10€":
-                    maxPrice1 = BigDecimal.valueOf(10);
-                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
-                    break;
-                case "10€ - 20€":
-                    minPrice2 = BigDecimal.valueOf(10);
-                    maxPrice2 = BigDecimal.valueOf(19);
-                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
-                    break;
-                case "20€ - 30€":
-                    minPrice3 = BigDecimal.valueOf(20);
-                    maxPrice3 = BigDecimal.valueOf(29);
-                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
-                    break;
-                case "30€ - 40€":
-                    minPrice4 = BigDecimal.valueOf(30);
-                    maxPrice4 = BigDecimal.valueOf(39);
-                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
-                    break;
-                case "40€ - 60€":
-                    minPrice5 = BigDecimal.valueOf(40);
-                    maxPrice5 = BigDecimal.valueOf(59);
-                    if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
-                    break;
-                case "> 60€":
-                    minPrice6 = BigDecimal.valueOf(60);
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + priceRange);
-            }
+        this.maxPrice1 = null;
+        this.minPrice2 = null;
+        this.maxPrice2 = null;
+        this.minPrice3 = null;
+        this.maxPrice3 = null;
+        this.minPrice4 = null;
+        this.maxPrice4 = null;
+        this.minPrice5 = null;
+        this.maxPrice5 = null;
+        this.minPrice6 = BigDecimal.ZERO;
+        assignPriceRangeParameters(priceRangesFilter);
 
         // extracting the category filter criteria
-        String category;
-        String subcategory = null;
-        String gender = null;
-        if (categoryFilter.contains("▸")) {
-            category = categoryFilter.substring(0, categoryFilter.indexOf(" ▸"));
-            if (categoryFilter.indexOf("▸") != categoryFilter.lastIndexOf("▸")) {
-                subcategory = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1, categoryFilter.lastIndexOf(" ▸")).trim();
-                gender = categoryFilter.substring(categoryFilter.lastIndexOf("▸ ") + 1).trim();
-            } else
-                subcategory = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1).trim();
-        } else
-            category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
+        this.subcategory = null;
+        this.gender = null;
+        extractAndAssignCategoryFilterCriteria(categoryFilter);
 
         // passing the formatted filtering criteria to the query and saving the result to a page
         Page<Ad> filteredAds = this.adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes.isEmpty() ? null : postalCodes,
                 articleStatesFilter.isEmpty() ? null : articleStatesFilter,
-                maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
-                minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
+                this.maxPrice1, this.minPrice2, this.maxPrice2, this.minPrice3, this.maxPrice3,
+                this.minPrice4, this.maxPrice4, this.minPrice5, this.maxPrice5, this.minPrice6,
                 category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
         );
 
@@ -252,5 +225,58 @@ public class AdServiceImpl implements AdService {
         } else {
             throw new EntityNotFoundException();
         }
+    }
+
+    // ==================== parameter extraction and formatting helper methods =======================
+    private boolean shouldReturnAllAds(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
+                                       List<String> articleStatesFilter, String categoryFilter) {
+        return priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
+                articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie");
+    }
+    private void extractAndAssignCategoryFilterCriteria(String categoryFilter) {
+        if (categoryFilter.contains("▸")) {
+            category = categoryFilter.substring(0, categoryFilter.indexOf(" ▸"));
+            if (categoryFilter.indexOf("▸") != categoryFilter.lastIndexOf("▸")) {
+                subcategory = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1, categoryFilter.lastIndexOf(" ▸")).trim();
+                gender = categoryFilter.substring(categoryFilter.lastIndexOf("▸ ") + 1).trim();
+            } else
+                subcategory
+                        = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1).trim();
+        } else
+            category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
+    }
+    private void assignPriceRangeParameters(List<String> priceRangesFilter) {
+        for (String priceRange : priceRangesFilter)
+            switch (priceRange) {
+                case "< 10€":
+                    this.maxPrice1 = BigDecimal.valueOf(10);
+                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    break;
+                case "10€ - 20€":
+                    this.minPrice2 = BigDecimal.valueOf(10);
+                    this.maxPrice2 = BigDecimal.valueOf(19);
+                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    break;
+                case "20€ - 30€":
+                    this.minPrice3 = BigDecimal.valueOf(20);
+                    this.maxPrice3 = BigDecimal.valueOf(29);
+                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    break;
+                case "30€ - 40€":
+                    this.minPrice4 = BigDecimal.valueOf(30);
+                    this.maxPrice4 = BigDecimal.valueOf(39);
+                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    break;
+                case "40€ - 60€":
+                    this.minPrice5 = BigDecimal.valueOf(40);
+                    this.maxPrice5 = BigDecimal.valueOf(59);
+                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    break;
+                case "> 60€":
+                    this.minPrice6 = BigDecimal.valueOf(60);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + priceRange);
+            }
     }
 }

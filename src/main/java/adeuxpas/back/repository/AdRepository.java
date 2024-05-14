@@ -53,7 +53,7 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
      * @param subcategory            Subcategory to filter ads by.
      * @param gender                 Gender to filter ads by.
      * @param adStatuses             List of accepted ad statuses.
-     * @param accountStatuses        List of accepted account statuses.
+     * @param accountStatuses        List of accepted user's account statuses.
      * @param pageable               Pageable object to specify page number, page size, and sorting.
      * @return Page of Ad entities matching the specified criteria.
      */
@@ -102,8 +102,8 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
      * @param pageable          Pageable object to specify page number, page size, and sorting.
      * @return Page of Ad entities matching the specified criteria.
      */
-    @Query("SELECT ad FROM Ad ad JOIN ad.publisher u " +
-            "WHERE ad.status IN :adStatuses AND u.accountStatus IN :accountStatuses " +
+    @Query("SELECT ad FROM Ad ad JOIN ad.publisher user " +
+            "WHERE ad.status IN :adStatuses AND user.accountStatus IN :accountStatuses " +
             "ORDER BY ad.creationDate DESC")
     Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(List<AdStatus> adStatuses,
                                                              List<AccountStatus> accountStatuses,

@@ -15,7 +15,6 @@ public class AdHomeResponseDTO {
     private String publisherCity;
     private String publisherPostalCode;
 
-
     public String getTitle() {
         return title;
     }
