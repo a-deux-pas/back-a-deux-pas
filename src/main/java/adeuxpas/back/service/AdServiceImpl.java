@@ -92,29 +92,30 @@ public class AdServiceImpl implements AdService {
                 .toList();
 
         // preparing the price ranges
-        this.maxPrice1 = null;
-        this.minPrice2 = null;
-        this.maxPrice2 = null;
-        this.minPrice3 = null;
-        this.maxPrice3 = null;
-        this.minPrice4 = null;
-        this.maxPrice4 = null;
-        this.minPrice5 = null;
-        this.maxPrice5 = null;
-        this.minPrice6 = BigDecimal.ZERO;
+        maxPrice1 = null;
+        minPrice2 = null;
+        maxPrice2 = null;
+        minPrice3 = null;
+        maxPrice3 = null;
+        minPrice4 = null;
+        maxPrice4 = null;
+        minPrice5 = null;
+        maxPrice5 = null;
+        minPrice6 = BigDecimal.ZERO;
+
         assignPriceRangeParameters(priceRangesFilter);
 
         // extracting the category filter criteria
-        this.subcategory = null;
-        this.gender = null;
+        subcategory = null;
+        gender = null;
         extractAndAssignCategoryFilterCriteria(categoryFilter);
 
         // passing the formatted filtering criteria to the query and saving the result to a page
         Page<Ad> filteredAds = this.adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes.isEmpty() ? null : postalCodes,
                 articleStatesFilter.isEmpty() ? null : articleStatesFilter,
-                this.maxPrice1, this.minPrice2, this.maxPrice2, this.minPrice3, this.maxPrice3,
-                this.minPrice4, this.maxPrice4, this.minPrice5, this.maxPrice5, this.minPrice6,
+                maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
+                minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
                 category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
         );
 
@@ -246,37 +247,35 @@ public class AdServiceImpl implements AdService {
             category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
     }
     private void assignPriceRangeParameters(List<String> priceRangesFilter) {
-        for (String priceRange : priceRangesFilter)
+        for (String priceRange : priceRangesFilter) {
             switch (priceRange) {
                 case "< 10€":
-                    this.maxPrice1 = BigDecimal.valueOf(10);
-                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    maxPrice1 = BigDecimal.valueOf(10);
                     break;
                 case "10€ - 20€":
-                    this.minPrice2 = BigDecimal.valueOf(10);
-                    this.maxPrice2 = BigDecimal.valueOf(19);
-                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    minPrice2 = BigDecimal.valueOf(10);
+                    maxPrice2 = BigDecimal.valueOf(19);
                     break;
                 case "20€ - 30€":
-                    this.minPrice3 = BigDecimal.valueOf(20);
-                    this.maxPrice3 = BigDecimal.valueOf(29);
-                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    minPrice3 = BigDecimal.valueOf(20);
+                    maxPrice3 = BigDecimal.valueOf(29);
                     break;
                 case "30€ - 40€":
-                    this.minPrice4 = BigDecimal.valueOf(30);
-                    this.maxPrice4 = BigDecimal.valueOf(39);
-                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    minPrice4 = BigDecimal.valueOf(30);
+                    maxPrice4 = BigDecimal.valueOf(39);
                     break;
                 case "40€ - 60€":
-                    this.minPrice5 = BigDecimal.valueOf(40);
-                    this.maxPrice5 = BigDecimal.valueOf(59);
-                    if (Objects.equals(this.minPrice6, BigDecimal.ZERO)) this.minPrice6 = null;
+                    minPrice5 = BigDecimal.valueOf(40);
+                    maxPrice5 = BigDecimal.valueOf(59);
                     break;
                 case "> 60€":
-                    this.minPrice6 = BigDecimal.valueOf(60);
+                    minPrice6 = BigDecimal.valueOf(60);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + priceRange);
             }
+
+            if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
+        }
     }
 }
