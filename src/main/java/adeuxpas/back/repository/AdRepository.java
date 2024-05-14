@@ -53,7 +53,7 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
      * @param subcategory            Subcategory to filter ads by.
      * @param gender                 Gender to filter ads by.
      * @param adStatuses             List of accepted ad statuses.
-     * @param accountStatuses        List of accepted user's account statuses.
+     * @param accountStatuses        List of accepted user account statuses.
      * @param pageable               Pageable object to specify page number, page size, and sorting.
      * @return Page of Ad entities matching the specified criteria.
      */
