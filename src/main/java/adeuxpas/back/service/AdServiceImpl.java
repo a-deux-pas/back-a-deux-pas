@@ -54,7 +54,6 @@ public class AdServiceImpl implements AdService {
     private String subcategory = null;
     private String gender = null;
 
-
     private final UserRepository userRepository;
     private final AdRepository adRepository;
     private final AdMapper adMapper;
@@ -102,7 +101,6 @@ public class AdServiceImpl implements AdService {
         minPrice5 = null;
         maxPrice5 = null;
         minPrice6 = BigDecimal.ZERO;
-
         assignPriceRangeParameters(priceRangesFilter);
 
         // extracting the category filter criteria
@@ -118,7 +116,6 @@ public class AdServiceImpl implements AdService {
                 minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
                 category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
         );
-
         return this.convertToPageOfAdHomeResponseDTOs(pageable, filteredAds);
     }
 
@@ -145,7 +142,6 @@ public class AdServiceImpl implements AdService {
         List<AdHomeResponseDTO> mappedAdsList = adsPage.stream()
                 .map(adMapper::adToAdHomeResponseDTO)
                 .toList();
-
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
 
@@ -274,7 +270,6 @@ public class AdServiceImpl implements AdService {
                 default:
                     throw new IllegalStateException("Unexpected value: " + priceRange);
             }
-
             if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
         }
     }
