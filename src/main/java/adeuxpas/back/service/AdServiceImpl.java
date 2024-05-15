@@ -14,6 +14,9 @@ import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -126,4 +129,31 @@ public class AdServiceImpl implements AdService {
             throw new EntityNotFoundException();
         }
     }
+
+    @Override
+    public Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            Page<Ad> adsPage = adRepository.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
+            return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+            // adsPage.stream().map(adMapper::adToAdPostResponseDTO).toList();
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Converts a page of Ad entities to a page of AdPostResponseDTOs.
+     *
+     * @param pageable The pagination information.
+     * @param adsPage  The page of Ad entities.
+     * @return The page of AdHomeResponseDTOs.
+     */
+    private Page<AdPostResponseDTO> convertToPageOfAdPostResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<AdPostResponseDTO> mappedAdsList = adsPage.stream()
+                .map(adMapper::adToAdPostResponseDTO)
+                .toList();
+        return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
+    }
+
 }
