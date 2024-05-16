@@ -230,6 +230,7 @@ public class AdServiceImpl implements AdService {
         return priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
                 articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie");
     }
+
     private void extractAndAssignCategoryFilterCriteria(String categoryFilter) {
         if (categoryFilter.contains("▸")) {
             category = categoryFilter.substring(0, categoryFilter.indexOf(" ▸"));
@@ -242,6 +243,7 @@ public class AdServiceImpl implements AdService {
         } else
             category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
     }
+
     private void assignPriceRangeParameters(List<String> priceRangesFilter) {
         for (String priceRange : priceRangesFilter) {
             switch (priceRange) {

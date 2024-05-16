@@ -3,10 +3,7 @@ package adeuxpas.back.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 /*
  * This a data transfer object (DTO) that is used when receiving 
@@ -26,7 +23,9 @@ public class AdPostRequestDTO {
     @NotNull
     private String creationDate;
     @NotNull
+    @Positive
     private BigDecimal price;
+    @NotBlank
     private String category;
     @NotBlank
     private String subcategory;
@@ -34,6 +33,7 @@ public class AdPostRequestDTO {
     @NotNull
     private Long publisherId;
     @NotEmpty
+    @Size(min = 2, max = 5, message = "the AdPostRequest must contain between 2 and 5 ArticlePictures")
     private List<ArticlePictureDTO> articlePictures;
     @NotBlank
     private String articleState;

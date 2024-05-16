@@ -203,10 +203,10 @@ public class AdSeeder {
         twelfthAd.setStatus(AdStatus.AVAILABLE);
 
         Ad thirteenthAd = new Ad();
-        thirteenthAd.setArticleDescription("blue back pack");
+        thirteenthAd.setArticleDescription("black backpack");
         thirteenthAd.setCreationDate(LocalDateTime.now().plusMinutes(3));
         thirteenthAd.setPrice(BigDecimal.valueOf(20));
-        thirteenthAd.setTitle("Blue Backpack");
+        thirteenthAd.setTitle("Black Backpack");
         thirteenthAd.setPublisher(users.get(0));
         thirteenthAd.setArticleState("Satisfaisant");
         thirteenthAd.setCategory("Mode");
@@ -258,7 +258,7 @@ public class AdSeeder {
         seventeenthAd.setArticleDescription(" etc ");
         seventeenthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
         seventeenthAd.setPrice(BigDecimal.valueOf(39));
-        seventeenthAd.setTitle("Murano glass bracelet");
+        seventeenthAd.setTitle("Cactus bracelet");
         seventeenthAd.setPublisher(users.get(2));
         seventeenthAd.setArticleState("Neuf avec étiquette");
         seventeenthAd.setCategory("Mode");

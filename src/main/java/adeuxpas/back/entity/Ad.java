@@ -2,7 +2,6 @@ package adeuxpas.back.entity;
 
 import adeuxpas.back.enums.AdStatus;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,35 +19,36 @@ public class Ad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150)
+    @Column(length = 150, nullable = false)
     private String title;
 
-    @Column(name = "article_description", columnDefinition = "TEXT")
+    @Column(name = "article_description", columnDefinition = "TEXT", nullable = false)
     private String articleDescription;
 
-    @Column(name = "article_state", length = 150)
+    @Column(name = "article_state", length = 150, nullable = false)
     private String articleState;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 
-    @Column(precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AdStatus status;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String category;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String subcategory;
 
     @Column(name = "article_gender", length = 10)
     private String articleGender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "publisher_id")
+    @JoinColumn(name = "publisher_id", nullable = false)
     private User publisher;
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

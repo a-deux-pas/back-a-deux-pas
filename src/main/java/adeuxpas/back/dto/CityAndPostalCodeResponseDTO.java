@@ -7,7 +7,7 @@ import java.util.Objects;
  * <p>
  * This DTO class contains fields for representing a unique postal code and its associated city.
  * It is used for populating the city filter component of the front end client application,
- * in order to let the user filter the ads by any postal code that exists in the Database.
+ * in order to let the user filter the ads by any postal code that exists in the database.
  * </p>
  *
  * @author Mircea Bardan

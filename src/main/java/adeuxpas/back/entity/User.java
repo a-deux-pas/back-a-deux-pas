@@ -23,9 +23,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150)
+    @Column(length = 150, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(length = 150)
@@ -43,7 +44,7 @@ public class User {
     @Column(length = 200)
     private String street;
 
-    @Column(name = "postal_code", length = 15)
+    @Column(name = "postal_code", length = 5)
     private String postalCode;
 
     @Column(name = "profile_picture")
