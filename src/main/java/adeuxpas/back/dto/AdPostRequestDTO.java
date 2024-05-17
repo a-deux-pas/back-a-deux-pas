@@ -33,7 +33,7 @@ public class AdPostRequestDTO {
     @NotNull
     private Long publisherId;
     @NotEmpty
-    @Size(min = 2, max = 5, message = "the AdPostRequest must contain between 2 and 5 ArticlePictures")
+    @Size(min = 2, max = 5)
     private List<ArticlePictureDTO> articlePictures;
     @NotBlank
     private String articleState;

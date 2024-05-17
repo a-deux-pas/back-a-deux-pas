@@ -3,6 +3,7 @@ package adeuxpas.back.controller;
 import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +63,7 @@ public class UserController {
             Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOS = this.userService.getUniqueCitiesAndPostalCodes();
             return ResponseEntity.ok(cityAndPostalCodeResponseDTOS);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

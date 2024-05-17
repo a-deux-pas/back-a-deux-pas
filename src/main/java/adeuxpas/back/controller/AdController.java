@@ -96,7 +96,7 @@ public class AdController {
                                                                                     articleStatesFilter, categoryFilter, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch(Exception e) {
-           return ResponseEntity.status(500).body(e.getMessage());
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
        }
     }
 
@@ -146,7 +146,7 @@ public class AdController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no ad found for this id");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -166,7 +166,7 @@ public class AdController {
         try {
             return ResponseEntity.ok(adService.findAdsByPublisherId(userId));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }
