@@ -89,26 +89,6 @@ public class AdController {
     }
 
     /**
-     * endpoint that get all the ads created by a user
-     *
-     * @param userId
-     * @return ResponseEntity indicating if the Ads have been found
-     */
-    @Operation(summary = "user's ads list")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a user's ad list"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/list/{userId}")
-    public ResponseEntity<Object> getMyAds(@PathVariable long userId) {
-        try {
-            return ResponseEntity.ok(service.findAdsByPublisherId(userId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    /**
      * endpoint that gets a page of ads created by a user
      * 
      * @param userId
