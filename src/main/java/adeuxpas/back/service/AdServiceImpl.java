@@ -170,10 +170,10 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public Long getUserAdsListLength(Long publisherId) {
-        publisherId = 1L;
-        Optional<User> optionalUser = userRepository.findById(publisherId);
+        Long publisherIdValue = 1L;
+        Optional<User> optionalUser = userRepository.findById(publisherIdValue);
         if (optionalUser.isPresent()) {
-            return adRepository.findAdsByPublisherIdCount(publisherId);
+            return adRepository.findAdsByPublisherIdCount(publisherIdValue);
         } else {
             throw new EntityNotFoundException();
         }

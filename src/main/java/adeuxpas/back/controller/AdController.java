@@ -147,9 +147,9 @@ public class AdController {
     })
     @GetMapping("count/{userId}")
     public ResponseEntity<Object> getAdsCount(@PathVariable long userId) {
-        userId = 1L;
+        Long userIdValue = 1L;
         try {
-            return ResponseEntity.ok(service.getUserAdsListLength(userId));
+            return ResponseEntity.ok(service.getUserAdsListLength(userIdValue));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
