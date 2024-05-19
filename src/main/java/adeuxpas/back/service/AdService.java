@@ -15,4 +15,6 @@ public interface AdService {
     List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId);
 
     Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable);
+
+    Long getUserAdsListLength(Long publisherId);
 }

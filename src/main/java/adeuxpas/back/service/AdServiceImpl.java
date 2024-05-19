@@ -130,20 +130,26 @@ public class AdServiceImpl implements AdService {
         }
     }
 
+    /**
+     * Finds ads and maps them to AdPostResponseDTOs.
+     * 
+     * @param pageable    The pagination information.
+     * @param publisherId
+     * @return The page of AdHomeResponseDTOs.
+     */
     @Override
     public Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
             Page<Ad> adsPage = adRepository.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
             return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
-            // adsPage.stream().map(adMapper::adToAdPostResponseDTO).toList();
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     /**
-     * Converts a page of Ad entities to a page of AdPostResponseDTOs.
+     * converts a page of Ad into a page of AdPostResponseDTO
      *
      * @param pageable The pagination information.
      * @param adsPage  The page of Ad entities.
@@ -156,4 +162,20 @@ public class AdServiceImpl implements AdService {
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
 
+    /**
+     * Checks how many ads have been published by a user
+     * 
+     * @param publisherId
+     * @return The number of ads published by a user
+     */
+    @Override
+    public Long getUserAdsListLength(Long publisherId) {
+        publisherId = 1L;
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            return adRepository.findAdsByPublisherIdCount(publisherId);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
 }

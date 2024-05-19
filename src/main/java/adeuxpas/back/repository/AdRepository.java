@@ -4,6 +4,7 @@ import adeuxpas.back.entity.Ad;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,23 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
     /**
      * 
      * @param publisherId
-     * @param pageable
-     * @return
+     * @param pageable    carries information about the process and pagination and
+     *                    sorting
+     *                    such as the page number, its size or how it's sorted (asc
+     *                    or desc). It equivalates the sql's LIMIT clause that is
+     *                    not available
+     *                    in JPQL(Java Persistence Query Language).
+     * @return a page of Ad
      */
-    // TO DO : replace findAdsByPublisherId by this method
+    // TO DO :: replace findAdsByPublisherId by this method
     Page<Ad> findAdsByPublisherIdOrderByCreationDateDesc(Long publisherId, Pageable pageable);
+
+    /**
+     * Check how many ads have been published by a user
+     * 
+     * @param publisherId
+     * @return the number of ads
+     */
+    @Query("SELECT COUNT(a) FROM Ad a WHERE a.publisher.id = :publisherId")
+    Long findAdsByPublisherIdCount(Long publisherId);
 }
