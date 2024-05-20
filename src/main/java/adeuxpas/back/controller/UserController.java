@@ -57,11 +57,11 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of unique cities and postal codes"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/citiesAndPostalCodes")
+    @GetMapping("/cities-and-postal-codes")
     public ResponseEntity<Object> getUniqueCitiesAndPostalCodes() {
         try {
-            Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOS = this.userService.getUniqueCitiesAndPostalCodes();
-            return ResponseEntity.ok(cityAndPostalCodeResponseDTOS);
+            Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOs = this.userService.getUniqueCitiesAndPostalCodes();
+            return ResponseEntity.ok(cityAndPostalCodeResponseDTOs);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
