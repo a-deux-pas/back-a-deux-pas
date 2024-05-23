@@ -3,6 +3,8 @@ package adeuxpas.back.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +20,16 @@ import java.util.Objects;
 public class CloudinaryService {
     Cloudinary cloudinary;
 
-    public CloudinaryService() {
+    public CloudinaryService(
+            @Value("${cloudinary.cloud_name}") String cloudName,
+            @Value("${cloudinary.api_key}") String apiKey,
+            @Value("${cloudinary.api_secret}") String apiSecret) {
+
         Map<String, String> valuesMap = new HashMap<>();
-        valuesMap.put("cloud_name", "erikaadeuxpas");
-        valuesMap.put("api_key", "862338892614253");
-        valuesMap.put("api_secret", "-nwEGHyFrRGMH1izCfW57eAHC00");
+        valuesMap.put("cloud_name", cloudName);
+        valuesMap.put("api_key", apiKey);
+        valuesMap.put("api_secret", apiSecret);
+
         cloudinary = new Cloudinary(valuesMap);
     }
 
