@@ -28,6 +28,7 @@ public class AdPostResponseDTO {
     private AdStatus status;
     private String articleDescription;
     private String articleState;
+    private String category;
 
     public Long getId() {
         return id;
@@ -155,6 +156,14 @@ public class AdPostResponseDTO {
 
     public void setPublisherCity(String publisherCity) {
         this.publisherCity = publisherCity;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
 }

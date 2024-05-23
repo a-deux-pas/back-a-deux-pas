@@ -64,6 +64,7 @@ public class AdController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
         }
+        // CHANGER "ResponseEntity.ok" => ResponseEntity.created
     }
 
     /**
@@ -134,6 +135,23 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
+        }
+    }
+
+    @Operation(summary = "the list of similar ads")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Succesful retrieval of a similar ads list"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("similarAdsList/{category}")
+    public ResponseEntity<Object> getSimilarAdsList(@PathVariable String category,
+            @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "4") int pageSize) {
+        try {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            Page<AdPostResponseDTO> adsPage = this.service.findSimilarAds(category, pageable);
+            return ResponseEntity.ok(adsPage.getContent());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body((e.getMessage()));
         }
     }
 }

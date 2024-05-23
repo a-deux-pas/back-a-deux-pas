@@ -178,4 +178,11 @@ public class AdServiceImpl implements AdService {
             throw new EntityNotFoundException();
         }
     }
+
+    // gestion des erreurs
+    @Override
+    public Page<AdPostResponseDTO> findSimilarAds(String category, Pageable pageable) {
+        Page<Ad> adsPage = adRepository.findAdsByCategory(category, pageable);
+        return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+    }
 }

@@ -17,4 +17,6 @@ public interface AdService {
     Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable);
 
     Long getUserAdsListLength(Long publisherId);
+
+    Page<AdPostResponseDTO> findSimilarAds(String adCategory, Pageable pageable);
 }

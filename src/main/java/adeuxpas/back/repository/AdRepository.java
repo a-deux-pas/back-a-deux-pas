@@ -41,4 +41,13 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
      */
     @Query("SELECT COUNT(a) FROM Ad a WHERE a.publisher.id = :publisherId")
     Long findAdsByPublisherIdCount(Long publisherId);
+
+    /**
+     * Find similar ads
+     * 
+     * @param adCategory
+     * @param pageable
+     * @return a list of ads having the same category
+     */
+    Page<Ad> findAdsByCategory(String adCategory, Pageable pageable);
 }
