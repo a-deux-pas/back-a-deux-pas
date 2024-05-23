@@ -1,6 +1,7 @@
 package adeuxpas.back.service;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,9 +26,15 @@ public class CloudinaryService {
         cloudinary = new Cloudinary(valuesMap);
     }
 
-    public Map upload(MultipartFile multipartFile) throws IOException {
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> upload(MultipartFile multipartFile) throws IOException {
         File file = convert(multipartFile);
-        Map result = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+        Map<String, Object> result = cloudinary.uploader().upload(file,
+                ObjectUtils.asMap(
+                        "transformation", new Transformation()
+                                .gravity("face")
+                                .height(400).width(400).crop("thumb")
+                                .fetchFormat("webp")));
         if (!Files.deleteIfExists(file.toPath())) {
             throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());
         }
