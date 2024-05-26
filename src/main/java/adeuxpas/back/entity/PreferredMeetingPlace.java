@@ -25,16 +25,16 @@ public class PreferredMeetingPlace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 200)
+    @Column(length = 200, nullable = false)
     private String name;
 
-    @Column(length = 150)
+    @Column(length = 150, nullable = false)
     private String street;
 
-    @Column(length = 150)
+    @Column(length = 150, nullable = false)
     private String city;
 
-    @Column(name = "postal_code", length = 50)
+    @Column(name = "postal_code", length = 5, nullable = false)
     private String postalCode;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

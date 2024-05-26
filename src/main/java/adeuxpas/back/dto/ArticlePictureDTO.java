@@ -2,6 +2,10 @@ package adeuxpas.back.dto;
 
 import adeuxpas.back.entity.Ad;
 
+/*
+ * Data transfer object (DTO) class that is used when sending
+ * ArticlePicture data to the client app
+ */
 public class ArticlePictureDTO {
     private Long id;
     private String url;

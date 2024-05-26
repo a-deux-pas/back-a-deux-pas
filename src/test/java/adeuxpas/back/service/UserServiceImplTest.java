@@ -23,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  * Test class for UserServiceImpl.
  * <p>
  * This class tests the functionalities of the UserServiceImpl class.
- * It uses Mockito for mocking dependencies and SpringBootTest for integration testing.
+ * It uses Mockito for mocking dependencies.
  * </p>
  * 
  * @author Léa Hadida

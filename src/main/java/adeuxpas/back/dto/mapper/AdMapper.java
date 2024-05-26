@@ -1,15 +1,13 @@
 package adeuxpas.back.dto.mapper;
 
-import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.AdPostResponseDTO;
-
+import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
-
+import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.AdPostResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -31,15 +29,30 @@ import org.mapstruct.Named;
  * <p>
  * It also includes helper methods.
  * </p>
- * 
+ *
  */
-@Mapper(componentModel = "spring")
+@Mapper(
+        componentModel = "spring"
+)
 public interface AdMapper {
+
+    /**
+     * Maps an ad entity to an adHomeResponseDTO
+     *
+     * @param ad
+     * @return adHomeResponseDTO
+     * @see AdHomeResponseDTO
+     */
+    @Mapping(source = "articlePictures", target = "articlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
+    @Mapping(source = "publisher.alias", target = "publisher")
+    AdHomeResponseDTO adToAdHomeResponseDTO(Ad ad);
+
     /**
      * Maps an ad entity to an adPostResponseDTO
      * 
      * @param ad
      * @return adPostResponseDTO
+     * @see AdPostResponseDTO
      */
     @Mapping(source = "articlePictures", target = "firstArticlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "articlePictures", target = "secondArticlePictureUrl", qualifiedByName = "findSecondArticlePictureUrl")

@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Entity class representing a user in the application.
  * This class encapsulates user-related information, such as email, password, profile details, account status etc.
- * Instances of this class are persisted in the database and typically interact with the UserRepository.
+ * Instances of this class are persisted to the database by the UserRepository.
  *
  * @author Mircea Bardan
  */
@@ -23,14 +23,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150)
+    @Column(length = 150, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(length = 150)
     private String alias;
 
+    @Column(columnDefinition = "TEXT")
     private String bio;
 
     @Column(length = 150)
@@ -42,7 +44,7 @@ public class User {
     @Column(length = 200)
     private String street;
 
-    @Column(name = "postal_code")
+    @Column(name = "postal_code", length = 5)
     private String postalCode;
 
     @Column(name = "profile_picture")
@@ -52,8 +54,10 @@ public class User {
     private LocalDateTime inscriptionDate;
 
     @Column(name = "account_status")
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
