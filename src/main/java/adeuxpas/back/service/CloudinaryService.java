@@ -33,6 +33,7 @@ public class CloudinaryService {
         cloudinary = new Cloudinary(valuesMap);
     }
 
+    // TO DO :: voir si il est possible de minifier l'image via cloudinary
     @SuppressWarnings("unchecked")
     public Map<String, Object> upload(MultipartFile multipartFile) throws IOException {
         File file = convert(multipartFile);
