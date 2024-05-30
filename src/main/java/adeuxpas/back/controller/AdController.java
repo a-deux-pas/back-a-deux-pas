@@ -1,6 +1,8 @@
 package adeuxpas.back.controller;
 
 import adeuxpas.back.service.AdService;
+
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,9 +24,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.entity.Ad;
+import adeuxpas.back.repository.AdRepository;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -32,16 +37,20 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/ads")
 public class AdController {
     private final AdService service;
+    private final AdRepository repository;
 
     public AdController(
-            @Autowired AdService service) {
+            @Autowired AdService service,
+            @Autowired AdRepository repository) {
         this.service = service;
+        this.repository = repository;
     }
 
     /**
-     * endpoint getting a Dto to transform it into an Ad object that will be saved
-     * in the database before using it to get a ResponseDto to send to the front-end
-     * 
+     * Endpoint getting a Dto to transform it into an Ad object that will be saved
+     * in the database before using it to get a ResponseDto to send to the
+     * front-end
+     *
      * @param adDto
      * @return also a Dto
      */
@@ -65,6 +74,20 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
         }
     }
+
+    // PB : quand est ce qu'on appelle le service et qu'on fait la convertion DTO =>
+    // entity pcq le service me retourne un DTO
+
+    // @PostMapping("/create")
+    // public ResponseEntity<Void> postAd(@RequestBody @Valid Ad adPostRequest,
+    // BindingResult bindingResult,
+    // UriComponentsBuilder uriComponentsBuilder) {
+    // Ad saveAd = repository.save(adPostRequest);
+    // URI locationOfSavedAd = uriComponentsBuilder.path("ads/create")
+    // .build(saveAd.getId())
+    // .toUri();
+    // return ResponseEntity.created(locationOfSavedAd).build();
+    // }
 
     /**
      * endpoint that retrieves information about one Ad with its id
