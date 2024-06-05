@@ -1,19 +1,20 @@
 package adeuxpas.back.dto;
 
 /**
- * Data Transfer Object (DTO) for representing user profile information on a profile page.
+ * Data Transfer Object (DTO) for representing user profile information.
  * <p>
- * This DTO encapsulates various attributes of a user's profile, such as alias, biography, location details,
- * profile picture URL, and inscription date.
+ * This DTO encapsulates various attributes of a user's profile, such as alias,
+ * biography, location details, profile picture URL, and inscription date.
  * </p>
  * <p>
- * It is typically used to transfer user profile data between different layers of the application,
+ * It is typically used to transfer user profile data between different layers
+ * of the application,
  * such as between the controller and the service layer.
  * </p>
  * 
  * @author Léa Hadida
  */
-public class ProfilePageUserDTO {
+public class UserProfileResponseDTO {
     private Long id;
     private String alias;
     private String bio;
@@ -23,7 +24,6 @@ public class ProfilePageUserDTO {
     private String postalCode;
     private String profilePicture;
     private String inscriptionDate;
-
 
     public Long getId() {
         return id;

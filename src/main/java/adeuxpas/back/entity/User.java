@@ -10,7 +10,8 @@ import java.util.Objects;
 
 /**
  * Entity class representing a user in the application.
- * This class encapsulates user-related information, such as email, password, profile details, account status etc.
+ * This class encapsulates user-related information, such as email, password,
+ * profile details, account status etc.
  * Instances of this class are persisted to the database by the UserRepository.
  *
  * @author Mircea Bardan
@@ -47,6 +48,12 @@ public class User {
     @Column(name = "postal_code", length = 5)
     private String postalCode;
 
+    @Column(name = "bank_account_holder", length = 150)
+    private String bankAccountHolder;
+
+    @Column(name = "bank_account_number", length = 34)
+    private String bankAccountNumber;
+
     @Column(name = "profile_picture")
     private String profilePicture;
 
@@ -62,7 +69,6 @@ public class User {
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ad> ads;
-
 
     // getters and setters
     public long getId() {
@@ -137,6 +143,22 @@ public class User {
         this.postalCode = postalCode;
     }
 
+    public String getBankAccountHolder() {
+        return bankAccountHolder;
+    }
+
+    public void setBankAccountHolder(String bankAccountHolder) {
+        this.bankAccountHolder = bankAccountHolder;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -179,15 +201,17 @@ public class User {
 
     // toString
     @Override
-    public String toString(){
+    public String toString() {
         return this.email;
     }
 
     // equals
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof User user))
+            return false;
         return Objects.equals(email, user.email);
     }
 
