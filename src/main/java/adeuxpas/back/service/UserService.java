@@ -37,6 +37,20 @@ public interface UserService {
     Optional<User> findUserByEmail(String email);
 
     /**
+     * Abstract method that attempts to check if an email already exist.
+     * 
+     * @param email The email to check.
+     */
+    Boolean checkIfEmailAlreadyExist(String email);
+
+    /**
+     * Abstract method that attempts to find preferred meeting places of an user.
+     * 
+     * @param profileDto The DTO containing the details of an user Profile.
+     */
+    void createProfile(UserProfileRequestDTO profileDto);
+
+    /**
      * Abstract method that attempts to find the user info with its ID.
      * 
      * @param userId The user ID used in the search.
@@ -58,11 +72,4 @@ public interface UserService {
     List<PreferredMeetingPlaceDTO> findPreferredMeetingPlacesByUserId(Long userId);
 
     Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes();
-
-    /**
-     * Abstract method that attempts to find preferred meeting places of an user.
-     * 
-     * @param profileDto The DTO containing the details of an user Profile.
-     */
-    void createProfile(UserProfileRequestDTO profileDto);
 }

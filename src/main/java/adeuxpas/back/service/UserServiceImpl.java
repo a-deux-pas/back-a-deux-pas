@@ -86,6 +86,48 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Check if a user is already registered with an email address
+     *
+     * @param email The email address to check.
+     * @return true if the email address already exists.
+     */
+    @Override
+    public Boolean checkIfEmailAlreadyExist(String email) {
+        Optional<User> optionalUser = findUserByEmail(email);
+        return optionalUser.isPresent();
+    }
+
+    /**
+     * saves the user profile and preferrences.
+     *
+     * This method saves an user profile in the DB.
+     */
+    @Override
+    public void createProfile(UserProfileRequestDTO profileDto) {
+        // Long userId = Long.parseLong(profileDto.getUserId());
+        // Optional<User> optionalUser = userRepository.findById(userId);
+        // if (optionalUser.isPresent()) {
+        // User user = optionalUser.get();
+        // }
+        userRepository.save(userMapper.mapProfileUserToUser(profileDto));
+
+        List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
+        preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
+                .map(userMapper::mapDTOtoPreferredMeetingPlace)
+                .toList());
+
+        List<PreferredScheduleDTO> preferredSchedulesDTO = profileDto.getPreferredSchedules();
+        preferredScheduleRepository.saveAll(preferredSchedulesDTO.stream()
+                .map(userMapper::mapDTOtoPreferredSchedule)
+                .toList());
+
+        List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
+        notificationRepository.saveAll(notificationsDTO.stream()
+                .map(userMapper::mapDTOtoNotification)
+                .toList());
+    }
+
+    /**
      * Retrieves profile information of a user by user ID.
      *
      * This method retrieves the profile information of a user based on the provided
@@ -204,35 +246,5 @@ public class UserServiceImpl implements UserService {
     public Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
         return users.stream().map(userMapper::userToCityAndPostalCodeDTO).collect(Collectors.toSet());
-    }
-
-    /**
-     * saves the user profile and preferrences.
-     *
-     * This method saves an user profile in the DB.
-     */
-    @Override
-    public void createProfile(UserProfileRequestDTO profileDto) {
-        // Long userId = Long.parseLong(profileDto.getUserId());
-        // Optional<User> optionalUser = userRepository.findById(userId);
-        // if (optionalUser.isPresent()) {
-        // User user = optionalUser.get();
-        // }
-        userRepository.save(userMapper.mapProfileUserToUser(profileDto));
-
-        List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
-        preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
-                .map(userMapper::mapDTOtoPreferredMeetingPlace)
-                .toList());
-
-        List<PreferredScheduleDTO> preferredSchedulesDTO = profileDto.getPreferredSchedules();
-        preferredScheduleRepository.saveAll(preferredSchedulesDTO.stream()
-                .map(userMapper::mapDTOtoPreferredSchedule)
-                .toList());
-
-        List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
-        notificationRepository.saveAll(notificationsDTO.stream()
-                .map(userMapper::mapDTOtoNotification)
-                .toList());
     }
 }
