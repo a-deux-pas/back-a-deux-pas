@@ -178,4 +178,18 @@ public class AdServiceImpl implements AdService {
             throw new EntityNotFoundException();
         }
     }
+
+    /**
+     * find a list containing the last four ads sharing the same category as the
+     * current ad's
+     * 
+     * @param category
+     * @param pageable
+     * @return a list of similar ads sharing the same category
+     */
+    @Override
+    public Page<AdPostResponseDTO> findSimilarAds(String category, Long userId, Pageable pageable) {
+        Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, userId, pageable);
+        return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+    }
 }

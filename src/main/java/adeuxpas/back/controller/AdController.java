@@ -129,14 +129,13 @@ public class AdController {
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.service.findPageOfUserAdsList(1L, pageable);
+            Page<AdPostResponseDTO> adsPage = this.service.findPageOfUserAdsList(userId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    // TO DO :: à revoir une fois le processus de connexion implémenté
     /**
      * endpoint that gets the count ads published by a user
      * 
@@ -150,9 +149,37 @@ public class AdController {
     })
     @GetMapping("count/{userId}")
     public ResponseEntity<Object> getAdsCount(@PathVariable long userId) {
-        Long userIdValue = 1L;
         try {
-            return ResponseEntity.ok(service.getUserAdsListLength(userIdValue));
+            return ResponseEntity.ok(service.getUserAdsListLength(userId));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
+        }
+    }
+
+    /**
+     * endpoint that gets a list of similar ads
+     * 
+     * @param category
+     * @param userId
+     * @param pageNumber
+     * @param pageSize
+     * @return a list of similar ads sharing the same category
+     */
+    @Operation(summary = "list of similar ads")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("similarAdsList/{category}/{userId}")
+    public ResponseEntity<Object> getSimilarAds(@PathVariable String category, @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "4") int pageSize) {
+        try {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            Page<AdPostResponseDTO> adsPage = this.service.findSimilarAds(category, userId, pageable);
+            return ResponseEntity.ok(adsPage.getContent());
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
