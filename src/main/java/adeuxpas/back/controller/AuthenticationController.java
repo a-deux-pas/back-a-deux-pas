@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Mircea Bardan
  */
 
+@RequestMapping("/api")
 @RestController
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
@@ -37,30 +38,6 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    /**
-     * Endpoint to access the sign-up page.
-     *
-     * @return ResponseEntity with a 200(OK) status and a body containing a welcome
-     *         message for accessing the sign-up page.
-     */
-    @GetMapping("/signup")
-    public ResponseEntity<String> accessSignup() {
-        // might to be modified when developing the signup functionality
-        return ResponseEntity.ok("Welcome, EVERYBODY. Please SIGN UP using the POST http method on this endpoint");
-    }
-
-    /**
-     * Endpoint to access the login page.
-     *
-     * @return ResponseEntity with a 200(OK) status and a body containing a welcome
-     *         message for accessing the login page.
-     */
-    @GetMapping("/login")
-    public ResponseEntity<String> accessLogin() {
-        // might to be modified when developing the login functionality
-        return ResponseEntity.ok("Welcome, EVERYBODY. Please LOG IN using the POST http method on this endpoint");
-    }
-
     // Test endpoint to imitate access to a secured page; to be REMOVED / REPLACED
     @GetMapping("/content")
     public ResponseEntity<String> accessContent() {
@@ -72,6 +49,52 @@ public class AuthenticationController {
     @GetMapping("/admin-page")
     public ResponseEntity<String> accessAdminPage() {
         return ResponseEntity.ok("Welcome, ADMIN");
+    }
+
+    /**
+     * Endpoint to check if an email address already exists.
+     *
+     * @param email to check.
+     * @return ResponseEntity indicating true or false.
+     */
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+        try {
+            return ResponseEntity.ok(authenticationService.checkIfEmailAlreadyExist(email));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
+
+    /**
+     * Endpoint to check if a password matches with a user address mail.
+     *
+     * @param email    user email.
+     * @param password password to check.
+     * @return ResponseEntity indicating true or false.
+     */
+    @GetMapping("/check-password")
+    public ResponseEntity<Boolean> checkPassword(@RequestParam String email, String password) {
+        try {
+            return ResponseEntity.ok(authenticationService.checkIfPasswordMatchesWithEmail(email, password));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
+
+    /**
+     * Endpoint to check if an Alias has already been taken by a user.
+     *
+     * @param alias alias to check.
+     * @return ResponseEntity indicating true or false.
+     */
+    @GetMapping("/check-alias")
+    public ResponseEntity<Boolean> checkAlias(@RequestParam String alias) {
+        try {
+            return ResponseEntity.ok(authenticationService.checkIfAliasAlreadyExist(alias));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
     }
 
     /**

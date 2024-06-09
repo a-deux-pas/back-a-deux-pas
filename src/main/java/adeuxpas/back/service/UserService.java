@@ -37,11 +37,11 @@ public interface UserService {
     Optional<User> findUserByEmail(String email);
 
     /**
-     * Abstract method that attempts to check if an email already exist.
+     * Abstract method that attempts to find the user by its alias.
      * 
-     * @param email The email to check.
+     * @param alias The alias used in the search.
      */
-    Boolean checkIfEmailAlreadyExist(String email);
+    Optional<User> findUserByAlias(String alias);
 
     /**
      * Abstract method that attempts to find preferred meeting places of an user.

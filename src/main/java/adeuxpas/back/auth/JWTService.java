@@ -10,13 +10,15 @@ import java.util.Date;
 
 /**
  * Service class for handling JSON Web Tokens (JWT).
- <p>
- Contains methods to generate and retrieve token information.
- </p>
- <p>
- * This class is annotated with {@code @Service} to indicate that it is a service component
+ * <p>
+ * Contains methods to generate and retrieve token information.
+ * </p>
+ * <p>
+ * This class is annotated with {@code @Service} to indicate that it is a
+ * service component
  * and should be automatically detected and registered as a Spring bean.
- </p>
+ * </p>
+ * 
  * @author Mircea Bardan
  */
 @Service
@@ -29,17 +31,17 @@ public class JWTService {
     private int jwtExpiration;
 
     /**
-     * Generates a JWT token based on the provided user email and role.
+     * Generates a JWT token based on the provided user id and role.
      *
-     * @param email The username for which the token is generated.
-     * @param role     The role associated with the user.
+     * @param id   The user id for which the token is generated.
+     * @param role The role associated with the user.
      * @return The generated JWT token.
      */
-    public String generateToken(String email, UserRole role) {
+    public String generateToken(Long id, UserRole role) {
         return Jwts.builder()
-                .subject(email)
+                .subject(Long.toString(id))
                 .claim("user", role.equals(UserRole.USER))
-                .claim("admin",role.equals(UserRole.ADMIN))
+                .claim("admin", role.equals(UserRole.ADMIN))
                 .issuedAt(new Date())
                 .expiration(new Date(new Date().getTime() + jwtExpiration))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
@@ -52,7 +54,7 @@ public class JWTService {
      * @param token The JWT token from which to extract the subject.
      * @return The subject (sub) of the token.
      */
-    public String getSub(String token){
+    public String getSub(String token) {
         return Jwts
                 .parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
@@ -68,7 +70,7 @@ public class JWTService {
      * @param token The JWT token from which to extract the expiration date.
      * @return The expiration date of the token.
      */
-    public Date getExpiration(String token){
+    public Date getExpiration(String token) {
         return Jwts
                 .parser()
                 .verifyWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))

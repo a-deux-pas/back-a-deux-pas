@@ -86,15 +86,15 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Check if a user is already registered with an email address
+     * Finds a user by their alias.
      *
-     * @param email The email address to check.
-     * @return true if the email address already exists.
+     * @param alias The alias of the user to find.
+     * @return An optional containing the user if found, or an empty optional
+     *         otherwise.
      */
     @Override
-    public Boolean checkIfEmailAlreadyExist(String email) {
-        Optional<User> optionalUser = findUserByEmail(email);
-        return optionalUser.isPresent();
+    public Optional<User> findUserByAlias(String alias) {
+        return userRepository.findByAlias(alias);
     }
 
     /**
@@ -104,27 +104,30 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void createProfile(UserProfileRequestDTO profileDto) {
-        // Long userId = Long.parseLong(profileDto.getUserId());
-        // Optional<User> optionalUser = userRepository.findById(userId);
-        // if (optionalUser.isPresent()) {
-        // User user = optionalUser.get();
-        // }
-        userRepository.save(userMapper.mapProfileUserToUser(profileDto));
+        Long userId = Long.parseLong(profileDto.getUserId());
+        Optional<User> optionalUser = userRepository.findById(userId);
 
-        List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
-        preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
-                .map(userMapper::mapDTOtoPreferredMeetingPlace)
-                .toList());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            userMapper.mapProfileUserToUser(profileDto, user);
+            userRepository.save(user);
+            List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
+            preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
+                    .map(userMapper::mapDTOtoPreferredMeetingPlace)
+                    .toList());
 
-        List<PreferredScheduleDTO> preferredSchedulesDTO = profileDto.getPreferredSchedules();
-        preferredScheduleRepository.saveAll(preferredSchedulesDTO.stream()
-                .map(userMapper::mapDTOtoPreferredSchedule)
-                .toList());
+            List<PreferredScheduleDTO> preferredSchedulesDTO = profileDto.getPreferredSchedules();
+            preferredScheduleRepository.saveAll(preferredSchedulesDTO.stream()
+                    .map(userMapper::mapDTOtoPreferredSchedule)
+                    .toList());
 
-        List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
-        notificationRepository.saveAll(notificationsDTO.stream()
-                .map(userMapper::mapDTOtoNotification)
-                .toList());
+            List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
+            notificationRepository.saveAll(notificationsDTO.stream()
+                    .map(userMapper::mapDTOtoNotification)
+                    .toList());
+        } else {
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
+        }
     }
 
     /**

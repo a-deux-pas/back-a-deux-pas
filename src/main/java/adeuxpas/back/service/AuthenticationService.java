@@ -18,6 +18,29 @@ import java.util.Optional;
 public interface AuthenticationService {
 
     /**
+     * Abstract method that attempts to check if an email already exist.
+     * 
+     * @param email The email to check.
+     */
+    Boolean checkIfEmailAlreadyExist(String email);
+
+    /**
+     * Abstract method that attempts to check if a password matches
+     * with a user address email.
+     * 
+     * @param email    The user email address.
+     * @param password The password to check.
+     */
+    Boolean checkIfPasswordMatchesWithEmail(String email, String password);
+
+    /**
+     * Abstract method that attempts to check if an alias already exist.
+     * 
+     * @param alias The alias to check.
+     */
+    Boolean checkIfAliasAlreadyExist(String alias);
+
+    /**
      * Abstract method that creates a Jwt token.
      * 
      * @param credentialsRequestDTO user credentials.

@@ -52,6 +52,47 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
+     * Check if a user is already registered with an email address
+     *
+     * @param email The email address to check.
+     * @return true if the email address already exists.
+     */
+    @Override
+    public Boolean checkIfEmailAlreadyExist(String email) {
+        Optional<User> optionalUser = this.userService.findUserByEmail(email);
+        return optionalUser.isPresent();
+    }
+
+    /**
+     * check if a password matches with a user address email.
+     *
+     * @param email    The user email address.
+     * @param password The password to check.
+     * @return true if the password is correct.
+     */
+    @Override
+    public Boolean checkIfPasswordMatchesWithEmail(String email, String password) {
+        Optional<User> optionalUser = this.userService.findUserByEmail(email);
+        if (optionalUser.isPresent()) {
+            String userPassword = optionalUser.get().getPassword();
+            return encoder.matches(password, userPassword);
+        }
+        return false;
+    }
+
+    /**
+     * Check if an alias is already taken
+     *
+     * @param alias The alias to check.
+     * @return true if the alias already exists.
+     */
+    @Override
+    public Boolean checkIfAliasAlreadyExist(String alias) {
+        Optional<User> optionalUser = this.userService.findUserByAlias(alias);
+        return optionalUser.isPresent();
+    }
+
+    /**
      * Method to generate and returns a JWT token representing the user's session.
      *
      * @param user optional user.
@@ -61,7 +102,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Optional<String> createToken(Optional<User> user) {
         if (user.isPresent()) {
-            String token = this.jwtService.generateToken(user.get().getEmail(), user.get().getRole());
+            String token = this.jwtService.generateToken(user.get().getId(), user.get().getRole());
             return Optional.of(token);
         }
         return Optional.empty();

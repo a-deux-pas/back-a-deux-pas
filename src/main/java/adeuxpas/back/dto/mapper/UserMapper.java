@@ -41,7 +41,7 @@ import adeuxpas.back.enums.WeekDays;
  *
  * @author Léa Hadida
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
     /**
@@ -50,8 +50,7 @@ public interface UserMapper {
      * @param user The ProfilePostRequestDTO to be mapped.
      * @return The mapped User.
      */
-    @Mapping(source = "userId", target = "id")
-    User mapProfileUserToUser(UserProfileRequestDTO profile);
+    void mapProfileUserToUser(UserProfileRequestDTO profileDto, @MappingTarget User user);
 
     /**
      * Maps a User entity to a ProfilePageUserDTO.
