@@ -1,5 +1,9 @@
 package adeuxpas.back.dto;
 
+/*
+ * Data transfer object (DTO) class that is used when sending
+ * ArticlePicture data to the client app
+ */
 public class ArticlePictureDTO {
     // private Long id;
     private String url;

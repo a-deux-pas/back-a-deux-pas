@@ -55,9 +55,7 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
     }
 
     /**
-     * Executes custom logic or tasks at the start of the application.
-     * This method is invoked by Spring Boot when the application is started.
-     * It delegates the seeding of the database to the specific Seeder components.
+     * Delegates the seeding of the database to the specific Seeder components.
      *
      * @param args Command-line arguments passed to the application.
      * @throws Exception If an error occurs during the execution of the run method.

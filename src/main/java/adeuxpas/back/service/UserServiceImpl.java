@@ -1,9 +1,10 @@
 package adeuxpas.back.service;
 
+import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
+import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.ProfilePageUserDTO;
-import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
@@ -14,7 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.stream.Collectors;
 import java.util.*;
 
 /**
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService{
      * @param userRepository The UserRepository for interacting with user-related database operations.
      */
     public UserServiceImpl(
-        @Autowired UserRepository userRepository, 
+        @Autowired UserRepository userRepository,
         @Autowired PreferredScheduleRepository preferredScheduleRepository,
         @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository,
         @Autowired UserMapper userMapper
@@ -102,7 +103,7 @@ public class UserServiceImpl implements UserService{
      * This method retrieves all preferred schedules associated with a given user.
      * It performs a filtering operation to group preferred schedules by specific time.
      *
-     * @param user the concerned user.
+     * @param userId the concerned user's ID.
      * @return a list of preferred schedules grouped by specific time or an exception if the user is not found.
      */
     @Override
@@ -120,22 +121,22 @@ public class UserServiceImpl implements UserService{
 
     /**
      * Groups a list of PreferredScheduleDTO objects time.
-     * 
+     *
      * @param preferredSchedules The list of PreferredScheduleDTO objects to group.
      * @return A list of PreferredScheduleDTO objects grouped by time.
      */
     public List<PreferredScheduleDTO> groupByTimes(List<PreferredScheduleDTO> preferredSchedules) {
         Map<String, PreferredScheduleDTO> resultMap = new HashMap<>();
-    
+
     // Iterating through the list of PreferredScheduleDTOs
     for (PreferredScheduleDTO dto : preferredSchedules) {
         // Creating a key based on the user ID, start time, and end time
-        Long userId = dto.getUserId(); 
+        Long userId = dto.getUserId();
         String key = userId + "-" + dto.getStartTime() + "-" + dto.getEndTime();
-        
+
         // Retrieving the existing schedule for this key (if any)
         PreferredScheduleDTO existingSchedule = resultMap.get(key);
-        
+
         if (existingSchedule == null) {
             // If no existing schedule, create a new one with the same properties
             PreferredScheduleDTO newSchedule = new PreferredScheduleDTO();
@@ -153,14 +154,14 @@ public class UserServiceImpl implements UserService{
         // Convert the map values to a list and return
         return new ArrayList<>(resultMap.values());
     }
-    
+
     /**
      * Retrieves preferred meeting places of a user.
      *
      * This method retrieves all preferred meeting places associated with a given user.
      * It maps the preferred meeting places to DTOs.
      *
-     * @param user the concerned user.
+     * @param userId the concerned user's ID.
      * @return a list of preferred meeting places or an exception if the user is not found.
      */
     @Override
@@ -173,5 +174,18 @@ public class UserServiceImpl implements UserService{
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
+    }
+
+    /**
+     * Retrieves the users' unique postal codes along with their cities.
+     *
+     * This method retrieves all the users from the DB;
+     * It then maps them to CityAndPostalCodeResponseDTO objects.
+     * @return a set of CityAndPostalCodeResponseDTOs
+     */
+    @Override
+    public Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes() {
+        List<User> users = this.userRepository.findAll();
+        return users.stream().map(userMapper::userToCityAndPostalCodeDTO).collect(Collectors.toSet());
     }
 }

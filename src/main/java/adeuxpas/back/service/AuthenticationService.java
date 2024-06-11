@@ -1,7 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.LoginRequest;
-import adeuxpas.back.dto.SignupRequest;
+import adeuxpas.back.dto.LoginRequestDTO;
+import adeuxpas.back.dto.SignupRequestDTO;
 
 import java.util.Optional;
 
@@ -18,15 +18,15 @@ public interface AuthenticationService {
 
     /**
      * Abstract method that validates the signup request and creates a new user account if the user does not already exist.
-     * @param signupRequest The signup request containing user information.
+     * @param signupRequestDTO The signup request containing user information.
      * @return {@code true} if the user is successfully signed up, {@code false} otherwise.
      */
-    boolean canDoSignup(SignupRequest signupRequest);
+    boolean canDoSignup(SignupRequestDTO signupRequestDTO);
 
     /**
      * Abstract method that attempts to authenticate a user based on the provided login request.
-     * @param loginRequest The login request containing user credentials.
+     * @param loginRequestDTO The login request containing user credentials.
      * @return An optional containing the JWT string if authentication is successful, or an empty optional otherwise.
      */
-    Optional<String> login(LoginRequest loginRequest);
+    Optional<String> login(LoginRequestDTO loginRequestDTO);
 }

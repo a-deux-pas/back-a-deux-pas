@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import org.mapstruct.*;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
@@ -29,14 +30,14 @@ import adeuxpas.back.enums.WeekDays;
  * <p>
  * It also includes helper methods.
  * </p>
- * 
+ *
  * @author Léa Hadida
  */
 @Mapper(
     componentModel = "spring"
 )
 public interface UserMapper {
-    
+
     /**
      * Maps a User entity to a ProfilePageUserDTO.
      *
@@ -66,7 +67,7 @@ public interface UserMapper {
     @Mapping(source = "weekDay", target = "daysOfWeek", qualifiedByName = "convertWeekDayToIntegerList")
     @Mapping(source = "user.id", target = "userId")
     PreferredScheduleDTO mapPreferredScheduleToDTO(PreferredSchedule preferredSchedule);
-    
+
     /**
      * Converts a WeekDays enum value to an Integer list.
      *
@@ -88,4 +89,7 @@ public interface UserMapper {
      */
     @Mapping(source = "user.id", target = "userId")
     PreferredMeetingPlaceDTO mapPreferredMeetingPlaceToDTO(PreferredMeetingPlace preferredMeetingPlace);
+
+    CityAndPostalCodeResponseDTO userToCityAndPostalCodeDTO(User user);
+
 }
