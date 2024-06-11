@@ -2,7 +2,7 @@ package adeuxpas.back.dto.mapper;
 
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
-
+import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 
@@ -100,4 +100,13 @@ public interface AdMapper {
 
     @Mapping(source = "publisherId", target = "publisher.id")
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
+
+    @Mapping(source = "publisher.id", target = "publisherId")
+    AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
+
+    @Mapping(source = "adId", target = "ad.id")
+    ArticlePicture articlePictureDTOToArticlePicture(ArticlePictureDTO articlePictureDTO);
+
+    @Mapping(source = "ad.id", target = "adId")
+    ArticlePictureDTO articlePictureToArticlePictureDTO(ArticlePicture articlePicture);
 }

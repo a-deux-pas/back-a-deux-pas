@@ -2,7 +2,6 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.service.AdService;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
-import adeuxpas.back.entity.Ad;
 import adeuxpas.back.repository.AdRepository;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,20 +71,6 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
         }
     }
-
-    // PB : quand est ce qu'on appelle le service et qu'on fait la convertion DTO =>
-    // entity pcq le service me retourne un DTO
-
-    // @PostMapping("/create")
-    // public ResponseEntity<Void> postAd(@RequestBody @Valid Ad adPostRequest,
-    // BindingResult bindingResult,
-    // UriComponentsBuilder uriComponentsBuilder) {
-    // Ad saveAd = repository.save(adPostRequest);
-    // URI locationOfSavedAd = uriComponentsBuilder.path("ads/create")
-    // .build(saveAd.getId())
-    // .toUri();
-    // return ResponseEntity.created(locationOfSavedAd).build();
-    // }
 
     /**
      * endpoint that retrieves information about one Ad with its id
@@ -154,7 +137,7 @@ public class AdController {
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get the user's ad count.");
         }
     }
 
@@ -172,18 +155,19 @@ public class AdController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("similarAdsList/{category}/{userId}")
+    @GetMapping("similarAdsList/{category}/{publisherId}/{userId}")
     public ResponseEntity<Object> getSimilarAds(@PathVariable String category, @PathVariable Long userId,
+            @PathVariable Long publisherId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "4") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.service.findSimilarAds(category, userId, pageable);
+            Page<AdPostResponseDTO> adsPage = this.service.findSimilarAds(category, userId, publisherId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get a list of similar ads");
         }
     }
 }

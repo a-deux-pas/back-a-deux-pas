@@ -188,8 +188,9 @@ public class AdServiceImpl implements AdService {
      * @return a list of similar ads sharing the same category
      */
     @Override
-    public Page<AdPostResponseDTO> findSimilarAds(String category, Long userId, Pageable pageable) {
-        Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, userId, pageable);
+    public Page<AdPostResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
+        Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
+                pageable);
         return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
     }
 }

@@ -46,11 +46,13 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
     /**
      * find ads sharing the same category as the current one's
      * 
-     * @param category category of the current ad
+     * @param category    category of the current ad
+     * @param publisherId id of the current ad's publisher
+     * @param userId      optionally , the current user's id
      * @param pageable
-     * @param userId   id of the currend ad's publisher
      * @return a list of similar ads
      */
-    @Query("SELECT a FROM Ad a WHERE a.category = :category AND a.publisher.id <> :userId ORDER BY a.creationDate DESC")
-    Page<Ad> findAdsByCategoryOrderByCreationDateDesc(String category, Long userId, Pageable pageable);
+    @Query("SELECT a FROM Ad a WHERE a.category = :category AND a.publisher.id <> :publisherId AND a.publisher.id <> :userId ORDER BY a.creationDate DESC")
+    Page<Ad> findAdsByCategoryOrderByCreationDateDesc(String category, Long publisherId, Long userId,
+            Pageable pageable);
 }
