@@ -121,15 +121,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Optional<String> signup(CredentialsRequestDTO credentialsRequestDTO) {
         Optional<User> userFromDB = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
-        if (userFromDB.isEmpty()) {
-            User userToSave = new User();
-            userToSave.setEmail(credentialsRequestDTO.getEmail());
-            userToSave.setPassword(encoder.encode(credentialsRequestDTO.getPassword()));
-            userToSave.setInscriptionDate(LocalDateTime.now());
-            userToSave.setRole(UserRole.USER);
-            userToSave.setAccountStatus(AccountStatus.ACTIVE);
-            this.userService.save(userToSave);
+        if (userFromDB.isPresent()) {
+            throw new IllegalArgumentException(
+                    "A user with email '" + credentialsRequestDTO.getEmail() + "' already exists");
         }
+        User userToSave = new User();
+        userToSave.setEmail(credentialsRequestDTO.getEmail());
+        userToSave.setPassword(encoder.encode(credentialsRequestDTO.getPassword()));
+        userToSave.setInscriptionDate(LocalDateTime.now());
+        userToSave.setRole(UserRole.USER);
+        userToSave.setAccountStatus(AccountStatus.ACTIVE);
+        this.userService.save(userToSave);
         Optional<User> savedUser = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
         return createToken(savedUser);
     }

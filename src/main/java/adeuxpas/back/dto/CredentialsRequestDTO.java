@@ -1,5 +1,7 @@
 package adeuxpas.back.dto;
 
+import jakarta.validation.constraints.*;
+
 /**
  * Data Transfer Object (DTO) representing a credentials request.
  * This class encapsulates the information required for a user signup operation,
@@ -14,7 +16,11 @@ package adeuxpas.back.dto;
  * @author Léa Hadida
  */
 public class CredentialsRequestDTO {
+    @NotBlank
+    @Email
     private String email;
+    @NotBlank
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")
     private String password;
 
     public String getEmail() {

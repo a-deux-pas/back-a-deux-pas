@@ -1,5 +1,7 @@
 package adeuxpas.back.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * Data Transfer Object (DTO) for representing notification.
  * <p>
@@ -14,7 +16,9 @@ package adeuxpas.back.dto;
  * @author Léa Hadida
  */
 public class NotificationDTO {
+    @NotBlank
     private String eventName;
+    @NotBlank
     private Long userId;
 
     public Long getUserId() {

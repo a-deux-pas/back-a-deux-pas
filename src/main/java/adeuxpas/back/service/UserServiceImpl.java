@@ -104,11 +104,16 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void createProfile(UserProfileRequestDTO profileDto) {
-        Long userId = Long.parseLong(profileDto.getUserId());
+        Long userId = Long.parseLong(profileDto.getId());
         Optional<User> optionalUser = userRepository.findById(userId);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+            User alias = findUserByAlias(profileDto.getAlias()).orElse(null);
+            if (alias != null) {
+                throw new IllegalArgumentException(
+                        "A user with alias '" + profileDto.getAlias() + "' already exists");
+            }
             userMapper.mapProfileUserToUser(profileDto, user);
             userRepository.save(user);
             List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
@@ -122,9 +127,11 @@ public class UserServiceImpl implements UserService {
                     .toList());
 
             List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
-            notificationRepository.saveAll(notificationsDTO.stream()
-                    .map(userMapper::mapDTOtoNotification)
-                    .toList());
+            if (notificationsDTO != null) {
+                notificationRepository.saveAll(notificationsDTO.stream()
+                        .map(userMapper::mapDTOtoNotification)
+                        .toList());
+            }
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }

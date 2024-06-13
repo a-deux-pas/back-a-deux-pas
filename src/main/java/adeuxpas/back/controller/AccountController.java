@@ -5,14 +5,16 @@ import adeuxpas.back.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller class for handling account-related endpoints.
@@ -40,13 +42,30 @@ public class AccountController {
         this.userService = userService;
     }
 
+    /**
+     * Endpoint to create a user's profile
+     *
+     * @return a ResponseEntity with a 200 code if successful,
+     *         or a 500 Internal Server Error response if an exception occurs.
+     */
+    @Operation(summary = "User's profile creation")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Profile saved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PatchMapping("/create")
-    public ResponseEntity<Object> createProfile(@RequestBody UserProfileRequestDTO profileDto) {
+    public ResponseEntity<Object> createProfile(@RequestBody @Valid UserProfileRequestDTO profileDto,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        }
         try {
             userService.createProfile(profileDto);
             return ResponseEntity.ok("Profile saved successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Registration failed");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

@@ -24,13 +24,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150, nullable = false)
+    @Column(unique = true, length = 150, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 150)
+    @Column(unique = true, length = 30)
     private String alias;
 
     @Column(columnDefinition = "TEXT")

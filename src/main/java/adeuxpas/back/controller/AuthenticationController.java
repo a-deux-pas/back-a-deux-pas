@@ -4,9 +4,15 @@ import adeuxpas.back.dto.CredentialsRequestDTO;
 import adeuxpas.back.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -36,12 +42,6 @@ public class AuthenticationController {
      */
     public AuthenticationController(@Autowired AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-    }
-
-    // Test endpoint to imitate access to a secured page; to be REMOVED / REPLACED
-    @GetMapping("/content")
-    public ResponseEntity<String> accessContent() {
-        return ResponseEntity.ok("Welcome, USER/ADMIN");
     }
 
     // Test endpoint to imitate access to a restricted page; to be REMOVED /
@@ -98,26 +98,34 @@ public class AuthenticationController {
     }
 
     /**
-     * Endpoint to handle user sign-up requests.
+     * Endpoint to handle a user sign-up request.
      *
-     * @param signupRequestDTO The sign-up request containing user details.
-     * @return ResponseEntity indicating the status of the sign-up operation.
+     * @param credentialsRequestDTO The sign-up request containing user details.
+     * @return ResponseEntity containing the authentication token if sign-up is
+     *         successful, or an error message otherwise.
      */
     @PostMapping("/signup")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User signed up successfully"),
+            @ApiResponse(responseCode = "401", description = "Invalid email and/or password"),
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
-    public ResponseEntity<String> signUp(@RequestBody CredentialsRequestDTO credentialsRequestDTO) {
-        String token = this.authenticationService.signup(credentialsRequestDTO).orElse(null);
-        if (token != null)
-            return ResponseEntity.status(HttpStatus.CREATED).body(token);
-        else
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email and/or password");
-        // else : TO DO : à mettre dans le service
-        // return ResponseEntity.status(HttpStatus.CONFLICT)
-        // .body("A user with email '" + signupRequestDTO.getEmail() + "' already
-        // exists");
+    public ResponseEntity<Object> signUp(@RequestBody @Valid CredentialsRequestDTO credentialsRequestDTO,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        }
+        try {
+            String token = this.authenticationService.signup(credentialsRequestDTO).orElse(null);
+            if (token != null)
+                return ResponseEntity.status(HttpStatus.CREATED).body(token);
+            else
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email and/or password");
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        }
     }
 
     /**
@@ -133,7 +141,6 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "401", description = "Invalid email and/or password")
     })
     public ResponseEntity<String> login(@RequestBody CredentialsRequestDTO credentialsRequestDTO) {
-        // might need to be modified when developing the login functionality
         String token = this.authenticationService.login(credentialsRequestDTO)
                 .orElse(null);
 

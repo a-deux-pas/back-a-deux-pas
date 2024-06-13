@@ -20,12 +20,12 @@ import jakarta.persistence.ManyToOne;
  */
 @Entity
 public class PreferredMeetingPlace {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 200, nullable = false)
+    @Column(length = 30, nullable = false)
     private String name;
 
     @Column(length = 150, nullable = false)
@@ -46,7 +46,7 @@ public class PreferredMeetingPlace {
      */
     public PreferredMeetingPlace() {
     }
-    
+
     /**
      * Constructor for PreferredMeetingPlace with all attributes except ID.
      *
@@ -109,5 +109,5 @@ public class PreferredMeetingPlace {
 
     public void setUser(User user) {
         this.user = user;
-    }   
+    }
 }

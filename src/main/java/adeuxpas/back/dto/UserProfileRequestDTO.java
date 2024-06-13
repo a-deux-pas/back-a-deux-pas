@@ -14,23 +14,25 @@ import jakarta.validation.constraints.*;
 
 public class UserProfileRequestDTO {
 
-    @NotNull
-    private String userId;
-    @Size(min = 3)
-    @NotNull
+    @NotBlank
+    private String id;
+    @NotBlank
+    @Size(min = 3, max = 30)
     private String alias;
-    @Size(min = 10)
+    @Size(min = 10, max = 600)
     private String bio;
-    @NotNull
+    @NotBlank
     private String street;
+    @NotBlank
     @Size(max = 5)
-    @NotNull
     private String postalCode;
-    @NotNull
+    @NotBlank
     private String city;
-    @NotNull
+    private String country = "France";
+    @NotBlank
     private String bankAccountHolder;
     @NotNull
+    @Size(max = 34)
     private String bankAccountNumber;
     @NotEmpty
     @Size(min = 1, max = 5)
@@ -41,12 +43,12 @@ public class UserProfileRequestDTO {
     private List<NotificationDTO> notifications;
 
     // getters and setters
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAlias() {
@@ -87,6 +89,14 @@ public class UserProfileRequestDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getBankAccountHolder() {
