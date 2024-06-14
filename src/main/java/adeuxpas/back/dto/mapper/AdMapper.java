@@ -43,8 +43,9 @@ public interface AdMapper {
      * @return adHomeResponseDTO
      * @see AdHomeResponseDTO
      */
-    @Mapping(source = "articlePictures", target = "articlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
-    @Mapping(source = "publisher.alias", target = "publisher")
+    @Mapping(source = "articlePictures", target = "firstArticlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
+    @Mapping(source = "publisher.alias", target = "publisherAlias")
+    @Mapping(source = "publisher.id", target = "publisherId")
     AdHomeResponseDTO adToAdHomeResponseDTO(Ad ad);
 
     /**
