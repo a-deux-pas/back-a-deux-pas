@@ -69,10 +69,10 @@ public class AccountController {
         }
     }
 
-    // RAF : méthodes à changer une fois le login réalisé
     /**
      * Endpoint to access a user's profile information.
      *
+     * @param userId user id
      * @return a ResponseEntity with the user profile information if successful,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
@@ -82,10 +82,9 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/profile/presentation")
-    public ResponseEntity<Object> getUserInformation() {
-        Long userId = 3L;
+    public ResponseEntity<Object> getUserInformation(@RequestParam("userId") String userId) {
         try {
-            return ResponseEntity.ok(userService.findUserProfileInfoById(userId));
+            return ResponseEntity.ok(userService.findUserProfileInfoById(Long.parseLong(userId)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -94,6 +93,7 @@ public class AccountController {
     /**
      * Endpoint to access a user's preferred schedules.
      *
+     * @param userId user id
      * @return a ResponseEntity with the user preferred schedules if successful,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
@@ -103,10 +103,9 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/profile/schedules")
-    public ResponseEntity<Object> getPreferredSchedules() {
-        Long userId = 3L;
+    public ResponseEntity<Object> getPreferredSchedules(@RequestParam("userId") String userId) {
         try {
-            return ResponseEntity.ok(userService.findPreferredSchedulesByUserId(userId));
+            return ResponseEntity.ok(userService.findPreferredSchedulesByUserId(Long.parseLong(userId)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -115,6 +114,7 @@ public class AccountController {
     /**
      * Endpoint to access user's preferred meeting places.
      *
+     * @param userId user id
      * @return a ResponseEntity with the user preferred meeting places if
      *         successful,
      *         or a 500 Internal Server Error response if an exception occurs.
@@ -125,10 +125,9 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/profile/meeting-places")
-    public ResponseEntity<Object> getPreferredMeetingPlaces() {
-        Long userId = 3L;
+    public ResponseEntity<Object> getPreferredMeetingPlaces(@RequestParam("userId") String userId) {
         try {
-            return ResponseEntity.ok(userService.findPreferredMeetingPlacesByUserId(userId));
+            return ResponseEntity.ok(userService.findPreferredMeetingPlacesByUserId(Long.parseLong(userId)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
