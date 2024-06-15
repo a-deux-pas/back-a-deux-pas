@@ -77,9 +77,9 @@ public class SecurityConfig {
                 // since it uses stateless API with token-based authentication (JWT),
                 // and CSRF protection is less relevant in this scenario
                 .csrf(CsrfConfigurer::disable)
-                .authorizeHttpRequests((requests) -> requests
+                .authorizeHttpRequests(requests -> requests
                         // Explicitly expose these endpoints to everybody
-                        .requestMatchers("/signup", "/login").permitAll()
+                        .requestMatchers("api/login", "api/signup", "api/cities-and-postal-codes").permitAll()
                         // Protect these endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin-page").hasAuthority("ADMIN")
