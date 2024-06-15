@@ -16,6 +16,8 @@ public class UserProfileRequestDTO {
 
     @NotBlank
     private String id;
+    // @NotBlank TO DO: à décommenter une fois cloudinary implémenté
+    private String profilePicture;
     @NotBlank
     @Size(min = 3, max = 30)
     private String alias;
@@ -49,6 +51,14 @@ public class UserProfileRequestDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getAlias() {
