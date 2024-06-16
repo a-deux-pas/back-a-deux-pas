@@ -44,7 +44,7 @@ public interface UserService {
     Optional<User> findUserByAlias(String alias);
 
     /**
-     * Abstract method that attempts to find preferred meeting places of an user.
+     * Abstract method that attempts to create a user profile.
      * 
      * @param profileDto The DTO containing the details of an user Profile.
      */

@@ -4,13 +4,12 @@ import jakarta.validation.constraints.*;
 
 /**
  * Data Transfer Object (DTO) representing a credentials request.
- * This class encapsulates the information required for a user signup operation,
- * including the user's email and password.
+ * This class encapsulates the information required for a user signup and login
+ * operation, including the user's email and password.
  * It provides getter and setter methods to access and modify all the fields.
  * <p>
  * Instances of this class are used to transfer credentials data between
- * different layers of the application,
- * such as the presentation layer (e.g., REST controller) and the service layer.
+ * different layers of the application, such as the controller and the service.
  * </p>
  *
  * @author Léa Hadida
@@ -20,7 +19,14 @@ public class CredentialsRequestDTO {
     @Email
     private String email;
     @NotBlank
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")
+    // The string must contain:
+    // (\d): at least one digit
+    // ([a-z]): at least one one lowercase letter
+    // ([A-Z]): at least one uppercase letter
+    // ([!@#&()–[{}]:;',?/*~$^+=<>]): at least one special character from this set
+    // {8,}: minimum length of 8 characters
+    // (.*): anywhere within the string
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$")
     private String password;
 
     public String getEmail() {

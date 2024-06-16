@@ -8,12 +8,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -43,7 +41,7 @@ public class AccountController {
     }
 
     /**
-     * Endpoint to create a user's profile
+     * Endpoint to create a user's profile.
      *
      * @return a ResponseEntity with a 200 code if successful,
      *         a 400 Bad Request if errors,

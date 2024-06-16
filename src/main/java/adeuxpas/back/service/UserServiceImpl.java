@@ -98,9 +98,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * saves the user profile and preferrences.
+     * Saves an user profile and preferrences.
      *
-     * This method saves an user profile in the DB.
+     * @param profileDto the profile dto to save.
      */
     @Override
     public void createProfile(UserProfileRequestDTO profileDto) {
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return userMapper.mapUserToProfilePageUserDTO(user);
+            return userMapper.mapUserToUserProfileResponseDTO(user);
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }

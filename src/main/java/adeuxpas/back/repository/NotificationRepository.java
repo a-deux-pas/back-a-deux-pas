@@ -12,8 +12,7 @@ import adeuxpas.back.entity.Notification;
  * This repository interface defines methods to interact with the notification
  * entity in the database.
  * It extends the JpaRepository interface, providing out-of-the-box CRUD
- * (Create, Read, Update, Delete) operations
- * for managing article picture entities.
+ * (Create, Read, Update, Delete) operations.
  *
  * @author Léa Hadida
  */

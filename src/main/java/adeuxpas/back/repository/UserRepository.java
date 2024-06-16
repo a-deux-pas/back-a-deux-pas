@@ -51,7 +51,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * otherwise, it returns an empty optional.
      * </p>
      *
-     * @param alias The email address of the user to retrieve.
+     * @param alias The alias of the user to retrieve.
      * @return An optional containing the user entity if found, or an empty optional
      *         otherwise.
      */

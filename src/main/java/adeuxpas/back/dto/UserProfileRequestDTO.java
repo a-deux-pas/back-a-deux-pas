@@ -4,14 +4,21 @@ import java.util.List;
 
 import jakarta.validation.constraints.*;
 
-/*
- * This a data transfer object (DTO) that is used when receiving 
- * a user profile object from the front 
- * to transform it into a ProfilePostDto during
- * the profile creation process in order 
- * to save it into the database
+/**
+ * Data Transfer Object (DTO) for representing user profile information received
+ * from the front.
+ * <p>
+ * This DTO encapsulates various attributes of a user's profile, such as alias,
+ * profile picture URL, biography, location details.
+ * </p>
+ * <p>
+ * It is typically used to transfer user profile data between different layers
+ * of the application, such as between the controller and the service layer
+ * before it is persisted to the database.
+ * </p>
+ * 
+ * @author Léa Hadida
  */
-
 public class UserProfileRequestDTO {
 
     @NotBlank

@@ -8,8 +8,7 @@ package adeuxpas.back.dto;
  * </p>
  * <p>
  * It is typically used to transfer user profile data between different layers
- * of the application,
- * such as between the controller and the service layer.
+ * of the application, such as between the controller and the service layer.
  * </p>
  * 
  * @author Léa Hadida

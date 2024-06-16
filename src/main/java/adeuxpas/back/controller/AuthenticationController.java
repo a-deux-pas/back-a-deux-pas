@@ -5,12 +5,10 @@ import adeuxpas.back.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -100,7 +98,7 @@ public class AuthenticationController {
     /**
      * Endpoint to handle a user sign-up request.
      *
-     * @param credentialsRequestDTO The sign-up request containing user details.
+     * @param credentialsRequestDTO The sign-up request containing user credentials.
      * @return ResponseEntity containing the authentication token if sign-up is
      *         successful, or an error message otherwise.
      */

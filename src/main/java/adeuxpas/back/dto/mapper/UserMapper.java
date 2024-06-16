@@ -45,21 +45,21 @@ import adeuxpas.back.enums.WeekDays;
 public interface UserMapper {
 
     /**
-     * Maps a ProfilePostRequestDTO to an User entity.
+     * Maps a ProfileRequestDTO to an User entity.
      *
-     * @param user The ProfilePostRequestDTO to be mapped.
-     * @return The mapped User.
+     * @param profiledDto The UserProfileRequestDTO to be mapped.
+     * @param user        The target entity.
      */
     void mapProfileUserToUser(UserProfileRequestDTO profileDto, @MappingTarget User user);
 
     /**
-     * Maps a User entity to a ProfilePageUserDTO.
+     * Maps a User entity to a UserProfileResponseDTO.
      *
      * @param user The User entity to be mapped.
-     * @return The mapped ProfilePageUserDTO.
+     * @return The mapped UserProfileResponseDTO.
      */
     @Mapping(source = "inscriptionDate", target = "inscriptionDate", qualifiedByName = "convertDateToString")
-    UserProfileResponseDTO mapUserToProfilePageUserDTO(User user); // TO DO : dto et méthode à renomer
+    UserProfileResponseDTO mapUserToUserProfileResponseDTO(User user);
 
     /**
      * Converts a LocalDate to a String.
@@ -137,8 +137,8 @@ public interface UserMapper {
     /**
      * Maps a NotificationDTO to a Notification entity.
      *
-     * @param preferredMeetingPlace The PreferredMeetingPlaceDTO to be mapped.
-     * @return The mapped PreferredMeetingPlaceDTO entity.
+     * @param notificationDTO The notificationDTO to be mapped.
+     * @return The mapped Notification entity.
      */
     @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "eventName", target = "eventName", qualifiedByName = "convertStringToEventName")
