@@ -46,11 +46,13 @@ public class AccountController {
      * Endpoint to create a user's profile
      *
      * @return a ResponseEntity with a 200 code if successful,
+     *         a 400 Bad Request if errors,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
     @Operation(summary = "User's profile creation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Profile saved successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PatchMapping("/create")

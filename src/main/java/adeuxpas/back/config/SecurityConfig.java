@@ -79,7 +79,9 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         // Explicitly expose these endpoints to everybody
-                        .requestMatchers("api/login", "api/signup", "api/cities-and-postal-codes").permitAll()
+                        .requestMatchers("api/login", "api/signup", "api/cities-and-postal-codes",
+                                "api/ads/{id}", "api/ads/list")
+                        .permitAll()
                         // Protect these endpoints from unauthenticated and/or unauthorized users
                         .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin-page").hasAuthority("ADMIN")
