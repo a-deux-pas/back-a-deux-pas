@@ -1,20 +1,20 @@
 package adeuxpas.back.dto;
 
 /**
- * Data Transfer Object (DTO) representing a signup request.
- * This class encapsulates the information required for a user signup operation,
- * including the user's email, password, alias, bio etc.
- * It provides getter and setter methods to access and modify all the fields.
+ * Data Transfer Object (DTO) for representing user profile information.
  * <p>
- * Instances of this class are used to transfer signup request data between different layers of the application,
- * such as the presentation layer (e.g., REST controller) and the service layer.
+ * This DTO encapsulates various attributes of a user's profile, such as alias,
+ * biography, location details, profile picture URL, and inscription date.
  * </p>
- *
- * @author Mircea Bardan
+ * <p>
+ * It is typically used to transfer user profile data between different layers
+ * of the application, such as between the controller and the service layer.
+ * </p>
+ * 
+ * @author Léa Hadida
  */
-public class SignupRequestDTO {
-    private String email;
-    private String password;
+public class UserProfileResponseDTO {
+    private Long id;
     private String alias;
     private String bio;
     private String country;
@@ -22,22 +22,14 @@ public class SignupRequestDTO {
     private String street;
     private String postalCode;
     private String profilePicture;
+    private String inscriptionDate;
 
-
-    public String getEmail() {
-        return email;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAlias() {
@@ -94,5 +86,13 @@ public class SignupRequestDTO {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public String getInscriptionDate() {
+        return inscriptionDate;
+    }
+
+    public void setInscriptionDate(String inscriptionDate) {
+        this.inscriptionDate = inscriptionDate;
     }
 }

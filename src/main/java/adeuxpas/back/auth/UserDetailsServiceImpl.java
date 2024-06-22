@@ -15,23 +15,31 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Implementation class for the Spring Security {@code UserDetailsService} interface.
+ * Implementation class for the Spring Security {@code UserDetailsService}
+ * interface.
  * <p>
- * The {@code UserDetailsService} interface is used by Spring Security for loading
+ * The {@code UserDetailsService} interface is used by Spring Security for
+ * loading
  * user-specific data during authentication.
  * </p>
  * <p>
- * This implementation retrieves user information from the database using a {@code UserRepository}.
- * It loads the user by their email address and constructs a {@code UserDetails} object,
- * which contains information such as username, password, and authorities (roles).
+ * This implementation retrieves user information from the database using a
+ * {@code UserRepository}.
+ * It loads the user by their email address and constructs a {@code UserDetails}
+ * object,
+ * which contains information such as username, password, and authorities
+ * (roles).
  * </p>
  * <p>
- * By implementing the {@code UserDetailsService} interface and returning a {@code UserDetails} object,
- * we comply with Spring Security's requirements, allowing it to authenticate users
+ * By implementing the {@code UserDetailsService} interface and returning a
+ * {@code UserDetails} object,
+ * we comply with Spring Security's requirements, allowing it to authenticate
+ * users
  * based on the information provided by this custom implementation.
  * </p>
  * <p>
- * This class is annotated with {@code @Service} to indicate that it is a service component
+ * This class is annotated with {@code @Service} to indicate that it is a
+ * service component
  * and should be automatically detected and registered as a Spring bean.
  * </p>
  *
@@ -46,32 +54,38 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     /**
-     * Constructs a new {@code UserDetailsServiceImpl} with the specified {@code UserRepository}.
+     * Constructs a new {@code UserDetailsServiceImpl} with the specified
+     * {@code UserRepository}.
      *
-     * @param userRepository The repository for accessing user data from the database.
+     * @param userRepository The repository for accessing user data from the
+     *                       database.
      */
-    public UserDetailsServiceImpl(@Autowired UserRepository userRepository){
+    public UserDetailsServiceImpl(@Autowired UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     /**
-     * Loads user-specific data by the given email address and constructs a {@code UserDetails} object.
+     * Loads user-specific data by the given email address and constructs a
+     * {@code UserDetails} object.
      * <p>
-     * This method retrieves the user from the database based on the provided email address.
-     * If the user is found, their details are loaded into a {@code UserDetails} object,
+     * This method retrieves the user from the database based on the provided email
+     * address.
+     * If the user is found, their details are loaded into a {@code UserDetails}
+     * object,
      * which includes their username (email), password, and authorities (role).
      * </p>
      * <p>
      * If the user is not found, a {@code UsernameNotFoundException} is thrown.
      * </p>
      *
-     * @param email The email address of the user to load.
+     * @param id The id of the user to load.
      * @return A {@code UserDetails} object representing the user.
-     * @throws UsernameNotFoundException If the user with the given email address is not found.
+     * @throws UsernameNotFoundException If the user with the given id is
+     *                                   not found.
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<adeuxpas.back.entity.User> userInDB = this.userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        Optional<adeuxpas.back.entity.User> userInDB = this.userRepository.findById(Long.parseLong(id));
         if (userInDB.isPresent()) {
             adeuxpas.back.entity.User user = userInDB.get();
             Set<GrantedAuthority> authorities = new HashSet<>();
