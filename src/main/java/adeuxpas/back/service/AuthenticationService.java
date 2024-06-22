@@ -21,6 +21,7 @@ public interface AuthenticationService {
      * Abstract method that attempts to check if an email already exist.
      * 
      * @param email The email to check.
+     * @return true if the email address already exists.
      */
     Boolean checkIfEmailAlreadyExist(String email);
 
@@ -29,6 +30,7 @@ public interface AuthenticationService {
      * with a user address email.
      * 
      * @param credentialsRequestDTO The user credentials.
+     * @return true if the password is correct.
      */
     Boolean checkIfPasswordMatchesWithEmail(CredentialsRequestDTO credentialsRequestDTO);
 
@@ -36,6 +38,7 @@ public interface AuthenticationService {
      * Abstract method that attempts to check if an alias already exist.
      * 
      * @param alias The alias to check.
+     * @return true if the alias already exists.
      */
     Boolean checkIfAliasAlreadyExist(String alias);
 
