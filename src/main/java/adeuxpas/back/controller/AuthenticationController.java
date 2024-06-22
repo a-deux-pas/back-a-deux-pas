@@ -55,8 +55,8 @@ public class AuthenticationController {
      * @param email to check.
      * @return ResponseEntity indicating true or false.
      */
-    @GetMapping("/check-email")
-    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+    @PostMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmail(@RequestBody String email) {
         try {
             return ResponseEntity.ok(authenticationService.checkIfEmailAlreadyExist(email));
         } catch (Exception e) {
@@ -67,14 +67,14 @@ public class AuthenticationController {
     /**
      * Endpoint to check if a password matches with a user address mail.
      *
-     * @param email    user email.
-     * @param password password to check.
+     * @param credentialsRequestDTO The check password request containing the user
+     *                              credentials.
      * @return ResponseEntity indicating true or false.
      */
-    @GetMapping("/check-password")
-    public ResponseEntity<Boolean> checkPassword(@RequestParam String email, String password) {
+    @PostMapping("/check-password")
+    public ResponseEntity<Boolean> checkPassword(@RequestBody CredentialsRequestDTO credentialsRequestDTO) {
         try {
-            return ResponseEntity.ok(authenticationService.checkIfPasswordMatchesWithEmail(email, password));
+            return ResponseEntity.ok(authenticationService.checkIfPasswordMatchesWithEmail(credentialsRequestDTO));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
         }

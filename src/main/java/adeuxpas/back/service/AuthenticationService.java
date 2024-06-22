@@ -28,10 +28,9 @@ public interface AuthenticationService {
      * Abstract method that attempts to check if a password matches
      * with a user address email.
      * 
-     * @param email    The user email address.
-     * @param password The password to check.
+     * @param credentialsRequestDTO The user credentials.
      */
-    Boolean checkIfPasswordMatchesWithEmail(String email, String password);
+    Boolean checkIfPasswordMatchesWithEmail(CredentialsRequestDTO credentialsRequestDTO);
 
     /**
      * Abstract method that attempts to check if an alias already exist.

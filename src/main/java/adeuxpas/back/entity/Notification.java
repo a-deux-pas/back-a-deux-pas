@@ -32,7 +32,7 @@ public class Notification {
     @Column(name = "event_name", nullable = false)
     private EventNames eventName;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

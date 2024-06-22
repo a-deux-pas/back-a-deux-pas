@@ -66,16 +66,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * check if a password matches with a user address email.
      *
-     * @param email    The user email address.
-     * @param password The password to check.
+     * @param credentialsRequestDTO user credentials.
      * @return true if the password is correct.
      */
     @Override
-    public Boolean checkIfPasswordMatchesWithEmail(String email, String password) {
-        Optional<User> optionalUser = this.userService.findUserByEmail(email);
+    public Boolean checkIfPasswordMatchesWithEmail(CredentialsRequestDTO credentialsRequestDTO) {
+        Optional<User> optionalUser = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
         if (optionalUser.isPresent()) {
             String userPassword = optionalUser.get().getPassword();
-            return encoder.matches(password, userPassword);
+            return encoder.matches(credentialsRequestDTO.getPassword(), userPassword);
         }
         return false;
     }

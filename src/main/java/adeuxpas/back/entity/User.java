@@ -70,6 +70,15 @@ public class User {
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ad> ads;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PreferredSchedule> preferredSchedules;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PreferredMeetingPlace> preferredMeetingPlaces;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Notification> notifications;
+
     // getters and setters
     public long getId() {
         return id;
@@ -197,6 +206,30 @@ public class User {
 
     public void setAds(List<Ad> ads) {
         this.ads = ads;
+    }
+
+    public List<PreferredSchedule> getPreferredSchedules() {
+        return preferredSchedules;
+    }
+
+    public void setPreferredSchedules(List<PreferredSchedule> preferredSchedules) {
+        this.preferredSchedules = preferredSchedules;
+    }
+
+    public List<PreferredMeetingPlace> getPreferredMeetingPlaces() {
+        return preferredMeetingPlaces;
+    }
+
+    public void setPreferredMeetingPlaces(List<PreferredMeetingPlace> preferredMeetingPlaces) {
+        this.preferredMeetingPlaces = preferredMeetingPlaces;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     // toString
