@@ -31,10 +31,10 @@ public class JWTService {
     private int jwtExpiration;
 
     /**
-     * Generates a JWT token based on the provided user email and role.
+     * Generates a JWT token based on the provided user id and role.
      *
-     * @param email The username for which the token is generated.
-     * @param role  The role associated with the user.
+     * @param id   The user id for which the token is generated.
+     * @param role The role associated with the user.
      * @return The generated JWT token.
      */
     public String generateToken(Long id, UserRole role) {

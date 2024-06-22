@@ -1,8 +1,7 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.auth.JWTService;
-import adeuxpas.back.dto.LoginRequestDTO;
-import adeuxpas.back.dto.SignupRequestDTO;
+import adeuxpas.back.dto.CredentialsRequestDTO;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
@@ -53,56 +52,105 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
-     * Validates the signup request and creates a new user account if the user does
-     * not already exist.
+     * Check if a user is already registered with an email address
      *
-     * @param signupRequestDTO The signup request containing user information.
-     * @return {@code true} if the user is successfully signed up, {@code false}
-     *         otherwise.
+     * @param email The email address to check.
+     * @return true if the email address already exists.
      */
     @Override
-    public boolean canDoSignup(SignupRequestDTO signupRequestDTO) {
-        Optional<User> userFromDB = this.userService.findUserByEmail(signupRequestDTO.getEmail());
-        if (userFromDB.isEmpty()) {
-            User userToSave = new User();
-            userToSave.setEmail(signupRequestDTO.getEmail());
-            userToSave.setPassword(encoder.encode(signupRequestDTO.getPassword()));
-            userToSave.setAlias(signupRequestDTO.getAlias());
-            userToSave.setBio(signupRequestDTO.getBio());
-            userToSave.setCity(signupRequestDTO.getCity());
-            userToSave.setCountry(signupRequestDTO.getCountry());
-            userToSave.setStreet(signupRequestDTO.getStreet());
-            userToSave.setPostalCode(signupRequestDTO.getPostalCode());
-            userToSave.setProfilePicture(signupRequestDTO.getProfilePicture());
-            userToSave.setInscriptionDate(LocalDateTime.now());
-            userToSave.setRole(UserRole.USER);
-            userToSave.setAccountStatus(AccountStatus.ACTIVE);
+    public Boolean checkIfEmailAlreadyExist(String email) {
+        Optional<User> optionalUser = this.userService.findUserByEmail(email);
+        return optionalUser.isPresent();
+    }
 
-            this.userService.save(userToSave);
-
-            return true;
+    /**
+     * check if a password matches with a user address email.
+     *
+     * @param credentialsRequestDTO user credentials.
+     * @return true if the password is correct.
+     */
+    @Override
+    public Boolean checkIfPasswordMatchesWithEmail(CredentialsRequestDTO credentialsRequestDTO) {
+        Optional<User> optionalUser = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
+        if (optionalUser.isPresent()) {
+            String userPassword = optionalUser.get().getPassword();
+            return encoder.matches(credentialsRequestDTO.getPassword(), userPassword);
         }
         return false;
     }
 
     /**
-     * Validates the login request and attempts to authenticate the user.
-     * If authentication is successful, it generates and returns a JWT token
-     * representing the user's session.
+     * Check if an alias is already taken
+     *
+     * @param alias The alias to check.
+     * @return true if the alias already exists.
+     */
+    @Override
+    public Boolean checkIfAliasAlreadyExist(String alias) {
+        Optional<User> optionalUser = this.userService.findUserByAlias(alias);
+        return optionalUser.isPresent();
+    }
+
+    /**
+     * Method to generate and returns a JWT token representing the user's session.
+     *
+     * @param user optional user.
+     * @return a JWT token if user exists, or an empty optional otherwise.
+     * 
+     */
+    @Override
+    public Optional<String> createToken(Optional<User> user) {
+        if (user.isPresent()) {
+            String token = this.jwtService.generateToken(user.get().getId(), user.get().getRole());
+            return Optional.of(token);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Validates the signup request and creates a new user account if the user does
+     * not already exist.
+     * If registration is successful, it generates and returns a JWT token.
      * If authentication fails, it returns an empty optional.
      *
-     * @param loginRequestDTO The login request containing user credentials.
+     * @param credentialsRequestDTO user credentials.
      * @return An optional containing the JWT token if authentication is successful,
      *         or an empty optional otherwise.
      */
     @Override
-    public Optional<String> login(LoginRequestDTO loginRequestDTO) {
-        Optional<User> userFromDB = this.userService.findUserByEmail(loginRequestDTO.getEmail());
-        if (userFromDB.isPresent() && encoder.matches(loginRequestDTO.getPassword(), userFromDB.get().getPassword())) {
-            String token = this.jwtService.generateToken(userFromDB.get().getId(), userFromDB.get().getRole());
-            return Optional.of(token);
+    public Optional<String> signup(CredentialsRequestDTO credentialsRequestDTO) {
+        Optional<User> userFromDB = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
+        if (userFromDB.isPresent()) {
+            throw new IllegalArgumentException(
+                    "A user with email '" + credentialsRequestDTO.getEmail() + "' already exists");
         }
+        User userToSave = new User();
+        userToSave.setEmail(credentialsRequestDTO.getEmail());
+        userToSave.setPassword(encoder.encode(credentialsRequestDTO.getPassword()));
+        userToSave.setInscriptionDate(LocalDateTime.now());
+        userToSave.setRole(UserRole.USER);
+        userToSave.setAccountStatus(AccountStatus.ACTIVE);
+        this.userService.save(userToSave);
+        Optional<User> savedUser = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
+        return createToken(savedUser);
+    }
 
+    /**
+     * Validates the login request and attempts to authenticate the user.
+     * If authentication is successful, it generates and returns a JWT token.
+     * If authentication fails, it returns an empty optional.
+     *
+     * @param credentialsRequestDTO user credentials.
+     * @return An optional containing the JWT token if authentication is successful,
+     *         or an empty optional otherwise.
+     */
+    @Override
+    public Optional<String> login(CredentialsRequestDTO credentialsRequestDTO) {
+        Optional<User> userFromDB = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
+        if (userFromDB.isPresent()
+                && encoder.matches(credentialsRequestDTO.getPassword(), userFromDB.get().getPassword())) {
+            return createToken(userFromDB);
+        }
         return Optional.empty();
     }
 }
