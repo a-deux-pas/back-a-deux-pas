@@ -1,9 +1,13 @@
 package adeuxpas.back.datainit.seeder;
 
 import adeuxpas.back.entity.Ad;
+import adeuxpas.back.entity.Favorite;
+import adeuxpas.back.entity.FavoriteKey;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.FavoriteRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,28 +19,35 @@ import java.util.List;
 
 /**
  * Seeder class responsible for generating sample ad entities.
- * Each ad is initialized with sample data such as title, price, creation date, publisher, etc.
+ * Each ad is initialized with sample data such as title, price, creation date,
+ * publisher, etc.
  */
 @Component
 public class AdSeeder {
 
     private final AdRepository adRepository;
+    private final FavoriteRepository favoriteRepository;
 
     /**
      * Constructs a new AdSeeder with the provided AdRepository.
-     * @param adRepository the AdRepository to be used for database seeding operations.
+     * 
+     * @param adRepository the AdRepository to be used for database seeding
+     *                     operations.
      */
-    AdSeeder(@Autowired AdRepository adRepository){
+    AdSeeder(@Autowired AdRepository adRepository, @Autowired FavoriteRepository favoriteRepository) {
         this.adRepository = adRepository;
+        this.favoriteRepository = favoriteRepository;
     }
 
     /**
      * This method creates ad entities.
-     * Each ad is initialized with sample data such as title, price, creation date, publisher etc.
+     * Each ad is initialized with sample data such as title, price, creation date,
+     * publisher etc.
+     * 
      * @param users the list of potential ad publishers.
      * @return a list of ads.
      */
-    public List<Ad> createAds(List<User> users){
+    public List<Ad> createAds(List<User> users) {
         Ad firstAd = new Ad();
         firstAd.setArticleDescription("Rocky Mountain Growler 40, perfect condition ");
         firstAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
@@ -136,7 +147,8 @@ public class AdSeeder {
         seventhAd.setStatus(AdStatus.AVAILABLE);
 
         Ad eighthAd = new Ad();
-        eighthAd.setArticleDescription("Nassim N. Taleb's best selling collection; includes: Anti-Fragile, The Black San, Skin in the Game etc ");
+        eighthAd.setArticleDescription(
+                "Nassim N. Taleb's best selling collection; includes: Anti-Fragile, The Black San, Skin in the Game etc ");
         eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(6));
         eighthAd.setPrice(BigDecimal.valueOf(150));
         eighthAd.setTitle("Incerto Book Collection");
@@ -161,7 +173,6 @@ public class AdSeeder {
         sixthUserAds.add(ninethAd);
         users.get(5).setAds(sixthUserAds);
         ninethAd.setStatus(AdStatus.SUSPENDED);
-
 
         Ad tenthAd = new Ad();
         tenthAd.setArticleDescription("Maroon leather handbag");
@@ -280,16 +291,30 @@ public class AdSeeder {
         users.get(2).setAds(thirdUserAds);
         eighteenthAd.setStatus(AdStatus.AVAILABLE);
 
-
         return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd, ninethAd,
-                tenthAd, eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd, seventeenthAd, eighteenthAd);
+                tenthAd, eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd, seventeenthAd,
+                eighteenthAd);
     }
 
     /**
      * Seeds the database with sample ad data.
+     * 
      * @param ads the list of ads to save.
      */
-    public void seedAds(List<Ad> ads){
+    public void seedAds(List<Ad> ads) {
         this.adRepository.saveAll(ads);
+    }
+
+    /**
+     * Seeds the database with favorites ads.
+     * 
+     * @param user the user who adds the as favorite.
+     * @param ad   the ad added as favorite.
+     */
+    public Favorite createFavoriteAd(User user, Ad ad) {
+        FavoriteKey favoriteKey = new FavoriteKey(user.getId(), ad.getId());
+        Favorite favoriteAd = new Favorite(favoriteKey, user, ad, LocalDateTime.now());
+        this.favoriteRepository.save(favoriteAd);
+        return favoriteAd;
     }
 }

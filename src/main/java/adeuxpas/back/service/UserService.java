@@ -1,15 +1,14 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
+import adeuxpas.back.dto.LoggedInHomeResponseDTO;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.entity.User;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Interface defining user-related operations for the application.
@@ -71,5 +70,16 @@ public interface UserService {
      */
     List<PreferredMeetingPlaceDTO> findPreferredMeetingPlacesByUserId(Long userId);
 
+    /**
+     * Abstract method that attempts to find city and postal code.
+     */
     Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes();
+
+    /**
+     * Abstract method that attempts to find the user's alias and sellers nearby
+     * their home.
+     * 
+     * @param userId the user's ID
+     */
+    LoggedInHomeResponseDTO getSellersNearby(Long userId);
 }

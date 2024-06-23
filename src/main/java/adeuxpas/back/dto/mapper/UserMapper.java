@@ -10,6 +10,7 @@ import org.mapstruct.*;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
+import adeuxpas.back.dto.SellerHomeResponseDTO;
 import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.entity.Notification;
@@ -155,5 +156,19 @@ public interface UserMapper {
         return EventNames.getEventNamefromString(value);
     }
 
+    /**
+     * Maps a user entity to a CityAndPostalCodeResponseDTO.
+     *
+     * @param user The user to be mapped.
+     * @return The mapped CityAndPostalCodeResponseDTO.
+     */
     CityAndPostalCodeResponseDTO userToCityAndPostalCodeDTO(User user);
+
+    /**
+     * Maps a user entity to a SellerHomeResponseDTO.
+     *
+     * @param user The user to be mapped.
+     * @return The mapped SellerHomeResponseDTO.
+     */
+    SellerHomeResponseDTO userToSellerHomeResponseDTO(User user);
 }

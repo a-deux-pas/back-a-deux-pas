@@ -1,6 +1,8 @@
 package adeuxpas.back.service;
+
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
+import adeuxpas.back.entity.Favorite;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
@@ -8,22 +10,19 @@ import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.FavoriteRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 /**
  * Implementation class for the AdService interface.
@@ -56,29 +55,33 @@ public class AdServiceImpl implements AdService {
 
     private final UserRepository userRepository;
     private final AdRepository adRepository;
+    private final FavoriteRepository favoriteRepository;
     private final AdMapper adMapper;
 
     public AdServiceImpl(@Autowired UserRepository userRepository,
-                         @Autowired AdRepository adRepository,
-                         @Autowired AdMapper adMapper) {
+            @Autowired AdRepository adRepository,
+            @Autowired FavoriteRepository favoriteRepository,
+            @Autowired AdMapper adMapper) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
+        this.favoriteRepository = favoriteRepository;
         this.adMapper = adMapper;
     }
 
     /**
      * Finds filtered ads and maps them to AdHomeResponseDTOs.
      *
-     * @param priceRangesFilter        The list of price range filters.
+     * @param priceRangesFilter          The list of price range filters.
      * @param citiesAndPostalCodesFilter The list of city and postal code filters.
-     * @param articleStatesFilter      The list of article state filters.
-     * @param categoryFilter           The category filter.
-     * @param pageable                 The pagination information.
+     * @param articleStatesFilter        The list of article state filters.
+     * @param categoryFilter             The category filter.
+     * @param pageable                   The pagination information.
      * @return The page of AdHomeResponseDTOs.
      */
     @Override
-    public Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
-                                                                  List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
+    public Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> priceRangesFilter,
+            List<String> citiesAndPostalCodesFilter,
+            List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
         if (shouldReturnAllAds(priceRangesFilter, citiesAndPostalCodesFilter, articleStatesFilter, categoryFilter)) {
@@ -108,14 +111,14 @@ public class AdServiceImpl implements AdService {
         gender = null;
         extractAndAssignCategoryFilterCriteria(categoryFilter);
 
-        // passing the formatted filtering criteria to the query and saving the result to a page
+        // passing the formatted filtering criteria to the query and saving the result
+        // to a page
         Page<Ad> filteredAds = this.adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes.isEmpty() ? null : postalCodes,
                 articleStatesFilter.isEmpty() ? null : articleStatesFilter,
                 maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
                 minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
-                category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
-        );
+                category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable);
         return this.convertToPageOfAdHomeResponseDTOs(pageable, filteredAds);
     }
 
@@ -127,7 +130,8 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public Page<AdHomeResponseDTO> findAllAdHomeResponseDTOs(Pageable pageable) {
-        Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses, acceptedAccountStatuses, pageable);
+        Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses,
+                acceptedAccountStatuses, pageable);
         return this.convertToPageOfAdHomeResponseDTOs(pageable, myAds);
     }
 
@@ -224,9 +228,10 @@ public class AdServiceImpl implements AdService {
         }
     }
 
-    // ==================== parameter extraction and formatting helper methods =======================
+    // ==================== parameter extraction and formatting helper methods
+    // =======================
     private boolean shouldReturnAllAds(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
-                                       List<String> articleStatesFilter, String categoryFilter) {
+            List<String> articleStatesFilter, String categoryFilter) {
         return priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
                 articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie");
     }
@@ -235,11 +240,11 @@ public class AdServiceImpl implements AdService {
         if (categoryFilter.contains("▸")) {
             category = categoryFilter.substring(0, categoryFilter.indexOf(" ▸"));
             if (categoryFilter.indexOf("▸") != categoryFilter.lastIndexOf("▸")) {
-                subcategory = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1, categoryFilter.lastIndexOf(" ▸")).trim();
+                subcategory = categoryFilter
+                        .substring(categoryFilter.indexOf("▸ ") + 1, categoryFilter.lastIndexOf(" ▸")).trim();
                 gender = categoryFilter.substring(categoryFilter.lastIndexOf("▸ ") + 1).trim();
             } else
-                subcategory
-                        = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1).trim();
+                subcategory = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1).trim();
         } else
             category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
     }
@@ -272,7 +277,31 @@ public class AdServiceImpl implements AdService {
                 default:
                     throw new IllegalStateException("Unexpected value: " + priceRange);
             }
-            if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
+            if (Objects.equals(minPrice6, BigDecimal.ZERO))
+                minPrice6 = null;
+        }
+    }
+
+    /**
+     * Retrieves a user's favorites ads list.
+     *
+     * @param userId The ID of the user.
+     * @return The list of favorites ads.
+     */
+    @Override
+    public List<AdHomeResponseDTO> findFavoriteAdsByUserId(long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            List<Favorite> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user);
+            if (!favoritesAds.isEmpty()) {
+                return favoritesAds.stream().map(favoriteAd -> this.adMapper.adToAdHomeResponseDTO(favoriteAd.getAd()))
+                        .toList();
+            } else {
+                return Collections.emptyList();
+            }
+        } else {
+            throw new EntityNotFoundException();
         }
     }
 }

@@ -1,6 +1,7 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
+import adeuxpas.back.dto.LoggedInHomeResponseDTO;
 import adeuxpas.back.dto.NotificationDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
@@ -256,5 +257,27 @@ public class UserServiceImpl implements UserService {
     public Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
         return users.stream().map(userMapper::userToCityAndPostalCodeDTO).collect(Collectors.toSet());
+    }
+
+    /**
+     * Retrieves the user's alias and sellers nearby their home.
+     * 
+     * @param userId the user's ID
+     * @return The LoggedInHomResponseDTO
+     */
+    @Override
+    public LoggedInHomeResponseDTO getSellersNearby(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            // TO DO: à modifier pour trier par nombre de transactions une fois la table
+            // implémenté
+            List<User> sellersNearby = this.userRepository.findFirst5ByPostalCode(user.getPostalCode(), user.getId());
+            return new LoggedInHomeResponseDTO(
+                    user.getAlias(),
+                    sellersNearby.stream().map(userMapper::userToSellerHomeResponseDTO).toList());
+        } else {
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
+        }
     }
 }

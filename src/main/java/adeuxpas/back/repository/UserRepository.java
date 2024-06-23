@@ -2,9 +2,11 @@ package adeuxpas.back.repository;
 
 import adeuxpas.back.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Interface for accessing user-related data stored in the database.
@@ -56,4 +58,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
      *         otherwise.
      */
     Optional<User> findByAlias(String alias);
+
+    /**
+     * Retrieves a list of up to 5 users from the database by their postal code,
+     * excluding a specific user.
+     * <p>
+     * This method queries the database for a list of users with the specified
+     * postal code, excluding the user with the specified ID. If matching users are
+     * found,
+     * it returns a list of up to 5 users.
+     * </p>
+     *
+     * @param postalCode The postal code of the users to retrieve.
+     * @param userId     The ID of the user to exclude from the search.
+     * @return A list containing up to 5 users if found.
+     */
+    @Query("SELECT u FROM User u WHERE u.postalCode = :postalCode AND u.id <> :userId")
+    List<User> findFirst5ByPostalCode(@Param("postalCode") String postalCode, @Param("userId") long userId);
 }

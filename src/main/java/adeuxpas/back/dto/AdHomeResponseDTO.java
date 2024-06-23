@@ -20,7 +20,7 @@ public class AdHomeResponseDTO {
     }
 
     public void setTitle(String title) {
-        this.title = title ;
+        this.title = title;
     }
 
     public String getArticlePictureUrl() {
@@ -65,9 +65,14 @@ public class AdHomeResponseDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AdHomeResponseDTO that)) return false;
-        return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl) && Objects.equals(price, that.price) && Objects.equals(publisher, that.publisher) && Objects.equals(publisherCity, that.publisherCity) && Objects.equals(publisherPostalCode, that.publisherPostalCode);
+        if (this == o)
+            return true;
+        if (!(o instanceof AdHomeResponseDTO that))
+            return false;
+        return Objects.equals(title, that.title) && Objects.equals(articlePictureUrl, that.articlePictureUrl)
+                && Objects.equals(price, that.price) && Objects.equals(publisher, that.publisher)
+                && Objects.equals(publisherCity, that.publisherCity)
+                && Objects.equals(publisherPostalCode, that.publisherPostalCode);
     }
 
     @Override
