@@ -35,27 +35,20 @@ public class UserController {
      *
      * @param userService for handling operations concerning users.
      */
-    public UserController(@Autowired UserService userService) {
+    public UserController(@Autowired UserService userService){
         this.userService = userService;
     }
 
     /**
      * Retrieves a set of unique cities and postal codes.
      *
-     * <p>
-     * This endpoint fetches unique combinations of cities and postal codes from the
-     * UserService.
-     * If successful, it returns a ResponseEntity containing the set of
-     * CityAndPostalCodeResponseDTO objects.
-     * If an exception occurs during the operation, it returns a 500 Internal Server
-     * Error response
-     * with an error message in the response body.
-     * </p>
+     * <p>This endpoint fetches unique combinations of cities and postal codes from the UserService.
+     * If successful, it returns a ResponseEntity containing the set of CityAndPostalCodeResponseDTO objects.
+     * If an exception occurs during the operation, it returns a 500 Internal Server Error response
+     * with an error message in the response body.</p>
      *
-     * @return a ResponseEntity containing a set of unique
-     *         CityAndPostalCodeResponseDTO objects
-     *         if successful, or a 500 Internal Server Error response if an
-     *         exception occurs
+     * @return a ResponseEntity containing a set of unique CityAndPostalCodeResponseDTO objects
+     *         if successful, or a 500 Internal Server Error response if an exception occurs
      *
      * @see CityAndPostalCodeResponseDTO
      */
@@ -67,8 +60,7 @@ public class UserController {
     @GetMapping("/cities-and-postal-codes")
     public ResponseEntity<Object> getUniqueCitiesAndPostalCodes() {
         try {
-            Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOs = this.userService
-                    .getUniqueCitiesAndPostalCodes();
+            Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOs = this.userService.getUniqueCitiesAndPostalCodes();
             return ResponseEntity.ok(cityAndPostalCodeResponseDTOs);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
