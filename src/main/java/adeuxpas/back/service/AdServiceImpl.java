@@ -12,9 +12,7 @@ import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -246,10 +244,9 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public Long getUserAdsListLength(Long publisherId) {
-        Long publisherIdValue = 1L;
-        Optional<User> optionalUser = userRepository.findById(publisherIdValue);
+        Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
-            return adRepository.findAdsByPublisherIdCount(publisherIdValue);
+            return adRepository.findAdsCountByPublisherId(publisherId);
         } else {
             throw new EntityNotFoundException();
         }
