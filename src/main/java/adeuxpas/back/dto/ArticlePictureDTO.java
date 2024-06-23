@@ -1,25 +1,12 @@
 package adeuxpas.back.dto;
 
-import adeuxpas.back.entity.Ad;
-
 /*
  * Data transfer object (DTO) class that is used when sending
  * ArticlePicture data to the client app
  */
 public class ArticlePictureDTO {
-    private Long id;
     private String url;
-    private Ad ad;
-
-
-    // getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long adId;
 
     public String getUrl() {
         return url;
@@ -29,11 +16,11 @@ public class ArticlePictureDTO {
         this.url = url;
     }
 
-    public Ad getAd() {
-        return ad;
+    public Long getAdId() {
+        return adId;
     }
 
-    public void setAd(Ad ad) {
-        this.ad = ad;
+    public void setAdId(Long adId) {
+        this.adId = adId;
     }
 }
