@@ -328,11 +328,12 @@ class AdServiceImplTest {
         assertEquals(result.getStatus(), adResponse.getStatus());
     }
 
+    // TO DO : checker TEST
     /**
      * Test for findAdsByPublisher method in AdServiceImpl.
      */
     @Test
-    void testFindAdsByPublisherIdUserExists() {
+    void testfindPageOfUserAdsListIfUserExists() {
         Long publisherId = 1L;
         User user = new User();
         when(userRepositoryMock.findById(publisherId)).thenReturn(Optional.of(user));
@@ -340,7 +341,8 @@ class AdServiceImplTest {
         Ad ad1 = new Ad();
         Ad ad2 = new Ad();
         List<Ad> adList = List.of(ad1, ad2);
-        when(adRepositoryMock.findAdsByPublisherId(publisherId)).thenReturn(adList);
+        Page<Ad> adsPage = new PageImpl<>(adList);
+        when(adRepositoryMock.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable)).thenReturn(adsPage);
 
         AdPostResponseDTO dto1 = new AdPostResponseDTO();
         AdPostResponseDTO dto2 = new AdPostResponseDTO();
@@ -354,7 +356,7 @@ class AdServiceImplTest {
         assertEquals(dto2, result.getContent().get(1));
 
         verify(userRepositoryMock).findById(publisherId);
-        verify(adRepositoryMock).findAdsByPublisherId(publisherId);
+        verify(adRepositoryMock).findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
     }
 
     // common set-up, used by several test methods
