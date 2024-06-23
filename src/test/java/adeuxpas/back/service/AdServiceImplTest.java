@@ -328,7 +328,6 @@ class AdServiceImplTest {
         assertEquals(result.getStatus(), adResponse.getStatus());
     }
 
-    // TO DO : checker TEST
     /**
      * Test for findAdsByPublisher method in AdServiceImpl.
      */
@@ -341,7 +340,7 @@ class AdServiceImplTest {
         Ad ad1 = new Ad();
         Ad ad2 = new Ad();
         List<Ad> adList = List.of(ad1, ad2);
-        Page<Ad> adsPage = new PageImpl<>(adList);
+        adsPage = new PageImpl<>(adList);
         when(adRepositoryMock.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable)).thenReturn(adsPage);
 
         AdPostResponseDTO dto1 = new AdPostResponseDTO();

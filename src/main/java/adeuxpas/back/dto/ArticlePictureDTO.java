@@ -5,18 +5,8 @@ package adeuxpas.back.dto;
  * ArticlePicture data to the client app
  */
 public class ArticlePictureDTO {
-    // private Long id;
     private String url;
     private Long adId;
-
-    // getters and setters
-    // public Long getId() {
-    // return id;
-    // }
-
-    // public void setId(Long id) {
-    // this.id = id;
-    // }
 
     public String getUrl() {
         return url;

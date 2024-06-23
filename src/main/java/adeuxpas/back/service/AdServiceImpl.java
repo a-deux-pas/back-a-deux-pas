@@ -183,8 +183,6 @@ public class AdServiceImpl implements AdService {
         }
 
         newAd.setArticlePictures(articlePictures);
-        // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
 
         Ad savedAd = adRepository.save(newAd);
         return adMapper.adToAdPostResponseDTO(savedAd);
