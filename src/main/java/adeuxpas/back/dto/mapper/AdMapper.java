@@ -5,6 +5,8 @@ import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.dto.ArticlePictureDTO;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -31,9 +33,7 @@ import org.mapstruct.Named;
  * </p>
  *
  */
-@Mapper(
-        componentModel = "spring"
-)
+@Mapper(componentModel = "spring")
 public interface AdMapper {
 
     /**
@@ -43,8 +43,9 @@ public interface AdMapper {
      * @return adHomeResponseDTO
      * @see AdHomeResponseDTO
      */
-    @Mapping(source = "articlePictures", target = "articlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
-    @Mapping(source = "publisher.alias", target = "publisher")
+    @Mapping(source = "articlePictures", target = "firstArticlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
+    @Mapping(source = "publisher.alias", target = "publisherAlias")
+    @Mapping(source = "publisher.id", target = "publisherId")
     AdHomeResponseDTO adToAdHomeResponseDTO(Ad ad);
 
     /**
@@ -61,8 +62,17 @@ public interface AdMapper {
     @Mapping(source = "articlePictures", target = "fifthArticlePictureUrl", qualifiedByName = "findFifthArticlePictureUrl")
     @Mapping(source = "creationDate", target = "creationDate", qualifiedByName = "convertDateToString")
     @Mapping(source = "publisher.id", target = "publisherId")
+    @Mapping(source = "publisher.alias", target = "publisherAlias")
+    @Mapping(source = "publisher.city", target = "publisherCity")
+    @Mapping(source = "publisher.inscriptionDate", target = "publisherInscriptionDate", qualifiedByName = "convertDateToString")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
 
+    /**
+     * Gets the first article picture's url
+     * 
+     * @param articlePictures
+     * @return
+     */
     @Named("findFirstArticlePictureUrl")
     default String findFirstArticlePictureUrl(List<ArticlePicture> articlePictures) {
         if (articlePictures != null && !articlePictures.isEmpty()) {
@@ -71,6 +81,12 @@ public interface AdMapper {
         return null;
     }
 
+    /**
+     * Gets the second article picture's url
+     * 
+     * @param articlePictures
+     * @return
+     */
     @Named("findSecondArticlePictureUrl")
     default String findSecondArticlePictureUrl(List<ArticlePicture> articlePictures) {
         if (articlePictures != null && articlePictures.size() >= 2) {
@@ -79,6 +95,12 @@ public interface AdMapper {
         return null;
     }
 
+    /**
+     * Gets the third article picture's url
+     * 
+     * @param articlePictures
+     * @return
+     */
     @Named("findThirdArticlePictureUrl")
     default String thirdArticlePictureUrl(List<ArticlePicture> articlePictures) {
         if (articlePictures != null && articlePictures.size() >= 3) {
@@ -87,6 +109,12 @@ public interface AdMapper {
         return null;
     }
 
+    /**
+     * Gets the fourth article picture's url
+     * 
+     * @param articlePictures
+     * @return
+     */
     @Named("findFourthArticlePictureUrl")
     default String fourthArticlePictureUrl(List<ArticlePicture> articlePictures) {
         if (articlePictures != null && articlePictures.size() >= 4) {
@@ -95,6 +123,12 @@ public interface AdMapper {
         return null;
     }
 
+    /**
+     * Gets the find article picture's url
+     * 
+     * @param articlePictures
+     * @return
+     */
     @Named("findFifthArticlePictureUrl")
     default String fifthArticlePictureUrl(List<ArticlePicture> articlePictures) {
         if (articlePictures != null && articlePictures.size() >= 5) {
@@ -103,11 +137,50 @@ public interface AdMapper {
         return null;
     }
 
+    /**
+     * Convert a date to a string
+     * 
+     * @param date
+     * @return
+     */
     @Named("convertDateToString")
     default String dateToString(LocalDateTime date) {
         return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
+    /**
+     * Maps an adPostRequest DTO into an ad entity
+     * 
+     * @param adPostDto
+     * @return
+     */
     @Mapping(source = "publisherId", target = "publisher.id")
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
+
+    /**
+     * Maps ad entity into an an adPostRequest DTO
+     * 
+     * @param ad
+     * @return
+     */
+    @Mapping(source = "publisher.id", target = "publisherId")
+    AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
+
+    /**
+     * Maps an article picture dto into an article picture entity
+     * 
+     * @param articlePictureDTO
+     * @return
+     */
+    @Mapping(source = "adId", target = "ad.id")
+    ArticlePicture articlePictureDTOToArticlePicture(ArticlePictureDTO articlePictureDTO);
+
+    /**
+     * Maps an article picture entity into an article picture dto
+     * 
+     * @param articlePicture
+     * @return
+     */
+    @Mapping(source = "ad.id", target = "adId")
+    ArticlePictureDTO articlePictureToArticlePictureDTO(ArticlePicture articlePicture);
 }

@@ -14,6 +14,7 @@ import adeuxpas.back.repository.FavoriteRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -21,7 +22,6 @@ import java.util.*;
 
 import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
-import org.springframework.data.domain.*;
 import java.math.BigDecimal;
 
 /**
@@ -157,9 +157,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
-        // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
-        // =>
+        // TODO:: A revoir (fix cloudinary branch)
         User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
@@ -186,8 +184,6 @@ public class AdServiceImpl implements AdService {
         }
 
         newAd.setArticlePictures(articlePictures);
-        // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
 
         Ad savedAd = adRepository.save(newAd);
         return adMapper.adToAdPostResponseDTO(savedAd);
@@ -212,17 +208,86 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Retrieves a user's ads list
-     *
-     * @param publisherId the concerned user's id.
-     * @return a list of ads.
+     * Finds ads and maps them to AdPostResponseDTOs.
+     * 
+     * @param pageable    The pagination information.
+     * @param publisherId
+     * @return The page of AdHomeResponseDTOs.
      */
     @Override
-    public List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId) {
+    public Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
-            List<Ad> adList = adRepository.findAdsByPublisherId(publisherId);
-            return adList.stream().map(adMapper::adToAdPostResponseDTO).toList();
+            Page<Ad> adsPage = adRepository.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
+            return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * converts a page of Ad into a page of AdPostResponseDTO
+     *
+     * @param pageable The pagination information.
+     * @param adsPage  The page of Ad entities.
+     * @return The page of AdHomeResponseDTOs.
+     */
+    private Page<AdPostResponseDTO> convertToPageOfAdPostResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<AdPostResponseDTO> mappedAdsList = adsPage.stream()
+                .map(adMapper::adToAdPostResponseDTO)
+                .toList();
+        return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
+    }
+
+    /**
+     * Checks how many ads have been published by a user
+     * 
+     * @param publisherId
+     * @return The number of ads published by a user
+     */
+    @Override
+    public Long getUserAdsListLength(Long publisherId) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            return adRepository.findAdsCountByPublisherId(publisherId);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * find a list containing the last four ads sharing the same category as the
+     * current ad's
+     * 
+     * @param category
+     * @param pageable
+     * @return a list of similar ads sharing the same category
+     */
+    @Override
+    public Page<AdPostResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
+        Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
+                pageable);
+        return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+    }
+
+    /**
+     * Retrieves a user's favorites ads list.
+     *
+     * @param userId The ID of the user.
+     * @return The list of favorites ads.
+     */
+    @Override
+    public List<AdHomeResponseDTO> findFavoriteAdsByUserId(long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            List<Favorite> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user);
+            if (!favoritesAds.isEmpty()) {
+                return favoritesAds.stream().map(favoriteAd -> this.adMapper.adToAdHomeResponseDTO(favoriteAd.getAd()))
+                        .toList();
+            } else {
+                return Collections.emptyList();
+            }
         } else {
             throw new EntityNotFoundException();
         }
@@ -279,29 +344,6 @@ public class AdServiceImpl implements AdService {
             }
             if (Objects.equals(minPrice6, BigDecimal.ZERO))
                 minPrice6 = null;
-        }
-    }
-
-    /**
-     * Retrieves a user's favorites ads list.
-     *
-     * @param userId The ID of the user.
-     * @return The list of favorites ads.
-     */
-    @Override
-    public List<AdHomeResponseDTO> findFavoriteAdsByUserId(long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            List<Favorite> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user);
-            if (!favoritesAds.isEmpty()) {
-                return favoritesAds.stream().map(favoriteAd -> this.adMapper.adToAdHomeResponseDTO(favoriteAd.getAd()))
-                        .toList();
-            } else {
-                return Collections.emptyList();
-            }
-        } else {
-            throw new EntityNotFoundException();
         }
     }
 }
