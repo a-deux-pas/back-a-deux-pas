@@ -135,7 +135,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          *                    in JPQL(Java Persistence Query Language).
          * @return a page of Ad
          */
-        // TO DO :: replace findAdsByPublisherId by this method
         Page<Ad> findAdsByPublisherIdOrderByCreationDateDesc(Long publisherId, Pageable pageable);
 
         /**

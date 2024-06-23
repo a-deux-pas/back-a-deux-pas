@@ -120,6 +120,7 @@ public class AdController {
      * @param adDto
      * @return also a Dto
      */
+    // TO DO :: à revoir (fix Cloudinary branch)
     @Operation(summary = "new Ad creation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful ad creation"),
@@ -188,8 +189,6 @@ public class AdController {
         }
     }
 
-    // TO DO :: checker les exceptions (UsernameNotFoundException a rien a voir avec
-    // getSimilarAds)
     /**
      * endpoint that gets the count ads published by a user
      * 
@@ -212,8 +211,6 @@ public class AdController {
         }
     }
 
-    // TO DO :: checker les exceptions (UsernameNotFoundException a rien a voir avec
-    // getSimilarAds)
     /**
      * endpoint that gets a list of similar ads
      * 
@@ -237,7 +234,7 @@ public class AdController {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
             Page<AdPostResponseDTO> adsPage = this.adService.findSimilarAds(category, userId, publisherId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
-        } catch (UsernameNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get a list of similar ads");

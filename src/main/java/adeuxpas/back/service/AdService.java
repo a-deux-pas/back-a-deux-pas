@@ -50,18 +50,30 @@ public interface AdService {
     AdPostResponseDTO findAdById(Long adId);
 
     /**
-     * Contract to find ads posted by a specific publisher.
-     *
-     * @param publisherId The ID of the publisher.
-     * @return The list of ads posted by the publisher.
+     * Contract that returns a definite number of a user's ads
+     * 
+     * @param publisherId
+     * @param pageable
+     * @return
      */
-    List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId);
-
-    // TODO :: Ajouter doc sur les methodes
-
     Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable);
 
+    /**
+     * Contract that returns the count of a user's ads
+     * 
+     * @param publisherId
+     * @return
+     */
     Long getUserAdsListLength(Long publisherId);
 
+    /**
+     * Contract that retrieves of list of ads sharing the same category as the current one's
+     * 
+     * @param category
+     * @param publisherId
+     * @param userId
+     * @param pageable
+     * @return
+     */
     Page<AdPostResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable);
 }

@@ -156,9 +156,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
-        // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
-        // =>
+        // TODO:: A revoir (fix cloudinary branch)
         User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
@@ -205,23 +203,6 @@ public class AdServiceImpl implements AdService {
             Ad ad = optionalAd.get();
             return adMapper.adToAdPostResponseDTO(ad);
 
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    /**
-     * Retrieves a user's ads list
-     *
-     * @param publisherId the concerned user's id.
-     * @return a list of ads.
-     */
-    @Override
-    public List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId) {
-        Optional<User> optionalUser = userRepository.findById(publisherId);
-        if (optionalUser.isPresent()) {
-            List<Ad> adList = adRepository.findAdsByPublisherId(publisherId);
-            return adList.stream().map(adMapper::adToAdPostResponseDTO).toList();
         } else {
             throw new EntityNotFoundException();
         }

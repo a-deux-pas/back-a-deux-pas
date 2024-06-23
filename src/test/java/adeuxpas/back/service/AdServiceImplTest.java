@@ -315,9 +315,6 @@ class AdServiceImplTest {
         adResponse.setTitle(expectedAd.getTitle());
         adResponse.setArticleDescription(expectedAd.getArticleDescription());
         adResponse.setPrice(expectedAd.getPrice());
-        /**
-         * TO DO :: à changer pour setPublisher une fois la connexion implémentée
-         */
         adResponse.setPublisherId(expectedAd.getPublisher().getId());
         adResponse.setArticleState(expectedAd.getArticleState());
         adResponse.setStatus(expectedAd.getStatus());
@@ -350,11 +347,11 @@ class AdServiceImplTest {
         when(adMapperMock.adToAdPostResponseDTO(ad1)).thenReturn(dto1);
         when(adMapperMock.adToAdPostResponseDTO(ad2)).thenReturn(dto2);
 
-        List<AdPostResponseDTO> result = adService.findAdsByPublisherId(publisherId);
+        Page<AdPostResponseDTO> result = adService.findPageOfUserAdsList(publisherId, pageable);
 
-        assertEquals(2, result.size());
-        assertEquals(dto1, result.get(0));
-        assertEquals(dto2, result.get(1));
+        assertEquals(2, result.getNumberOfElements());
+        assertEquals(dto1, result.getContent().get(0));
+        assertEquals(dto2, result.getContent().get(1));
 
         verify(userRepositoryMock).findById(publisherId);
         verify(adRepositoryMock).findAdsByPublisherId(publisherId);
