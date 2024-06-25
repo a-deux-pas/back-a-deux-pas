@@ -19,7 +19,7 @@ import adeuxpas.back.dto.AdPostRequestDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import adeuxpas.back.dto.AdPostResponseDTO;
-
+import adeuxpas.back.enums.AdStatus;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -157,24 +157,58 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user
+     * endpoint that gets a page of ads created by a user excluding the sold and
+     * reserved ones
+     * 
+     * @param userId
+     * @param pageNumber
+     * @param pageSize
+     * @param status1
+     * @param status2
+     * @return ResponseEntity indicating if the Ads have been found
+     */
+    @Operation(summary = "a page of the user's ads list excluding the ones that are sold or reserved")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for an ad page content"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/adPageContentList/{userId}")
+    public ResponseEntity<Object> getMyAds(
+            @PathVariable long userId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "8") int pageSize) {
+        try {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            Page<AdPostResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable, AdStatus.SOLD,
+                    AdStatus.RESERVED);
+            return ResponseEntity.ok(adsPage.getContent());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * endpoint that gets a page of ads created by a user sorted so that the sold
+     * and reserved ones are the very last to be retrieved
      * 
      * @param userId
      * @param pageNumber
      * @param pageSize
      * @return ResponseEntity indicating if the Ads have been found
      */
-    @Operation(summary = "a page of the user's ads list")
+    @Operation(summary = "a page of the user's ads list sorted by their statuses so that the ones that are sold or reserved are the last called")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for the ad tab"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/list/{userId}")
-    public ResponseEntity<Object> getMyAds(@PathVariable long userId, @RequestParam(defaultValue = "0") int pageNumber,
+    @GetMapping("/adTablist/{userId}")
+    public ResponseEntity<Object> getMyAdTab(
+            @PathVariable long userId,
+            @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable);
+            Page<AdPostResponseDTO> adsPage = this.adService.getUserAdsTab(userId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -193,7 +227,8 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("count/{userId}")
-    public ResponseEntity<Object> getAdsCount(@PathVariable long userId) {
+    public ResponseEntity<Object> getAdsCount(
+            @PathVariable long userId) {
         try {
             return ResponseEntity.ok(adService.getUserAdsListLength(userId));
         } catch (UsernameNotFoundException e) {

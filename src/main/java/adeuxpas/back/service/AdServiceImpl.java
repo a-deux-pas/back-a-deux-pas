@@ -193,7 +193,7 @@ public class AdServiceImpl implements AdService {
      * @return an ad
      */
     @Override
-    public AdPostResponseDTO findAdById(Long id) {
+    public AdPostResponseDTO findAdById(long id) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (optionalAd.isPresent()) {
             Ad ad = optionalAd.get();
@@ -205,17 +205,38 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Finds ads and maps them to AdPostResponseDTOs.
+     * Finds ads and maps them into AdPostResponseDTOs.
      * 
      * @param pageable    The pagination information.
      * @param publisherId
      * @return The page of AdHomeResponseDTOs.
      */
     @Override
-    public Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
+    public Page<AdPostResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, AdStatus status1,
+            AdStatus status2) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
-            Page<Ad> adsPage = adRepository.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
+            Page<Ad> adsPage = adRepository.findAdsByPublisherIdExcludingStatuses(publisherId, pageable, status1,
+                    status2);
+            return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Finds ads that are sorted by their status anf maps them into
+     * AdPostResponseDTOs.
+     * 
+     * @param pageable    The pagination information.
+     * @param publisherId
+     * @return The page of AdHomeResponseDTOs.
+     */
+    @Override
+    public Page<AdPostResponseDTO> getUserAdsTab(long publisherId, Pageable pageable) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            Page<Ad> adsPage = adRepository.findSortedAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
             return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
         } else {
             throw new EntityNotFoundException();
@@ -243,7 +264,7 @@ public class AdServiceImpl implements AdService {
      * @return The number of ads published by a user
      */
     @Override
-    public Long getUserAdsListLength(Long publisherId) {
+    public long getUserAdsListLength(long publisherId) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
             return adRepository.findAdsCountByPublisherId(publisherId);
@@ -261,7 +282,7 @@ public class AdServiceImpl implements AdService {
      * @return a list of similar ads sharing the same category
      */
     @Override
-    public Page<AdPostResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
+    public Page<AdPostResponseDTO> findSimilarAds(String category, long publisherId, long userId, Pageable pageable) {
         Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
                 pageable);
         return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
