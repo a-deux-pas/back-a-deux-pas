@@ -347,7 +347,7 @@ class AdServiceImplTest {
                 Ad ad1 = new Ad();
                 Ad ad2 = new Ad();
                 List<Ad> adList = List.of(ad1, ad2);
-                Page<Ad> adsPage = new PageImpl<>(adList);
+                adsPage = new PageImpl<>(adList);
                 when(adRepositoryMock.findAdsByPublisherIdExcludingStatuses(publisherId, pageable, AdStatus.SOLD,
                                 AdStatus.RESERVED))
                                 .thenReturn(adsPage);
