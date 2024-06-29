@@ -274,6 +274,22 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
+     * Checks how many available ads have been published by a user
+     * 
+     * @param publisherId
+     * @return The number of ads published by a user
+     */
+    @Override
+    public long getUserAvailableAdsListLength(long publisherId) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            return adRepository.findAvailableAdsCountByPublisherId(publisherId);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
      * find a list containing the last four ads sharing the same category as the
      * current ad's
      * 

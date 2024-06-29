@@ -78,6 +78,14 @@ public interface AdService {
         long getUserAdsListLength(long publisherId);
 
         /**
+         * Contract that returns the count of a user's available ads
+         * 
+         * @param publisherId
+         * @return
+         */
+        long getUserAvailableAdsListLength(long publisherId);
+
+        /**
          * Contract that retrieves of list of ads sharing the same category as the
          * current one's
          * 
