@@ -15,7 +15,8 @@ import java.util.List;
 
 /**
  * Seeder class responsible for generating sample user entities.
- * Each user is initialized with sample data such as email, password, alias, bio etc.
+ * Each user is initialized with sample data such as email, password, alias, bio
+ * etc.
  */
 @Component
 public class UserSeeder {
@@ -36,17 +37,20 @@ public class UserSeeder {
     private String pass6;
 
     public UserSeeder(@Autowired BCryptPasswordEncoder passwordEncoder,
-                      @Autowired UserRepository userRepository) {
+            @Autowired UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
+    // TO DO : ajouter des photos de profil .webp et uploadésur Cloudinary
     /**
      * This method creates user entities.
-     * Each user is initialized with sample data such as email, password, role, status, and creation timestamp.
+     * Each user is initialized with sample data such as email, password, role,
+     * status, and creation timestamp.
+     * 
      * @return a list of users.
      */
-    public List<User> createUsers(){
+    public List<User> createUsers() {
         User first = new User();
         first.setEmail("mbardan@email.ro");
         first.setAlias("Koroviev");
@@ -79,12 +83,14 @@ public class UserSeeder {
         third.setEmail("lhadida@email.com");
         third.setPassword(passwordEncoder.encode(pass3));
         third.setAlias("Leahad");
-        third.setBio("Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
+        third.setBio(
+                "Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
         third.setCountry("France");
         third.setCity("Paris");
         third.setStreet("5, Av de la Liberte");
         third.setPostalCode("75018");
-        third.setProfilePicture("https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
+        third.setProfilePicture(
+                "https://media.licdn.com/dms/image/D4E03AQFGWeJUTwRTrg/profile-displayphoto-shrink_400_400/0/1668536321799?e=1716422400&v=beta&t=IZtxwRxoipWf34Qrv9OYUda7lHhtRWLMDOhqrcovAAA");
         third.setInscriptionDate(LocalDateTime.now());
         third.setAccountStatus(AccountStatus.ACTIVE);
         third.setRole(UserRole.USER);
@@ -98,7 +104,8 @@ public class UserSeeder {
         fourth.setCity("Lyon");
         fourth.setStreet("5, rue Gabriel Peri");
         fourth.setPostalCode("69002");
-        fourth.setProfilePicture("https://media.licdn.com/dms/image/C4D03AQEPCyzoBB3WHQ/profile-displayphoto-shrink_200_200/0/1559041227281?e=1717027200&v=beta&t=bo3fSv0ufHuLbS1IHuTLJ9YwwixGq-HCiF3CkcshrQc");
+        fourth.setProfilePicture(
+                "https://media.licdn.com/dms/image/C4D03AQEPCyzoBB3WHQ/profile-displayphoto-shrink_200_200/0/1559041227281?e=1717027200&v=beta&t=bo3fSv0ufHuLbS1IHuTLJ9YwwixGq-HCiF3CkcshrQc");
         fourth.setInscriptionDate(LocalDateTime.now());
         fourth.setAccountStatus(AccountStatus.ACTIVE);
         fourth.setRole(UserRole.ADMIN);
@@ -136,9 +143,10 @@ public class UserSeeder {
 
     /**
      * Seeds the database with sample user data.
+     * 
      * @param users the list of users to save.
      */
-    public void seedUsers(List<User> users){
+    public void seedUsers(List<User> users) {
         this.userRepository.saveAll(users);
     }
 }
