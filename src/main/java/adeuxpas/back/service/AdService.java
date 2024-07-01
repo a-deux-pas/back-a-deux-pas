@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
-import adeuxpas.back.enums.AdStatus;
 
 import java.util.List;
 
@@ -52,23 +51,25 @@ public interface AdService {
         AdPostResponseDTO findAdById(long adId);
 
         /**
-         * Contract that returns a definite number of a user's ads excluding statuses
+         * Contract that returns a definite number of a user's ads
          * 
          * @param publisherId
          * @param pageable
          * @return
          */
-        Page<AdPostResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, AdStatus status1,
-                        AdStatus status2);
+        Page<AdPostResponseDTO> findPageOfUserAdsList(String location, long publisherId, Pageable pageable);
 
-        /**
-         * 
-         * @param publisherId
-         * @param pageable
-         * @return
-         */
-        Page<AdPostResponseDTO> getUserAdsTab(long publisherId, Pageable pageable);
+        //TODO:: A virer ?
+        // /**
+        //  * Contract that returns a definite number of a user's sorted ads
+        //  * 
+        //  * @param publisherId
+        //  * @param pageable
+        //  * @return
+        //  */
+        // Page<AdPostResponseDTO> getUserAdsTab(long publisherId, Pageable pageable);
 
+         //TODO:: A virer ?
         /**
          * Contract that returns the count of a user's ads
          * 
@@ -77,6 +78,7 @@ public interface AdService {
          */
         long getUserAdsListLength(long publisherId);
 
+         //TODO:: A virer ?
         /**
          * Contract that returns the count of a user's available ads
          * 

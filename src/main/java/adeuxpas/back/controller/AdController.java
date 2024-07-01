@@ -19,7 +19,6 @@ import adeuxpas.back.dto.AdPostRequestDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import adeuxpas.back.dto.AdPostResponseDTO;
-import adeuxpas.back.enums.AdStatus;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -157,30 +156,28 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user excluding the sold and
-     * reserved ones
+     * endpoint that gets a page of ads created by a user 
      * 
+     * @param location
      * @param userId
      * @param pageNumber
      * @param pageSize
-     * @param status1
-     * @param status2
      * @return ResponseEntity indicating if the Ads have been found
      */
-    @Operation(summary = "a page of the user's ads list excluding the ones that are sold or reserved")
+    @Operation(summary = "a page of the user's ads list")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for an ad page content"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for the ad tab"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/adPageContentList/{userId}")
-    public ResponseEntity<Object> getMyAds(
+    @GetMapping("/{location}/{userId}")
+    public ResponseEntity<Object> getPaginatedAds(
+            @PathVariable String location,
             @PathVariable long userId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable, AdStatus.SOLD,
-                    AdStatus.RESERVED);
+            Page<AdPostResponseDTO> adsPage = this.adService.findPageOfUserAdsList(location, userId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -188,33 +185,39 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user sorted so that the sold
-     * and reserved ones are the very last to be retrieved
+     * endpoint that gets a list of similar ads
      * 
+     * @param category
+     * @param publisherId
      * @param userId
      * @param pageNumber
      * @param pageSize
-     * @return ResponseEntity indicating if the Ads have been found
+     * @return a list of ads sharing the same category
      */
-    @Operation(summary = "a page of the user's ads list sorted by their statuses so that the ones that are sold or reserved are the last called")
+    @Operation(summary = "list of similar ads")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for the ad tab"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/adTablist/{userId}")
-    public ResponseEntity<Object> getMyAdTab(
-            @PathVariable long userId,
+    @GetMapping("similarAdsList/{category}/{publisherId}/{userId}")
+    public ResponseEntity<Object> getSimilarAds(
+            @PathVariable String category, 
+            @PathVariable Long userId,
+            @PathVariable Long publisherId,
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "8") int pageSize) {
+            @RequestParam(defaultValue = "4") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.adService.getUserAdsTab(userId, pageable);
+            Page<AdPostResponseDTO> adsPage = this.adService.findSimilarAds(category, userId, publisherId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get a list of similar ads");
         }
     }
 
+    // TODO : apres merge de Lea, checker si cette méthode est encore necessaire
     /**
      * endpoint that gets the count of ads published by a user
      * 
@@ -238,6 +241,7 @@ public class AdController {
         }
     }
 
+    // TODO : apres merge de Lea, checker si cette méthode est encore necessaire
     /**
      * endpoint that gets the count of ads published by a user
      * 
@@ -261,33 +265,4 @@ public class AdController {
         }
     }
 
-    /**
-     * endpoint that gets a list of similar ads
-     * 
-     * @param category
-     * @param userId
-     * @param pageNumber
-     * @param pageSize
-     * @return a list of similar ads sharing the same category
-     */
-    @Operation(summary = "list of similar ads")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("similarAdsList/{category}/{publisherId}/{userId}")
-    public ResponseEntity<Object> getSimilarAds(@PathVariable String category, @PathVariable Long userId,
-            @PathVariable Long publisherId,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "4") int pageSize) {
-        try {
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.adService.findSimilarAds(category, userId, publisherId, pageable);
-            return ResponseEntity.ok(adsPage.getContent());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get a list of similar ads");
-        }
-    }
 }

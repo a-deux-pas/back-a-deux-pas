@@ -207,41 +207,46 @@ public class AdServiceImpl implements AdService {
     /**
      * Finds ads and maps them into AdPostResponseDTOs.
      * 
-     * @param pageable    The pagination information.
+     * @param location      Whether the ads are needed to be displayed on an adTab or on an adPage            
+     * @param pageable      The pagination information.
      * @param publisherId
-     * @return The page of AdHomeResponseDTOs.
+     * @return The page of AdPostResponseDTOs.
      */
     @Override
-    public Page<AdPostResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, AdStatus status1,
-            AdStatus status2) {
+    public Page<AdPostResponseDTO> findPageOfUserAdsList(String location, long publisherId, Pageable pageable) {
+        Page<Ad> adsPage;
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
-            Page<Ad> adsPage = adRepository.findAdsByPublisherIdExcludingStatuses(publisherId, pageable, status1,
-                    status2);
+            if("adTab".equals(location)) {
+                adsPage = this.adRepository.findSortedAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
+            } else {
+                adsPage = adRepository.findAvailableAdsByPublisherId(publisherId, pageable);
+            }
             return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
         } else {
             throw new EntityNotFoundException();
         }
     }
 
-    /**
-     * Finds ads that are sorted by their status anf maps them into
-     * AdPostResponseDTOs.
-     * 
-     * @param pageable    The pagination information.
-     * @param publisherId
-     * @return The page of AdHomeResponseDTOs.
-     */
-    @Override
-    public Page<AdPostResponseDTO> getUserAdsTab(long publisherId, Pageable pageable) {
-        Optional<User> optionalUser = userRepository.findById(publisherId);
-        if (optionalUser.isPresent()) {
-            Page<Ad> adsPage = adRepository.findSortedAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
-            return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
+    // A virer ?
+    // /**
+    //  * Finds ads that are sorted by their status anf maps them into
+    //  * AdPostResponseDTOs.
+    //  * 
+    //  * @param pageable    The pagination information.
+    //  * @param publisherId
+    //  * @return The page of AdHomeResponseDTOs.
+    //  */
+    // @Override
+    // public Page<AdPostResponseDTO> getUserAdsTab(long publisherId, Pageable pageable) {
+    //     Optional<User> optionalUser = userRepository.findById(publisherId);
+    //     if (optionalUser.isPresent()) {
+    //         Page<Ad> adsPage = adRepository.findSortedAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
+    //         return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+    //     } else {
+    //         throw new EntityNotFoundException();
+    //     }
+    // }
 
     /**
      * converts a page of Ad into a page of AdPostResponseDTO
