@@ -142,9 +142,8 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                         @Param("publisherId") Long publisherId,
                         Pageable pageable);
 
-                        // TODO: checker si, au lieu d'exclure les sold and reserved ad, je ne peux pas juste prendre les available
         /**
-         * Custom query that gets a page of ads created by a user
+         * Custom query that gets a page of available ads created by a user
          * but excluding the sold and reserved ones
          *
          * @param publisherId
