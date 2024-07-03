@@ -269,10 +269,10 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Checks how many ads have been published by a user
+     * Checks how many ads have been published by a user.
      * 
      * @param publisherId
-     * @return The number of ads published by a user
+     * @return The number of ads published by a user.
      */
     @Override
     public Long getUserAdsListLength(Long publisherId) {
@@ -340,7 +340,7 @@ public class AdServiceImpl implements AdService {
      *
      * @param adId       The ID of the ad.
      * @param userId     The ID of the user.
-     * @param isFavorite The new status of the ad favorite..
+     * @param isFavorite The new status of the ad favorite.
      */
     @Override
     public void updateAdFavoriteStatus(long adId, long userId, boolean isFavorite) {

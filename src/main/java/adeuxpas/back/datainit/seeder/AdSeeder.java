@@ -299,7 +299,7 @@ public class AdSeeder {
     /**
      * Seeds the database with sample ad data.
      * 
-     * @param ads the list of ads to save.
+     * @param ads The list of ads to save.
      */
     public void seedAds(List<Ad> ads) {
         this.adRepository.saveAll(ads);
@@ -308,8 +308,8 @@ public class AdSeeder {
     /**
      * Seeds the database with favorites ads.
      * 
-     * @param user the user who adds the as favorite.
-     * @param ad   the ad added as favorite.
+     * @param user The user who adds the ad as favorite.
+     * @param ad   The ad added as favorite.
      */
     private Favorite createFavoriteAd(User user, Ad ad) {
         FavoriteKey favoriteKey = new FavoriteKey(user.getId(), ad.getId());
@@ -322,8 +322,8 @@ public class AdSeeder {
      * Adds up to two ads to the user's favorites if the postal code of the ad's
      * publisher matches the user's postal code.
      *
-     * @param user list of users
-     * @param ads  lis of ads
+     * @param user The list of users.
+     * @param ads  The list of ads.
      */
     public void seedFavoritesAds(List<User> users, List<Ad> ads) {
         for (User user : users) {

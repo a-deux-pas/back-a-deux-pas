@@ -139,7 +139,7 @@ public class AdController {
     }
 
     /**
-     * endpoint that retrieves information about one Ad with its ID.
+     * Endpoint that retrieves information about one Ad with its ID.
      * 
      * @param id The ad ID.
      * @return ResponseEntity indicating if the Ad has been found.
@@ -161,7 +161,7 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user.
+     * Endpoint that gets a page of ads created by a user.
      * 
      * @param userId     The user ID.
      * @param pageNumber The page number for pagination (default is
@@ -187,7 +187,7 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets the count of ads published by a user.
+     * Endpoint that gets the count of ads published by a user.
      * 
      * @param userId The user ID.
      * @return The number of ads published by a user.
@@ -209,7 +209,7 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a list of similar ads.
+     * Endpoint that gets a list of similar ads.
      * 
      * @param category   The ad's category.
      * @param userId     The user ID.
@@ -240,10 +240,11 @@ public class AdController {
     }
 
     /**
-     * endpoint that get the ads added as favorite by a user.
+     * Endpoint that get the ads added as favorite by a user.
      *
      * @param userId The user ID.
-     * @return ResponseEntity containing the ads if found.
+     * @return ResponseEntity containing the ads with a 200 code if successful,
+     *         or a 500 Internal Server Error response if an exception occurs.
      */
     @Operation(summary = "user's favorites ads list")
     @ApiResponses(value = {
@@ -264,12 +265,11 @@ public class AdController {
     }
 
     /**
-     * endpoint that update an ad favorite status.
+     * Endpoint that update an ad favorite status.
      *
      * @param adId       the ad ID.
-     * @param isFavorite the favirite status of the ad
+     * @param isFavorite the favorite status of the ad
      * @return ResponseEntity with a 200 code if successful,
-     *         a 400 Bad Request if errors,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
     @Operation(summary = "upate an Ad favorite's status")
