@@ -40,4 +40,20 @@ public enum WeekDays {
     public Integer getDayOfWeek() {
         return dayOfWeek;
     }
+
+    /**
+     * Get the WeekDays enum corresponding to the given integer value.
+     *
+     * @param dayOfWeek The integer value representing the day of the week.
+     * @return The corresponding WeekDays enum, or null if no matching enum is
+     *         found.
+     */
+    public static WeekDays getWeekDayfromInteger(Integer dayOfWeek) {
+        for (WeekDays day : WeekDays.values()) {
+            if (day.getDayOfWeek().equals(dayOfWeek)) {
+                return day;
+            }
+        }
+        return null;
+    }
 }

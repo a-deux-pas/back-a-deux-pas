@@ -10,7 +10,8 @@ import java.util.Objects;
 
 /**
  * Entity class representing a user in the application.
- * This class encapsulates user-related information, such as email, password, profile details, account status etc.
+ * This class encapsulates user-related information, such as email, password,
+ * profile details, account status etc.
  * Instances of this class are persisted to the database by the UserRepository.
  *
  * @author Mircea Bardan
@@ -23,13 +24,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150, nullable = false)
+    @Column(unique = true, length = 150, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 150)
+    @Column(unique = true, length = 30)
     private String alias;
 
     @Column(columnDefinition = "TEXT")
@@ -47,6 +48,12 @@ public class User {
     @Column(name = "postal_code", length = 5)
     private String postalCode;
 
+    @Column(name = "bank_account_holder", length = 150)
+    private String bankAccountHolder;
+
+    @Column(name = "bank_account_number", length = 34)
+    private String bankAccountNumber;
+
     @Column(name = "profile_picture")
     private String profilePicture;
 
@@ -63,6 +70,14 @@ public class User {
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ad> ads;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PreferredSchedule> preferredSchedules;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PreferredMeetingPlace> preferredMeetingPlaces;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Notification> notifications;
 
     // getters and setters
     public long getId() {
@@ -137,6 +152,22 @@ public class User {
         this.postalCode = postalCode;
     }
 
+    public String getBankAccountHolder() {
+        return bankAccountHolder;
+    }
+
+    public void setBankAccountHolder(String bankAccountHolder) {
+        this.bankAccountHolder = bankAccountHolder;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -177,17 +208,43 @@ public class User {
         this.ads = ads;
     }
 
+    public List<PreferredSchedule> getPreferredSchedules() {
+        return preferredSchedules;
+    }
+
+    public void setPreferredSchedules(List<PreferredSchedule> preferredSchedules) {
+        this.preferredSchedules = preferredSchedules;
+    }
+
+    public List<PreferredMeetingPlace> getPreferredMeetingPlaces() {
+        return preferredMeetingPlaces;
+    }
+
+    public void setPreferredMeetingPlaces(List<PreferredMeetingPlace> preferredMeetingPlaces) {
+        this.preferredMeetingPlaces = preferredMeetingPlaces;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
     // toString
     @Override
-    public String toString(){
+    public String toString() {
         return this.email;
     }
 
     // equals
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof User user))
+            return false;
         return Objects.equals(email, user.email);
     }
 

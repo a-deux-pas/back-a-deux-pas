@@ -2,6 +2,8 @@ package adeuxpas.back.dto;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * Data Transfer Object (DTO) for representing preferred schedule.
  * <p>
@@ -9,17 +11,22 @@ import java.util.List;
  * including the days of the week, start time, end time, and user ID.
  * </p>
  * <p>
- * It is typically used to transfer preferred schedule data between different layers of the application,
+ * It is typically used to transfer preferred schedule data between different
+ * layers of the application,
  * such as between the controller and the service layer.
  * </p>
  * 
- *  @author Léa Hadida
+ * @author Léa Hadida
  */
 public class PreferredScheduleDTO {
     private Long id;
+    @NotBlank
     private List<Integer> daysOfWeek;
+    @NotBlank
     private String startTime;
+    @NotBlank
     private String endTime;
+    @NotBlank
     private Long userId;
 
     public Long getId() {
@@ -29,7 +36,7 @@ public class PreferredScheduleDTO {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public List<Integer> getDaysOfWeek() {
         return daysOfWeek;
     }
@@ -62,4 +69,3 @@ public class PreferredScheduleDTO {
         this.userId = userId;
     }
 }
-

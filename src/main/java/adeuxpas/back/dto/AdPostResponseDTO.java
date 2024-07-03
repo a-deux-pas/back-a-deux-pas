@@ -20,11 +20,14 @@ public class AdPostResponseDTO {
     private String fifthArticlePictureUrl;
     private BigDecimal price;
     private String creationDate;
-    // TO DO :: à peut-être changer une fois le processus de connexion implémenté
     private Long publisherId;
+    private String publisherAlias;
+    private String publisherInscriptionDate;
+    private String publisherCity;
     private AdStatus status;
     private String articleDescription;
     private String articleState;
+    private String category;
 
     public Long getId() {
         return id;
@@ -128,5 +131,37 @@ public class AdPostResponseDTO {
 
     public void setArticleDescription(String articleDescription) {
         this.articleDescription = articleDescription;
+    }
+
+    public String getPublisherAlias() {
+        return publisherAlias;
+    }
+
+    public void setPublisherAlias(String publisherAlias) {
+        this.publisherAlias = publisherAlias;
+    }
+
+    public String getPublisherInscriptionDate() {
+        return publisherInscriptionDate;
+    }
+
+    public void setPublisherInscriptionDate(String publisherInscriptionDate) {
+        this.publisherInscriptionDate = publisherInscriptionDate;
+    }
+
+    public String getPublisherCity() {
+        return publisherCity;
+    }
+
+    public void setPublisherCity(String publisherCity) {
+        this.publisherCity = publisherCity;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

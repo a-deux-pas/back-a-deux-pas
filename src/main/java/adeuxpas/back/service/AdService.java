@@ -23,14 +23,15 @@ public interface AdService {
     /**
      * Contract to find filtered ads and map them to AdHomeResponseDTOs.
      *
-     * @param prices           The list of price filters.
-     * @param cities           The list of city filters.
-     * @param articleStates    The list of article state filters.
-     * @param category         The category filter.
-     * @param pageable         The pagination information.
+     * @param prices        The list of price filters.
+     * @param cities        The list of city filters.
+     * @param articleStates The list of article state filters.
+     * @param category      The category filter.
+     * @param pageable      The pagination information.
      * @return The page of AdHomeResponseDTOs.
      */
-    Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> prices, List<String> cities, List<String> articleStates, String category, Pageable pageable);
+    Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> prices, List<String> cities,
+            List<String> articleStates, String category, Pageable pageable);
 
     /**
      * Contract to post an ad.
@@ -49,11 +50,30 @@ public interface AdService {
     AdPostResponseDTO findAdById(Long adId);
 
     /**
-     * Contract to find ads posted by a specific publisher.
-     *
-     * @param publisherId The ID of the publisher.
-     * @return The list of ads posted by the publisher.
+     * Contract that returns a definite number of a user's ads
+     * 
+     * @param publisherId
+     * @param pageable
+     * @return
      */
-    List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId);
+    Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable);
 
+    /**
+     * Contract that returns the count of a user's ads
+     * 
+     * @param publisherId
+     * @return
+     */
+    Long getUserAdsListLength(Long publisherId);
+
+    /**
+     * Contract that retrieves of list of ads sharing the same category as the current one's
+     * 
+     * @param category
+     * @param publisherId
+     * @param userId
+     * @param pageable
+     * @return
+     */
+    Page<AdPostResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable);
 }

@@ -1,4 +1,5 @@
 package adeuxpas.back.service;
+
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.entity.User;
@@ -11,6 +12,7 @@ import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -19,9 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import adeuxpas.back.dto.AdHomeResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -59,8 +58,8 @@ public class AdServiceImpl implements AdService {
     private final AdMapper adMapper;
 
     public AdServiceImpl(@Autowired UserRepository userRepository,
-                         @Autowired AdRepository adRepository,
-                         @Autowired AdMapper adMapper) {
+            @Autowired AdRepository adRepository,
+            @Autowired AdMapper adMapper) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
         this.adMapper = adMapper;
@@ -69,16 +68,17 @@ public class AdServiceImpl implements AdService {
     /**
      * Finds filtered ads and maps them to AdHomeResponseDTOs.
      *
-     * @param priceRangesFilter        The list of price range filters.
+     * @param priceRangesFilter          The list of price range filters.
      * @param citiesAndPostalCodesFilter The list of city and postal code filters.
-     * @param articleStatesFilter      The list of article state filters.
-     * @param categoryFilter           The category filter.
-     * @param pageable                 The pagination information.
+     * @param articleStatesFilter        The list of article state filters.
+     * @param categoryFilter             The category filter.
+     * @param pageable                   The pagination information.
      * @return The page of AdHomeResponseDTOs.
      */
     @Override
-    public Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
-                                                                  List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
+    public Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> priceRangesFilter,
+            List<String> citiesAndPostalCodesFilter,
+            List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
 
         // if no filter is checked, return all ads
         if (shouldReturnAllAds(priceRangesFilter, citiesAndPostalCodesFilter, articleStatesFilter, categoryFilter)) {
@@ -108,14 +108,14 @@ public class AdServiceImpl implements AdService {
         gender = null;
         extractAndAssignCategoryFilterCriteria(categoryFilter);
 
-        // passing the formatted filtering criteria to the query and saving the result to a page
+        // passing the formatted filtering criteria to the query and saving the result
+        // to a page
         Page<Ad> filteredAds = this.adRepository.findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                 postalCodes.isEmpty() ? null : postalCodes,
                 articleStatesFilter.isEmpty() ? null : articleStatesFilter,
                 maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
                 minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
-                category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable
-        );
+                category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable);
         return this.convertToPageOfAdHomeResponseDTOs(pageable, filteredAds);
     }
 
@@ -127,7 +127,8 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public Page<AdHomeResponseDTO> findAllAdHomeResponseDTOs(Pageable pageable) {
-        Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses, acceptedAccountStatuses, pageable);
+        Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses,
+                acceptedAccountStatuses, pageable);
         return this.convertToPageOfAdHomeResponseDTOs(pageable, myAds);
     }
 
@@ -153,9 +154,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
-        // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
-        // =>
+        // TODO:: A revoir (fix cloudinary branch)
         User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
 
@@ -182,8 +181,6 @@ public class AdServiceImpl implements AdService {
         }
 
         newAd.setArticlePictures(articlePictures);
-        // TODO:: A revoir apres implémentation du processus de connexion pour l'
-        // utilisation de MapStruct (Ad newAd = mapper.adPostDtoToAd(adPostRequestDTO);)
 
         Ad savedAd = adRepository.save(newAd);
         return adMapper.adToAdPostResponseDTO(savedAd);
@@ -208,25 +205,72 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Retrieves a user's ads list
-     *
-     * @param publisherId the concerned user's id.
-     * @return a list of ads.
+     * Finds ads and maps them to AdPostResponseDTOs.
+     * 
+     * @param pageable    The pagination information.
+     * @param publisherId
+     * @return The page of AdHomeResponseDTOs.
      */
     @Override
-    public List<AdPostResponseDTO> findAdsByPublisherId(Long publisherId) {
+    public Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
-            List<Ad> adList = adRepository.findAdsByPublisherId(publisherId);
-            return adList.stream().map(adMapper::adToAdPostResponseDTO).toList();
+            Page<Ad> adsPage = adRepository.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
+            return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
         } else {
             throw new EntityNotFoundException();
         }
     }
 
-    // ==================== parameter extraction and formatting helper methods =======================
+    /**
+     * converts a page of Ad into a page of AdPostResponseDTO
+     *
+     * @param pageable The pagination information.
+     * @param adsPage  The page of Ad entities.
+     * @return The page of AdHomeResponseDTOs.
+     */
+    private Page<AdPostResponseDTO> convertToPageOfAdPostResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<AdPostResponseDTO> mappedAdsList = adsPage.stream()
+                .map(adMapper::adToAdPostResponseDTO)
+                .toList();
+        return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
+    }
+
+    /**
+     * Checks how many ads have been published by a user
+     * 
+     * @param publisherId
+     * @return The number of ads published by a user
+     */
+    @Override
+    public Long getUserAdsListLength(Long publisherId) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            return adRepository.findAdsCountByPublisherId(publisherId);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * find a list containing the last four ads sharing the same category as the
+     * current ad's
+     * 
+     * @param category
+     * @param pageable
+     * @return a list of similar ads sharing the same category
+     */
+    @Override
+    public Page<AdPostResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
+        Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
+                pageable);
+        return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+    }
+
+    // ==================== parameter extraction and formatting helper methods
+    // =======================
     private boolean shouldReturnAllAds(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
-                                       List<String> articleStatesFilter, String categoryFilter) {
+            List<String> articleStatesFilter, String categoryFilter) {
         return priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
                 articleStatesFilter.isEmpty() && categoryFilter.equals("Catégorie");
     }
@@ -235,11 +279,11 @@ public class AdServiceImpl implements AdService {
         if (categoryFilter.contains("▸")) {
             category = categoryFilter.substring(0, categoryFilter.indexOf(" ▸"));
             if (categoryFilter.indexOf("▸") != categoryFilter.lastIndexOf("▸")) {
-                subcategory = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1, categoryFilter.lastIndexOf(" ▸")).trim();
+                subcategory = categoryFilter
+                        .substring(categoryFilter.indexOf("▸ ") + 1, categoryFilter.lastIndexOf(" ▸")).trim();
                 gender = categoryFilter.substring(categoryFilter.lastIndexOf("▸ ") + 1).trim();
             } else
-                subcategory
-                        = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1).trim();
+                subcategory = categoryFilter.substring(categoryFilter.indexOf("▸ ") + 1).trim();
         } else
             category = categoryFilter.equals("Catégorie") ? null : categoryFilter;
     }
@@ -272,7 +316,8 @@ public class AdServiceImpl implements AdService {
                 default:
                     throw new IllegalStateException("Unexpected value: " + priceRange);
             }
-            if (Objects.equals(minPrice6, BigDecimal.ZERO)) minPrice6 = null;
+            if (Objects.equals(minPrice6, BigDecimal.ZERO))
+                minPrice6 = null;
         }
     }
 }
