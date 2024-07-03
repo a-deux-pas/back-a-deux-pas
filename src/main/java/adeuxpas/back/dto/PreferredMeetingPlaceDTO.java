@@ -19,7 +19,7 @@ import jakarta.validation.constraints.*;
 public class PreferredMeetingPlaceDTO {
     private Long id;
     @NotBlank
-    @Size(max = 5)
+    @Size(min = 5, max = 5)
     private String postalCode;
     @NotBlank
     private String city;

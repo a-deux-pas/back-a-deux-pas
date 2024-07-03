@@ -73,13 +73,35 @@ public class UserController {
     }
 
     /**
-     * Endpoint to access the user's alias and sellers nearby.
+     * Endpoint to access the user's alias.
      *
-     * @param id the user id
-     * @return a ResponseEntity with the user's alias and sellers nearby
+     * @param id the user ID
+     * @return a ResponseEntity with the user's alias, city and postal code.
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "Retrieves user's alias and sellers nearby")
+    @Operation(summary = "Retrieves user's alias")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of sellers"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("{id}/alias-and-location")
+    public ResponseEntity<Object> getUserAliasAndLocation(@PathVariable long id) {
+        try {
+            return ResponseEntity.ok(this.userService.getUserAliasAndLocation(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint to access the sellers nearby.
+     *
+     * @param id the user ID
+     * @return a ResponseEntity with the sellers which have the same postal code
+     *         as the user
+     *         or a 500 Internal Server Error response if an exception occurs.
+     */
+    @Operation(summary = "Retrieves sellers nearby from a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of sellers"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
