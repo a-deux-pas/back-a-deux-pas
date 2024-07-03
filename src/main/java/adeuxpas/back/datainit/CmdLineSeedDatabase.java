@@ -71,9 +71,7 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
 
         List<Ad> ads = this.adSeeder.createAds(users);
         this.adSeeder.seedAds(ads);
-
-        this.adSeeder.createFavoriteAd((users.get(2)), ads.get(1));
-        this.adSeeder.createFavoriteAd((users.get(2)), ads.get(10));
+        this.adSeeder.seedFavoritesAds(users, ads);
 
         this.articlePictureSeeder.seedArticlePictures(ads);
 

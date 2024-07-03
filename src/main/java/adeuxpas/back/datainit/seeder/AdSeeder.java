@@ -311,10 +311,31 @@ public class AdSeeder {
      * @param user the user who adds the as favorite.
      * @param ad   the ad added as favorite.
      */
-    public Favorite createFavoriteAd(User user, Ad ad) {
+    private Favorite createFavoriteAd(User user, Ad ad) {
         FavoriteKey favoriteKey = new FavoriteKey(user.getId(), ad.getId());
         Favorite favoriteAd = new Favorite(favoriteKey, user, ad, LocalDateTime.now());
         this.favoriteRepository.save(favoriteAd);
         return favoriteAd;
+    }
+
+    /**
+     * Adds up to two ads to the user's favorites if the postal code of the ad's
+     * publisher matches the user's postal code.
+     *
+     * @param user list of users
+     * @param ads  lis of ads
+     */
+    public void seedFavoritesAds(List<User> users, List<Ad> ads) {
+        for (User user : users) {
+            List<Ad> matchedAds = ads.stream()
+                    .filter(ad -> !ad.getPublisher().equals(user)
+                            && ad.getPublisher().getPostalCode().equals(user.getPostalCode()))
+                    .limit(2)
+                    .toList();
+
+            for (Ad ad : matchedAds) {
+                createFavoriteAd(user, ad);
+            }
+        }
     }
 }
