@@ -1,6 +1,6 @@
 package adeuxpas.back.dto.mapper;
 
-import adeuxpas.back.dto.AdHomeResponseDTO;
+import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.dto.AdPostRequestDTO;
@@ -13,6 +13,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
 /**
  * Mapper interface for mapping Ad entities to DTOs (Data Transfer Objects).
@@ -33,20 +34,20 @@ import org.mapstruct.Named;
  * </p>
  *
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdMapper {
 
     /**
-     * Maps an ad entity to an adHomeResponseDTO
+     * Maps an ad entity to an AdCardResponseDTO
      *
      * @param ad
-     * @return adHomeResponseDTO
-     * @see AdHomeResponseDTO
+     * @return AdCardResponseDTO
+     * @see AdCardResponseDTO
      */
     @Mapping(source = "articlePictures", target = "firstArticlePictureUrl", qualifiedByName = "findFirstArticlePictureUrl")
     @Mapping(source = "publisher.alias", target = "publisherAlias")
     @Mapping(source = "publisher.id", target = "publisherId")
-    AdHomeResponseDTO adToAdHomeResponseDTO(Ad ad);
+    AdCardResponseDTO adToAdCardResponseDTO(Ad ad);
 
     /**
      * Maps an ad entity to an adPostResponseDTO

@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.AdHomeResponseDTO;
+import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
 
 import java.util.HashMap;
@@ -16,9 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.FavoriteStatusRequestDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import adeuxpas.back.dto.AdPostResponseDTO;
 
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,18 +66,20 @@ public class AdController {
      * with an error message in the response body.
      * </p>
      *
-     * @param priceRangesFilter          the list of price ranges to filter ads by
-     * @param citiesAndPostalCodesFilter the list of cities and postal codes to
-     *                                   filter ads by
-     * @param articleStatesFilter        the list of article states to filter ads by
-     * @param categoryFilter             the category to filter ads by
-     * @param pageNumber                 the page number for pagination (default is
-     *                                   0)
-     * @param pageSize                   the page size for pagination (default is 8)
-     * @return a ResponseEntity containing the paginated list of ads if successful,
-     *         or a 500 Internal Server Error response if an exception occurs
+     * @param priceRangesFilter          The list of price ranges to filter ads by.
+     * @param citiesAndPostalCodesFilter The list of cities and postal codes to
+     *                                   filter ads by.
+     * @param articleStatesFilter        The list of article states to filter ads
+     *                                   by.
+     * @param categoryFilter             The category to filter ads by.
+     * @param loggedInUserId             The ID of the logged-in user.
+     * @param pageNumber                 The page number for pagination (default is
+     *                                   0).
+     * @param pageSize                   The page size for pagination (default is 8)
+     * @return A ResponseEntity containing the paginated list of ads if successful,
+     *         or a 500 Internal Server Error response if an exception occurs.
      *
-     * @see AdService#findFilteredAdHomeResponseDTOs(List, List, List, String,
+     * @see AdService#findFilteredAdCardResponseDTOs(List, List, List, String, Long,
      *      Pageable)
      */
     @Operation(summary = "Retrieves a paginated list of ads based on specified filters")
@@ -85,19 +87,21 @@ public class AdController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of ads"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping(value = "/list", params = { "priceRanges", "citiesAndPostalCodes", "articleStates", "category" })
+    @GetMapping(value = "/list", params = { "priceRanges", "citiesAndPostalCodes", "articleStates", "category",
+            "loggedInUserId" })
     public ResponseEntity<Object> getAdsPage(
             @RequestParam("priceRanges") List<String> priceRangesFilter,
             @RequestParam("citiesAndPostalCodes") List<String> citiesAndPostalCodesFilter,
             @RequestParam("articleStates") List<String> articleStatesFilter,
             @RequestParam("category") String categoryFilter,
+            @RequestParam(value = "loggedInUserId", required = false) Long loggedInUserId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdHomeResponseDTO> adsPage = this.adService.findFilteredAdHomeResponseDTOs(priceRangesFilter,
+            Page<AdCardResponseDTO> adsPage = this.adService.findFilteredAdCardResponseDTOs(priceRangesFilter,
                     citiesAndPostalCodesFilter,
-                    articleStatesFilter, categoryFilter, pageable);
+                    articleStatesFilter, categoryFilter, loggedInUserId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -107,10 +111,10 @@ public class AdController {
     /**
      * Endpoint getting a Dto to transform it into an Ad object that will be saved
      * in the database before using it to get a ResponseDto to send to the
-     * front-end
+     * front-end.
      *
-     * @param adDto
-     * @return also a Dto
+     * @param adDto The AdDTO.
+     * @return The AdDTO.
      */
     // TO DO :: à revoir (fix Cloudinary branch)
     @Operation(summary = "new Ad creation")
@@ -130,15 +134,15 @@ public class AdController {
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad");
         }
     }
 
     /**
-     * endpoint that retrieves information about one Ad with its id
+     * endpoint that retrieves information about one Ad with its ID.
      * 
-     * @param id
-     * @return ResponseEntity indicating if the Ad has been found
+     * @param id The ad ID.
+     * @return ResponseEntity indicating if the Ad has been found.
      */
     @Operation(summary = "ad details")
     @ApiResponses(value = {
@@ -157,12 +161,13 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user
+     * endpoint that gets a page of ads created by a user.
      * 
-     * @param userId
-     * @param pageNumber
-     * @param pageSize
-     * @return ResponseEntity indicating if the Ads have been found
+     * @param userId     The user ID.
+     * @param pageNumber The page number for pagination (default is
+     *                   0).
+     * @param pageSize   The page size for pagination (default is 8).
+     * @return ResponseEntity indicating if the Ads have been found.
      */
     @Operation(summary = "a page of the user's ads list")
     @ApiResponses(value = {
@@ -174,7 +179,7 @@ public class AdController {
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -182,10 +187,10 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets the count of ads published by a user
+     * endpoint that gets the count of ads published by a user.
      * 
-     * @param userId
-     * @return The number of ads published by a user
+     * @param userId The user ID.
+     * @return The number of ads published by a user.
      */
     @Operation(summary = "the number of ads published by a user")
     @ApiResponses(value = {
@@ -204,13 +209,14 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a list of similar ads
+     * endpoint that gets a list of similar ads.
      * 
-     * @param category
-     * @param userId
-     * @param pageNumber
-     * @param pageSize
-     * @return a list of similar ads sharing the same category
+     * @param category   The ad's category.
+     * @param userId     The user ID.
+     * @param pageNumber The page number for pagination (default is
+     *                   0).
+     * @param pageSize   The page size for pagination (default is 8).
+     * @return a list of similar ads sharing the same category.
      */
     @Operation(summary = "list of similar ads")
     @ApiResponses(value = {
@@ -224,7 +230,7 @@ public class AdController {
             @RequestParam(defaultValue = "4") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdPostResponseDTO> adsPage = this.adService.findSimilarAds(category, userId, publisherId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findSimilarAds(category, userId, publisherId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -234,10 +240,10 @@ public class AdController {
     }
 
     /**
-     * endpoint that get the ads added as favorite by a user
+     * endpoint that get the ads added as favorite by a user.
      *
-     * @param userId
-     * @return ResponseEntity containing the ads if found
+     * @param userId The user ID.
+     * @return ResponseEntity containing the ads if found.
      */
     @Operation(summary = "user's favorites ads list")
     @ApiResponses(value = {
@@ -245,9 +251,40 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/favorites/{userId}")
-    public ResponseEntity<Object> getUserFavoritesAds(@PathVariable long userId) {
+    public ResponseEntity<Object> getUserFavoritesAds(
+            @PathVariable long userId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "12") int pageSize) {
         try {
-            return ResponseEntity.ok(adService.findFavoriteAdsByUserId(userId));
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            return ResponseEntity.ok(adService.findFavoriteAdsByUserId(userId, pageable).getContent());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * endpoint that update an ad favorite status.
+     *
+     * @param adId       the ad ID.
+     * @param isFavorite the favirite status of the ad
+     * @return ResponseEntity with a 200 code if successful,
+     *         a 400 Bad Request if errors,
+     *         or a 500 Internal Server Error response if an exception occurs.
+     */
+    @Operation(summary = "upate an Ad favorite's status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Favorite status updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PutMapping("/{adId}/favorite/{userId}")
+    public ResponseEntity<Object> updateAdFavoriteStatus(
+            @PathVariable long adId,
+            @PathVariable long userId,
+            @RequestBody FavoriteStatusRequestDTO isFavorite) {
+        try {
+            adService.updateAdFavoriteStatus(adId, userId, isFavorite.isFavorite());
+            return ResponseEntity.ok("favorite status updated successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
