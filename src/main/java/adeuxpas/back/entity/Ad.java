@@ -57,7 +57,7 @@ public class Ad {
     private List<ArticlePicture> articlePictures;
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Favorite> usersFavorite;
+    private Set<UsersFavoriteAds> usersFavorite;
 
     // getters and setters
     public Long getId() {
@@ -156,11 +156,11 @@ public class Ad {
         this.articlePictures = articlePictures;
     }
 
-    public Set<Favorite> getUsersFavorite() {
+    public Set<UsersFavoriteAds> getUsersFavorite() {
         return usersFavorite;
     }
 
-    public void setUsersFavorite(Set<Favorite> usersFavorite) {
+    public void setUsersFavorite(Set<UsersFavoriteAds> usersFavorite) {
         this.usersFavorite = usersFavorite;
     }
 

@@ -79,7 +79,7 @@ public class User {
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Favorite> favoritesAds;
+    private Set<UsersFavoriteAds> favoritesAds;
 
     // getters and setters
     public long getId() {
@@ -234,11 +234,11 @@ public class User {
         this.notifications = notifications;
     }
 
-    public Set<Favorite> getFavoritesAds() {
+    public Set<UsersFavoriteAds> getFavoritesAds() {
         return favoritesAds;
     }
 
-    public void setFavoritesAds(Set<Favorite> favoritesAds) {
+    public void setFavoritesAds(Set<UsersFavoriteAds> favoritesAds) {
         this.favoritesAds = favoritesAds;
     }
 

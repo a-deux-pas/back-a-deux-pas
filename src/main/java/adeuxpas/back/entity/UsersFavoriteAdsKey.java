@@ -8,23 +8,24 @@ import jakarta.persistence.Embeddable;
 /**
  * Embeddable class representing the composite key for favorite.
  * Contains the user's id and the ad's id.
- * Used as embedded key in the {@link Favorite} entity to map the many-to-many
+ * Used as embedded key in the {@link UsersFavoriteAds} entity to map the
+ * many-to-many
  * relationship between users and ads.
  * 
  * @author Léa Hadida
  */
 
 @Embeddable
-public class FavoriteKey implements Serializable {
+public class UsersFavoriteAdsKey implements Serializable {
 
     private Long userId;
 
     private Long adId;
 
-    public FavoriteKey() {
+    public UsersFavoriteAdsKey() {
     }
 
-    public FavoriteKey(Long userId, Long adId) {
+    public UsersFavoriteAdsKey(Long userId, Long adId) {
         this.userId = userId;
         this.adId = adId;
     }
@@ -51,7 +52,7 @@ public class FavoriteKey implements Serializable {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        FavoriteKey that = (FavoriteKey) o;
+        UsersFavoriteAdsKey that = (UsersFavoriteAdsKey) o;
         return Objects.equals(userId, that.userId) &&
                 Objects.equals(adId, that.adId);
     }

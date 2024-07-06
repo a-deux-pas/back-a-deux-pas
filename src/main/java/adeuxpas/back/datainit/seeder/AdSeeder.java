@@ -1,12 +1,12 @@
 package adeuxpas.back.datainit.seeder;
 
 import adeuxpas.back.entity.Ad;
-import adeuxpas.back.entity.Favorite;
-import adeuxpas.back.entity.FavoriteKey;
+import adeuxpas.back.entity.UsersFavoriteAds;
+import adeuxpas.back.entity.UsersFavoriteAdsKey;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
-import adeuxpas.back.repository.FavoriteRepository;
+import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ import java.util.List;
 public class AdSeeder {
 
     private final AdRepository adRepository;
-    private final FavoriteRepository favoriteRepository;
+    private final UsersFavoriteAdsRepository favoriteRepository;
 
     /**
      * Constructs a new AdSeeder with the provided AdRepository.
@@ -34,7 +34,7 @@ public class AdSeeder {
      * @param adRepository the AdRepository to be used for database seeding
      *                     operations.
      */
-    AdSeeder(@Autowired AdRepository adRepository, @Autowired FavoriteRepository favoriteRepository) {
+    AdSeeder(@Autowired AdRepository adRepository, @Autowired UsersFavoriteAdsRepository favoriteRepository) {
         this.adRepository = adRepository;
         this.favoriteRepository = favoriteRepository;
     }
@@ -311,9 +311,9 @@ public class AdSeeder {
      * @param user The user who adds the ad as favorite.
      * @param ad   The ad added as favorite.
      */
-    private Favorite createFavoriteAd(User user, Ad ad) {
-        FavoriteKey favoriteKey = new FavoriteKey(user.getId(), ad.getId());
-        Favorite favoriteAd = new Favorite(favoriteKey, user, ad, LocalDateTime.now());
+    private UsersFavoriteAds createFavoriteAd(User user, Ad ad) {
+        UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(user.getId(), ad.getId());
+        UsersFavoriteAds favoriteAd = new UsersFavoriteAds(favoriteKey, user, ad, LocalDateTime.now());
         this.favoriteRepository.save(favoriteAd);
         return favoriteAd;
     }

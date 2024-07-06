@@ -2,8 +2,8 @@ package adeuxpas.back.service;
 
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
-import adeuxpas.back.entity.Favorite;
-import adeuxpas.back.entity.FavoriteKey;
+import adeuxpas.back.entity.UsersFavoriteAds;
+import adeuxpas.back.entity.UsersFavoriteAdsKey;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
@@ -11,7 +11,7 @@ import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.repository.AdRepository;
-import adeuxpas.back.repository.FavoriteRepository;
+import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +56,12 @@ public class AdServiceImpl implements AdService {
 
     private final UserRepository userRepository;
     private final AdRepository adRepository;
-    private final FavoriteRepository favoriteRepository;
+    private final UsersFavoriteAdsRepository favoriteRepository;
     private final AdMapper adMapper;
 
     public AdServiceImpl(@Autowired UserRepository userRepository,
             @Autowired AdRepository adRepository,
-            @Autowired FavoriteRepository favoriteRepository,
+            @Autowired UsersFavoriteAdsRepository favoriteRepository,
             @Autowired AdMapper adMapper) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
@@ -300,14 +300,14 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Converts a page of Favorite entities to a page of AdCardResponseDTOs.
+     * Converts a page of UsersFavoriteAds entities to a page of AdCardResponseDTOs.
      *
      * @param pageable     The pagination information.
-     * @param favoritesAds The page of Favorite entities.
+     * @param favoritesAds The page of UsersFavoriteAds entities.
      * @return The page of AdCardResponseDTOs.
      */
     private Page<AdCardResponseDTO> convertFavoritesToPageOfAdCardResponseDTOs(Pageable pageable,
-            Page<Favorite> favoritesAds) {
+            Page<UsersFavoriteAds> favoritesAds) {
         List<AdCardResponseDTO> mappedFavoritesAds = favoritesAds.stream()
                 .map(favoriteAd -> {
                     AdCardResponseDTO dto = this.adMapper.adToAdCardResponseDTO(favoriteAd.getAd());
@@ -328,7 +328,7 @@ public class AdServiceImpl implements AdService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Page<Favorite> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user, pageable);
+            Page<UsersFavoriteAds> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user, pageable);
             return this.convertFavoritesToPageOfAdCardResponseDTOs(pageable, favoritesAds);
         } else {
             throw new EntityNotFoundException();
@@ -348,10 +348,10 @@ public class AdServiceImpl implements AdService {
         Optional<User> optionalUser = userRepository.findById(userId);
 
         if (optionalUser.isPresent() && optionalAd.isPresent()) {
-            FavoriteKey favoriteKey = new FavoriteKey(userId, adId);
-            Optional<Favorite> optionalFavorite = favoriteRepository.findById(favoriteKey);
+            UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(userId, adId);
+            Optional<UsersFavoriteAds> optionalFavorite = favoriteRepository.findById(favoriteKey);
             if (!optionalFavorite.isPresent()) {
-                Favorite newFavorite = new Favorite(favoriteKey, optionalUser.get(), optionalAd.get(),
+                UsersFavoriteAds newFavorite = new UsersFavoriteAds(favoriteKey, optionalUser.get(), optionalAd.get(),
                         LocalDateTime.now());
                 favoriteRepository.save(newFavorite);
             } else {

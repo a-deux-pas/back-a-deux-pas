@@ -15,11 +15,11 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "users_favorite_ads")
-public class Favorite {
+public class UsersFavoriteAds {
 
     // combination of the user's id and the ad's id
     @EmbeddedId
-    private FavoriteKey id;
+    private UsersFavoriteAdsKey id;
 
     @ManyToOne
     @MapsId("userId")
@@ -34,21 +34,21 @@ public class Favorite {
     @Column(name = "added_at", nullable = false)
     private LocalDateTime addedAt;
 
-    public Favorite() {
+    public UsersFavoriteAds() {
     }
 
-    public Favorite(FavoriteKey id, User user, Ad ad, LocalDateTime addedAt) {
+    public UsersFavoriteAds(UsersFavoriteAdsKey id, User user, Ad ad, LocalDateTime addedAt) {
         this.id = id;
         this.user = user;
         this.ad = ad;
         this.addedAt = addedAt;
     }
 
-    public FavoriteKey getId() {
+    public UsersFavoriteAdsKey getId() {
         return id;
     }
 
-    public void setId(FavoriteKey id) {
+    public void setId(UsersFavoriteAdsKey id) {
         this.id = id;
     }
 
