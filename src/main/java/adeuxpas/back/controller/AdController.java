@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.FavoriteStatusRequestDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
@@ -272,7 +271,7 @@ public class AdController {
      * @return ResponseEntity with a 200 code if successful,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "upate an Ad favorite's status")
+    @Operation(summary = "update an Ad favorite's status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Favorite status updated successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -281,10 +280,10 @@ public class AdController {
     public ResponseEntity<Object> updateAdFavoriteStatus(
             @PathVariable long adId,
             @PathVariable long userId,
-            @RequestBody FavoriteStatusRequestDTO isFavorite) {
+            @RequestBody boolean isFavorite) {
         try {
-            adService.updateAdFavoriteStatus(adId, userId, isFavorite.isFavorite());
-            return ResponseEntity.ok("favorite status updated successfully");
+            adService.updateAdFavoriteStatus(adId, userId, isFavorite);
+            return ResponseEntity.ok("Favorite status updated successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
+import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -54,7 +54,7 @@ public class UserController {
      *         if successful, or a 500 Internal Server Error response if an
      *         exception occurs
      *
-     * @see CityAndPostalCodeResponseDTO
+     * @see UserAliasAndLocationResponseDTO
      */
     @Operation(summary = "Retrieves a set of unique cities and postal codes")
     @ApiResponses(value = {
@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping("/cities-and-postal-codes")
     public ResponseEntity<Object> getUniqueCitiesAndPostalCodes() {
         try {
-            Set<CityAndPostalCodeResponseDTO> cityAndPostalCodeResponseDTOs = this.userService
+            Set<UserAliasAndLocationResponseDTO> cityAndPostalCodeResponseDTOs = this.userService
                     .getUniqueCitiesAndPostalCodes();
             return ResponseEntity.ok(cityAndPostalCodeResponseDTOs);
         } catch (Exception e) {

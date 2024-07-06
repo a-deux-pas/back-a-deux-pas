@@ -1,5 +1,7 @@
 package adeuxpas.back.dto;
 
+import java.util.Objects;
+
 /**
  * Data Transfer Object (DTO) for representing a user alias and their location.
  * <p>
@@ -40,5 +42,19 @@ public class UserAliasAndLocationResponseDTO {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof UserAliasAndLocationResponseDTO that))
+            return false;
+        return Objects.equals(city, that.city) && Objects.equals(postalCode, that.postalCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(city, postalCode);
     }
 }

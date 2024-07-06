@@ -15,18 +15,9 @@ package adeuxpas.back.dto;
  * @author Léa Hadida
  */
 public class SellerHomeResponseDTO {
-    private String id;
     private String alias;
     private String city;
     private String salesNumber;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getAlias() {
         return alias;

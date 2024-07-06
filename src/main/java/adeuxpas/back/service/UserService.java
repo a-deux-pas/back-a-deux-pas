@@ -1,6 +1,5 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.SellerHomeResponseDTO;
@@ -81,7 +80,7 @@ public interface UserService {
      * 
      * @return a set of CityAndPostalCodeResponseDTOs.
      */
-    Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes();
+    Set<UserAliasAndLocationResponseDTO> getUniqueCitiesAndPostalCodes();
 
     /**
      * Abstract method that attempts to find the user's alias, city and postal code.

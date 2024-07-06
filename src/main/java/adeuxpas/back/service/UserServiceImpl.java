@@ -1,6 +1,5 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.dto.NotificationDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
@@ -255,9 +254,9 @@ public class UserServiceImpl implements UserService {
      * @return a set of CityAndPostalCodeResponseDTOs.
      */
     @Override
-    public Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes() {
+    public Set<UserAliasAndLocationResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
-        return users.stream().map(userMapper::userToCityAndPostalCodeDTO).collect(Collectors.toSet());
+        return users.stream().map(userMapper::userToAliasAndLocationDTO).collect(Collectors.toSet());
     }
 
     /**

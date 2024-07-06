@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.dto.NotificationDTO;
 import org.mapstruct.*;
 
@@ -156,14 +155,6 @@ public interface UserMapper {
     default EventNames convertStringToEventName(String value) {
         return EventNames.getEventNamefromString(value);
     }
-
-    /**
-     * Maps a user entity to a CityAndPostalCodeResponseDTO.
-     *
-     * @param user The user to be mapped.
-     * @return The mapped CityAndPostalCodeResponseDTO.
-     */
-    CityAndPostalCodeResponseDTO userToCityAndPostalCodeDTO(User user);
 
     /**
      * Maps a user entity to a UserAliasAndLocationResponseDTO.
