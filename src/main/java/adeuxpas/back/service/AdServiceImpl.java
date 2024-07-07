@@ -2,6 +2,8 @@ package adeuxpas.back.service;
 
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
+import adeuxpas.back.entity.UsersFavoriteAds;
+import adeuxpas.back.entity.UsersFavoriteAdsKey;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
@@ -9,6 +11,7 @@ import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +19,11 @@ import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import adeuxpas.back.dto.AdHomeResponseDTO;
+import java.util.*;
+
+import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 /**
  * Implementation class for the AdService interface.
@@ -55,34 +56,46 @@ public class AdServiceImpl implements AdService {
 
     private final UserRepository userRepository;
     private final AdRepository adRepository;
+    private final UsersFavoriteAdsRepository favoriteRepository;
     private final AdMapper adMapper;
 
     public AdServiceImpl(@Autowired UserRepository userRepository,
             @Autowired AdRepository adRepository,
+            @Autowired UsersFavoriteAdsRepository favoriteRepository,
             @Autowired AdMapper adMapper) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
+        this.favoriteRepository = favoriteRepository;
         this.adMapper = adMapper;
     }
 
     /**
-     * Finds filtered ads and maps them to AdHomeResponseDTOs.
+     * Finds filtered ads and maps them to AdCardResponseDTOs.
      *
      * @param priceRangesFilter          The list of price range filters.
      * @param citiesAndPostalCodesFilter The list of city and postal code filters.
      * @param articleStatesFilter        The list of article state filters.
      * @param categoryFilter             The category filter.
+     * @param loggedInUserId             The ID of the logged-in user.
      * @param pageable                   The pagination information.
-     * @return The page of AdHomeResponseDTOs.
+     * @return The page of AdCardResponseDTOs.
      */
     @Override
-    public Page<AdHomeResponseDTO> findFilteredAdHomeResponseDTOs(List<String> priceRangesFilter,
+    public Page<AdCardResponseDTO> findFilteredAdCardResponseDTOs(List<String> priceRangesFilter,
             List<String> citiesAndPostalCodesFilter,
-            List<String> articleStatesFilter, String categoryFilter, Pageable pageable) {
+            List<String> articleStatesFilter, String categoryFilter, Long loggedInUserId, Pageable pageable) {
+
+        // check if the user exists, if not set loggedInUserId to null
+        if (loggedInUserId != null) {
+            Optional<User> optionalUser = userRepository.findById(loggedInUserId);
+            if (optionalUser.isEmpty()) {
+                loggedInUserId = null;
+            }
+        }
 
         // if no filter is checked, return all ads
         if (shouldReturnAllAds(priceRangesFilter, citiesAndPostalCodesFilter, articleStatesFilter, categoryFilter)) {
-            return findAllAdHomeResponseDTOs(pageable);
+            return findAllAdCardResponseDTOs(loggedInUserId, pageable);
         }
 
         // extracting the postal codes
@@ -115,34 +128,53 @@ public class AdServiceImpl implements AdService {
                 articleStatesFilter.isEmpty() ? null : articleStatesFilter,
                 maxPrice1, minPrice2, maxPrice2, minPrice3, maxPrice3,
                 minPrice4, maxPrice4, minPrice5, maxPrice5, minPrice6,
-                category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, pageable);
-        return this.convertToPageOfAdHomeResponseDTOs(pageable, filteredAds);
+                category, subcategory, gender, acceptedAdStatuses, acceptedAccountStatuses, loggedInUserId, pageable);
+        return this.convertToPageOfAdCardResponseDTOs(pageable, filteredAds, loggedInUserId);
     }
 
     /**
-     * Finds all ads and maps them to AdHomeResponseDTOs.
+     * Finds all ads and maps them to AdCardResponseDTOs.
      *
-     * @param pageable The pagination information.
-     * @return The page of AdHomeResponseDTOs.
+     * @param pageable       The pagination information.
+     * @param loggedInUserId The ID of the logged-in user.
+     * @return The page of AdCardResponseDTOs.
      */
     @Override
-    public Page<AdHomeResponseDTO> findAllAdHomeResponseDTOs(Pageable pageable) {
+    public Page<AdCardResponseDTO> findAllAdCardResponseDTOs(Long loggedInUserId, Pageable pageable) {
         Page<Ad> myAds = this.adRepository.findByAcceptedStatusesOrderedByCreationDateDesc(acceptedAdStatuses,
-                acceptedAccountStatuses, pageable);
-        return this.convertToPageOfAdHomeResponseDTOs(pageable, myAds);
+                acceptedAccountStatuses, loggedInUserId, pageable);
+        return this.convertToPageOfAdCardResponseDTOs(pageable, myAds, loggedInUserId);
     }
 
     /**
-     * Converts a page of Ad entities to a page of AdHomeResponseDTOs.
+     * Converts a page of Ad entities to a page of AdCardResponseDTOs.
      *
      * @param pageable The pagination information.
      * @param adsPage  The page of Ad entities.
-     * @return The page of AdHomeResponseDTOs.
+     * @return The page of AdCardResponseDTOs.
      */
-    private Page<AdHomeResponseDTO> convertToPageOfAdHomeResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
-        List<AdHomeResponseDTO> mappedAdsList = adsPage.stream()
-                .map(adMapper::adToAdHomeResponseDTO)
-                .toList();
+    private Page<AdCardResponseDTO> convertToPageOfAdCardResponseDTOs(Pageable pageable, Page<Ad> adsPage,
+            Long loggedInUserId) {
+
+        Set<Long> favoriteAdIds = Collections.emptySet();
+
+        // Retrieve favorite ad IDs if logged in user ID is provided
+        if (loggedInUserId != null) {
+            favoriteAdIds = favoriteRepository.findFavoriteAdIdsByUserId(loggedInUserId);
+        }
+
+        List<AdCardResponseDTO> mappedAdsList = new ArrayList<>();
+
+        for (Ad ad : adsPage) {
+            AdCardResponseDTO dto = this.adMapper.adToAdCardResponseDTO(ad);
+            // If the set of favorite ad IDs is not empty and contains the current ad's ID,
+            // set the 'favorite' flag to true in the DTO
+            if (!favoriteAdIds.isEmpty() && favoriteAdIds.contains(ad.getId())) {
+                dto.setFavorite(true);
+            }
+            mappedAdsList.add(dto);
+        }
+
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
 
@@ -187,7 +219,7 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Retrieves an ad information by a user's id
+     * Retrieves an ad information by a user's ID
      *
      * @param id the concerned user.
      * @return an ad
@@ -209,10 +241,10 @@ public class AdServiceImpl implements AdService {
      * 
      * @param pageable    The pagination information.
      * @param publisherId
-     * @return The page of AdHomeResponseDTOs.
+     * @return The page of AdCardResponseDTOs.
      */
     @Override
-    public Page<AdPostResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
+    public Page<AdCardResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
             Page<Ad> adsPage = adRepository.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
@@ -227,20 +259,20 @@ public class AdServiceImpl implements AdService {
      *
      * @param pageable The pagination information.
      * @param adsPage  The page of Ad entities.
-     * @return The page of AdHomeResponseDTOs.
+     * @return The page of AdCardResponseDTOs.
      */
-    private Page<AdPostResponseDTO> convertToPageOfAdPostResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
-        List<AdPostResponseDTO> mappedAdsList = adsPage.stream()
-                .map(adMapper::adToAdPostResponseDTO)
+    private Page<AdCardResponseDTO> convertToPageOfAdPostResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<AdCardResponseDTO> mappedAdsList = adsPage.stream()
+                .map(adMapper::adToAdCardResponseDTO)
                 .toList();
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
 
     /**
-     * Checks how many ads have been published by a user
+     * Checks how many ads have been published by a user.
      * 
      * @param publisherId
-     * @return The number of ads published by a user
+     * @return The number of ads published by a user.
      */
     @Override
     public Long getUserAdsListLength(Long publisherId) {
@@ -261,14 +293,76 @@ public class AdServiceImpl implements AdService {
      * @return a list of similar ads sharing the same category
      */
     @Override
-    public Page<AdPostResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
+    public Page<AdCardResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
         Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
                 pageable);
         return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
     }
 
-    // ==================== parameter extraction and formatting helper methods
-    // =======================
+    /**
+     * Converts a page of UsersFavoriteAds entities to a page of AdCardResponseDTOs.
+     *
+     * @param pageable     The pagination information.
+     * @param favoritesAds The page of UsersFavoriteAds entities.
+     * @return The page of AdCardResponseDTOs.
+     */
+    private Page<AdCardResponseDTO> convertFavoritesToPageOfAdCardResponseDTOs(Pageable pageable,
+            Page<UsersFavoriteAds> favoritesAds) {
+        List<AdCardResponseDTO> mappedFavoritesAds = favoritesAds.stream()
+                .map(favoriteAd -> {
+                    AdCardResponseDTO dto = this.adMapper.adToAdCardResponseDTO(favoriteAd.getAd());
+                    dto.setFavorite(true);
+                    return dto;
+                }).toList();
+        return new PageImpl<>(mappedFavoritesAds, pageable, favoritesAds.getTotalElements());
+    }
+
+    /**
+     * Retrieves a user's favorites ads list.
+     *
+     * @param userId The ID of the user.
+     * @return The list of favorites ads.
+     */
+    @Override
+    public Page<AdCardResponseDTO> findFavoriteAdsByUserId(long userId, Pageable pageable) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Page<UsersFavoriteAds> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user, pageable);
+            return this.convertFavoritesToPageOfAdCardResponseDTOs(pageable, favoritesAds);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Update the ad favorite status added by a user.
+     *
+     * @param adId       The ID of the ad.
+     * @param userId     The ID of the user.
+     * @param isFavorite The new status of the ad favorite.
+     */
+    @Override
+    public void updateAdFavoriteStatus(long adId, long userId, boolean isFavorite) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if (optionalUser.isPresent() && optionalAd.isPresent()) {
+            UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(userId, adId);
+            Optional<UsersFavoriteAds> optionalFavorite = favoriteRepository.findById(favoriteKey);
+            if (!optionalFavorite.isPresent()) {
+                UsersFavoriteAds newFavorite = new UsersFavoriteAds(favoriteKey, optionalUser.get(), optionalAd.get(),
+                        LocalDateTime.now());
+                favoriteRepository.save(newFavorite);
+            } else {
+                favoriteRepository.delete(optionalFavorite.get());
+            }
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    // ============ parameter extraction and formatting helper methods ============
     private boolean shouldReturnAllAds(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,
             List<String> articleStatesFilter, String categoryFilter) {
         return priceRangesFilter.isEmpty() && citiesAndPostalCodesFilter.isEmpty() &&
