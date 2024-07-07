@@ -11,9 +11,11 @@ import java.util.List;
 
 /**
  * Executes custom logic or tasks at the start of the application,
- * after the Spring application context is initialized and before the application starts serving requests.
+ * after the Spring application context is initialized and before the
+ * application starts serving requests.
  * <p>
- * This class implements the {@code CommandLineRunner} interface, allowing it to be executed as part of the application startup sequence.
+ * This class implements the {@code CommandLineRunner} interface, allowing it to
+ * be executed as part of the application startup sequence.
  * </p>
  * <p>
  * The run method is invoked by Spring Boot when the application is started.
@@ -21,7 +23,9 @@ import java.util.List;
  * </p>
  * <p>
  * </p>
- * This class is annotated with {@code @Component} to mark it as a Spring-managed component and enable automatic detection and registration by Spring's component scanning mechanism.
+ * This class is annotated with {@code @Component} to mark it as a
+ * Spring-managed component and enable automatic detection and registration by
+ * Spring's component scanning mechanism.
  *
  * @author Mircea Bardan
  */
@@ -34,19 +38,19 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
     private final PreferredScheduleSeeder preferredScheduleSeeder;
     private final PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder;
 
-
     /**
      * Constructor for CmdLineSeedDatabase.
+     * 
      * @param userSeeder
      * @param adSeeder
      * @param preferredScheduleSeeder
      * @param preferredMeetingPlaceSeeder
      */
     public CmdLineSeedDatabase(@Autowired UserSeeder userSeeder,
-                               @Autowired AdSeeder adSeeder,
-                               @Autowired ArticlePictureSeeder articlePictureSeeder,
-                               @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
-                               @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder){
+            @Autowired AdSeeder adSeeder,
+            @Autowired ArticlePictureSeeder articlePictureSeeder,
+            @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
+            @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder) {
         this.userSeeder = userSeeder;
         this.adSeeder = adSeeder;
         this.articlePictureSeeder = articlePictureSeeder;
@@ -67,13 +71,14 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
 
         List<Ad> ads = this.adSeeder.createAds(users);
         this.adSeeder.seedAds(ads);
+        this.adSeeder.seedFavoritesAds(users, ads);
 
         this.articlePictureSeeder.seedArticlePictures(ads);
 
         for (User user : users) {
-            //Seeds the database with users preferred schedules
+            // Seeds the database with users preferred schedules
             this.preferredScheduleSeeder.generateSchedulesForUser(user);
-            //Seeds the database with users preferred meeting places
+            // Seeds the database with users preferred meeting places
             this.preferredMeetingPlaceSeeder.generatePreferredMeetingPlacesForUser(user);
         }
     }

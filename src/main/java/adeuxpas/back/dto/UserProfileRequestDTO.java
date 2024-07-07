@@ -33,7 +33,7 @@ public class UserProfileRequestDTO {
     @NotBlank
     private String street;
     @NotBlank
-    @Size(max = 5)
+    @Size(min = 5, max = 5)
     private String postalCode;
     @NotBlank
     private String city;

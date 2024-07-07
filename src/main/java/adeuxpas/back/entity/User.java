@@ -5,8 +5,7 @@ import adeuxpas.back.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Entity class representing a user in the application.
@@ -78,6 +77,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UsersFavoriteAds> favoritesAds;
 
     // getters and setters
     public long getId() {
@@ -230,6 +232,14 @@ public class User {
 
     public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
+    }
+
+    public Set<UsersFavoriteAds> getFavoritesAds() {
+        return favoritesAds;
+    }
+
+    public void setFavoritesAds(Set<UsersFavoriteAds> favoritesAds) {
+        this.favoritesAds = favoritesAds;
     }
 
     // toString

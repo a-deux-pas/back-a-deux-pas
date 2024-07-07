@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import adeuxpas.back.dto.AdHomeResponseDTO;
+import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.utils.UnitTestUtils;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -99,24 +99,25 @@ class AdServiceImplTest {
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Long, Pageable)}
          * method with no filters applied.
          * </p>
          */
         @Test
-        void testFindFilteredAdHomeResponseDTOs_NoFiltersApplied() {
+        void testFindFilteredAdCardResponseDTOs_NoFiltersApplied() {
                 // Set-up
                 this.setUp();
                 this.mockRepositoryFindByAcceptedStatusesMethod();
 
                 // Act
-                adService.findFilteredAdHomeResponseDTOs(new ArrayList<>(), new ArrayList<>(),
-                                new ArrayList<>(), "Catégorie", pageable);
+                adService.findFilteredAdCardResponseDTOs(new ArrayList<>(), new ArrayList<>(),
+                                new ArrayList<>(), "Catégorie", null, pageable);
 
                 // Assert :
                 // that this method was called by the repository mock inside the tested filter
                 // method
-                verify(adRepositoryMock).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any());
+                verify(adRepositoryMock).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(), any(),
+                                any());
                 // that this method was never called
                 verify(adRepositoryMock, times(0)).findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
                                 anyList(), anyList(),
@@ -124,24 +125,25 @@ class AdServiceImplTest {
                                 any(), any(), any(), any(),
                                 any(), any(), any(),
                                 anyList(), anyList(),
+                                any(),
                                 any());
         }
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Pageable)}
          * method with all filters applied, except category.
          * </p>
          */
         @Test
-        void testFindFilteredAdHomeResponseDTOs_AllFiltersExceptCategoryApplied() {
+        void testFindFilteredAdCardResponseDTOs_AllFiltersExceptCategoryApplied() {
                 // Set-up
                 this.setUp();
                 this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
                 // Act
-                adService.findFilteredAdHomeResponseDTOs(priceRanges, citiesAndPostalCodes,
-                                articleStates, "Catégorie", pageable);
+                adService.findFilteredAdCardResponseDTOs(priceRanges, citiesAndPostalCodes,
+                                articleStates, "Catégorie", null, pageable);
 
                 // Assert:
                 // that this method was called inside the tested filter method
@@ -152,9 +154,10 @@ class AdServiceImplTest {
                                 minPrice4Captor.capture(), maxPrice4Captor.capture(), minPrice5Captor.capture(),
                                 maxPrice5Captor.capture(), minPrice6Captor.capture(),
                                 categoryCaptor.capture(), subCategoryCaptor.capture(), genderCaptor.capture(),
-                                anyList(), anyList(), any());
+                                anyList(), anyList(), any(), any());
                 // that this method was never called
                 verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(),
+                                any(),
                                 any());
                 // that all the parameters passed to the repository method are correctly
                 // formatted
@@ -180,20 +183,20 @@ class AdServiceImplTest {
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Pageable)}
          * method with all filters, including category, applied.
          * </p>
          */
         @Test
-        void testFindFilteredAdHomeResponseDTOs_CategoryAndCriteriaForEachFilterApplied() {
+        void testFindFilteredAdCardResponseDTOs_CategoryAndCriteriaForEachFilterApplied() {
                 // Set-up
                 this.setUp();
                 mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
                 // Act
-                adService.findFilteredAdHomeResponseDTOs(List.of(priceRanges.getFirst()),
+                adService.findFilteredAdCardResponseDTOs(List.of(priceRanges.getFirst()),
                                 List.of(citiesAndPostalCodes.getFirst()),
-                                List.of(articleStates.getFirst()), "Mode", pageable);
+                                List.of(articleStates.getFirst()), "Mode", null, pageable);
 
                 // Assert:
                 // that this method was called inside the tested filter method
@@ -204,9 +207,10 @@ class AdServiceImplTest {
                                 minPrice4Captor.capture(), maxPrice4Captor.capture(), minPrice5Captor.capture(),
                                 maxPrice5Captor.capture(), minPrice6Captor.capture(),
                                 categoryCaptor.capture(), subCategoryCaptor.capture(), genderCaptor.capture(),
-                                anyList(), anyList(), any());
+                                anyList(), anyList(), any(), any());
                 // that this method was never called
                 verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(),
+                                any(),
                                 any());
                 // that all the parameters passed to the repository method are correctly
                 // formatted
@@ -230,20 +234,20 @@ class AdServiceImplTest {
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdHomeResponseDTOs(List, List, List, String, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Pageable)}
          * method with all filters, including category, subcategory and gender, applied.
          * </p>
          */
         @Test
-        void testFindFilteredAdHomeResponseDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
+        void testFindFilteredAdCardResponseDTOs_CategorySubcategoryGenderAndCriteriaForEachFilterApplied() {
                 // Set-up
                 this.setUp();
                 this.mockRepositoryFindByFiltersAndAcceptedStatusesMethod();
 
                 // Act
-                adService.findFilteredAdHomeResponseDTOs(List.of(priceRanges.getFirst()),
+                adService.findFilteredAdCardResponseDTOs(List.of(priceRanges.getFirst()),
                                 List.of(citiesAndPostalCodes.getFirst()),
-                                List.of(articleStates.getFirst()), "Mode ▸ Hauts ▸ Homme", pageable);
+                                List.of(articleStates.getFirst()), "Mode ▸ Hauts ▸ Homme", null, pageable);
 
                 // Assert:
                 // that this method was called inside the tested filter method
@@ -254,9 +258,10 @@ class AdServiceImplTest {
                                 minPrice4Captor.capture(), maxPrice4Captor.capture(), minPrice5Captor.capture(),
                                 maxPrice5Captor.capture(), minPrice6Captor.capture(),
                                 categoryCaptor.capture(), subCategoryCaptor.capture(), genderCaptor.capture(),
-                                anyList(), anyList(), any());
+                                anyList(), anyList(), any(), any());
                 // that this method was never called
                 verify(adRepositoryMock, times(0)).findByAcceptedStatusesOrderedByCreationDateDesc(anyList(), anyList(),
+                                any(),
                                 any());
                 // that all the parameters passed to the repository method are correctly
                 // formatted
@@ -335,12 +340,12 @@ class AdServiceImplTest {
                 assertEquals(result.getStatus(), adResponse.getStatus());
         }
 
-        // TODO :: refaire test
+        // TODO :: revoir ce test
         /**
          * Test for findAdsByPublisher method in AdServiceImpl.
          */
         // @Test
-        // void testFindPageOfUserAdsListIfUserExists() {
+        // void testfindPageOfUserAdsListIfUserExists() {
         //         Long publisherId = 1L;
         //         User user = new User();
         //         when(userRepositoryMock.findById(publisherId)).thenReturn(Optional.of(user));
@@ -349,25 +354,22 @@ class AdServiceImplTest {
         //         Ad ad2 = new Ad();
         //         List<Ad> adList = List.of(ad1, ad2);
         //         adsPage = new PageImpl<>(adList);
-        //         when(adRepositoryMock.findAvailableAdsByPublisherId(publisherId, pageable, AdStatus.SOLD,
-        //                         AdStatus.RESERVED))
+        //         when(adRepositoryMock.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable))
         //                         .thenReturn(adsPage);
 
-        //         AdPostResponseDTO dto1 = new AdPostResponseDTO();
-        //         AdPostResponseDTO dto2 = new AdPostResponseDTO();
-        //         when(adMapperMock.adToAdPostResponseDTO(ad1)).thenReturn(dto1);
-        //         when(adMapperMock.adToAdPostResponseDTO(ad2)).thenReturn(dto2);
+        //         AdCardResponseDTO dto1 = new AdCardResponseDTO();
+        //         AdCardResponseDTO dto2 = new AdCardResponseDTO();
+        //         when(adMapperMock.adToAdCardResponseDTO(ad1)).thenReturn(dto1);
+        //         when(adMapperMock.adToAdCardResponseDTO(ad2)).thenReturn(dto2);
 
-        //         Page<AdPostResponseDTO> result = adService.findPageOfUserAdsList(publisherId, pageable, AdStatus.SOLD,
-        //                         AdStatus.RESERVED);
+        //         Page<AdCardResponseDTO> result = adService.findPageOfUserAdsList(publisherId, pageable);
 
         //         assertEquals(2, result.getNumberOfElements());
         //         assertEquals(dto1, result.getContent().get(0));
         //         assertEquals(dto2, result.getContent().get(1));
 
         //         verify(userRepositoryMock).findById(publisherId);
-        //         verify(adRepositoryMock).findAdsByPublisherIdExcludingStatuses(publisherId, pageable, AdStatus.SOLD,
-        //                         AdStatus.RESERVED);
+        //         verify(adRepositoryMock).findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
         // }
 
         // common set-up, used by several test methods
@@ -383,7 +385,7 @@ class AdServiceImplTest {
 
         // Mock behavior for adRepository methods
         private void mockRepositoryFindByAcceptedStatusesMethod() {
-                when(adRepositoryMock.findByAcceptedStatusesOrderedByCreationDateDesc(any(), any(), any()))
+                when(adRepositoryMock.findByAcceptedStatusesOrderedByCreationDateDesc(any(), any(), any(), any()))
                                 .thenReturn(this.adsPage);
         }
 
@@ -392,18 +394,18 @@ class AdServiceImplTest {
                                 any(), any(), any(), any(), any(),
                                 any(), any(), any(), any(), any(),
                                 any(), any(), any(),
-                                anyList(), anyList(), any())).thenReturn(this.adsPage);
+                                anyList(), anyList(), any(), any())).thenReturn(this.adsPage);
         }
 
         // Mock behavior for mapper
         private void mockAdMapperBehaviour() {
-                when(adMapperMock.adToAdHomeResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
+                when(adMapperMock.adToAdCardResponseDTO(any(Ad.class))).thenAnswer(invocation -> {
                         Ad ad = invocation.getArgument(0);
-                        AdHomeResponseDTO adHomeResponseDTO = new AdHomeResponseDTO();
-                        adHomeResponseDTO.setTitle(ad.getTitle());
-                        adHomeResponseDTO.setPrice(ad.getPrice());
-                        adHomeResponseDTO.setPublisherAlias(ad.getPublisher().getAlias());
-                        return adHomeResponseDTO;
+                        AdCardResponseDTO adCardResponseDTO = new AdCardResponseDTO();
+                        adCardResponseDTO.setTitle(ad.getTitle());
+                        adCardResponseDTO.setPrice(ad.getPrice());
+                        adCardResponseDTO.setPublisherAlias(ad.getPublisher().getAlias());
+                        return adCardResponseDTO;
                 });
         }
 

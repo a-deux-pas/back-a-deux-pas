@@ -1,10 +1,11 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.CityAndPostalCodeResponseDTO;
 import adeuxpas.back.dto.NotificationDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
+import adeuxpas.back.dto.SellerHomeResponseDTO;
+import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.entity.PreferredMeetingPlace;
@@ -149,7 +150,7 @@ public class UserServiceImpl implements UserService {
      *         not found.
      */
     @Override
-    public UserProfileResponseDTO findUserProfileInfoById(Long userId) {
+    public UserProfileResponseDTO findUserProfileInfoById(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -171,7 +172,7 @@ public class UserServiceImpl implements UserService {
      *         exception if the user is not found.
      */
     @Override
-    public List<PreferredScheduleDTO> findPreferredSchedulesByUserId(Long userId) {
+    public List<PreferredScheduleDTO> findPreferredSchedulesByUserId(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -232,7 +233,7 @@ public class UserServiceImpl implements UserService {
      *         found.
      */
     @Override
-    public List<PreferredMeetingPlaceDTO> findPreferredMeetingPlacesByUserId(Long userId) {
+    public List<PreferredMeetingPlaceDTO> findPreferredMeetingPlacesByUserId(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -247,14 +248,50 @@ public class UserServiceImpl implements UserService {
     /**
      * Retrieves the users' unique postal codes along with their cities.
      *
-     * This method retrieves all the users from the DB;
+     * This method retrieves all the users from the DB.
      * It then maps them to CityAndPostalCodeResponseDTO objects.
      * 
-     * @return a set of CityAndPostalCodeResponseDTOs
+     * @return a set of CityAndPostalCodeResponseDTOs.
      */
     @Override
-    public Set<CityAndPostalCodeResponseDTO> getUniqueCitiesAndPostalCodes() {
+    public Set<UserAliasAndLocationResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
-        return users.stream().map(userMapper::userToCityAndPostalCodeDTO).collect(Collectors.toSet());
+        return users.stream().map(userMapper::userToAliasAndLocationDTO).collect(Collectors.toSet());
+    }
+
+    /**
+     * Retrieves the user's alias, city and postal code.
+     * 
+     * @param userId the user's ID.
+     * @return a UserAliasAndLocationResponseDTO.
+     */
+    @Override
+    public UserAliasAndLocationResponseDTO getUserAliasAndLocation(long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            return userMapper.userToAliasAndLocationDTO(optionalUser.get());
+        } else {
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
+        }
+    }
+
+    /**
+     * Retrieves the sellers which have the same postal code as the user.
+     * 
+     * @param userId the user's ID.
+     * @return a list of SellerHomeResponseDTO.
+     */
+    @Override
+    public List<SellerHomeResponseDTO> getSellersNearby(long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            // TO DO: à modifier pour trier par nombre de transactions une fois la table
+            // implémenté
+            List<User> sellersNearby = this.userRepository.findFirst5ByPostalCode(user.getPostalCode(), user.getId());
+            return sellersNearby.stream().map(userMapper::userToSellerHomeResponseDTO).toList();
+        } else {
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
+        }
     }
 }

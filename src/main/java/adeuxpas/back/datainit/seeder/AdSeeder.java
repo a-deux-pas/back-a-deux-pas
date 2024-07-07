@@ -1,9 +1,13 @@
 package adeuxpas.back.datainit.seeder;
 
 import adeuxpas.back.entity.Ad;
+import adeuxpas.back.entity.UsersFavoriteAds;
+import adeuxpas.back.entity.UsersFavoriteAdsKey;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.UsersFavoriteAdsRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +26,7 @@ import java.util.List;
 public class AdSeeder {
 
         private final AdRepository adRepository;
+        private final UsersFavoriteAdsRepository favoriteRepository;
 
         /**
          * Constructs a new AdSeeder with the provided AdRepository.
@@ -29,24 +34,26 @@ public class AdSeeder {
          * @param adRepository the AdRepository to be used for database seeding
          *                     operations.
          */
-        AdSeeder(@Autowired AdRepository adRepository) {
+        AdSeeder(@Autowired AdRepository adRepository, @Autowired UsersFavoriteAdsRepository favoriteRepository) {
                 this.adRepository = adRepository;
-        }
+                this.favoriteRepository = favoriteRepository;
+            }
 
-        /**
-         * This method creates ad entities.
-         * Each ad is initialized with sample data such as title, price, creation date,
-         * publisher etc.
-         * 
-         * @param users the list of potential ad publishers.
-         * @return a list of ads.
-         */
-        public List<Ad> createAds(List<User> users) {
-                List<Ad> firstUserAds = new ArrayList<>();
-                List<Ad> secondUserAds = new ArrayList<>();
-                List<Ad> thirdUserAds = new ArrayList<>();
-                List<Ad> fourthUserAds = new ArrayList<>();
-                List<Ad> fifthUserAds = new ArrayList<>();
+
+    /**
+     * This method creates ad entities.
+     * Each ad is initialized with sample data such as title, price, creation date,
+     * publisher etc.
+     * 
+     * @param users the list of potential ad publishers.
+     * @return a list of ads.
+     */
+    public List<Ad> createAds(List<User> users) {
+        List<Ad> firstUserAds = new ArrayList<>();
+        List<Ad> secondUserAds = new ArrayList<>();
+        List<Ad> thirdUserAds = new ArrayList<>();
+        List<Ad> fourthUserAds = new ArrayList<>();
+        List<Ad> fifthUserAds = new ArrayList<>();
 
                 Ad firstAd = new Ad();
                 firstAd.setArticleDescription(
@@ -694,13 +701,47 @@ public class AdSeeder {
 
         }
 
-        /**
-         * Seeds the database with sample ad data.
-         * 
-         * @param ads the list of ads to save.
-         */
-        public void seedAds(List<Ad> ads) {
-                this.adRepository.saveAll(ads);
+    /**
+     * Seeds the database with sample ad data.
+     * 
+     * @param ads The list of ads to save.
+     */
+    public void seedAds(List<Ad> ads) {
+        this.adRepository.saveAll(ads);
+    }
+
+    /**
+     * Seeds the database with favorites ads.
+     * 
+     * @param user The user who adds the ad as favorite.
+     * @param ad   The ad added as favorite.
+     */
+    private UsersFavoriteAds createFavoriteAd(User user, Ad ad) {
+        UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(user.getId(), ad.getId());
+        UsersFavoriteAds favoriteAd = new UsersFavoriteAds(favoriteKey, user, ad, LocalDateTime.now());
+        this.favoriteRepository.save(favoriteAd);
+        return favoriteAd;
+    }
+
+    /**
+     * Adds up to two ads to the user's favorites if the postal code of the ad's
+     * publisher matches the user's postal code.
+     *
+     * @param user The list of users.
+     * @param ads  The list of ads.
+     */
+    public void seedFavoritesAds(List<User> users, List<Ad> ads) {
+        for (User user : users) {
+            List<Ad> matchedAds = ads.stream()
+                    .filter(ad -> !ad.getPublisher().equals(user)
+                            && ad.getPublisher().getPostalCode().equals(user.getPostalCode()))
+                    .limit(2)
+                    .toList();
+
+            for (Ad ad : matchedAds) {
+                createFavoriteAd(user, ad);
+            }
         }
+    }
 }
 

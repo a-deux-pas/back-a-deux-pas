@@ -38,6 +38,7 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          * article states,
          * price ranges, categories, subcategories, genders, accepted ad statuses, and
          * accepted account statuses.
+         * If a user is logged in, it excludes their ads from the result.
          * It orders the results by creation date in descending order.
          * </p>
          *
@@ -59,6 +60,7 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          * @param gender          Gender to filter ads by.
          * @param adStatuses      List of accepted ad statuses.
          * @param accountStatuses List of accepted user account statuses.
+         * @param loggedInUserId  The ID of the logged-in user
          * @param pageable        Pageable object to specify page number, page size, and
          *                        sorting.
          * @return Page of Ad entities matching the specified criteria.
@@ -75,11 +77,13 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                         "  ( ( :subcategory IS NULL AND :gender IS NULL AND :category IS NULL ) OR" +
                         "    ( :subcategory IS NULL AND :gender IS NULL AND a.category = :category) OR " +
                         "    ( :gender IS NULL AND a.category = :category AND a.subcategory = :subcategory) OR " +
-                        "    ( a.subcategory = :subcategory AND a.articleGender = :gender ) )AND " +
+                        "    ( a.subcategory = :subcategory AND a.articleGender = :gender ) ) AND " +
                         "  ( :acceptedAdStatuses IS NULL OR a.status IN :acceptedAdStatuses ) AND" +
-                        "  ( :acceptedAccountStatuses IS NULL OR u.accountStatus IN :acceptedAccountStatuses ) " +
+                        "  ( :acceptedAccountStatuses IS NULL OR u.accountStatus IN :acceptedAccountStatuses ) AND " +
+                        "  ( :loggedInUserId IS NULL OR a.publisher.id != :loggedInUserId ) " +
                         "ORDER BY a.creationDate DESC")
-        Page<Ad> findByAcceptedStatusesFilteredOrderedByCreationDateDesc(@Param("postalCodes") List<String> postalCodes,
+        Page<Ad> findByAcceptedStatusesFilteredOrderedByCreationDateDesc(
+                        @Param("postalCodes") List<String> postalCodes,
                         @Param("articleStates") List<String> articleStates,
                         @Param("maxPrice1") BigDecimal maxPrice1,
                         @Param("minPrice2") BigDecimal minPrice2,
@@ -96,24 +100,30 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                         @Param("gender") String gender,
                         @Param("acceptedAdStatuses") List<AdStatus> adStatuses,
                         @Param("acceptedAccountStatuses") List<AccountStatus> accountStatuses,
+                        @Param("loggedInUserId") Long loggedInUserId,
                         Pageable pageable);
 
         /**
          * Custom query for retrieving ads based on accepted ad statuses and accepted
-         * account statuses.
-         * It orders the results by creation date in descending order.
+         * account statuses. If a user is logged in, it excludes their ads from the
+         * result.
+         * It orders the results by creation date in descending order
          *
          * @param adStatuses      List of accepted ad statuses.
          * @param accountStatuses List of accepted account statuses.
+         * @param loggedInUserId  The ID of the logged-in user
          * @param pageable        Pageable object to specify page number, page size, and
          *                        sorting.
          * @return Page of Ad entities matching the specified criteria.
          */
         @Query("SELECT ad FROM Ad ad JOIN ad.publisher user " +
-                        "WHERE ad.status IN :adStatuses AND user.accountStatus IN :accountStatuses " +
+                        "WHERE ad.status IN :adStatuses AND user.accountStatus IN :accountStatuses AND " +
+                        "( :loggedInUserId IS NULL OR user.id != :loggedInUserId ) " +
                         "ORDER BY ad.creationDate DESC")
-        Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(List<AdStatus> adStatuses,
+        Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(
+                        List<AdStatus> adStatuses,
                         List<AccountStatus> accountStatuses,
+                        Long loggedInUserId,
                         Pageable pageable);
 
         /**
@@ -182,8 +192,8 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          * Find ads sharing the same category as the current one's
          * 
          * @param category    category of the current ad
-         * @param publisherId id of the current ad's publisher
-         * @param userId      optionally , the current user's id
+         * @param publisherId ID of the current ad's publisher
+         * @param userId      optionally , the current user's ID
          * @param pageable
          * @return a list of similar ads
          */
