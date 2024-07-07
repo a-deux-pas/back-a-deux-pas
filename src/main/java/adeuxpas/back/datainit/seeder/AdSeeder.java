@@ -150,7 +150,7 @@ public class AdSeeder {
                 eighthAd.setSubcategory("Livres");
                 thirdUserAds.add(eighthAd);
                 eighthAd.setStatus(AdStatus.AVAILABLE);
-// TODO: checker si methode de Mircea evite l'apparition des ad sold ou reserved dans la default home
+
                 Ad ninethAd = new Ad();
                 ninethAd.setArticleDescription(
                                 "Découvrez ce bracelet unique fait main, un véritable bijou artisanal qui capture l'essence de l'élégance et de la créativité. Conçu avec des matériaux de qualité supérieure et une attention méticuleuse aux détails, chaque bracelet est une œuvre d'art en soi. Disponible en plusieurs designs, il ajoute une touche de sophistication à n'importe quelle tenue, faisant de lui un choix parfait pour une soirée spéciale ou un cadeau précieux.");
