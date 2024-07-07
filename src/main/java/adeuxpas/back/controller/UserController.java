@@ -1,6 +1,7 @@
 package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
+import adeuxpas.back.dto.UserMeetingPlacesAndSchedulesDTO;
 import adeuxpas.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -110,6 +111,15 @@ public class UserController {
     public ResponseEntity<Object> getSellersNearby(@PathVariable long id) {
         try {
             return ResponseEntity.ok(this.userService.getSellersNearby(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("{alias}")
+    public ResponseEntity<Object> getByAlias(@PathVariable String alias){
+        try {
+            return ResponseEntity.ok(this.userService.getUserPreferredMeetingPlacesAndScheduleByAlias(alias));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
