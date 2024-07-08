@@ -4,12 +4,14 @@ import adeuxpas.back.enums.AdStatus;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 /**
  * Entity class representing an ad in the application.
- * This class encapsulates ad-related information, such as title, article description, article state etc.
+ * This class encapsulates ad-related information, such as title, article
+ * description, article state etc.
  * Instances of this class are persisted to the database by the AdRepository.
+ * 
  * @author Mircea Bardan
  */
 @Entity
@@ -53,6 +55,9 @@ public class Ad {
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArticlePicture> articlePictures;
+
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UsersFavoriteAds> usersFavorite;
 
     // getters and setters
     public Long getId() {
@@ -149,6 +154,14 @@ public class Ad {
 
     public void setArticlePictures(List<ArticlePicture> articlePictures) {
         this.articlePictures = articlePictures;
+    }
+
+    public Set<UsersFavoriteAds> getUsersFavorite() {
+        return usersFavorite;
+    }
+
+    public void setUsersFavorite(Set<UsersFavoriteAds> usersFavorite) {
+        this.usersFavorite = usersFavorite;
     }
 
     @Override
