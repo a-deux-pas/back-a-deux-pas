@@ -189,7 +189,6 @@ public class AdServiceImpl implements AdService {
         // TODO:: A revoir (fix cloudinary branch)
         User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
-
         Ad newAd = new Ad();
         newAd.setTitle(adPostRequestDTO.getTitle());
         newAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
