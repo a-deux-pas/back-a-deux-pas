@@ -259,26 +259,6 @@ public class AdServiceImpl implements AdService {
         }
     }
 
-    // A virer ?
-    // /**
-    //  * Finds ads that are sorted by their status anf maps them into
-    //  * AdPostResponseDTOs.
-    //  * 
-    //  * @param pageable    The pagination information.
-    //  * @param publisherId
-    //  * @return The page of AdHomeResponseDTOs.
-    //  */
-    // @Override
-    // public Page<AdPostResponseDTO> getUserAdsTab(long publisherId, Pageable pageable) {
-    //     Optional<User> optionalUser = userRepository.findById(publisherId);
-    //     if (optionalUser.isPresent()) {
-    //         Page<Ad> adsPage = adRepository.findSortedAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
-    //         return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
-    //     } else {
-    //         throw new EntityNotFoundException();
-    //     }
-    // }
-
     /**
      * converts a page of Ad into a page of AdPostResponseDTO
      *
@@ -292,7 +272,7 @@ public class AdServiceImpl implements AdService {
                 .toList();
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
-    
+
     /**
      * find a list containing the last four ads sharing the same category as the
      * current ad's
