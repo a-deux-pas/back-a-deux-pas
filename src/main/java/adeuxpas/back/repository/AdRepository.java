@@ -180,4 +180,16 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                         @Param("publisherId") Long publisherId,
                         @Param("userId") Long userId,
                         Pageable pageable);
+
+      /** 
+       * Custom query that checks how many users have added the current ad in their favorite ads list
+       * 
+       * @param adId  
+       * @return    The number of entry this ad has in the userFavoriteAds table
+       */
+      @Query("SELECT COUNT(u) FROM UsersFavoriteAds u WHERE u.ad.id = :adId")
+      Long checksFavoriteCount(
+        @Param("adId") Long adId
+      );
 }
+

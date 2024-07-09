@@ -89,4 +89,11 @@ public interface AdService {
      * @param userId The new status of the ad favorite.
      */
     void updateAdFavoriteStatus(long adId, long userId, boolean isFavorite);
+
+    /** 
+     * Contract that checks an ad's favorite count.
+     * 
+     * @param adId The ID of the ad.
+     */
+    Long checkFavoriteCount(Long adId);
 }

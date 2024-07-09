@@ -350,6 +350,16 @@ public class AdServiceImpl implements AdService {
             throw new EntityNotFoundException();
         }
     }
+    
+    @Override
+    public Long checkFavoriteCount(Long adId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        if(optionalAd.isPresent()) {
+            return adRepository.checksFavoriteCount(adId);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
 
     // ============ parameter extraction and formatting helper methods ============
     private boolean shouldReturnAllAds(List<String> priceRangesFilter, List<String> citiesAndPostalCodesFilter,

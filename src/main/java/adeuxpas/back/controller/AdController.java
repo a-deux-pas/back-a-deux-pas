@@ -160,10 +160,11 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user 
+     * endpoint that gets a page of ads created by a user
      * 
-     * @param location      Define whether the ad page is needed for an ad page or an ad tab
-     * @param userId        
+     * @param location   Define whether the ad page is needed for an ad page or an
+     *                   ad tab
+     * @param userId
      * @param pageNumber
      * @param pageSize
      * @return ResponseEntity indicating if the Ads have been found
@@ -203,9 +204,9 @@ public class AdController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("similarAdsList/{category}/{publisherId}/{userId}")
+    @GetMapping("/similarAdsList/{category}/{publisherId}/{userId}")
     public ResponseEntity<Object> getSimilarAds(
-            @PathVariable String category, 
+            @PathVariable String category,
             @PathVariable Long userId,
             @PathVariable Long publisherId,
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -267,6 +268,27 @@ public class AdController {
         try {
             adService.updateAdFavoriteStatus(adId, userId, isFavorite);
             return ResponseEntity.ok("Favorite status updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint that checks how many users have added this ad as a favorite
+     * 
+     * @param adId the ad ID.
+     * @return the favorite count
+     */
+    @Operation(summary = "how many users have added this ad in their favorite list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Got the count of users that have liked this ad"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/favoriteCount/{adId}")
+    public ResponseEntity<Object> checksFavoriteCount(
+            @PathVariable long adId) {
+        try {
+            return ResponseEntity.ok(adService.checkFavoriteCount(adId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
