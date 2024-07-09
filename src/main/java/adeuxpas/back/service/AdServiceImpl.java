@@ -292,39 +292,7 @@ public class AdServiceImpl implements AdService {
                 .toList();
         return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
-
-    /**
-     * Checks how many ads have been published by a user.
-     * 
-     * @param publisherId
-     * @return The number of ads published by a user.
-     */
-    @Override
-    public long getUserAdsListLength(long publisherId) {
-        Optional<User> optionalUser = userRepository.findById(publisherId);
-        if (optionalUser.isPresent()) {
-            return adRepository.findAdsCountByPublisherId(publisherId);
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    /**
-     * Checks how many available ads have been published by a user
-     * 
-     * @param publisherId
-     * @return The number of ads published by a user
-     */
-    @Override
-    public long getUserAvailableAdsListLength(long publisherId) {
-        Optional<User> optionalUser = userRepository.findById(publisherId);
-        if (optionalUser.isPresent()) {
-            return adRepository.findAvailableAdsCountByPublisherId(publisherId);
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
-
+    
     /**
      * find a list containing the last four ads sharing the same category as the
      * current ad's

@@ -61,34 +61,6 @@ public interface AdService {
      */
     Page<AdCardResponseDTO> findPageOfUserAdsList(String location, long publisherId, Pageable pageable);
 
-        //TODO:: A virer ?
-        // /**
-        //  * Contract that returns a definite number of a user's sorted ads
-        //  * 
-        //  * @param publisherId
-        //  * @param pageable
-        //  * @return
-        //  */
-        // Page<AdPostResponseDTO> getUserAdsTab(long publisherId, Pageable pageable);
-
-         //TODO:: A virer ?
-        /**
-         * Contract that returns the count of a user's ads
-         * 
-         * @param publisherId
-         * @return
-         */
-        long getUserAdsListLength(long publisherId);
-
-         //TODO:: A virer ?
-        /**
-         * Contract that returns the count of a user's available ads
-         * 
-         * @param publisherId
-         * @return
-         */
-        long getUserAvailableAdsListLength(long publisherId);
-
     /**
      * Contract that retrieves of list of ads sharing the same category as the
      * current one's

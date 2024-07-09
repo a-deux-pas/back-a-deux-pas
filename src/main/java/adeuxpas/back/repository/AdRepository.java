@@ -165,29 +165,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                         @Param("publisherId") Long publisherId,
                         Pageable pageable);
 
-      // TODO : apres merge de Lea, checker si cette méthode est encore necessaire
-        /**
-         * Check how many ads have been published by a user
-         * 
-         * @param publisherId
-         * @return the number of ads
-         */
-        @Query("SELECT COUNT(a) FROM Ad a WHERE a.publisher.id = :publisherId")
-        long findAdsCountByPublisherId(
-                        @Param("publisherId") Long publisherId);
- // TODO : apres merge de Lea, checker si cette méthode est encore necessaire
-        /**
-         * Check how many available ads have been published by a user
-         * 
-         * @param publisherId
-         * @param status1     first status to exclude
-         * @param status2     second status to exclude
-         * @return the number of ads
-         */
-        @Query("SELECT COUNT(a) FROM Ad a WHERE a.publisher.id = :publisherId AND a.status = 'AVAILABLE'")
-        long findAvailableAdsCountByPublisherId(
-                        @Param("publisherId") Long publisherId);
-
         /**
          * Find ads sharing the same category as the current one's
          * 

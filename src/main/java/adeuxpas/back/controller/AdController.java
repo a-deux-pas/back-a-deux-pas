@@ -221,54 +221,6 @@ public class AdController {
         }
     }
 
-    // TODO : apres merge de Lea, checker si cette méthode est encore necessaire
-    /**
-     * endpoint that gets the count of ads published by a user
-     * 
-     * @param userId
-     * @return The number of ads published by a user
-     */
-    @Operation(summary = "the number of ads published by a user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval the user's ad list count"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("count/{userId}")
-    public ResponseEntity<Object> getAdsCount(
-            @PathVariable long userId) {
-        try {
-            return ResponseEntity.ok(adService.getUserAdsListLength(userId));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get the user's ad count.");
-        }
-    }
-
-    // TODO : apres merge de Lea, checker si cette méthode est encore necessaire
-    /**
-     * endpoint that gets the count of ads published by a user
-     * 
-     * @param userId
-     * @return The number of ads published by a user
-     */
-    @Operation(summary = "the number of available ads published by a user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval the user's ad list count"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("countOfAvailableAds/{userId}")
-    public ResponseEntity<Object> getAvailableAdsCount(
-            @PathVariable long userId) {
-        try {
-            return ResponseEntity.ok(adService.getUserAvailableAdsListLength(userId));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get the user's ad count.");
-        }
-    }
-
     /**
      * Endpoint that get the ads added as favorite by a user.
      *
