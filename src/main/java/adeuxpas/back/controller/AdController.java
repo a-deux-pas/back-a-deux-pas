@@ -207,8 +207,8 @@ public class AdController {
     @GetMapping("/similarAdsList/{category}/{publisherId}/{userId}")
     public ResponseEntity<Object> getSimilarAds(
             @PathVariable String category,
-            @PathVariable Long userId,
-            @PathVariable Long publisherId,
+            @PathVariable long userId,
+            @PathVariable long publisherId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "4") int pageSize) {
         try {
