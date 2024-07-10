@@ -126,15 +126,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
       Long loggedInUserId,
       Pageable pageable);
 
-  // TODO:: à virer?
-  // /**
-  // * Find a user's ad list
-  // *
-  // * @param publisherId
-  // * @return a list of ads
-  // */
-  // List<Ad> findAdsByPublisherId(Long publisherId);
-
   /**
    * Custom query that retrieves ads by sorting them in order for the ones
    * having a 'reserved' or 'sold' to be called at the very end
