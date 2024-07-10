@@ -36,21 +36,21 @@ public interface AdService {
     Page<AdCardResponseDTO> findFilteredAdCardResponseDTOs(List<String> prices, List<String> cities,
             List<String> articleStates, String category, Long loggedInUserId, Pageable pageable);
 
-        /**
-         * Contract to post an ad.
-         *
-         * @param adDto The DTO containing the details of the ad to be posted.
-         * @return The response DTO after posting the ad.
-         */
-        AdPostResponseDTO postAd(AdPostRequestDTO adDto);
+    /**
+     * Contract to post an ad.
+     *
+     * @param adDto The DTO containing the details of the ad to be posted.
+     * @return The response DTO after posting the ad.
+     */
+    AdPostResponseDTO postAd(AdPostRequestDTO adDto);
 
-        /**
-         * Contract to find an ad by its ID.
-         *
-         * @param adId The ID of the ad to find.
-         * @return The response DTO containing the ad details.
-         */
-        AdPostResponseDTO findAdById(long adId);
+    /**
+     * Contract to find an ad by its ID.
+     *
+     * @param adId The ID of the ad to find.
+     * @return The response DTO containing the ad details.
+     */
+    AdPostResponseDTO findAdById(long adId);
 
     /**
      * Contract that returns a definite number of a user's ads
@@ -90,7 +90,7 @@ public interface AdService {
      */
     void updateAdFavoriteStatus(long adId, long userId, boolean isFavorite);
 
-    /** 
+    /**
      * Contract that checks an ad's favorite count.
      * 
      * @param adId The ID of the ad.

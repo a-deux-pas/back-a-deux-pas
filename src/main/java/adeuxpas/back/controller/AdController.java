@@ -162,7 +162,7 @@ public class AdController {
     /**
      * endpoint that gets a page of ads created by a user
      * 
-     * @param location   Define whether the ad page is needed for an ad page or an
+     * @param location   Define whether the ad list is needed for an ad page or an
      *                   ad tab
      * @param userId
      * @param pageNumber
@@ -171,7 +171,7 @@ public class AdController {
      */
     @Operation(summary = "a page of the user's ads list")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ads"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of the user's ads page"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{location}/{userId}")
