@@ -95,5 +95,5 @@ public interface AdService {
      * 
      * @param adId The ID of the ad.
      */
-    Long checkFavoriteCount(Long adId);
+    long checkFavoriteCount(long adId);
 }

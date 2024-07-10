@@ -352,7 +352,7 @@ public class AdServiceImpl implements AdService {
     }
     
     @Override
-    public Long checkFavoriteCount(Long adId) {
+    public long checkFavoriteCount(long adId) {
         Optional<Ad> optionalAd = adRepository.findById(adId);
         if(optionalAd.isPresent()) {
             return adRepository.checksFavoriteCount(adId);
