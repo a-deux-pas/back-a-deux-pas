@@ -42,9 +42,18 @@ public interface UsersFavoriteAdsRepository extends JpaRepository<UsersFavoriteA
      * Finds the list of ad IDs that are marked as favorite by the user with the
      * given ID.
      *
-     * @param userId the ID of the user for whom to find favorite ads.
+     * @param userId The ID of the user for whom to find favorite ads.
      * @return a set of ads IDs that are marked as favorite by the specified user.
      */
     @Query("SELECT f.ad.id FROM UsersFavoriteAds f WHERE f.user.id = :userId")
     Set<Long> findFavoriteAdIdsByUserId(Long userId);
+
+    /**
+     * Finds a user favorite ad by their user ID and ad ID
+     *
+     * @param userId The ID of the user
+     * @param adId   The ID of the ad
+     * @return true if user favorite ad found.
+     */
+    boolean existsByUserIdAndAdId(Long userId, Long adId);
 }

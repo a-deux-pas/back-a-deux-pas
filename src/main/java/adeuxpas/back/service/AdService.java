@@ -46,10 +46,11 @@ public interface AdService {
     /**
      * Contract to find an ad by its ID.
      *
-     * @param adId The ID of the ad to find.
+     * @param adId   The ID of the ad to find.
+     * @param userId The ID of the logged in user.
      * @return The response DTO containing the ad details.
      */
-    AdPostResponseDTO findAdById(Long adId);
+    AdPostResponseDTO findAdById(Long adId, Long userId);
 
     /**
      * Contract that returns a definite number of a user's ads

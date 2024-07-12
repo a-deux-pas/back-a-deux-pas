@@ -17,7 +17,7 @@ public class PreferredMeetingPlace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 100, nullable = false)
     private String name;
 
     @Column(length = 150, nullable = false)

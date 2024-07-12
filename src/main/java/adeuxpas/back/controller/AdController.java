@@ -140,7 +140,8 @@ public class AdController {
     /**
      * Endpoint that retrieves information about one Ad with its ID.
      * 
-     * @param id The ad ID.
+     * @param adId   The ad ID.
+     * @param userId The logged in user ID.
      * @return ResponseEntity indicating if the Ad has been found.
      */
     @Operation(summary = "ad details")
@@ -148,10 +149,10 @@ public class AdController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of ad information"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable long id) {
+    @GetMapping("/{adId}/{userId}")
+    public ResponseEntity<Object> findById(@PathVariable Long adId, @PathVariable Long userId) {
         try {
-            return ResponseEntity.ok(adService.findAdById(id));
+            return ResponseEntity.ok(adService.findAdById(adId, userId));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no ad found for this id");
         } catch (RuntimeException e) {

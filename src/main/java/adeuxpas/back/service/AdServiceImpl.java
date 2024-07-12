@@ -56,16 +56,16 @@ public class AdServiceImpl implements AdService {
 
     private final UserRepository userRepository;
     private final AdRepository adRepository;
-    private final UsersFavoriteAdsRepository favoriteRepository;
+    private final UsersFavoriteAdsRepository usersFavoriteAdsRepository;
     private final AdMapper adMapper;
 
     public AdServiceImpl(@Autowired UserRepository userRepository,
             @Autowired AdRepository adRepository,
-            @Autowired UsersFavoriteAdsRepository favoriteRepository,
+            @Autowired UsersFavoriteAdsRepository usersFavoriteAdsRepository,
             @Autowired AdMapper adMapper) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
-        this.favoriteRepository = favoriteRepository;
+        this.usersFavoriteAdsRepository = usersFavoriteAdsRepository;
         this.adMapper = adMapper;
     }
 
@@ -160,7 +160,7 @@ public class AdServiceImpl implements AdService {
 
         // Retrieve favorite ad IDs if logged in user ID is provided
         if (loggedInUserId != null) {
-            favoriteAdIds = favoriteRepository.findFavoriteAdIdsByUserId(loggedInUserId);
+            favoriteAdIds = usersFavoriteAdsRepository.findFavoriteAdIdsByUserId(loggedInUserId);
         }
 
         List<AdCardResponseDTO> mappedAdsList = new ArrayList<>();
@@ -219,18 +219,30 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Retrieves an ad information by a user's ID
+     * Retrieves an ad information by its ID
      *
-     * @param id the concerned user.
-     * @return an ad
+     * @param adId   The concerned ad ID.
+     * @param userId The logged in User ID.
+     * @return An AdPostResponseDTO
      */
     @Override
-    public AdPostResponseDTO findAdById(Long id) {
-        Optional<Ad> optionalAd = adRepository.findById(id);
+    public AdPostResponseDTO findAdById(Long adId, Long userId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Optional<User> optionalUser = userRepository.findById(userId);
+
         if (optionalAd.isPresent()) {
             Ad ad = optionalAd.get();
-            return adMapper.adToAdPostResponseDTO(ad);
+            User loggedInUser = optionalUser.get();
 
+            AdPostResponseDTO dto = adMapper.adToAdPostResponseDTO(ad);
+            if (optionalUser.isPresent() && loggedInUser.getId() != ad.getPublisher().getId()) {
+                // Check if the ad is a favorite for the given user
+
+                boolean isFavorite = usersFavoriteAdsRepository.existsByUserIdAndAdId(userId, adId);
+                dto.setFavorite(isFavorite);
+            }
+
+            return dto;
         } else {
             throw new EntityNotFoundException();
         }
@@ -328,7 +340,8 @@ public class AdServiceImpl implements AdService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Page<UsersFavoriteAds> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user, pageable);
+            Page<UsersFavoriteAds> favoritesAds = this.usersFavoriteAdsRepository.findByUserOrderByAddedAtDesc(user,
+                    pageable);
             return this.convertFavoritesToPageOfAdCardResponseDTOs(pageable, favoritesAds);
         } else {
             throw new EntityNotFoundException();
@@ -349,13 +362,13 @@ public class AdServiceImpl implements AdService {
 
         if (optionalUser.isPresent() && optionalAd.isPresent()) {
             UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(userId, adId);
-            Optional<UsersFavoriteAds> optionalFavorite = favoriteRepository.findById(favoriteKey);
+            Optional<UsersFavoriteAds> optionalFavorite = usersFavoriteAdsRepository.findById(favoriteKey);
             if (!optionalFavorite.isPresent()) {
                 UsersFavoriteAds newFavorite = new UsersFavoriteAds(favoriteKey, optionalUser.get(), optionalAd.get(),
                         LocalDateTime.now());
-                favoriteRepository.save(newFavorite);
+                usersFavoriteAdsRepository.save(newFavorite);
             } else {
-                favoriteRepository.delete(optionalFavorite.get());
+                usersFavoriteAdsRepository.delete(optionalFavorite.get());
             }
         } else {
             throw new EntityNotFoundException();
