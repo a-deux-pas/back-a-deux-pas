@@ -4,10 +4,7 @@ import adeuxpas.back.dto.MeetingDisplayDTO;
 import adeuxpas.back.enums.MeetingStatus;
 import adeuxpas.back.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +13,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/meetings")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class MeetingController {
 
     private final MeetingService meetingService;

@@ -53,6 +53,7 @@ public class MeetingSeeder {
         User buyer3 = userRepository.findById(5L).orElseThrow(() -> new RuntimeException("User not found"));
         User seller3 = userRepository.findById(6L).orElseThrow(() -> new RuntimeException("User not found"));
 
+
         PreferredMeetingPlace meetingPlace1 = preferredMeetingPlaceRepository.findById(1L).orElseThrow(() -> new RuntimeException("Meeting Place not found"));
         PreferredMeetingPlace meetingPlace2 = preferredMeetingPlaceRepository.findById(2L).orElseThrow(() -> new RuntimeException("Meeting Place not found"));
         PreferredMeetingPlace meetingPlace3 = preferredMeetingPlaceRepository.findById(3L).orElseThrow(() -> new RuntimeException("Meeting Place not found"));
@@ -143,7 +144,20 @@ public class MeetingSeeder {
         sixthMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
         sixthMeeting.setAds(new HashSet<>(Arrays.asList(ads.get(5))));
 
-        List<Meeting> meetings = Arrays.asList(firstMeeting, secondMeeting, thirdMeeting, fourthMeeting, fifthMeeting, sixthMeeting);
+        Meeting seventhMeeting = new Meeting();
+        seventhMeeting.setBuyer(seller1);
+        seventhMeeting.setSeller(seller3);
+        seventhMeeting.setMeetingPlace(meetingPlace2);
+        seventhMeeting.setSchedule(schedule2);
+        seventhMeeting.setDate(LocalDateTime.now().plusDays(5));
+        seventhMeeting.setStatus(MeetingStatus.INITIALIZED);
+        seventhMeeting.setBuyerDistinctiveSign("Je porterai un manteau vert.");
+        seventhMeeting.setSellerDistinctiveSign("J'aurai un sac à dos noir.");
+        seventhMeeting.setBuyerAdditionalInfo("Je souhaite examiner l'objet avant l'achat.");
+        seventhMeeting.setSellerAdditionalInfo("L'objet est en parfait état.");
+        seventhMeeting.setAds(new HashSet<>(Arrays.asList(ads.get(1))));
+
+        List<Meeting> meetings = Arrays.asList(firstMeeting, secondMeeting, thirdMeeting, fourthMeeting, fifthMeeting, sixthMeeting, seventhMeeting);
         this.meetingRepository.saveAll(meetings);
     }
 }
