@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import adeuxpas.back.entity.UsersFavoriteAds;
@@ -47,4 +48,15 @@ public interface UsersFavoriteAdsRepository extends JpaRepository<UsersFavoriteA
      */
     @Query("SELECT f.ad.id FROM UsersFavoriteAds f WHERE f.user.id = :userId")
     Set<Long> findFavoriteAdIdsByUserId(Long userId);
+
+    /**
+     * Custom query that checks how many users have added the current ad in their
+     * favorite ads list
+     * 
+     * @param adId
+     * @return The number of entry this ad has in the userFavoriteAds table
+     */
+    @Query("SELECT COUNT(u) FROM UsersFavoriteAds u WHERE u.ad.id = :adId")
+    Long checksFavoriteCount(
+            @Param("adId") Long adId);
 }

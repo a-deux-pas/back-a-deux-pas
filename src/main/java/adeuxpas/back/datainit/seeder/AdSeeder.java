@@ -37,23 +37,22 @@ public class AdSeeder {
         AdSeeder(@Autowired AdRepository adRepository, @Autowired UsersFavoriteAdsRepository favoriteRepository) {
                 this.adRepository = adRepository;
                 this.favoriteRepository = favoriteRepository;
-            }
+        }
 
-
-    /**
-     * This method creates ad entities.
-     * Each ad is initialized with sample data such as title, price, creation date,
-     * publisher etc.
-     * 
-     * @param users the list of potential ad publishers.
-     * @return a list of ads.
-     */
-    public List<Ad> createAds(List<User> users) {
-        List<Ad> firstUserAds = new ArrayList<>();
-        List<Ad> secondUserAds = new ArrayList<>();
-        List<Ad> thirdUserAds = new ArrayList<>();
-        List<Ad> fourthUserAds = new ArrayList<>();
-        List<Ad> fifthUserAds = new ArrayList<>();
+        /**
+         * This method creates ad entities.
+         * Each ad is initialized with sample data such as title, price, creation date,
+         * publisher etc.
+         * 
+         * @param users the list of potential ad publishers.
+         * @return a list of ads.
+         */
+        public List<Ad> createAds(List<User> users) {
+                List<Ad> firstUserAds = new ArrayList<>();
+                List<Ad> secondUserAds = new ArrayList<>();
+                List<Ad> thirdUserAds = new ArrayList<>();
+                List<Ad> fourthUserAds = new ArrayList<>();
+                List<Ad> fifthUserAds = new ArrayList<>();
 
                 Ad firstAd = new Ad();
                 firstAd.setArticleDescription(
@@ -147,7 +146,7 @@ public class AdSeeder {
 
                 Ad eighthAd = new Ad();
                 eighthAd.setArticleDescription(
-                                "La collection la plus vendue de Nassim N. Taleb ; comprend : Anti-Fragile, The Black San, Skin in the Game, etc. ");
+                                "La collection la plus vendue de Nassim N. Taleb ; comprend : Anti-Fragile, The Black Swan, Skin in the Game, etc. ");
                 eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(6));
                 eighthAd.setPrice(BigDecimal.valueOf(150));
                 eighthAd.setTitle("Collection de livres Incerto");
@@ -286,7 +285,8 @@ public class AdSeeder {
                 eighteenthAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad nineteethAd = new Ad();
-                nineteethAd.setArticleDescription( "Découvrez ce magnifique bonsaï, une œuvre d'art vivante qui apportera une touche zen à votre intérieur. Soigneusement sculpté et entretenu, ce bonsaï présente un feuillage dense et une structure élégante, idéale pour les amateurs de plantes et les décorateurs d'intérieur. Facile à entretenir, il est parfait pour apporter une ambiance apaisante et naturelle à votre espace de vie ou de travail.");
+                nineteethAd.setArticleDescription(
+                                "Découvrez ce magnifique bonsaï, une œuvre d'art vivante qui apportera une touche zen à votre intérieur. Soigneusement sculpté et entretenu, ce bonsaï présente un feuillage dense et une structure élégante, idéale pour les amateurs de plantes et les décorateurs d'intérieur. Facile à entretenir, il est parfait pour apporter une ambiance apaisante et naturelle à votre espace de vie ou de travail.");
                 nineteethAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
                 nineteethAd.setPrice(BigDecimal.valueOf(30.67));
                 nineteethAd.setTitle("Bonsaï");
@@ -300,7 +300,7 @@ public class AdSeeder {
 
                 Ad twentiethAd = new Ad();
                 twentiethAd.setArticleDescription(
-                "Smartphone dernier cri en excellent état. Utilisé pendant seulement six mois, il offre toutes les fonctionnalités modernes dont vous avez besoin : caméra haute résolution, écran HD, grande capacité de stockage et une autonomie de batterie impressionnante.");
+                                "Smartphone dernier cri en excellent état. Utilisé pendant seulement six mois, il offre toutes les fonctionnalités modernes dont vous avez besoin : caméra haute résolution, écran HD, grande capacité de stockage et une autonomie de batterie impressionnante.");
                 twentiethAd.setCreationDate(LocalDateTime.now().plusMinutes(10));
                 twentiethAd.setPrice(BigDecimal.valueOf(450.00));
                 twentiethAd.setTitle("Smartphone dernière génération");
@@ -314,7 +314,7 @@ public class AdSeeder {
 
                 Ad twentyFirstAd = new Ad();
                 twentyFirstAd.setArticleDescription(
-                "Guitare acoustique de haute qualité, idéale pour les débutants et les musiciens expérimentés. Son riche et clair, facile à jouer, parfait pour des sessions acoustiques à la maison ou sur scène.");
+                                "Guitare acoustique de haute qualité, idéale pour les débutants et les musiciens expérimentés. Son riche et clair, facile à jouer, parfait pour des sessions acoustiques à la maison ou sur scène.");
                 twentyFirstAd.setCreationDate(LocalDateTime.now().plusMinutes(15));
                 twentyFirstAd.setPrice(BigDecimal.valueOf(150.00));
                 twentyFirstAd.setTitle("Guitare acoustique en bois de qualité");
@@ -328,7 +328,7 @@ public class AdSeeder {
 
                 Ad twentySecondAd = new Ad();
                 twentySecondAd.setArticleDescription(
-                "Table basse en bois massif, parfaite pour votre salon. Son design élégant et épuré s'intègre facilement dans tout type de décoration intérieure. Elle est robuste et en excellent état.");
+                                "Table basse en bois massif, parfaite pour votre salon. Son design élégant et épuré s'intègre facilement dans tout type de décoration intérieure. Elle est robuste et en excellent état.");
                 twentySecondAd.setCreationDate(LocalDateTime.now().plusMinutes(20));
                 twentySecondAd.setPrice(BigDecimal.valueOf(80.00));
                 twentySecondAd.setTitle("Table basse en bois massif");
@@ -341,7 +341,8 @@ public class AdSeeder {
                 twentySecondAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad twentyThirdAd = new Ad();
-                twentyThirdAd.setArticleDescription("Montre élégante pour homme, avec bracelet en cuir et cadran en acier inoxydable. Parfaite pour toutes les occasions, elle allie style et fonctionnalité avec son chronographe intégré.");
+                twentyThirdAd.setArticleDescription(
+                                "Montre élégante pour homme, avec bracelet en cuir et cadran en acier inoxydable. Parfaite pour toutes les occasions, elle allie style et fonctionnalité avec son chronographe intégré.");
                 twentyThirdAd.setCreationDate(LocalDateTime.now().plusMinutes(25));
                 twentyThirdAd.setPrice(BigDecimal.valueOf(120.00));
                 twentyThirdAd.setTitle("Montre élégante pour homme");
@@ -354,7 +355,8 @@ public class AdSeeder {
                 twentyThirdAd.setStatus(AdStatus.SOLD);
 
                 Ad twentyFourthAd = new Ad();
-                twentyFourthAd.setArticleDescription("Ordinateur portable performant avec écran HD, processeur rapide et grande capacité de stockage. Idéal pour le travail, les études ou les loisirs, en parfait état de fonctionnement.");
+                twentyFourthAd.setArticleDescription(
+                                "Ordinateur portable performant avec écran HD, processeur rapide et grande capacité de stockage. Idéal pour le travail, les études ou les loisirs, en parfait état de fonctionnement.");
                 twentyFourthAd.setCreationDate(LocalDateTime.now().plusMinutes(30));
                 twentyFourthAd.setPrice(BigDecimal.valueOf(700.00));
                 twentyFourthAd.setTitle("Ordinateur portable performant");
@@ -367,7 +369,8 @@ public class AdSeeder {
                 twentyFourthAd.setStatus(AdStatus.SOLD);
 
                 Ad twentyFifthAd = new Ad();
-                twentyFifthAd.setArticleDescription("Roman captivant, best-seller international, en parfait état. Une lecture incontournable pour tous les amateurs de littérature, offrant une histoire passionnante et bien écrite.");
+                twentyFifthAd.setArticleDescription(
+                                "Roman captivant, best-seller international, en parfait état. Une lecture incontournable pour tous les amateurs de littérature, offrant une histoire passionnante et bien écrite.");
                 twentyFifthAd.setCreationDate(LocalDateTime.now().plusMinutes(35));
                 twentyFifthAd.setPrice(BigDecimal.valueOf(15.00));
                 twentyFifthAd.setTitle("Roman captivant - Best-seller international");
@@ -380,7 +383,8 @@ public class AdSeeder {
                 twentyFifthAd.setStatus(AdStatus.RESERVED);
 
                 Ad twentySixthAd = new Ad();
-                twentySixthAd.setArticleDescription("Chaussures de sport de marque, en excellent état, idéales pour la course à pied et les activités sportives. Confortables et durables, elles offrent un excellent maintien et une bonne adhérence.");
+                twentySixthAd.setArticleDescription(
+                                "Chaussures de sport de marque, en excellent état, idéales pour la course à pied et les activités sportives. Confortables et durables, elles offrent un excellent maintien et une bonne adhérence.");
                 twentySixthAd.setCreationDate(LocalDateTime.now().plusMinutes(40));
                 twentySixthAd.setPrice(BigDecimal.valueOf(60.00));
                 twentySixthAd.setTitle("Chaussures de sport de marque");
@@ -393,7 +397,8 @@ public class AdSeeder {
                 twentySixthAd.setStatus(AdStatus.RESERVED);
 
                 Ad twentySeventhAd = new Ad();
-                twentySeventhAd.setArticleDescription("Ensemble de DVD de films classiques et récents, en parfait état. Idéal pour les soirées cinéma à la maison, cet ensemble offre une variété de genres pour tous les goûts.");
+                twentySeventhAd.setArticleDescription(
+                                "Ensemble de DVD de films classiques et récents, en parfait état. Idéal pour les soirées cinéma à la maison, cet ensemble offre une variété de genres pour tous les goûts.");
                 twentySeventhAd.setCreationDate(LocalDateTime.now().plusMinutes(45));
                 twentySeventhAd.setPrice(BigDecimal.valueOf(40.00));
                 twentySeventhAd.setTitle("Ensemble de DVD - Films classiques et récents");
@@ -406,7 +411,8 @@ public class AdSeeder {
                 twentySeventhAd.setStatus(AdStatus.RESERVED);
 
                 Ad twentyEighthAd = new Ad();
-                twentyEighthAd.setArticleDescription("Ensemble de décorations murales en métal et bois, parfait pour ajouter une touche artistique et moderne à votre intérieur. En excellent état, elles s'intégreront parfaitement dans tout type de décoration.");
+                twentyEighthAd.setArticleDescription(
+                                "Ensemble de décorations murales en métal et bois, parfait pour ajouter une touche artistique et moderne à votre intérieur. En excellent état, elles s'intégreront parfaitement dans tout type de décoration.");
                 twentyEighthAd.setCreationDate(LocalDateTime.now().plusMinutes(50));
                 twentyEighthAd.setPrice(BigDecimal.valueOf(55.00));
                 twentyEighthAd.setTitle("Décorations murales en métal et bois");
@@ -419,7 +425,8 @@ public class AdSeeder {
                 twentyEighthAd.setStatus(AdStatus.RESERVED);
 
                 Ad twentyNinthAd = new Ad();
-                twentyNinthAd.setArticleDescription("Vélo de montagne robuste, parfait pour les amateurs de randonnée et les trajets en terrain accidenté. En excellent état, avec des pneus neufs et un cadre léger en aluminium.");
+                twentyNinthAd.setArticleDescription(
+                                "Vélo de montagne robuste, parfait pour les amateurs de randonnée et les trajets en terrain accidenté. En excellent état, avec des pneus neufs et un cadre léger en aluminium.");
                 twentyNinthAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
                 twentyNinthAd.setPrice(BigDecimal.valueOf(300.00));
                 twentyNinthAd.setTitle("Vélo de montagne en excellent état");
@@ -433,7 +440,7 @@ public class AdSeeder {
 
                 Ad thirtiethAd = new Ad();
                 thirtiethAd.setArticleDescription(
-                "Jeans de marque pour femme, coupe slim, en excellent état. Porté seulement quelques fois, il est comme neuf. Parfait pour un look décontracté et tendance.");
+                                "Jeans de marque pour femme, coupe slim, en excellent état. Porté seulement quelques fois, il est comme neuf. Parfait pour un look décontracté et tendance.");
                 thirtiethAd.setCreationDate(LocalDateTime.now().plusMinutes(10));
                 thirtiethAd.setPrice(BigDecimal.valueOf(40.00));
                 thirtiethAd.setTitle("Jeans pour femme - Coupe slim");
@@ -447,7 +454,8 @@ public class AdSeeder {
                 thirtiethAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtyFirstAd = new Ad();
-                thirtyFirstAd.setArticleDescription("Télévision 4K Ultra HD, 55 pouces, en parfait état. Image claire et nette, son surround, connectivité intelligente. Idéale pour les soirées cinéma et les jeux vidéo.");
+                thirtyFirstAd.setArticleDescription(
+                                "Télévision 4K Ultra HD, 55 pouces, en parfait état. Image claire et nette, son surround, connectivité intelligente. Idéale pour les soirées cinéma et les jeux vidéo.");
                 thirtyFirstAd.setCreationDate(LocalDateTime.now().plusMinutes(15));
                 thirtyFirstAd.setPrice(BigDecimal.valueOf(500.00));
                 thirtyFirstAd.setTitle("Télévision 4K Ultra HD 55 pouces");
@@ -460,7 +468,8 @@ public class AdSeeder {
                 thirtyFirstAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtySecondAd = new Ad();
-                thirtySecondAd.setArticleDescription("Chaise ergonomique pour bureau, réglable et confortable. En très bon état, elle offre un excellent soutien lombaire pour les longues heures de travail.");
+                thirtySecondAd.setArticleDescription(
+                                "Chaise ergonomique pour bureau, réglable et confortable. En très bon état, elle offre un excellent soutien lombaire pour les longues heures de travail.");
                 thirtySecondAd.setCreationDate(LocalDateTime.now().plusMinutes(20));
                 thirtySecondAd.setPrice(BigDecimal.valueOf(75.00));
                 thirtySecondAd.setTitle("Chaise ergonomique pour bureau");
@@ -473,7 +482,8 @@ public class AdSeeder {
                 thirtySecondAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtyThirdAd = new Ad();
-                thirtyThirdAd.setArticleDescription("Livre de recettes de cuisine, comprenant des plats internationaux et des desserts gourmands. En excellent état, idéal pour les amateurs de cuisine.");
+                thirtyThirdAd.setArticleDescription(
+                                "Livre de recettes de cuisine, comprenant des plats internationaux et des desserts gourmands. En excellent état, idéal pour les amateurs de cuisine.");
                 thirtyThirdAd.setCreationDate(LocalDateTime.now().plusMinutes(25));
                 thirtyThirdAd.setPrice(BigDecimal.valueOf(20.00));
                 thirtyThirdAd.setTitle("Livre de recettes de cuisine");
@@ -486,7 +496,8 @@ public class AdSeeder {
                 thirtyThirdAd.setStatus(AdStatus.SOLD);
 
                 Ad thirtyFourthAd = new Ad();
-                thirtyFourthAd.setArticleDescription("Casque de réalité virtuelle de dernière génération, en parfait état de fonctionnement. Offrez-vous une expérience immersive unique avec ce casque VR de qualité.");
+                thirtyFourthAd.setArticleDescription(
+                                "Casque de réalité virtuelle de dernière génération, en parfait état de fonctionnement. Offrez-vous une expérience immersive unique avec ce casque VR de qualité.");
                 thirtyFourthAd.setCreationDate(LocalDateTime.now().plusMinutes(30));
                 thirtyFourthAd.setPrice(BigDecimal.valueOf(250.00));
                 thirtyFourthAd.setTitle("Casque de réalité virtuelle");
@@ -499,7 +510,8 @@ public class AdSeeder {
                 thirtyFourthAd.setStatus(AdStatus.SOLD);
 
                 Ad thirtyFifthAd = new Ad();
-                thirtyFifthAd.setArticleDescription("Bottes en cuir pour homme, de marque renommée, en très bon état. Confortables et élégantes, idéales pour un look chic et décontracté.");
+                thirtyFifthAd.setArticleDescription(
+                                "Bottes en cuir pour homme, de marque renommée, en très bon état. Confortables et élégantes, idéales pour un look chic et décontracté.");
                 thirtyFifthAd.setCreationDate(LocalDateTime.now().plusMinutes(35));
                 thirtyFifthAd.setPrice(BigDecimal.valueOf(100.00));
                 thirtyFifthAd.setTitle("Bottes en cuir pour homme");
@@ -513,7 +525,8 @@ public class AdSeeder {
                 thirtyFifthAd.setStatus(AdStatus.SOLD);
 
                 Ad thirtySixthAd = new Ad();
-                thirtySixthAd.setArticleDescription("Enceinte Bluetooth portable, en parfait état, offrant une qualité sonore exceptionnelle. Idéale pour écouter de la musique partout où vous allez.");
+                thirtySixthAd.setArticleDescription(
+                                "Enceinte Bluetooth portable, en parfait état, offrant une qualité sonore exceptionnelle. Idéale pour écouter de la musique partout où vous allez.");
                 thirtySixthAd.setCreationDate(LocalDateTime.now().plusMinutes(40));
                 thirtySixthAd.setPrice(BigDecimal.valueOf(50.00));
                 thirtySixthAd.setTitle("Enceinte Bluetooth portable");
@@ -526,7 +539,8 @@ public class AdSeeder {
                 thirtySixthAd.setStatus(AdStatus.RESERVED);
 
                 Ad thirtySeventhAd = new Ad();
-                thirtySeventhAd.setArticleDescription("Lampe de chevet moderne avec abat-jour en tissu, en très bon état. Parfaite pour ajouter une touche d'élégance à votre chambre ou votre salon.");
+                thirtySeventhAd.setArticleDescription(
+                                "Lampe de chevet moderne avec abat-jour en tissu, en très bon état. Parfaite pour ajouter une touche d'élégance à votre chambre ou votre salon.");
                 thirtySeventhAd.setCreationDate(LocalDateTime.now().plusMinutes(45));
                 thirtySeventhAd.setPrice(BigDecimal.valueOf(30.00));
                 thirtySeventhAd.setTitle("Lampe de chevet moderne");
@@ -539,7 +553,8 @@ public class AdSeeder {
                 thirtySeventhAd.setStatus(AdStatus.RESERVED);
 
                 Ad thirtyEighthAd = new Ad();
-                thirtyEighthAd.setArticleDescription("Chemise en lin pour homme, légère et respirante. Parfaite pour les journées chaudes, elle offre un style décontracté et élégant. En excellent état.");
+                thirtyEighthAd.setArticleDescription(
+                                "Chemise en lin pour homme, légère et respirante. Parfaite pour les journées chaudes, elle offre un style décontracté et élégant. En excellent état.");
                 thirtyEighthAd.setCreationDate(LocalDateTime.now().plusMinutes(50));
                 thirtyEighthAd.setPrice(BigDecimal.valueOf(35.00));
                 thirtyEighthAd.setTitle("Chemise en lin pour homme");
@@ -554,7 +569,7 @@ public class AdSeeder {
 
                 Ad thirtyNinthAd = new Ad();
                 thirtyNinthAd.setArticleDescription(
-                "Console de jeux vidéo avec manettes et jeux inclus. En bon état, idéale pour les amateurs de jeux vidéo cherchant une expérience immersive et divertissante.");
+                                "Console de jeux vidéo avec manettes et jeux inclus. En bon état, idéale pour les amateurs de jeux vidéo cherchant une expérience immersive et divertissante.");
                 thirtyNinthAd.setCreationDate(LocalDateTime.now().plusMinutes(39));
                 thirtyNinthAd.setPrice(BigDecimal.valueOf(150));
                 thirtyNinthAd.setTitle("Console de jeux vidéo avec manettes et jeux");
@@ -567,7 +582,7 @@ public class AdSeeder {
 
                 Ad fortiethAd = new Ad();
                 fortiethAd.setArticleDescription(
-                "Table parfaite pour ajouter une touche rustique à votre exterieur. Robuste et élégante, elle s'intégrera parfaitement à toute ambiance.");
+                                "Table parfaite pour ajouter une touche rustique à votre exterieur. Robuste et élégante, elle s'intégrera parfaitement à toute ambiance.");
                 fortiethAd.setCreationDate(LocalDateTime.now().plusMinutes(40));
                 fortiethAd.setPrice(BigDecimal.valueOf(75));
                 fortiethAd.setTitle("Table verte");
@@ -580,7 +595,7 @@ public class AdSeeder {
 
                 Ad fortyFirstAd = new Ad();
                 fortyFirstAd.setArticleDescription(
-                "Sac à main de marque en cuir, en très bon état, avec de nombreux compartiments pour un rangement pratique. Idéal pour ajouter une touche d'élégance à votre tenue.");
+                                "Sac à main de marque en cuir, en très bon état, avec de nombreux compartiments pour un rangement pratique. Idéal pour ajouter une touche d'élégance à votre tenue.");
                 fortyFirstAd.setCreationDate(LocalDateTime.now().plusMinutes(41));
                 fortyFirstAd.setPrice(BigDecimal.valueOf(60));
                 fortyFirstAd.setTitle("Sac à main en cuir de marque");
@@ -593,7 +608,7 @@ public class AdSeeder {
 
                 Ad fortySecondAd = new Ad();
                 fortySecondAd.setArticleDescription(
-                "Appareil photo reflex avec objectifs en parfait état, idéal pour les photographes amateurs ou professionnels. Capturez des moments inoubliables avec une qualité d'image exceptionnelle.");
+                                "Appareil photo reflex avec objectifs en parfait état, idéal pour les photographes amateurs ou professionnels. Capturez des moments inoubliables avec une qualité d'image exceptionnelle.");
                 fortySecondAd.setCreationDate(LocalDateTime.now().plusMinutes(42));
                 fortySecondAd.setPrice(BigDecimal.valueOf(350));
                 fortySecondAd.setTitle("Appareil photo reflex avec objectifs");
@@ -606,7 +621,7 @@ public class AdSeeder {
 
                 Ad fortyThirdAd = new Ad();
                 fortyThirdAd.setArticleDescription(
-                "Tondeuse à gazon électrique en bon état de fonctionnement, parfaite pour entretenir votre jardin. Simple d'utilisation et efficace, elle vous permettra de garder votre pelouse impeccable.");
+                                "Tondeuse à gazon électrique en bon état de fonctionnement, parfaite pour entretenir votre jardin. Simple d'utilisation et efficace, elle vous permettra de garder votre pelouse impeccable.");
                 fortyThirdAd.setCreationDate(LocalDateTime.now().plusMinutes(43));
                 fortyThirdAd.setPrice(BigDecimal.valueOf(100));
                 fortyThirdAd.setTitle("Tondeuse à gazon électrique");
@@ -616,10 +631,10 @@ public class AdSeeder {
                 fortyThirdAd.setSubcategory("jardin");
                 fortyThirdAd.setStatus(AdStatus.AVAILABLE);
                 secondUserAds.add(fortyThirdAd);
-                                
+
                 Ad fortyFourthAd = new Ad();
                 fortyFourthAd.setArticleDescription(
-                "Canapé confortable en très bon état, pratique pour les petits espaces ou les invités. Transformez votre salon en chambre d'appoint avec ce canapé polyvalent et stylé.");
+                                "Canapé confortable en très bon état, pratique pour les petits espaces ou les invités. Transformez votre salon en chambre d'appoint avec ce canapé polyvalent et stylé.");
                 fortyFourthAd.setCreationDate(LocalDateTime.now().plusMinutes(44));
                 fortyFourthAd.setPrice(BigDecimal.valueOf(200));
                 fortyFourthAd.setTitle("Canapé bohème");
@@ -632,7 +647,7 @@ public class AdSeeder {
 
                 Ad fortyFifthAd = new Ad();
                 fortyFifthAd.setArticleDescription(
-                "Montre connectée en excellent état, avec plusieurs fonctionnalités pour suivre votre activité physique et vos notifications. Alliez technologie et style avec cette montre connectée.");
+                                "Montre connectée en excellent état, avec plusieurs fonctionnalités pour suivre votre activité physique et vos notifications. Alliez technologie et style avec cette montre connectée.");
                 fortyFifthAd.setCreationDate(LocalDateTime.now().plusMinutes(45));
                 fortyFifthAd.setPrice(BigDecimal.valueOf(120));
                 fortyFifthAd.setTitle("Montre connectée multifonctions");
@@ -645,7 +660,7 @@ public class AdSeeder {
 
                 Ad fortySixthAd = new Ad();
                 fortySixthAd.setArticleDescription(
-                "Machine à café expresso en parfait état de fonctionnement, idéale pour les amateurs de café. Préparez vos boissons préférées avec cette machine à café performante et élégante.");
+                                "Machine à café expresso en parfait état de fonctionnement, idéale pour les amateurs de café. Préparez vos boissons préférées avec cette machine à café performante et élégante.");
                 fortySixthAd.setCreationDate(LocalDateTime.now().plusMinutes(46));
                 fortySixthAd.setPrice(BigDecimal.valueOf(80));
                 fortySixthAd.setTitle("Machine à café expresso");
@@ -658,7 +673,7 @@ public class AdSeeder {
 
                 Ad fortySeventhAd = new Ad();
                 fortySeventhAd.setArticleDescription(
-                "Tenue de tennis pour femme, en excellent état, incluant une jupe, des brassières et des t-shirts de sport. Parfait pour vos séances de sport et vos entraînements quotidiens.");
+                                "Tenue de tennis pour femme, en excellent état, incluant une jupe, des brassières et des t-shirts de sport. Parfait pour vos séances de sport et vos entraînements quotidiens.");
                 fortySeventhAd.setCreationDate(LocalDateTime.now().plusMinutes(47));
                 fortySeventhAd.setPrice(BigDecimal.valueOf(50));
                 fortySeventhAd.setTitle("Vêtements de sport pour femme");
@@ -671,7 +686,7 @@ public class AdSeeder {
 
                 Ad fortyEighthAd = new Ad();
                 fortyEighthAd.setArticleDescription(
-                "Que vous aimiez le yoga nidra, le yin yoga ou que vous voulez juste vous faire une bonne séance d'étirement, ce tapis est fait pour vous.");
+                                "Que vous aimiez le yoga nidra, le yin yoga ou que vous voulez juste vous faire une bonne séance d'étirement, ce tapis est fait pour vous.");
                 fortyEighthAd.setCreationDate(LocalDateTime.now().plusMinutes(48));
                 fortyEighthAd.setPrice(BigDecimal.valueOf(30));
                 fortyEighthAd.setTitle("tapis de yoga");
@@ -682,7 +697,6 @@ public class AdSeeder {
                 fortyEighthAd.setStatus(AdStatus.RESERVED);
                 secondUserAds.add(fortyEighthAd);
 
-
                 users.get(0).setAds(firstUserAds);
                 users.get(1).setAds(secondUserAds);
                 users.get(2).setAds(thirdUserAds);
@@ -691,57 +705,59 @@ public class AdSeeder {
                 users.get(5).setAds(sixthUserAds);
 
                 return Arrays.asList(
-        firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd, ninethAd,
-        tenthAd,eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd, 
-        seventeenthAd, eighteenthAd, nineteethAd, twentiethAd, twentyFirstAd, twentySecondAd, 
-        twentyThirdAd, twentyFourthAd, twentyFifthAd, twentySixthAd, twentySeventhAd, twentyEighthAd, 
-        twentyNinthAd, thirtiethAd, thirtyFirstAd, thirtySecondAd, thirtyThirdAd, thirtyFourthAd, thirtyFifthAd,
-        thirtySixthAd, thirtySeventhAd, thirtyEighthAd, thirtyNinthAd, fortiethAd, fortyFirstAd, fortySecondAd,
-        fortyThirdAd, fortyFourthAd,fortyFifthAd,fortySixthAd,fortySeventhAd,fortyEighthAd);
-
+                                firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd, ninethAd,
+                                tenthAd, eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd,
+                                seventeenthAd, eighteenthAd, nineteethAd, twentiethAd, twentyFirstAd, twentySecondAd,
+                                twentyThirdAd, twentyFourthAd, twentyFifthAd, twentySixthAd, twentySeventhAd,
+                                twentyEighthAd,
+                                twentyNinthAd, thirtiethAd, thirtyFirstAd, thirtySecondAd, thirtyThirdAd,
+                                thirtyFourthAd, thirtyFifthAd,
+                                thirtySixthAd, thirtySeventhAd, thirtyEighthAd, thirtyNinthAd, fortiethAd, fortyFirstAd,
+                                fortySecondAd,
+                                fortyThirdAd, fortyFourthAd, fortyFifthAd, fortySixthAd, fortySeventhAd, fortyEighthAd);
         }
 
-    /**
-     * Seeds the database with sample ad data.
-     * 
-     * @param ads The list of ads to save.
-     */
-    public void seedAds(List<Ad> ads) {
-        this.adRepository.saveAll(ads);
-    }
-
-    /**
-     * Seeds the database with favorites ads.
-     * 
-     * @param user The user who adds the ad as favorite.
-     * @param ad   The ad added as favorite.
-     */
-    private UsersFavoriteAds createFavoriteAd(User user, Ad ad) {
-        UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(user.getId(), ad.getId());
-        UsersFavoriteAds favoriteAd = new UsersFavoriteAds(favoriteKey, user, ad, LocalDateTime.now());
-        this.favoriteRepository.save(favoriteAd);
-        return favoriteAd;
-    }
-
-    /**
-     * Adds up to two ads to the user's favorites if the postal code of the ad's
-     * publisher matches the user's postal code.
-     *
-     * @param user The list of users.
-     * @param ads  The list of ads.
-     */
-    public void seedFavoritesAds(List<User> users, List<Ad> ads) {
-        for (User user : users) {
-            List<Ad> matchedAds = ads.stream()
-                    .filter(ad -> !ad.getPublisher().equals(user)
-                            && ad.getPublisher().getPostalCode().equals(user.getPostalCode()))
-                    .limit(2)
-                    .toList();
-
-            for (Ad ad : matchedAds) {
-                createFavoriteAd(user, ad);
-            }
+        /**
+         * Seeds the database with sample ad data.
+         * 
+         * @param ads The list of ads to save.
+         */
+        public void seedAds(List<Ad> ads) {
+                this.adRepository.saveAll(ads);
         }
-    }
+
+        /**
+         * Seeds the database with favorites ads.
+         * 
+         * @param user The user who adds the ad as favorite.
+         * @param ad   The ad added as favorite.
+         */
+        private UsersFavoriteAds createFavoriteAd(User user, Ad ad) {
+                UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(user.getId(), ad.getId());
+                UsersFavoriteAds favoriteAd = new UsersFavoriteAds(favoriteKey, user, ad, LocalDateTime.now());
+                this.favoriteRepository.save(favoriteAd);
+                return favoriteAd;
+        }
+
+        /**
+         * Adds up to two ads to the user's favorites if the postal code of the ad's
+         * publisher matches the user's postal code.
+         *
+         * @param user The list of users.
+         * @param ads  The list of ads.
+         */
+        public void seedFavoritesAds(List<User> users, List<Ad> ads) {
+                for (User user : users) {
+                        List<Ad> matchedAds = ads.stream()
+                                        .filter(ad -> !ad.getPublisher().equals(user)
+                                                        && ad.getPublisher().getPostalCode()
+                                                                        .equals(user.getPostalCode()))
+                                        .limit(2)
+                                        .toList();
+
+                        for (Ad ad : matchedAds) {
+                                createFavoriteAd(user, ad);
+                        }
+                }
+        }
 }
-

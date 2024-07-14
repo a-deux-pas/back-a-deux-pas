@@ -160,29 +160,57 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user
+     * endpoint that gets a page of ads created by a user excluding the sold and
+     * reserved ones
      * 
-     * @param location   Define whether the ad list is needed for an ad page or an
-     *                   ad tab
      * @param userId
      * @param pageNumber
      * @param pageSize
+     * @param status1
+     * @param status2
      * @return ResponseEntity indicating if the Ads have been found
      */
-    @Operation(summary = "a page of the user's ads list")
+    @Operation(summary = "a page of the user's ads list excluding the ones that are sold or reserved")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of the user's ads page"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for an ad page content"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/{location}/{userId}")
-    public ResponseEntity<Object> getPaginatedAds(
-            @PathVariable String location,
+    @GetMapping("/adPageContentList/{userId}")
+    public ResponseEntity<Object> getMyAds(
             @PathVariable long userId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(location, userId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable);
+            return ResponseEntity.ok(adsPage.getContent());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * endpoint that gets a page of ads created by a user sorted so that the sold
+     * and reserved ones are the very last to be retrieved
+     * 
+     * @param userId
+     * @param pageNumber
+     * @param pageSize
+     * @return ResponseEntity indicating if the Ads have been found
+     */
+    @Operation(summary = "a page of the user's ads list sorted by their statuses so that the ones that are sold or reserved are the last called")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for the ad tab"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/adTablist/{userId}")
+    public ResponseEntity<Object> getMyAdTab(
+            @PathVariable long userId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "12") int pageSize) {
+        try {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            Page<AdCardResponseDTO> adsPage = this.adService.getUserAdsTab(userId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
