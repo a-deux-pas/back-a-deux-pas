@@ -98,4 +98,14 @@ public class AdCardResponseDTO {
     public int hashCode() {
         return Objects.hash(title, firstArticlePictureUrl, price, publisherAlias, status, isFavorite);
     }
+
+    @Override
+    public String toString() {
+        return "AdCardResponseDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", isFavorite=" + isFavorite +
+                '}';
+    }
+
 }

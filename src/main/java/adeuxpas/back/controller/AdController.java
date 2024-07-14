@@ -166,8 +166,6 @@ public class AdController {
      * @param userId
      * @param pageNumber
      * @param pageSize
-     * @param status1
-     * @param status2
      * @return ResponseEntity indicating if the Ads have been found
      */
     @Operation(summary = "a page of the user's ads list excluding the ones that are sold or reserved")
@@ -175,14 +173,16 @@ public class AdController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for an ad page content"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/adPageContentList/{userId}")
+    @GetMapping("/adPageContentList/{publisherId}/{loggedInUserId}")
     public ResponseEntity<Object> getMyAds(
-            @PathVariable long userId,
+            @PathVariable long publisherId,
+            @PathVariable Long loggedInUserId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(publisherId, pageable,
+                    loggedInUserId);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -235,13 +235,13 @@ public class AdController {
     @GetMapping("/similarAdsList/{category}/{publisherId}/{userId}")
     public ResponseEntity<Object> getSimilarAds(
             @PathVariable String category,
-            @PathVariable long userId,
             @PathVariable long publisherId,
+            @PathVariable long userId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "4") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.findSimilarAds(category, userId, publisherId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findSimilarAds(category, publisherId, userId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

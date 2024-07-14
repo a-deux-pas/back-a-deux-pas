@@ -59,4 +59,17 @@ public interface UsersFavoriteAdsRepository extends JpaRepository<UsersFavoriteA
     @Query("SELECT COUNT(u) FROM UsersFavoriteAds u WHERE u.ad.id = :adId")
     Long checksFavoriteCount(
             @Param("adId") Long adId);
+
+    /**
+     * Custom query that checks if the ad's publisher has ads that are in the
+     * current user's favorite list
+     * 
+     * @param userId
+     * @param publisherId
+     * @return a list of the ad's ids that have been liked by the currentUser and
+     *         that have the publisherId as author
+     */
+    @Query("SELECT a.id FROM Ad a JOIN UsersFavoriteAds u ON a.id = u.ad.id WHERE a.publisher.id = :publisherId AND a.status = 'AVAILABLE' AND u.user.id = :userId")
+    Set<Long> findUserPublisherFavoriteAdsIds(@Param("userId") long userId, @Param("publisherId") long publisherId);
+
 }

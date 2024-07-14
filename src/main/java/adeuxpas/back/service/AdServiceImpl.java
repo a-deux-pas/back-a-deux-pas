@@ -149,8 +149,9 @@ public class AdServiceImpl implements AdService {
     /**
      * Converts a page of Ad entities to a page of AdCardResponseDTOs.
      *
-     * @param pageable The pagination information.
-     * @param adsPage  The page of Ad entities.
+     * @param pageable       The pagination information.
+     * @param adsPage        The page of Ad entities.
+     * @param loggedInUserId The current user's id
      * @return The page of AdCardResponseDTOs.
      */
     private Page<AdCardResponseDTO> convertToPageOfAdCardResponseDTOs(Pageable pageable, Page<Ad> adsPage,
@@ -217,10 +218,11 @@ public class AdServiceImpl implements AdService {
         return adMapper.adToAdPostResponseDTO(savedAd);
     }
 
+    // TO DO :: (fix cloudinary branch) should return an adDetail / adCard ?
     /**
-     * Retrieves an ad information by a user's ID
+     * Retrieves an ad information by a its id
      *
-     * @param id the concerned user.
+     * @param id the said ad.
      * @return an ad
      */
     @Override
@@ -229,37 +231,49 @@ public class AdServiceImpl implements AdService {
         if (optionalAd.isPresent()) {
             Ad ad = optionalAd.get();
             return adMapper.adToAdPostResponseDTO(ad);
-
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     /**
-     * Finds ads and maps them into AdCardResponseDTO.
+     * Finds ads and maps them into an AdCardResponseDTO in order to display
+     * them on an adpage content
      * 
+     * @param publisherId    The ad's publisher's id
+     * @param pageable       The pagination information.
+     * @param loggedInUserId The current user's id
      * 
-     * @param pageable    The pagination information.
-     * @param publisherId
      * @return The page of AdCardResponseDTO.
      */
     @Override
-    public Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable) {
+    public Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
             Page<Ad> adsPage = adRepository.findAvailableAdsByPublisherId(publisherId, pageable);
-            return this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
+            Page<AdCardResponseDTO> mappedAdsPage = this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
+            if (loggedInUserId != null) {
+                Set<Long> favoriteAdsIds = favoriteRepository.findUserPublisherFavoriteAdsIds(loggedInUserId,
+                        publisherId);
+                for (AdCardResponseDTO dto : mappedAdsPage) {
+                    if (favoriteAdsIds.contains(dto.getId())) {
+                        dto.setFavorite(true);
+                    }
+                }
+            }
+            return mappedAdsPage;
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     /**
-     * Finds ads that are sorted by their status anf maps them into
-     * AdCardResponseDTO.
+     * Finds ads that are sorted by their status and maps them into
+     * AdCardResponseDTOs in order to display them on a user's ad tab.
      * 
      * @param pageable    The pagination information.
-     * @param publisherId
+     * @param publisherId The ad's publisher's id
+     * 
      * @return The page of AdCardResponseDTO.
      */
     @Override
@@ -277,19 +291,32 @@ public class AdServiceImpl implements AdService {
      * find a list containing the last four ads sharing the same category as the
      * current ad's
      * 
-     * @param category
-     * @param pageable
+     * @param category    The current ad's category
+     * @param publisherId The ad's publisher's id
+     * @param userId      The current user's id
+     * @param pageable    The pagination information.
+     * 
      * @return a list of similar ads sharing the same category
      */
     @Override
     public Page<AdCardResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
         Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
                 pageable);
-        return this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
+        Page<AdCardResponseDTO> mappedAdsPage = this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
+        if (userId != null) {
+            for (AdCardResponseDTO dto : mappedAdsPage) {
+                Set<Long> favoriteAdsIds = favoriteRepository.findUserPublisherFavoriteAdsIds(userId,
+                        dto.getPublisherId());
+                if (favoriteAdsIds.contains(dto.getId())) {
+                    dto.setFavorite(true);
+                }
+            }
+        }
+        return mappedAdsPage;
     }
 
     /**
-     * converts a page of Ad into a page of AdCardResponseDTO
+     * converts a page of Ad into a page of AdPostResponseDTO
      *
      * @param pageable The pagination information.
      * @param adsPage  The page of Ad entities.

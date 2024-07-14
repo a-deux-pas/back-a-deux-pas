@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
-import adeuxpas.back.enums.AdStatus;
 
 import java.util.List;
 
@@ -61,7 +60,7 @@ public interface AdService {
          * @param pageable
          * @return
          */
-        Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable);
+        Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId);
 
         /**
          * Contract that returns a definite number of a user's sorted ads
@@ -107,4 +106,5 @@ public interface AdService {
          * @param adId The ID of the ad.
          */
         long checkFavoriteCount(long adId);
+
 }

@@ -49,7 +49,7 @@ public interface AdMapper {
     @Mapping(source = "publisher.id", target = "publisherId")
     AdCardResponseDTO adToAdCardResponseDTO(Ad ad);
 
-    // TO DO: à virer?
+    // TO DO: à virer? (fix cloudinary branch)
     /**
      * Maps an ad entity to an adPostResponseDTO
      * 
