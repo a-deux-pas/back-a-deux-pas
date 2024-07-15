@@ -218,7 +218,7 @@ public class AdServiceImpl implements AdService {
         return adMapper.adToAdPostResponseDTO(savedAd);
     }
 
-    // TO DO :: (fix cloudinary branch) should return an adDetail / adCard ?
+    // TO DO: (fix cloudinary branch) should return an adDetail / adCard ?
     /**
      * Retrieves an ad information by its ID
      *
@@ -227,7 +227,7 @@ public class AdServiceImpl implements AdService {
      * @return An AdPostResponseDTO
      */
     @Override
-    public AdPostResponseDTO findAdById(Long adId, Long loggedInUserId) {
+    public AdPostResponseDTO findAdById(long adId, long loggedInUserId) {
         Optional<Ad> optionalAd = adRepository.findById(adId);
         Optional<User> optionalUser = userRepository.findById(loggedInUserId);
 
@@ -302,12 +302,12 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * find a list containing the last four ads sharing the same category as the
+     * Finds a list containing the last four ads sharing the same category as the
      * current ad's
      * 
-     * @param category    The current ad's category
-     * @param publisherId The ad's publisher's ID
-     * @param userId      The current user's ID
+     * @param category    The current ad's category.
+     * @param publisherId The ad's publisher's ID.
+     * @param userId      The current user's ID.
      * @param pageable    The pagination information.
      * 
      * @return a list of similar ads sharing the same category
@@ -330,7 +330,7 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * converts a page of Ad into a page of AdPostResponseDTO
+     * Converts a page of Ad into a page of AdPostResponseDTO
      *
      * @param pageable The pagination information.
      * @param adsPage  The page of Ad entities.
@@ -381,7 +381,7 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Update the ad favorite status added by a user.
+     * Updates the ad favorite status added by a user.
      *
      * @param adId       The ID of the ad.
      * @param userId     The ID of the user.

@@ -51,7 +51,7 @@ public interface AdService {
          * @param loggedInUserId The ID of the logged-in user.
          * @return The response DTO containing the ad details.
          */
-        AdPostResponseDTO findAdById(Long adId, Long loggedInUserId);
+        AdPostResponseDTO findAdById(long adId, long loggedInUserId);
 
         /**
          * Contract that returns a definite number of a user's ads excluding the sold

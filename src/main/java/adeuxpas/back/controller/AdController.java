@@ -150,7 +150,7 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{adId}/{loggedInUserId}")
-    public ResponseEntity<Object> findById(@PathVariable Long adId, @PathVariable Long loggedInUserId) {
+    public ResponseEntity<Object> findById(@PathVariable long adId, @PathVariable long loggedInUserId) {
         try {
             return ResponseEntity.ok(adService.findAdById(adId, loggedInUserId));
         } catch (EntityNotFoundException e) {
