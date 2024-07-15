@@ -352,7 +352,7 @@ public class AdSeeder {
                 twentyThirdAd.setSubcategory("accessoires");
                 firstUserAds.add(twentyThirdAd);
                 users.get(0).setAds(firstUserAds);
-                twentyThirdAd.setStatus(AdStatus.SOLD);
+                twentyThirdAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad twentyFourthAd = new Ad();
                 twentyFourthAd.setArticleDescription(
@@ -366,7 +366,7 @@ public class AdSeeder {
                 twentyFourthAd.setSubcategory("ordinateurs");
                 firstUserAds.add(twentyFourthAd);
                 users.get(0).setAds(firstUserAds);
-                twentyFourthAd.setStatus(AdStatus.SOLD);
+                twentyFourthAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad twentyFifthAd = new Ad();
                 twentyFifthAd.setArticleDescription(
@@ -408,7 +408,7 @@ public class AdSeeder {
                 twentySeventhAd.setSubcategory("Films");
                 firstUserAds.add(twentySeventhAd);
                 users.get(0).setAds(firstUserAds);
-                twentySeventhAd.setStatus(AdStatus.RESERVED);
+                twentySeventhAd.setStatus(AdStatus.SOLD);
 
                 Ad twentyEighthAd = new Ad();
                 twentyEighthAd.setArticleDescription(
@@ -422,7 +422,7 @@ public class AdSeeder {
                 twentyEighthAd.setSubcategory("décorations");
                 firstUserAds.add(twentyEighthAd);
                 users.get(0).setAds(firstUserAds);
-                twentyEighthAd.setStatus(AdStatus.RESERVED);
+                twentyEighthAd.setStatus(AdStatus.SOLD);
 
                 Ad twentyNinthAd = new Ad();
                 twentyNinthAd.setArticleDescription(
@@ -435,7 +435,7 @@ public class AdSeeder {
                 twentyNinthAd.setCategory("Loisirs");
                 twentyNinthAd.setSubcategory("Sport");
                 secondUserAds.add(twentyNinthAd);
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 twentyNinthAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtiethAd = new Ad();
@@ -450,7 +450,7 @@ public class AdSeeder {
                 thirtiethAd.setSubcategory("bas");
                 thirtiethAd.setArticleGender("femme");
                 secondUserAds.add(thirtiethAd);
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 thirtiethAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtyFirstAd = new Ad();
@@ -464,7 +464,7 @@ public class AdSeeder {
                 thirtyFirstAd.setCategory("Électronique");
                 thirtyFirstAd.setSubcategory("autre");
                 secondUserAds.add(thirtyFirstAd);
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 thirtyFirstAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtySecondAd = new Ad();
@@ -477,7 +477,7 @@ public class AdSeeder {
                 thirtySecondAd.setArticleState("Neuf sans étiquette");
                 thirtySecondAd.setCategory("Maison");
                 thirtySecondAd.setSubcategory("meubles");
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 secondUserAds.add(thirtySecondAd);
                 thirtySecondAd.setStatus(AdStatus.AVAILABLE);
 
@@ -491,9 +491,9 @@ public class AdSeeder {
                 thirtyThirdAd.setArticleState("Neuf sans étiquette");
                 thirtyThirdAd.setCategory("Loisirs");
                 thirtyThirdAd.setSubcategory("Livres");
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 secondUserAds.add(thirtyThirdAd);
-                thirtyThirdAd.setStatus(AdStatus.SOLD);
+                thirtyThirdAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtyFourthAd = new Ad();
                 thirtyFourthAd.setArticleDescription(
@@ -505,9 +505,9 @@ public class AdSeeder {
                 thirtyFourthAd.setArticleState("Neuf sans étiquette");
                 thirtyFourthAd.setCategory("Électronique");
                 thirtyFourthAd.setSubcategory("autre");
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 secondUserAds.add(thirtyFourthAd);
-                thirtyFourthAd.setStatus(AdStatus.SOLD);
+                thirtyFourthAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtyFifthAd = new Ad();
                 thirtyFifthAd.setArticleDescription(
@@ -520,9 +520,9 @@ public class AdSeeder {
                 thirtyFifthAd.setCategory("Mode");
                 thirtyFifthAd.setSubcategory("chaussures");
                 thirtyFifthAd.setArticleGender("homme");
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 secondUserAds.add(thirtyFifthAd);
-                thirtyFifthAd.setStatus(AdStatus.SOLD);
+                thirtyFifthAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtySixthAd = new Ad();
                 thirtySixthAd.setArticleDescription(
@@ -534,9 +534,9 @@ public class AdSeeder {
                 thirtySixthAd.setArticleState("Satisfaisant");
                 thirtySixthAd.setCategory("Électronique");
                 thirtySixthAd.setSubcategory("autre");
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 secondUserAds.add(thirtySixthAd);
-                thirtySixthAd.setStatus(AdStatus.RESERVED);
+                thirtySixthAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtySeventhAd = new Ad();
                 thirtySeventhAd.setArticleDescription(
@@ -548,9 +548,9 @@ public class AdSeeder {
                 thirtySeventhAd.setArticleState("Bon état");
                 thirtySeventhAd.setCategory("Maison");
                 thirtySeventhAd.setSubcategory("décorations");
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 secondUserAds.add(thirtySeventhAd);
-                thirtySeventhAd.setStatus(AdStatus.RESERVED);
+                thirtySeventhAd.setStatus(AdStatus.AVAILABLE);
 
                 Ad thirtyEighthAd = new Ad();
                 thirtyEighthAd.setArticleDescription(
@@ -563,7 +563,7 @@ public class AdSeeder {
                 thirtyEighthAd.setCategory("Mode");
                 thirtyEighthAd.setSubcategory("hauts");
                 thirtyEighthAd.setArticleGender("homme");
-                users.get(1).setAds(firstUserAds);
+                users.get(1).setAds(secondUserAds);
                 secondUserAds.add(thirtyEighthAd);
                 thirtyEighthAd.setStatus(AdStatus.RESERVED);
 
@@ -577,7 +577,7 @@ public class AdSeeder {
                 thirtyNinthAd.setArticleState("Très bon état");
                 thirtyNinthAd.setCategory("Électronique");
                 thirtyNinthAd.setSubcategory("jeux vidéo");
-                thirtyNinthAd.setStatus(AdStatus.AVAILABLE);
+                thirtyNinthAd.setStatus(AdStatus.RESERVED);
                 secondUserAds.add(thirtyNinthAd);
 
                 Ad fortiethAd = new Ad();
@@ -586,12 +586,12 @@ public class AdSeeder {
                 fortiethAd.setCreationDate(LocalDateTime.now().plusMinutes(40));
                 fortiethAd.setPrice(BigDecimal.valueOf(75));
                 fortiethAd.setTitle("Table verte");
-                fortiethAd.setPublisher(users.get(1));
+                fortiethAd.setPublisher(users.get(2));
                 fortiethAd.setArticleState("Excellent état");
                 fortiethAd.setCategory("Maison");
                 fortiethAd.setSubcategory("meubles");
-                fortiethAd.setStatus(AdStatus.AVAILABLE);
-                secondUserAds.add(fortiethAd);
+                fortiethAd.setStatus(AdStatus.SOLD);
+                thirdUserAds.add(fortiethAd);
 
                 Ad fortyFirstAd = new Ad();
                 fortyFirstAd.setArticleDescription(
@@ -599,12 +599,12 @@ public class AdSeeder {
                 fortyFirstAd.setCreationDate(LocalDateTime.now().plusMinutes(41));
                 fortyFirstAd.setPrice(BigDecimal.valueOf(60));
                 fortyFirstAd.setTitle("Sac à main en cuir de marque");
-                fortyFirstAd.setPublisher(users.get(1));
+                fortyFirstAd.setPublisher(users.get(2));
                 fortyFirstAd.setArticleState("Très bon état");
                 fortyFirstAd.setCategory("Mode");
                 fortyFirstAd.setSubcategory("accessoires");
                 fortyFirstAd.setStatus(AdStatus.AVAILABLE);
-                secondUserAds.add(fortyFirstAd);
+                thirdUserAds.add(fortyFirstAd);
 
                 Ad fortySecondAd = new Ad();
                 fortySecondAd.setArticleDescription(
@@ -612,12 +612,12 @@ public class AdSeeder {
                 fortySecondAd.setCreationDate(LocalDateTime.now().plusMinutes(42));
                 fortySecondAd.setPrice(BigDecimal.valueOf(350));
                 fortySecondAd.setTitle("Appareil photo reflex avec objectifs");
-                fortySecondAd.setPublisher(users.get(1));
+                fortySecondAd.setPublisher(users.get(2));
                 fortySecondAd.setArticleState("Parfait état");
                 fortySecondAd.setCategory("Électronique");
                 fortySecondAd.setSubcategory("autre");
                 fortySecondAd.setStatus(AdStatus.AVAILABLE);
-                secondUserAds.add(fortySecondAd);
+                thirdUserAds.add(fortySecondAd);
 
                 Ad fortyThirdAd = new Ad();
                 fortyThirdAd.setArticleDescription(
@@ -625,12 +625,12 @@ public class AdSeeder {
                 fortyThirdAd.setCreationDate(LocalDateTime.now().plusMinutes(43));
                 fortyThirdAd.setPrice(BigDecimal.valueOf(100));
                 fortyThirdAd.setTitle("Tondeuse à gazon électrique");
-                fortyThirdAd.setPublisher(users.get(1));
+                fortyThirdAd.setPublisher(users.get(2));
                 fortyThirdAd.setArticleState("Bon état");
                 fortyThirdAd.setCategory("Maison");
                 fortyThirdAd.setSubcategory("jardin");
                 fortyThirdAd.setStatus(AdStatus.AVAILABLE);
-                secondUserAds.add(fortyThirdAd);
+                thirdUserAds.add(fortyThirdAd);
 
                 Ad fortyFourthAd = new Ad();
                 fortyFourthAd.setArticleDescription(
@@ -638,12 +638,12 @@ public class AdSeeder {
                 fortyFourthAd.setCreationDate(LocalDateTime.now().plusMinutes(44));
                 fortyFourthAd.setPrice(BigDecimal.valueOf(200));
                 fortyFourthAd.setTitle("Canapé bohème");
-                fortyFourthAd.setPublisher(users.get(1));
+                fortyFourthAd.setPublisher(users.get(2));
                 fortyFourthAd.setArticleState("Très bon état");
                 fortyFourthAd.setCategory("Maison");
                 fortyFourthAd.setSubcategory("meubles");
                 fortyFourthAd.setStatus(AdStatus.AVAILABLE);
-                secondUserAds.add(fortyFourthAd);
+                thirdUserAds.add(fortyFourthAd);
 
                 Ad fortyFifthAd = new Ad();
                 fortyFifthAd.setArticleDescription(
@@ -651,12 +651,12 @@ public class AdSeeder {
                 fortyFifthAd.setCreationDate(LocalDateTime.now().plusMinutes(45));
                 fortyFifthAd.setPrice(BigDecimal.valueOf(120));
                 fortyFifthAd.setTitle("Montre connectée multifonctions");
-                fortyFifthAd.setPublisher(users.get(1));
+                fortyFifthAd.setPublisher(users.get(2));
                 fortyFifthAd.setArticleState("Excellent état");
                 fortyFifthAd.setCategory("Électronique");
                 fortyFifthAd.setSubcategory("autre");
-                fortyFifthAd.setStatus(AdStatus.AVAILABLE);
-                secondUserAds.add(fortyFifthAd);
+                fortyFifthAd.setStatus(AdStatus.SOLD);
+                thirdUserAds.add(fortyFifthAd);
 
                 Ad fortySixthAd = new Ad();
                 fortySixthAd.setArticleDescription(
@@ -664,12 +664,12 @@ public class AdSeeder {
                 fortySixthAd.setCreationDate(LocalDateTime.now().plusMinutes(46));
                 fortySixthAd.setPrice(BigDecimal.valueOf(80));
                 fortySixthAd.setTitle("Machine à café expresso");
-                fortySixthAd.setPublisher(users.get(1));
+                fortySixthAd.setPublisher(users.get(2));
                 fortySixthAd.setArticleState("Parfait état");
                 fortySixthAd.setCategory("Électronique");
                 fortySixthAd.setSubcategory("autre");
-                fortySixthAd.setStatus(AdStatus.SOLD);
-                secondUserAds.add(fortySixthAd);
+                fortySixthAd.setStatus(AdStatus.RESERVED);
+                thirdUserAds.add(fortySixthAd);
 
                 Ad fortySeventhAd = new Ad();
                 fortySeventhAd.setArticleDescription(
@@ -677,12 +677,12 @@ public class AdSeeder {
                 fortySeventhAd.setCreationDate(LocalDateTime.now().plusMinutes(47));
                 fortySeventhAd.setPrice(BigDecimal.valueOf(50));
                 fortySeventhAd.setTitle("Vêtements de sport pour femme");
-                fortySeventhAd.setPublisher(users.get(1));
+                fortySeventhAd.setPublisher(users.get(2));
                 fortySeventhAd.setArticleState("Excellent état");
                 fortySeventhAd.setCategory("Mode");
                 fortySeventhAd.setSubcategory("autre");
                 fortySeventhAd.setStatus(AdStatus.RESERVED);
-                secondUserAds.add(fortySeventhAd);
+                thirdUserAds.add(fortySeventhAd);
 
                 Ad fortyEighthAd = new Ad();
                 fortyEighthAd.setArticleDescription(
@@ -690,12 +690,24 @@ public class AdSeeder {
                 fortyEighthAd.setCreationDate(LocalDateTime.now().plusMinutes(48));
                 fortyEighthAd.setPrice(BigDecimal.valueOf(30));
                 fortyEighthAd.setTitle("tapis de yoga");
-                fortyEighthAd.setPublisher(users.get(1));
+                fortyEighthAd.setPublisher(users.get(3));
                 fortyEighthAd.setArticleState("Excellent état");
                 fortyEighthAd.setCategory("Loisirs");
                 fortyEighthAd.setSubcategory("Sport");
-                fortyEighthAd.setStatus(AdStatus.RESERVED);
-                secondUserAds.add(fortyEighthAd);
+                fortyEighthAd.setStatus(AdStatus.AVAILABLE);
+                fourthUserAds.add(fortyEighthAd);
+
+                //AdSeeder 1  => 
+                // pour le 4é user (fourthUserAds - setPublisher(users.get(3)))
+                // ajouter 6 ads AVAILABLE - 2 RESERVED - 2 SOLD
+
+                //AdSeeder 2  => 
+                // pour le 5é user (fifthUserAds - setPublisher(users.get(4)))
+                // ajouter 6 ads AVAILABLE - 3 RESERVED - 1 SOLD
+
+                //AdSeeder 3  => 
+                // pour le 6é user (fifthUserAds - setPublisher(users.get(5)))
+                // ajouter 8 ads AVAILABLE - 1 RESERVED - 1 SOLD
 
                 users.get(0).setAds(firstUserAds);
                 users.get(1).setAds(secondUserAds);

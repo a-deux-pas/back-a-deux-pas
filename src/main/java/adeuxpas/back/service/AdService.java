@@ -53,8 +53,7 @@ public interface AdService {
         AdPostResponseDTO findAdById(long adId);
 
         /**
-         * - * Contract that returns a definite number of a user's ads excluding
-         * statuses
+         * Contract that returns a definite number of a user's ads excluding the sold and reserved ones
          * 
          * @param publisherId
          * @param pageable
@@ -106,5 +105,4 @@ public interface AdService {
          * @param adId The ID of the ad.
          */
         long checkFavoriteCount(long adId);
-
 }
