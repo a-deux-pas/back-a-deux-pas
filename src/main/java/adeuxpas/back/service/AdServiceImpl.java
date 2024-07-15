@@ -180,10 +180,10 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * persist an Ad object in database
+     * Persists an Ad object in database.
      *
-     * @param adPostRequestDTO coming from the front end application
-     * @return an adPostResponseDTO to the front
+     * @param adPostRequestDTO coming from the front end application.
+     * @return An AdPostResponseDTO.
      */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
@@ -220,11 +220,11 @@ public class AdServiceImpl implements AdService {
 
     // TO DO: (fix cloudinary branch) should return an adDetail / adCard ?
     /**
-     * Retrieves an ad information by its ID
+     * Retrieves an ad information by its ID.
      *
      * @param adId           The concerned ad ID.
      * @param loggedInUserId The logged in User ID.
-     * @return An AdPostResponseDTO
+     * @return An AdPostResponseDTO.
      */
     @Override
     public AdPostResponseDTO findAdById(long adId, long loggedInUserId) {
@@ -250,7 +250,7 @@ public class AdServiceImpl implements AdService {
 
     /**
      * Finds ads and maps them into an AdCardResponseDTO in order to display
-     * them on an ad page content
+     * them on an ad page content.
      * 
      * @param publisherId    The ad's publisher's ID.
      * @param pageable       The pagination information.
@@ -303,14 +303,14 @@ public class AdServiceImpl implements AdService {
 
     /**
      * Finds a list containing the last four ads sharing the same category as the
-     * current ad's
+     * current ad's.
      * 
      * @param category    The current ad's category.
      * @param publisherId The ad's publisher's ID.
      * @param userId      The current user's ID.
      * @param pageable    The pagination information.
      * 
-     * @return a list of similar ads sharing the same category
+     * @return a list of similar ads sharing the same category.
      */
     @Override
     public Page<AdCardResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
@@ -330,7 +330,7 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Converts a page of Ad into a page of AdPostResponseDTO
+     * Converts a page of Ad into a page of AdPostResponseDTO.
      *
      * @param pageable The pagination information.
      * @param adsPage  The page of Ad entities.
