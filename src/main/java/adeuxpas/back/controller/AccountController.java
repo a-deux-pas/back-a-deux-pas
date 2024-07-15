@@ -70,27 +70,6 @@ public class AccountController {
     }
 
     /**
-     * Endpoint to access a user's profile information.
-     *
-     * @param userId The user ID.
-     * @return a ResponseEntity with the user profile information if successful,
-     *         or a 500 Internal Server Error response if an exception occurs.
-     */
-    @Operation(summary = "User's profile information")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of user profile information"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/profile/{userId}/presentation")
-    public ResponseEntity<Object> getUserInformation(@PathVariable long userId) {
-        try {
-            return ResponseEntity.ok(userService.findUserProfileInfoById(userId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    /**
      * Endpoint to access a user's preferred schedules.
      *
      * @param userId The user ID.

@@ -22,6 +22,7 @@ public class UserSeeder {
         private final UserRepository userRepository;
         private final BCryptPasswordEncoder passwordEncoder;
 
+        static final String CLOUDINARY_URL = "https://res.cloudinary.com/erikaadeuxpas/image/upload";
         @Value("${first.pass}")
         private String pass1;
         @Value("${second.pass}")
@@ -58,13 +59,13 @@ public class UserSeeder {
                 first.setAlias("Koroviev");
                 first.setPassword(passwordEncoder.encode(pass1));
                 first.setBio(
-                                "Passionné par les trouvailles uniques et les bonnes affaires, et je vous propose une sélection éclectique d'articles");
+                                "J'aime les trouvailles uniques et les bonnes affaires, et je vous propose une sélection éclectique d'articles.");
                 first.setCountry("France");
                 first.setCity("Maisons-Alfort");
                 first.setStreet("10 rue Victor Hugo");
                 first.setPostalCode("94700");
-                first.setProfilePicture("profilePictureUrl1");
-                first.setInscriptionDate(LocalDateTime.now());
+                first.setProfilePicture(CLOUDINARY_URL + "/profile_picture_koroviev.webp");
+                first.setInscriptionDate(LocalDateTime.now().minusDays(2).minusMonths(12));
                 first.setAccountStatus(AccountStatus.ACTIVE);
                 first.setRole(UserRole.USER);
 
@@ -73,13 +74,13 @@ public class UserSeeder {
                 second.setPassword(passwordEncoder.encode(pass2));
                 second.setAlias("Dounia");
                 second.setBio(
-                                "Passionnée d'upcycling, chaque objet que je mets en vente ici est transformé avec soin, ce qui les rend uniques.");
+                                "Passionnée d'upcycling, chaque objet que je mets en vente ici est transformé avec soin 🪄 ce qui les rend uniques.");
                 second.setCountry("France");
                 second.setCity("Maisons-Alfort");
                 second.setStreet("35 Rue Georges Médéric");
                 second.setPostalCode("94700");
-                second.setProfilePicture("profilePictureUrl2");
-                second.setInscriptionDate(LocalDateTime.now());
+                second.setProfilePicture(CLOUDINARY_URL + "/profile_picture_dounia.webp");
+                second.setInscriptionDate(LocalDateTime.now().minusDays(4).minusMonths(11));
                 second.setAccountStatus(AccountStatus.REPORTED);
                 second.setRole(UserRole.USER);
 
@@ -88,14 +89,13 @@ public class UserSeeder {
                 third.setPassword(passwordEncoder.encode(pass3));
                 third.setAlias("Leahad");
                 third.setBio(
-                                "Partageuse de trésors. Chaque objet a son histoire, maintenant prêt à en écrire une nouvelle avec vous.");
+                                "J'adore chiner mais aussi vendre certains objets de ma collection qui dorment dans mes placards 🌈");
                 third.setCountry("France");
                 third.setCity("Paris");
                 third.setStreet("130 rue des Pyrénées");
                 third.setPostalCode("75020");
-                third.setProfilePicture(
-                                "profilePictureUrl3");
-                third.setInscriptionDate(LocalDateTime.now());
+                third.setProfilePicture(CLOUDINARY_URL + "/profile_picture_leahad.webp");
+                third.setInscriptionDate(LocalDateTime.now().minusDays(1).minusMonths(8));
                 third.setAccountStatus(AccountStatus.ACTIVE);
                 third.setRole(UserRole.USER);
 
@@ -103,14 +103,13 @@ public class UserSeeder {
                 fourth.setEmail("erikaike@email.fr");
                 fourth.setPassword(passwordEncoder.encode(pass4));
                 fourth.setAlias("Eri");
-                fourth.setBio("Passionnée de mode, je vends mes vêtements pour permettre aux plus grand nombre d’être stylé.");
+                fourth.setBio("Passionnée de mode, je vends mes vêtements pour permettre aux plus grand nombre d’être stylé 💃🏾");
                 fourth.setCountry("France");
                 fourth.setCity("Paris");
                 fourth.setStreet("17 Rue du retrait");
                 fourth.setPostalCode("75020");
-                fourth.setProfilePicture(
-                                "profilePictureUrl4");
-                fourth.setInscriptionDate(LocalDateTime.now());
+                fourth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_eri.webp");
+                fourth.setInscriptionDate(LocalDateTime.now().minusDays(3).minusMonths(6));
                 fourth.setAccountStatus(AccountStatus.ACTIVE);
                 fourth.setRole(UserRole.ADMIN);
 
@@ -118,13 +117,13 @@ public class UserSeeder {
                 fifth.setEmail("jules@email.com");
                 fifth.setPassword(passwordEncoder.encode(pass5));
                 fifth.setAlias("Julius");
-                fifth.setBio("Contactez moi si vous voulez vous débarasser de vos vieux vinyles :)");
+                fifth.setBio("Contactez-moi si vous voulez vous débarasser de vos vieux vinyles :)");
                 fifth.setCountry("France");
                 fifth.setCity("Paris");
                 fifth.setStreet("140 avenue Gambetta");
                 fifth.setPostalCode("75020");
-                fifth.setProfilePicture("profilePictureUrl5");
-                fifth.setInscriptionDate(LocalDateTime.now());
+                fifth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_julius.webp");
+                fifth.setInscriptionDate(LocalDateTime.now().minusDays(7).minusMonths(5));
                 fifth.setAccountStatus(AccountStatus.ACTIVE);
                 fifth.setRole(UserRole.ADMIN);
 
@@ -132,13 +131,13 @@ public class UserSeeder {
                 sixth.setEmail("cameron@email.com");
                 sixth.setPassword(passwordEncoder.encode(pass6));
                 sixth.setAlias("Cameron");
-                sixth.setBio("Américain à Paris, je vends des produits de chez moi mais aussi quelques objets locaux");
+                sixth.setBio("🗽Américain à Paris, je vends des produits de chez moi mais aussi quelques objets locaux.");
                 sixth.setCountry("France");
                 sixth.setCity("Paris");
                 sixth.setStreet("10 rue de la Folie-Méricourt");
                 sixth.setPostalCode("75011");
-                sixth.setProfilePicture("profilePictureUrl6");
-                sixth.setInscriptionDate(LocalDateTime.now());
+                sixth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_cameron.webp");
+                sixth.setInscriptionDate(LocalDateTime.now().minusDays(8).minusMonths(4));
                 sixth.setAccountStatus(AccountStatus.ACTIVE);
                 sixth.setRole(UserRole.USER);
 
@@ -146,13 +145,13 @@ public class UserSeeder {
                 seventh.setEmail("sofia@email.com");
                 seventh.setPassword(passwordEncoder.encode(pass7));
                 seventh.setAlias("Sofia");
-                seventh.setBio("Aidez moi à faire le vide dans mon appart :)");
+                seventh.setBio("Aidez-moi à faire le vide dans mon appart :)");
                 seventh.setCountry("France");
                 seventh.setCity("Paris");
                 seventh.setStreet("10 rue de la Folie-Méricourt");
                 seventh.setPostalCode("75011");
-                seventh.setProfilePicture("profilePictureUrl7");
-                seventh.setInscriptionDate(LocalDateTime.now());
+                seventh.setProfilePicture(CLOUDINARY_URL + "/profile_picture_sofia.webp");
+                seventh.setInscriptionDate(LocalDateTime.now().minusDays(30));
                 seventh.setAccountStatus(AccountStatus.ACTIVE);
                 seventh.setRole(UserRole.USER);
 
@@ -160,13 +159,13 @@ public class UserSeeder {
                 eighth.setEmail("maxime@email.com");
                 eighth.setPassword(passwordEncoder.encode(pass8));
                 eighth.setAlias("Max");
-                eighth.setBio("J'aime mes voisins et les vide-greniers");
+                eighth.setBio("Salut 👋 moi c'est Max, j'aime mes voisins et les vide-greniers. À trés vite !");
                 eighth.setCountry("France");
                 eighth.setCity("Paris");
                 eighth.setStreet("150 avenue Parmentier");
                 eighth.setPostalCode("75011");
-                eighth.setProfilePicture("profilePictureUrl8");
-                eighth.setInscriptionDate(LocalDateTime.now());
+                eighth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_max.webp");
+                eighth.setInscriptionDate(LocalDateTime.now().minusDays(15));
                 eighth.setAccountStatus(AccountStatus.ACTIVE);
                 eighth.setRole(UserRole.USER);
 

@@ -14,12 +14,22 @@ package adeuxpas.back.dto;
  * @author Léa Hadida
  */
 public class UserProfileResponseDTO {
+    private Long id;
     private String alias;
     private String bio;
     private String city;
     private String postalCode;
     private String profilePicture;
     private String inscriptionDate;
+    private String salesNumber;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAlias() {
         return alias;
@@ -67,5 +77,13 @@ public class UserProfileResponseDTO {
 
     public void setInscriptionDate(String inscriptionDate) {
         this.inscriptionDate = inscriptionDate;
+    }
+
+    public String getSalesNumber() {
+        return salesNumber;
+    }
+
+    public void setSalesNumber(String salesNumber) {
+        this.salesNumber = salesNumber;
     }
 }
