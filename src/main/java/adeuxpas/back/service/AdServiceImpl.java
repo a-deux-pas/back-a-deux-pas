@@ -247,10 +247,11 @@ public class AdServiceImpl implements AdService {
      * @return The page of AdCardResponseDTO.
      */
     @Override
-    public Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId) {
+    public Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId,
+            Long adId) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
-            Page<Ad> adsPage = adRepository.findAvailableAdsByPublisherId(publisherId, pageable);
+            Page<Ad> adsPage = adRepository.findAvailableAdsByPublisherId(publisherId, pageable, adId);
             Page<AdCardResponseDTO> mappedAdsPage = this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
             if (loggedInUserId != null) {
                 Set<Long> favoriteAdsIds = favoriteRepository.findUserPublisherFavoriteAdsIds(loggedInUserId,

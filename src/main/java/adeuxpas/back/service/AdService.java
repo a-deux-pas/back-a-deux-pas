@@ -53,13 +53,15 @@ public interface AdService {
         AdPostResponseDTO findAdById(long adId);
 
         /**
-         * Contract that returns a definite number of a user's ads excluding the sold and reserved ones
+         * Contract that returns a definite number of a user's ads excluding the sold
+         * and reserved ones
          * 
          * @param publisherId
          * @param pageable
          * @return
          */
-        Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId);
+        Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId,
+                        Long adId);
 
         /**
          * Contract that returns a definite number of a user's sorted ads

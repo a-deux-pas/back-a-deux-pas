@@ -700,14 +700,17 @@ public class AdSeeder {
                 //AdSeeder 1  => 
                 // pour le 4é user (fourthUserAds - setPublisher(users.get(3)))
                 // ajouter 6 ads AVAILABLE - 2 RESERVED - 2 SOLD
+                // de fortyNinthAd à fiftyNinthAd
 
                 //AdSeeder 2  => 
                 // pour le 5é user (fifthUserAds - setPublisher(users.get(4)))
                 // ajouter 6 ads AVAILABLE - 3 RESERVED - 1 SOLD
+                // de sixtiethAd à sixtyNinthAd
 
                 //AdSeeder 3  => 
                 // pour le 6é user (fifthUserAds - setPublisher(users.get(5)))
                 // ajouter 8 ads AVAILABLE - 1 RESERVED - 1 SOLD
+                // de seventiethAd à seventyNinthAd
 
                 users.get(0).setAds(firstUserAds);
                 users.get(1).setAds(secondUserAds);

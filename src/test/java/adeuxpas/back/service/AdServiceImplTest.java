@@ -351,13 +351,14 @@ class AdServiceImplTest {
                 Long publisherId = 1L;
                 User user = new User();
                 Long loggedInUserId = 1L;
+                Long adId = 1L;
                 when(userRepositoryMock.findById(publisherId)).thenReturn(Optional.of(user));
 
                 Ad ad1 = new Ad();
                 Ad ad2 = new Ad();
                 List<Ad> adList = List.of(ad1, ad2);
                 adsPage = new PageImpl<>(adList);
-                when(adRepositoryMock.findAvailableAdsByPublisherId(publisherId, pageable))
+                when(adRepositoryMock.findAvailableAdsByPublisherId(publisherId, pageable, adId))
                                 .thenReturn(adsPage);
 
                 AdCardResponseDTO dto1 = new AdCardResponseDTO();
@@ -366,7 +367,7 @@ class AdServiceImplTest {
                 when(adMapperMock.adToAdCardResponseDTO(ad2)).thenReturn(dto2);
 
                 Page<AdCardResponseDTO> result = adService.findPageOfUserAdsList(publisherId,
-                                pageable, loggedInUserId);
+                                pageable, loggedInUserId, adId);
 
                 assertEquals(2, result.getNumberOfElements());
                 assertEquals(dto1, result.getContent().get(0));
@@ -374,7 +375,7 @@ class AdServiceImplTest {
 
                 verify(userRepositoryMock).findById(publisherId);
                 verify(adRepositoryMock).findAvailableAdsByPublisherId(publisherId,
-                                pageable);
+                                pageable, adId);
         }
 
         // common set-up, used by several test methods

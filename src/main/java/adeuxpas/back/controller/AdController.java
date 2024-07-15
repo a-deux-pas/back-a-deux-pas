@@ -160,12 +160,13 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user excluding the sold and
-     * reserved ones
+     * endpoint that gets a page of ads created by a user excluding the one the
+     * current user is on as well as the sold and reserved ones
      * 
      * @param userId
      * @param pageNumber
      * @param pageSize
+     * @param adId
      * @return ResponseEntity indicating if the Ads have been found
      */
     @Operation(summary = "a page of the user's ads list excluding the ones that are sold or reserved")
@@ -173,16 +174,17 @@ public class AdController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for an ad page content"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/adPageContentList/{publisherId}/{loggedInUserId}")
+    @GetMapping("/adPageContentList/{publisherId}/{loggedInUserId}/{adId}")
     public ResponseEntity<Object> getMyAds(
             @PathVariable long publisherId,
             @PathVariable Long loggedInUserId,
+            @PathVariable Long adId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
             Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(publisherId, pageable,
-                    loggedInUserId);
+                    loggedInUserId, adId);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
