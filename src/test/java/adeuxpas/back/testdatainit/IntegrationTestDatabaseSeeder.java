@@ -22,7 +22,8 @@ import java.util.List;
 /**
  * Class responsible for seeding the test database with initial sample data.
  * <p>
- * The {@code seedTestDatabase()} method orchestrates the seeding process by calling individual seeding methods for each entity.
+ * The {@code seedTestDatabase()} method orchestrates the seeding process by
+ * calling individual seeding methods for each entity.
  * </p>
  *
  * @author Mircea Bardan
@@ -30,7 +31,8 @@ import java.util.List;
 
 // In order for the tests to remain relevant, please :
 // - do not add or remove the existing objects
-// - do not modify the existing objects properties' values (feel free to add new properties, along with their values, when needed)
+// - do not modify the existing objects properties' values (feel free to add new
+// properties, along with their values, when needed)
 
 @Component
 public class IntegrationTestDatabaseSeeder {
@@ -39,18 +41,18 @@ public class IntegrationTestDatabaseSeeder {
     private final ArticlePictureRepository articlePictureRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-
     /**
      * Constructs a new instance of IntegrationTestDatabaseSeeder.
      *
      * @param userRepository  The repository for managing user entities.
-     * @param adRepository  The repository for managing ad entities.
-     * @param passwordEncoder The password encoder used to encode user passwords before storing them in the database.
+     * @param adRepository    The repository for managing ad entities.
+     * @param passwordEncoder The password encoder used to encode user passwords
+     *                        before storing them in the database.
      */
     public IntegrationTestDatabaseSeeder(@Autowired UserRepository userRepository,
-                                         @Autowired AdRepository adRepository,
-                                         @Autowired ArticlePictureRepository articlePictureRepository,
-                                         @Autowired BCryptPasswordEncoder passwordEncoder){
+            @Autowired AdRepository adRepository,
+            @Autowired ArticlePictureRepository articlePictureRepository,
+            @Autowired BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
         this.passwordEncoder = passwordEncoder;
@@ -59,9 +61,10 @@ public class IntegrationTestDatabaseSeeder {
 
     /**
      * Seeds the test database with initial sample data.
-     * This method delegates the seeding process to individual seeding methods for different entities.
+     * This method delegates the seeding process to individual seeding methods for
+     * different entities.
      */
-    public void seedTestDatabase(){
+    public void seedTestDatabase() {
         List<User> users = createUsers();
         seedUsers(users);
 
@@ -73,10 +76,12 @@ public class IntegrationTestDatabaseSeeder {
 
     /**
      * This method creates user entities.
-     * Each user is initialized with sample data such as email, password, role, status, and creation timestamp.
+     * Each user is initialized with sample data such as email, password, role,
+     * status, and creation timestamp.
+     * 
      * @return a list of users.
      */
-    private List<User> createUsers(){
+    private List<User> createUsers() {
         User first = new User();
         first.setEmail("mbardan@email.ro");
         first.setAlias("Koroviev");
@@ -166,50 +171,97 @@ public class IntegrationTestDatabaseSeeder {
 
     /**
      * Seeds the test database with sample user data.
+     * 
      * @param users the list of users to save.
      */
-    private void seedUsers(List<User> users){
+    private void seedUsers(List<User> users) {
         this.userRepository.saveAll(users);
     }
 
     private void seedArticlePictures(List<Ad> ads) {
-        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/90b00509-dd97-46e3-b832-24eb8eaa8e0b_large.jpg"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://d2yn9m4p3q9iyv.cloudfront.net/rockymountain/2023/growler-40/thumbs/1000/62903.webp"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/13185af6-1f03-4cdc-8545-af767b7e6bb3_large.jpg"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://i.ytimg.com/vi/2B1bWKBTROE/sddefault.jpg"), ads.getFirst()));
-        this.articlePictureRepository.save(new ArticlePicture(("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/cf15ac41-1979-4264-9193-3b0c2d302907_large.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/90b00509-dd97-46e3-b832-24eb8eaa8e0b_large.jpg"),
+                ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d2yn9m4p3q9iyv.cloudfront.net/rockymountain/2023/growler-40/thumbs/1000/62903.webp"),
+                ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/13185af6-1f03-4cdc-8545-af767b7e6bb3_large.jpg"),
+                ads.getFirst()));
+        this.articlePictureRepository
+                .save(new ArticlePicture(("https://i.ytimg.com/vi/2B1bWKBTROE/sddefault.jpg"), ads.getFirst()));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://d4yxl4pe8dqlj.cloudfront.net/images/1cf6fa0d-2a74-4e0e-a98f-1a4d1c0dab5c/cf15ac41-1979-4264-9193-3b0c2d302907_large.jpg"),
+                ads.getFirst()));
 
-        this.articlePictureRepository.save(new ArticlePicture(("https://i.ebayimg.com/images/g/5DMAAOSwpIVldRxH/s-l1200.webp"), ads.get(1)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://andreemilio.com/wp-content/uploads/2021/03/Mens-Light-gray-3-Piece-Suit-2.jpg"), ads.get(2)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"), ads.get(3)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"), ads.get(4)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRH_Z_65KbwGUDdA2KcCzqroUzVXmmq68NA&usqp=CAU"), ads.get(5)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"), ads.get(7)));
+        this.articlePictureRepository
+                .save(new ArticlePicture(("https://i.ebayimg.com/images/g/5DMAAOSwpIVldRxH/s-l1200.webp"), ads.get(1)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://andreemilio.com/wp-content/uploads/2021/03/Mens-Light-gray-3-Piece-Suit-2.jpg"), ads.get(2)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsejXk4iTIzAqvORn0DSomectnXd0l3A3fVQ&usqp=CAU"),
+                ads.get(3)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBezaIpsONE88lxdf3WCBUKcVLDd9gWxBCEQ&usqp=CAU"),
+                ads.get(4)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRH_Z_65KbwGUDdA2KcCzqroUzVXmmq68NA&usqp=CAU"),
+                ads.get(5)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://i.pinimg.com/originals/bc/e9/1b/bce91b03652cc6172ddb755cc9128f45.jpg"), ads.get(6)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmvcDyC-LjyFt6_RI_dYLUcHhaJahuXUexcw&usqp=CAU"),
+                ads.get(7)));
 
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_00e44_XkRJUZhGUrNwxbLGfBs8erYr/f800/1711863484.jpeg?s=27fff3a33315f91019270a1a3bb53e9615c2f962"), ads.get(8)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_018e1_N2JsK2fxtrZn1xk16xNo9kyr/f800/1711856284.jpeg?s=091fb7a67a8dc1adab7bd7994442b87c7f7b112e"), ads.get(9)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_01ff4_Ly9usSkKK7x4ZLUNJYEJY7vV/f800/1711768613.jpeg?s=eda3db9c2dabce566e20a82b06293f490b7054f7"), ads.get(10)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_01441_xix4NLunHyRfpdhiqMyka3BL/f800/1711760473.jpeg?s=8abaf00255f5ec6a3422800b711dc43e8e3d7cfe"), ads.get(11)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_009bf_biwV7SSYALHvZjeMx9DzEgPF/f800/1711666972.jpeg?s=796daddfcb0cd0dec79c877ac08569f87e693da5"), ads.get(12)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/01_00e44_XkRJUZhGUrNwxbLGfBs8erYr/f800/1711863484.jpeg?s=27fff3a33315f91019270a1a3bb53e9615c2f962"),
+                ads.get(8)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/03_018e1_N2JsK2fxtrZn1xk16xNo9kyr/f800/1711856284.jpeg?s=091fb7a67a8dc1adab7bd7994442b87c7f7b112e"),
+                ads.get(9)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/03_01ff4_Ly9usSkKK7x4ZLUNJYEJY7vV/f800/1711768613.jpeg?s=eda3db9c2dabce566e20a82b06293f490b7054f7"),
+                ads.get(10)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/03_01441_xix4NLunHyRfpdhiqMyka3BL/f800/1711760473.jpeg?s=8abaf00255f5ec6a3422800b711dc43e8e3d7cfe"),
+                ads.get(11)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/01_009bf_biwV7SSYALHvZjeMx9DzEgPF/f800/1711666972.jpeg?s=796daddfcb0cd0dec79c877ac08569f87e693da5"),
+                ads.get(12)));
 
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_01107_AQkaWBDeUJWEFWcx4sxwaFTe/f800/1702265856.jpeg?s=19117baf0b87627abb81a9e27574b0ac30133f07"), ads.get(13)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/01_021d2_GVTqnTQ3oFnegSHv1mJU9Amz/f800/1686792993.jpeg?s=1451865905183fb060fd76197322267ae23cc159"), ads.get(14)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/02_009c7_eEKstfbvuKJyXRHLbJvUQhVy/f800/1711815268.jpeg?s=4b5e6eded4ab45c8c932850aa25179984646042b"), ads.get(15)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/02_020f4_3yFUxux5NH3ajCpZwWfR6P5n/f800/1707671737.jpeg?s=d603b47dc9eec529765f9eae6c152c752a0954bd"), ads.get(16)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_0017b_9CsbxFBTWrpcWW1YRLbLaiuk/f800/1711794225.jpeg?s=e8e59ac218eeba65a2b6f543f20c0ae7e526c60e"), ads.get(5)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_01b2f_QECcdvwJTvYk5dWoHqheetyQ/f800/1707104826.jpeg?s=d8b8a122fd856daf5a0141ab2a7083418509a327"), ads.get(6)));
-        this.articlePictureRepository.save(new ArticlePicture(("https://images1.vinted.net/t/03_003bc_zRPMb8VY3YDhXxrghu6gJcUM/f800/1710778480.jpeg?s=e35e3cb9915ac7f628d1d00785971d264e31f47e"), ads.get(17)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/01_01107_AQkaWBDeUJWEFWcx4sxwaFTe/f800/1702265856.jpeg?s=19117baf0b87627abb81a9e27574b0ac30133f07"),
+                ads.get(13)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/01_021d2_GVTqnTQ3oFnegSHv1mJU9Amz/f800/1686792993.jpeg?s=1451865905183fb060fd76197322267ae23cc159"),
+                ads.get(14)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/02_009c7_eEKstfbvuKJyXRHLbJvUQhVy/f800/1711815268.jpeg?s=4b5e6eded4ab45c8c932850aa25179984646042b"),
+                ads.get(15)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/02_020f4_3yFUxux5NH3ajCpZwWfR6P5n/f800/1707671737.jpeg?s=d603b47dc9eec529765f9eae6c152c752a0954bd"),
+                ads.get(16)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/03_0017b_9CsbxFBTWrpcWW1YRLbLaiuk/f800/1711794225.jpeg?s=e8e59ac218eeba65a2b6f543f20c0ae7e526c60e"),
+                ads.get(5)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/03_01b2f_QECcdvwJTvYk5dWoHqheetyQ/f800/1707104826.jpeg?s=d8b8a122fd856daf5a0141ab2a7083418509a327"),
+                ads.get(6)));
+        this.articlePictureRepository.save(new ArticlePicture(
+                ("https://images1.vinted.net/t/03_003bc_zRPMb8VY3YDhXxrghu6gJcUM/f800/1710778480.jpeg?s=e35e3cb9915ac7f628d1d00785971d264e31f47e"),
+                ads.get(17)));
 
     }
 
     /**
      * This method creates ad entities.
-     * Each ad is initialized with sample data such as title, price, creation date, publisher etc.
+     * Each ad is initialized with sample data such as title, price, creation date,
+     * publisher etc.
+     * 
      * @param users the list of potential ad publishers.
      * @return a list of ads.
      */
-    private List<Ad> createAds(List<User> users){
+    private List<Ad> createAds(List<User> users) {
         Ad firstAd = new Ad();
         firstAd.setArticleDescription("Rocky Mountain Growler 40, perfect condition ");
         firstAd.setCreationDate(LocalDateTime.now().plusMinutes(5));
@@ -309,7 +361,8 @@ public class IntegrationTestDatabaseSeeder {
         seventhAd.setStatus(AdStatus.AVAILABLE);
 
         Ad eighthAd = new Ad();
-        eighthAd.setArticleDescription("Nassim N. Taleb's best selling collection; includes: Anti-Fragile, The Black San, Skin in the Game etc ");
+        eighthAd.setArticleDescription(
+                "Nassim N. Taleb's best selling collection; includes: Anti-Fragile,, Skin in the Game etc ");
         eighthAd.setCreationDate(LocalDateTime.now().plusMinutes(6));
         eighthAd.setPrice(BigDecimal.valueOf(150));
         eighthAd.setTitle("Incerto Book Collection");
@@ -334,7 +387,6 @@ public class IntegrationTestDatabaseSeeder {
         sixthUserAds.add(ninethAd);
         users.get(5).setAds(sixthUserAds);
         ninethAd.setStatus(AdStatus.SUSPENDED);
-
 
         Ad tenthAd = new Ad();
         tenthAd.setArticleDescription("Maroon leather handbag");
@@ -453,16 +505,17 @@ public class IntegrationTestDatabaseSeeder {
         users.get(2).setAds(thirdUserAds);
         eighteenthAd.setStatus(AdStatus.AVAILABLE);
 
-
         return Arrays.asList(firstAd, secondAd, thirdAd, fourthAd, fifthAd, sixthAd, seventhAd, eighthAd, ninethAd,
-                tenthAd, eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd, seventeenthAd, eighteenthAd);
+                tenthAd, eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd, seventeenthAd,
+                eighteenthAd);
     }
 
     /**
      * Seeds the test database with sample ad data.
+     * 
      * @param ads the list of ads to save.
      */
-    private void seedAds(List<Ad> ads){
+    private void seedAds(List<Ad> ads) {
         this.adRepository.saveAll(ads);
     }
 

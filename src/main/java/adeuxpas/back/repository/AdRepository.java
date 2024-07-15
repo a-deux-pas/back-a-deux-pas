@@ -3,6 +3,7 @@ package adeuxpas.back.repository;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -127,14 +128,8 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                         Pageable pageable);
 
         /**
-         * Find a user's ad list
-         * 
-         * @param publisherId
-         * @return a list of ads
-         */
-        List<Ad> findAdsByPublisherId(Long publisherId);
-
-        /**
+         * Custom query that retrieves ads by sorting them in order for the ones
+         * having a 'reserved' or 'sold' to be called at the very end
          * 
          * @param publisherId
          * @param pageable    carries information about the process and pagination and
@@ -145,19 +140,29 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          *                    in JPQL(Java Persistence Query Language).
          * @return a page of Ad
          */
-        Page<Ad> findAdsByPublisherIdOrderByCreationDateDesc(Long publisherId, Pageable pageable);
+        @Query(value = "SELECT ad FROM Ad ad WHERE ad.publisher.id = :publisherId ORDER BY CASE WHEN ad.status = 'AVAILABLE' THEN 0 ELSE 1 END, ad.creationDate DESC")
+        Page<Ad> findSortedAdsByPublisherIdOrderByCreationDateDesc(
+                        @Param("publisherId") Long publisherId,
+                        Pageable pageable);
 
         /**
-         * Check how many ads have been published by a user
-         * 
+         * Custom query that gets a page of available ads created by a user
+         * but excluding the sold and reserved ones, and excluding a specific adId
+         *
          * @param publisherId
-         * @return the number of ads
+         * @param pageable
+         * @param adId        the id of the ad to be excluded from the results
+         * @return a page of Ad
          */
-        @Query("SELECT COUNT(a) FROM Ad a WHERE a.publisher.id = :publisherId")
-        Long findAdsCountByPublisherId(Long publisherId);
+        @Query("SELECT ad FROM Ad ad WHERE ad.publisher.id = :publisherId AND ad.status = 'AVAILABLE' AND ad.id <> :adId ORDER BY ad.creationDate DESC")
+
+        Page<Ad> findAvailableAdsByPublisherId(
+                        @Param("publisherId") Long publisherId,
+                        Pageable pageable,
+                        @Param("adId") Long adId);
 
         /**
-         * find ads sharing the same category as the current one's
+         * Find ads sharing the same category as the current one's
          * 
          * @param category    category of the current ad
          * @param publisherId ID of the current ad's publisher
@@ -165,7 +170,10 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          * @param pageable
          * @return a list of similar ads
          */
-        @Query("SELECT a FROM Ad a WHERE a.category = :category AND a.publisher.id <> :publisherId AND a.publisher.id <> :userId ORDER BY a.creationDate DESC")
-        Page<Ad> findAdsByCategoryOrderByCreationDateDesc(String category, Long publisherId, Long userId,
+        @Query("SELECT a FROM Ad a WHERE a.category = :category AND a.status = 'AVAILABLE' AND a.publisher.id <> :publisherId AND a.publisher.id <> :userId ORDER BY a.creationDate DESC")
+        Page<Ad> findAdsByCategoryOrderByCreationDateDesc(
+                        @Param("category") String category,
+                        @Param("publisherId") Long publisherId,
+                        @Param("userId") Long userId,
                         Pageable pageable);
 }
