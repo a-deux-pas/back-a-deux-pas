@@ -160,25 +160,31 @@ public class AdController {
     }
 
     /**
-     * Endpoint that gets a page of ads created by a user.
+     * endpoint that gets a page of ads created by a user excluding the one the
+     * current user is on as well as the sold and reserved ones
      * 
-     * @param userId     The user ID.
-     * @param pageNumber The page number for pagination (default is
-     *                   0).
-     * @param pageSize   The page size for pagination (default is 8).
-     * @return ResponseEntity indicating if the Ads have been found.
+     * @param userId
+     * @param pageNumber
+     * @param pageSize
+     * @param adId
+     * @return ResponseEntity indicating if the Ads have been found
      */
-    @Operation(summary = "a page of the user's ads list")
+    @Operation(summary = "a page of the user's ads list excluding the ones that are sold or reserved")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for an ad page content"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/list/{userId}")
-    public ResponseEntity<Object> getMyAds(@PathVariable long userId, @RequestParam(defaultValue = "0") int pageNumber,
+    @GetMapping("/adPageContentList/{publisherId}/{loggedInUserId}/{adId}")
+    public ResponseEntity<Object> getMyAds(
+            @PathVariable long publisherId,
+            @PathVariable Long loggedInUserId,
+            @PathVariable Long adId,
+            @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(userId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(publisherId, pageable,
+                    loggedInUserId, adId);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -186,24 +192,30 @@ public class AdController {
     }
 
     /**
-     * Endpoint that gets the count of ads published by a user.
+     * endpoint that gets a page of ads created by a user sorted so that the sold
+     * and reserved ones are the very last to be retrieved
      * 
-     * @param userId The user ID.
-     * @return The number of ads published by a user.
+     * @param userId
+     * @param pageNumber
+     * @param pageSize
+     * @return ResponseEntity indicating if the Ads have been found
      */
-    @Operation(summary = "the number of ads published by a user")
+    @Operation(summary = "a page of the user's ads list sorted by their statuses so that the ones that are sold or reserved are the last called")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval the user's ad list count"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for the ad tab"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("count/{userId}")
-    public ResponseEntity<Object> getAdsCount(@PathVariable long userId) {
+    @GetMapping("/adTablist/{userId}")
+    public ResponseEntity<Object> getMyAdTab(
+            @PathVariable long userId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "12") int pageSize) {
         try {
-            return ResponseEntity.ok(adService.getUserAdsListLength(userId));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            Page<AdCardResponseDTO> adsPage = this.adService.getUserAdsTab(userId, pageable);
+            return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get the user's ad count.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -222,14 +234,16 @@ public class AdController {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("similarAdsList/{category}/{publisherId}/{userId}")
-    public ResponseEntity<Object> getSimilarAds(@PathVariable String category, @PathVariable Long userId,
-            @PathVariable Long publisherId,
+    @GetMapping("/similarAdsList/{category}/{publisherId}/{userId}")
+    public ResponseEntity<Object> getSimilarAds(
+            @PathVariable String category,
+            @PathVariable long publisherId,
+            @PathVariable long userId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "4") int pageSize) {
         try {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.findSimilarAds(category, userId, publisherId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findSimilarAds(category, publisherId, userId, pageable);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -284,6 +298,27 @@ public class AdController {
         try {
             adService.updateAdFavoriteStatus(adId, userId, isFavorite);
             return ResponseEntity.ok("Favorite status updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint that checks how many users have added this ad as a favorite
+     * 
+     * @param adId the ad ID.
+     * @return the favorite count
+     */
+    @Operation(summary = "how many users have added this ad in their favorite list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Got the count of users that have liked this ad"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/favoriteCount/{adId}")
+    public ResponseEntity<Object> checksFavoriteCount(
+            @PathVariable long adId) {
+        try {
+            return ResponseEntity.ok(adService.checkFavoriteCount(adId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

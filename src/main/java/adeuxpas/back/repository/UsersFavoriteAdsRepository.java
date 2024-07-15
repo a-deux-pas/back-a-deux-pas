@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import adeuxpas.back.entity.UsersFavoriteAds;
@@ -47,4 +48,28 @@ public interface UsersFavoriteAdsRepository extends JpaRepository<UsersFavoriteA
      */
     @Query("SELECT f.ad.id FROM UsersFavoriteAds f WHERE f.user.id = :userId")
     Set<Long> findFavoriteAdIdsByUserId(Long userId);
+
+    /**
+     * Custom query that checks how many users have added the current ad in their
+     * favorite ads list
+     * 
+     * @param adId
+     * @return The number of entry this ad has in the userFavoriteAds table
+     */
+    @Query("SELECT COUNT(u) FROM UsersFavoriteAds u WHERE u.ad.id = :adId")
+    Long checksFavoriteCount(
+            @Param("adId") Long adId);
+
+    /**
+     * Custom query that checks if the ad's publisher has ads that are in the
+     * current user's favorite list
+     * 
+     * @param userId
+     * @param publisherId
+     * @return a list of the ad's ids that have been liked by the currentUser and
+     *         that have the publisherId as author
+     */
+    @Query("SELECT a.id FROM Ad a JOIN UsersFavoriteAds u ON a.id = u.ad.id WHERE a.publisher.id = :publisherId AND a.status = 'AVAILABLE' AND u.user.id = :userId")
+    Set<Long> findUserPublisherFavoriteAdsIds(@Param("userId") long userId, @Param("publisherId") long publisherId);
+
 }
