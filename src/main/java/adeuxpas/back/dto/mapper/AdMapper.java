@@ -35,6 +35,7 @@ import org.mapstruct.Named;
  */
 @Mapper(componentModel = "spring")
 public interface AdMapper {
+
     /**
      * Maps an ad entity to an adPostResponseDTO
      * 
