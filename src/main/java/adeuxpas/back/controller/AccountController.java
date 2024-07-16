@@ -76,7 +76,7 @@ public class AccountController {
      * @return a ResponseEntity with the user preferred schedules if successful,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "User's preferred schedules")
+    @Operation(summary = "Retrieves a user's preferred schedules")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred schedules"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -98,7 +98,7 @@ public class AccountController {
      *         successful,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "User's preferred meeting places")
+    @Operation(summary = "Retrieves a user's preferred meeting places")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred meeting places"),
             @ApiResponse(responseCode = "500", description = "Internal server error")

@@ -1,11 +1,11 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.NotificationDTO;
-import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.dto.UserProfileResponseDTO;
+import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
