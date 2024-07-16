@@ -116,7 +116,7 @@ public class AdController {
      * @return The AdDTO.
      */
     // TO DO :: à revoir (fix Cloudinary branch)
-    @Operation(summary = "new Ad creation")
+    @Operation(summary = "New Ad creation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful ad creation"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -140,18 +140,19 @@ public class AdController {
     /**
      * Endpoint that retrieves information about one Ad with its ID.
      * 
-     * @param id The ad ID.
+     * @param adId           The ad ID.
+     * @param loggedInUserId The logged in user ID.
      * @return ResponseEntity indicating if the Ad has been found.
      */
-    @Operation(summary = "ad details")
+    @Operation(summary = "Retrieves an ad details")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of ad information"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable long id) {
+    @GetMapping("/{adId}/{loggedInUserId}")
+    public ResponseEntity<Object> findById(@PathVariable long adId, @PathVariable long loggedInUserId) {
         try {
-            return ResponseEntity.ok(adService.findAdById(id));
+            return ResponseEntity.ok(adService.findAdById(adId, loggedInUserId));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no ad found for this id");
         } catch (RuntimeException e) {
@@ -160,18 +161,18 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user excluding the one the
-     * current user is on as well as the sold and reserved ones
+     * Endpoint that gets a page of ads created by a user excluding the one the
+     * current user is on as well as the sold and reserved ones.
      * 
-     * @param userId
-     * @param pageNumber
-     * @param pageSize
-     * @param adId
-     * @return ResponseEntity indicating if the Ads have been found
+     * @param userId     The user ID.
+     * @param pageNumber The page number for pagination (default is 0).
+     * @param pageSize   The page size for pagination (default is 8).
+     * @param adId       The ad ID to exclude from the result list.
+     * @return ResponseEntity indicating if the Ads have been found.
      */
-    @Operation(summary = "a page of the user's ads list excluding the ones that are sold or reserved")
+    @Operation(summary = "Retrieves a user's ads list excluding those that are sold or reserved")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for an ad page content"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of the user's ad list"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/adPageContentList/{publisherId}/{loggedInUserId}/{adId}")
@@ -192,17 +193,17 @@ public class AdController {
     }
 
     /**
-     * endpoint that gets a page of ads created by a user sorted so that the sold
-     * and reserved ones are the very last to be retrieved
+     * Endpoint that gets a page of ads created by a user sorted so that the sold
+     * and reserved ones are the very last to be retrieved.
      * 
-     * @param userId
-     * @param pageNumber
-     * @param pageSize
-     * @return ResponseEntity indicating if the Ads have been found
+     * @param userId     The user ID.
+     * @param pageNumber The page number for pagination (default is 0).
+     * @param pageSize   The page size for pagination (default is 12).
+     * @return ResponseEntity indicating if the Ads have been found.
      */
-    @Operation(summary = "a page of the user's ads list sorted by their statuses so that the ones that are sold or reserved are the last called")
+    @Operation(summary = "Retrieves a user's ads list, sorted by status, with sold or reserved ads listed last")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a page of the user's ad list for the ad tab"),
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of the user's ad list"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/adTablist/{userId}")
@@ -226,10 +227,10 @@ public class AdController {
      * @param userId     The user ID.
      * @param pageNumber The page number for pagination (default is
      *                   0).
-     * @param pageSize   The page size for pagination (default is 8).
+     * @param pageSize   The page size for pagination (default is 4).
      * @return a list of similar ads sharing the same category.
      */
-    @Operation(summary = "list of similar ads")
+    @Operation(summary = "Retrieves a list of ads with the same category")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -259,7 +260,7 @@ public class AdController {
      * @return ResponseEntity containing the ads with a 200 code if successful,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "user's favorites ads list")
+    @Operation(summary = "Retrieves a user's favorites ads list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of a user's favorites ads"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -281,11 +282,11 @@ public class AdController {
      * Endpoint that update an ad favorite status.
      *
      * @param adId       the ad ID.
-     * @param isFavorite the favorite status of the ad
+     * @param isFavorite the favorite status of the ad.
      * @return ResponseEntity with a 200 code if successful,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "update an Ad favorite's status")
+    @Operation(summary = "Update an Ad favorite's status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Favorite status updated successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -304,12 +305,12 @@ public class AdController {
     }
 
     /**
-     * Endpoint that checks how many users have added this ad as a favorite
+     * Endpoint that checks how many users have added an ad as favorite.
      * 
      * @param adId the ad ID.
-     * @return the favorite count
+     * @return The favorite ads count.
      */
-    @Operation(summary = "how many users have added this ad in their favorite list")
+    @Operation(summary = "Retrieves the count of users who have added an ad to their favorites list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Got the count of users that have liked this ad"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
