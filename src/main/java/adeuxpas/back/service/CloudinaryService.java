@@ -37,8 +37,10 @@ public class CloudinaryService {
         cloudinary = new Cloudinary(valuesMap);
     }
 
+    // Voir comment je peux operer des transformation differentes en fonction de si
+    // je recois un ap ou une pp
     @SuppressWarnings("unchecked")
-    public Map<String, Object> upload(String type, MultipartFile multipartFile) throws IOException {
+    public Map<String, Object> upload(String publicId, MultipartFile multipartFile) throws IOException {
         logger.info("Received file with name: {}", multipartFile.getOriginalFilename());
         logger.info("File size: {} bytes", multipartFile.getSize());
         logger.info("File content type: {}", multipartFile.getContentType());
@@ -51,7 +53,7 @@ public class CloudinaryService {
                                     .gravity("face")
                                     .height(400).width(600).crop("fill").quality("auto")
                                     .fetchFormat("webp"),
-                            "public_id", type));
+                            "public_id", publicId));
             if (!Files.deleteIfExists(file.toPath())) {
                 throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());
             }
