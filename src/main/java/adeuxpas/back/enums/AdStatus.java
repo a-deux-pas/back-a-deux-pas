@@ -11,11 +11,11 @@ package adeuxpas.back.enums;
  */
 public enum AdStatus {
     /**
-     * The Ad is available to a purchase.
+     * The Ad is available for purchase.
      */
     AVAILABLE,
     /**
-     * The Ad is purchased by another user so it's reserved until they meet and
+     * The Ad is purchased by another user, so it's reserved until they meet and
      * actually do the exchange.
      */
     RESERVED,

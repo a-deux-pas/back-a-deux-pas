@@ -1,27 +1,33 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.LoginRequest;
-import adeuxpas.back.dto.SignupRequest;
+import adeuxpas.back.dto.CredentialsRequestDTO;
 import adeuxpas.back.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller class for handling authentication-related endpoints.
  * <p>
- * This controller provides endpoints for user authentication, including sign up and log in.
+ * This controller provides endpoints for user authentication, including sign up
+ * and log in.
  * </p>
  * <p>
- * It interacts with the AuthenticationService to perform authentication operations.
+ * It interacts with the AuthenticationService to perform authentication
+ * operations.
  * </p>
  *
  * @author Mircea Bardan
  */
 
+@RequestMapping("/api")
 @RestController
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
@@ -29,80 +35,111 @@ public class AuthenticationController {
     /**
      * Constructor for AuthenticationController.
      *
-     * @param authenticationService The AuthenticationService for handling authentication operations.
+     * @param authenticationService The AuthenticationService for handling
+     *                              authentication operations.
      */
-    public AuthenticationController(@Autowired AuthenticationService authenticationService){
+    public AuthenticationController(@Autowired AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
-    /**
-     * Endpoint to access the sign-up page.
-     *
-     * @return ResponseEntity with a 200(OK) status and a body containing a welcome message for accessing the sign-up page.
-     */
-    @GetMapping("/signup")
-    public ResponseEntity<String> accessSignup(){
-        // might to be modified when developing the signup functionality
-        return ResponseEntity.ok("Welcome, EVERYBODY. Please SIGN UP using the POST http method on this endpoint");
-    }
-
-    /**
-     * Endpoint to access the login page.
-     *
-     * @return ResponseEntity with a 200(OK) status and a body containing a welcome message for accessing the login page.
-     */
-    @GetMapping("/login")
-    public ResponseEntity<String> accessLogin(){
-        // might to be modified when developing the login functionality
-        return ResponseEntity.ok("Welcome, EVERYBODY. Please LOG IN using the POST http method on this endpoint");
-    }
-
-    // Test endpoint to imitate access to a secured page; to be REMOVED / REPLACED
-    @GetMapping("/content")
-    public ResponseEntity<String> accessContent(){
-        return ResponseEntity.ok("Welcome, USER/ADMIN");
-    }
-
-    // Test endpoint to imitate access to a restricted page; to be REMOVED / REPLACED
+    // Test endpoint to imitate access to a restricted page; to be REMOVED /
+    // REPLACED
     @GetMapping("/admin-page")
-    public ResponseEntity<String> accessAdminPage(){
+    public ResponseEntity<String> accessAdminPage() {
         return ResponseEntity.ok("Welcome, ADMIN");
     }
 
     /**
-     * Endpoint to handle user sign-up requests.
+     * Endpoint to check if an email address already exists.
      *
-     * @param signupRequest The sign-up request containing user details.
-     * @return ResponseEntity indicating the status of the sign-up operation.
+     * @param email to check.
+     * @return ResponseEntity indicating true or false.
+     */
+    @PostMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmail(@RequestBody String email) {
+        try {
+            return ResponseEntity.ok(authenticationService.checkIfEmailAlreadyExist(email));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
+
+    /**
+     * Endpoint to check if a password matches with a user address mail.
+     *
+     * @param credentialsRequestDTO The check password request containing the user
+     *                              credentials.
+     * @return ResponseEntity indicating true or false.
+     */
+    @PostMapping("/check-password")
+    public ResponseEntity<Boolean> checkPassword(@RequestBody CredentialsRequestDTO credentialsRequestDTO) {
+        try {
+            return ResponseEntity.ok(authenticationService.checkIfPasswordMatchesWithEmail(credentialsRequestDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
+
+    /**
+     * Endpoint to check if an Alias has already been taken by a user.
+     *
+     * @param alias alias to check.
+     * @return ResponseEntity indicating true or false.
+     */
+    @GetMapping("/check-alias")
+    public ResponseEntity<Boolean> checkAlias(@RequestParam String alias) {
+        try {
+            return ResponseEntity.ok(authenticationService.checkIfAliasAlreadyExist(alias));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
+
+    /**
+     * Endpoint to handle a user sign-up request.
+     *
+     * @param credentialsRequestDTO The sign-up request containing user credentials.
+     * @return ResponseEntity containing the authentication token if sign-up is
+     *         successful, or an error message otherwise.
      */
     @PostMapping("/signup")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User signed up successfully"),
+            @ApiResponse(responseCode = "401", description = "Invalid email and/or password"),
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
-    public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
-        // might need to be modified when developing the signup functionality
-        if (this.authenticationService.canDoSignup(signupRequest))
-            return ResponseEntity.ok().body("User signed up successfully with email: " + signupRequest.getEmail());
-        else
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("A user with email '" + signupRequest.getEmail() + "' already exists");
+    public ResponseEntity<Object> signUp(@RequestBody @Valid CredentialsRequestDTO credentialsRequestDTO,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        }
+        try {
+            String token = this.authenticationService.signup(credentialsRequestDTO).orElse(null);
+            if (token != null)
+                return ResponseEntity.status(HttpStatus.CREATED).body(token);
+            else
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email and/or password");
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        }
     }
 
     /**
      * Endpoint to handle user login requests.
      *
-     * @param loginRequest The login request containing user credentials.
-     * @return ResponseEntity containing the authentication token if login is successful, or an error message otherwise.
+     * @param credentialsRequestDTO The login request containing user credentials.
+     * @return ResponseEntity containing the authentication token if login is
+     *         successful, or an error message otherwise.
      */
     @PostMapping("/login")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User logged in successfully"),
             @ApiResponse(responseCode = "401", description = "Invalid email and/or password")
     })
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
-        // might need to be modified when developing the login functionality
-        String token = this.authenticationService.login(loginRequest)
+    public ResponseEntity<String> login(@RequestBody CredentialsRequestDTO credentialsRequestDTO) {
+        String token = this.authenticationService.login(credentialsRequestDTO)
                 .orElse(null);
 
         if (token != null)

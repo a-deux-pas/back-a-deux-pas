@@ -1,5 +1,8 @@
 package adeuxpas.back.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
@@ -27,8 +30,10 @@ import adeuxpas.back.service.CloudinaryService;
 import adeuxpas.back.service.ImageService;
 
 @RestController
-@RequestMapping("/cloudinary")
+@RequestMapping("api/cloudinary")
 public class CloudinaryController {
+
+    private static final Logger logger = LoggerFactory.getLogger(CloudinaryController.class);
 
     private final CloudinaryService cloudinaryService;
     private final ImageService imageService;
@@ -46,19 +51,61 @@ public class CloudinaryController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/upload/{type}")
     @ResponseBody
-    public ResponseEntity<String> upload(@RequestParam MultipartFile multipartFile) throws IOException {
-        BufferedImage bi = ImageIO.read(multipartFile.getInputStream());
-        if (bi == null) {
-            return new ResponseEntity<>("the image is not valid!", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> upload(@PathVariable String type,
+            @RequestParam("multipartFile") MultipartFile multipartFile) {
+        try {
+            // Logging information about the received file
+            System.out.println("Received file with name: " + multipartFile.getOriginalFilename());
+            System.out.println("File size: " + multipartFile.getSize() + " bytes");
+            System.out.println("File content type: " + multipartFile.getContentType());
+
+            // Check if the uploaded file is a valid image
+            BufferedImage bi = ImageIO.read(multipartFile.getInputStream());
+            if (bi == null) {
+                return ResponseEntity.badRequest().body("The uploaded file is not a valid image.");
+            }
+
+            // Upload the file to Cloudinary
+            Map<String, Object> result = cloudinaryService.upload(type, multipartFile);
+
+            // Save information about the uploaded image
+            Image image = new Image((String) result.get("original_filename"),
+                    (String) result.get("url"),
+                    (String) result.get("public_id"));
+            imageService.save(image);
+
+            System.out.println("url: " + result.get("url"));
+
+            // Prepare response object with URL
+            UploadResponse response = new UploadResponse("Image successfully uploaded.", (String) result.get("url"));
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while processing the uploaded file.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
         }
-        Map result = cloudinaryService.upload(multipartFile);
-        Image image = new Image((String) result.get("original_filename"),
-                (String) result.get("url"),
-                (String) result.get("public_id"));
-        imageService.save(image);
-        return new ResponseEntity<>("image succesdfully added ! ", HttpStatus.OK);
+    }
+
+    // Inner class for response object containing message and image URL
+    static class UploadResponse {
+        private final String message;
+        private final String imageUrl;
+
+        public UploadResponse(String message, String imageUrl) {
+            this.message = message;
+            this.imageUrl = imageUrl;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
     }
 
     @DeleteMapping("/delete/{id}")

@@ -1,5 +1,7 @@
 package adeuxpas.back.dto;
 
+import jakarta.validation.constraints.*;
+
 /**
  * Data Transfer Object (DTO) for representing preferred meeting place.
  * <p>
@@ -7,7 +9,8 @@ package adeuxpas.back.dto;
  * including country, postal code, city, street, name, and user ID.
  * </p>
  * <p>
- * It is typically used to transfer preferred meeting place data between different layers of the application,
+ * It is typically used to transfer preferred meeting place data between
+ * different layers of the application,
  * such as between the controller and the service layer.
  * </p>
  * 
@@ -15,12 +18,18 @@ package adeuxpas.back.dto;
  */
 public class PreferredMeetingPlaceDTO {
     private Long id;
+    @NotBlank
+    @Size(min = 5, max = 5)
     private String postalCode;
+    @NotBlank
     private String city;
+    @NotBlank
     private String street;
+    @NotBlank
+    @Size(max = 30)
     private String name;
+    @NotBlank
     private Long userId;
-
 
     public Long getId() {
         return id;

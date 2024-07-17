@@ -20,7 +20,6 @@ public class AdPostResponseDTO {
     private String fifthArticlePictureUrl;
     private BigDecimal price;
     private String creationDate;
-    // TO DO :: à peut-être changer une fois le processus de connexion implémenté
     private Long publisherId;
     private String publisherAlias;
     private String publisherInscriptionDate;
@@ -165,5 +164,4 @@ public class AdPostResponseDTO {
     public void setCategory(String category) {
         this.category = category;
     }
-
 }

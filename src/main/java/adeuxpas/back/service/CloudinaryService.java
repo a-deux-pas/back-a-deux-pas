@@ -37,25 +37,29 @@ public class CloudinaryService {
         cloudinary = new Cloudinary(valuesMap);
     }
 
-    // TO DO ::ajouter la bonne transformation
     @SuppressWarnings("unchecked")
-
-    public Map<String, Object> upload(MultipartFile multipartFile) throws IOException {
+    public Map<String, Object> upload(String type, MultipartFile multipartFile) throws IOException {
         logger.info("Received file with name: {}", multipartFile.getOriginalFilename());
         logger.info("File size: {} bytes", multipartFile.getSize());
         logger.info("File content type: {}", multipartFile.getContentType());
         File file = convert(multipartFile);
 
-        Map<String, Object> result = cloudinary.uploader().upload(file,
-                ObjectUtils.asMap(
-                        "transformation", new Transformation()
-                                .gravity("face")
-                                .height(400).width(400).crop("thumb")
-                                .fetchFormat("webp")));
-        if (!Files.deleteIfExists(file.toPath())) {
-            throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());
+        try {
+            Map<String, Object> result = cloudinary.uploader().upload(file,
+                    ObjectUtils.asMap(
+                            "transformation", new Transformation()
+                                    .gravity("face")
+                                    .height(400).width(600).crop("fill").quality("auto")
+                                    .fetchFormat("webp"),
+                            "public_id", type));
+            if (!Files.deleteIfExists(file.toPath())) {
+                throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());
+            }
+            return result;
+        } catch (Exception e) {
+            logger.error("Error uploading file to Cloudinary", e);
+            throw new IOException("Failed to upload file to Cloudinary: " + e.getMessage(), e);
         }
-        return result;
     }
 
     public Map delete(String id) throws IOException {

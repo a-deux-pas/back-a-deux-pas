@@ -5,13 +5,13 @@ import adeuxpas.back.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Entity class representing a user in the application.
- * This class encapsulates user-related information, such as email, password, profile details, account status etc.
- * Instances of this class are persisted in the database and typically interact with the UserRepository.
+ * This class encapsulates user-related information, such as email, password,
+ * profile details, account status etc.
+ * Instances of this class are persisted to the database by the UserRepository.
  *
  * @author Mircea Bardan
  */
@@ -23,14 +23,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150)
+    @Column(unique = true, length = 150, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
-    @Column(length = 150)
+    @Column(unique = true, length = 30)
     private String alias;
 
+    @Column(columnDefinition = "TEXT")
     private String bio;
 
     @Column(length = 150)
@@ -42,8 +44,14 @@ public class User {
     @Column(length = 200)
     private String street;
 
-    @Column(name = "postal_code")
+    @Column(name = "postal_code", length = 5)
     private String postalCode;
+
+    @Column(name = "bank_account_holder", length = 150)
+    private String bankAccountHolder;
+
+    @Column(name = "bank_account_number", length = 34)
+    private String bankAccountNumber;
 
     @Column(name = "profile_picture")
     private String profilePicture;
@@ -52,13 +60,26 @@ public class User {
     private LocalDateTime inscriptionDate;
 
     @Column(name = "account_status")
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ad> ads;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PreferredSchedule> preferredSchedules;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PreferredMeetingPlace> preferredMeetingPlaces;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UsersFavoriteAds> favoritesAds;
 
     // getters and setters
     public long getId() {
@@ -133,6 +154,22 @@ public class User {
         this.postalCode = postalCode;
     }
 
+    public String getBankAccountHolder() {
+        return bankAccountHolder;
+    }
+
+    public void setBankAccountHolder(String bankAccountHolder) {
+        this.bankAccountHolder = bankAccountHolder;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -173,17 +210,51 @@ public class User {
         this.ads = ads;
     }
 
+    public List<PreferredSchedule> getPreferredSchedules() {
+        return preferredSchedules;
+    }
+
+    public void setPreferredSchedules(List<PreferredSchedule> preferredSchedules) {
+        this.preferredSchedules = preferredSchedules;
+    }
+
+    public List<PreferredMeetingPlace> getPreferredMeetingPlaces() {
+        return preferredMeetingPlaces;
+    }
+
+    public void setPreferredMeetingPlaces(List<PreferredMeetingPlace> preferredMeetingPlaces) {
+        this.preferredMeetingPlaces = preferredMeetingPlaces;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public Set<UsersFavoriteAds> getFavoritesAds() {
+        return favoritesAds;
+    }
+
+    public void setFavoritesAds(Set<UsersFavoriteAds> favoritesAds) {
+        this.favoritesAds = favoritesAds;
+    }
+
     // toString
     @Override
-    public String toString(){
+    public String toString() {
         return this.email;
     }
 
     // equals
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof User user))
+            return false;
         return Objects.equals(email, user.email);
     }
 
