@@ -77,13 +77,14 @@ public class AdServiceImpl implements AdService {
      * @param articleStatesFilter        The list of article state filters.
      * @param categoryFilter             The category filter.
      * @param loggedInUserId             The ID of the logged-in user.
-     * @param pageable                   The pagination information.
+     * @param pageNumber                 The page number for pagination.
+     * @param pageSize                   The page size for pagination.
      * @return The page of AdCardResponseDTOs.
      */
     @Override
     public Page<AdCardResponseDTO> findFilteredAdCardResponseDTOs(List<String> priceRangesFilter,
-            List<String> citiesAndPostalCodesFilter,
-            List<String> articleStatesFilter, String categoryFilter, Long loggedInUserId, Pageable pageable) {
+            List<String> citiesAndPostalCodesFilter, List<String> articleStatesFilter, String categoryFilter,
+            Long loggedInUserId, int pageNumber, int pageSize) {
 
         // check if the user exists, if not set loggedInUserId to null
         if (loggedInUserId != null) {
@@ -93,6 +94,7 @@ public class AdServiceImpl implements AdService {
             }
         }
 
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         // if no filter is checked, return all ads
         if (shouldReturnAllAds(priceRangesFilter, citiesAndPostalCodesFilter, articleStatesFilter, categoryFilter)) {
             return findAllAdCardResponseDTOs(loggedInUserId, pageable);
@@ -253,6 +255,8 @@ public class AdServiceImpl implements AdService {
      * them on an ad page content.
      * 
      * @param publisherId    The ad's publisher's ID.
+     * @param pageNumber     The page number for pagination.
+     * @param pageSize       The page size for pagination.
      * @param pageable       The pagination information.
      * @param loggedInUserId The current user's ID.
      * @param adId           The ID of ad to exclude from the result list.
@@ -260,10 +264,11 @@ public class AdServiceImpl implements AdService {
      * @return The page of AdCardResponseDTO.
      */
     @Override
-    public Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId,
-            Long adId) {
+    public Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, int pageNumber, int pageSize,
+            Long loggedInUserId, Long adId) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
             Page<Ad> adsPage = adRepository.findAvailableAdsByPublisherId(publisherId, pageable, adId);
             Page<AdCardResponseDTO> mappedAdsPage = this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
             if (loggedInUserId != null) {
@@ -285,15 +290,17 @@ public class AdServiceImpl implements AdService {
      * Finds ads that are sorted by their status and maps them into
      * AdCardResponseDTOs in order to display them on a user's ad tab.
      * 
-     * @param pageable    The pagination information.
      * @param publisherId The ad's publisher's ID.
+     * @param pageNumber  The page number for pagination.
+     * @param pageSize    The page size for pagination.
      * 
      * @return The page of AdCardResponseDTO.
      */
     @Override
-    public Page<AdCardResponseDTO> getUserAdsTab(long publisherId, Pageable pageable) {
+    public Page<AdCardResponseDTO> getUserAdsTab(long publisherId, int pageNumber, int pageSize) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
             Page<Ad> adsPage = adRepository.findSortedAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
             return this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
         } else {
@@ -308,12 +315,15 @@ public class AdServiceImpl implements AdService {
      * @param category    The current ad's category.
      * @param publisherId The ad's publisher's ID.
      * @param userId      The current user's ID.
-     * @param pageable    The pagination information.
+     * @param pageNumber  The page number for pagination.
+     * @param pageSize    The page size for pagination.
      * 
      * @return a list of similar ads sharing the same category.
      */
     @Override
-    public Page<AdCardResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
+    public Page<AdCardResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, int pageNumber,
+            int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
                 pageable);
         Page<AdCardResponseDTO> mappedAdsPage = this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
@@ -364,14 +374,17 @@ public class AdServiceImpl implements AdService {
     /**
      * Retrieves a user's favorites ads list.
      *
-     * @param userId The ID of the user.
+     * @param userId     The ID of the user.
+     * @param pageNumber The page number for pagination.
+     * @param pageSize   The page size for pagination.
      * @return The list of favorites ads.
      */
     @Override
-    public Page<AdCardResponseDTO> findFavoriteAdsByUserId(long userId, Pageable pageable) {
+    public Page<AdCardResponseDTO> findFavoriteAdsByUserId(long userId, int pageNumber, int pageSize) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
             Page<UsersFavoriteAds> favoritesAds = this.usersFavoriteAdsRepository.findByUserOrderByAddedAtDesc(user,
                     pageable);
             return this.convertFavoritesToPageOfAdCardResponseDTOs(pageable, favoritesAds);

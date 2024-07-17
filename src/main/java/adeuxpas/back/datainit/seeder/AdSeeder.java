@@ -61,7 +61,7 @@ public class AdSeeder {
                 firstAd.setPrice(BigDecimal.valueOf(1999));
                 firstAd.setTitle("Vélo de piste");
                 firstAd.setPublisher(users.get(0));
-                firstAd.setArticleState("Très bon état");
+                firstAd.setArticleState("Très bon");
                 firstAd.setCategory("Loisirs");
                 firstAd.setSubcategory("Sport");
                 firstUserAds.add(firstAd);
@@ -112,7 +112,7 @@ public class AdSeeder {
                 fifthAd.setPrice(BigDecimal.valueOf(199));
                 fifthAd.setTitle("Casque Bose");
                 fifthAd.setPublisher(users.get(2));
-                fifthAd.setArticleState("Bon état");
+                fifthAd.setArticleState("Bon");
                 fifthAd.setCategory("Loisirs");
                 fifthAd.setSubcategory("Musique");
                 thirdUserAds.add(fifthAd);
@@ -178,7 +178,7 @@ public class AdSeeder {
                 tenthAd.setPrice(BigDecimal.valueOf(45));
                 tenthAd.setTitle("Sac à main");
                 tenthAd.setPublisher(users.get(0));
-                tenthAd.setArticleState("Très bon état");
+                tenthAd.setArticleState("Très bon");
                 tenthAd.setCategory("Mode");
                 tenthAd.setSubcategory("Accessoires");
                 firstUserAds.add(tenthAd);
@@ -242,7 +242,7 @@ public class AdSeeder {
                 fifteenthAd.setPrice(BigDecimal.valueOf(20));
                 fifteenthAd.setTitle("Casquette");
                 fifteenthAd.setPublisher(users.get(3));
-                fifteenthAd.setArticleState("Bon état");
+                fifteenthAd.setArticleState("Bon");
                 fifteenthAd.setCategory("Mode");
                 fifteenthAd.setSubcategory("Accessoires");
                 fourthUserAds.add(fifteenthAd);
@@ -254,7 +254,7 @@ public class AdSeeder {
                 sixteenthAd.setPrice(BigDecimal.valueOf(5));
                 sixteenthAd.setTitle("Bracelet Tree of Life ");
                 sixteenthAd.setPublisher(users.get(5));
-                sixteenthAd.setArticleState("Bon état");
+                sixteenthAd.setArticleState("Bon");
                 sixteenthAd.setCategory("Mode");
                 sixteenthAd.setSubcategory("Accessoires");
                 sixthUserAds.add(sixteenthAd);
@@ -291,7 +291,7 @@ public class AdSeeder {
                 nineteethAd.setPrice(BigDecimal.valueOf(30.67));
                 nineteethAd.setTitle("Bonsaï");
                 nineteethAd.setPublisher(users.get(0));
-                nineteethAd.setArticleState("Très bon état");
+                nineteethAd.setArticleState("Très bon");
                 nineteethAd.setCategory("Maison");
                 nineteethAd.setSubcategory("Jardin");
                 firstUserAds.add(nineteethAd);
@@ -305,7 +305,7 @@ public class AdSeeder {
                 twentiethAd.setPrice(BigDecimal.valueOf(450.00));
                 twentiethAd.setTitle("Smartphone dernière génération");
                 twentiethAd.setPublisher(users.get(0));
-                twentiethAd.setArticleState("Très bon état");
+                twentiethAd.setArticleState("Très bon");
                 twentiethAd.setCategory("Électronique");
                 twentiethAd.setSubcategory("téléphones");
                 firstUserAds.add(twentiethAd);
@@ -375,7 +375,7 @@ public class AdSeeder {
                 twentyFifthAd.setPrice(BigDecimal.valueOf(15.00));
                 twentyFifthAd.setTitle("Roman captivant - Best-seller international");
                 twentyFifthAd.setPublisher(users.get(0));
-                twentyFifthAd.setArticleState("Très bon état");
+                twentyFifthAd.setArticleState("Très bon");
                 twentyFifthAd.setCategory("Loisirs");
                 twentyFifthAd.setSubcategory("Livres");
                 firstUserAds.add(twentyFifthAd);
@@ -389,7 +389,7 @@ public class AdSeeder {
                 twentySixthAd.setPrice(BigDecimal.valueOf(60.00));
                 twentySixthAd.setTitle("Chaussures de sport de marque");
                 twentySixthAd.setPublisher(users.get(0));
-                twentySixthAd.setArticleState("Bon état");
+                twentySixthAd.setArticleState("Bon");
                 twentySixthAd.setCategory("Mode");
                 twentySixthAd.setSubcategory("chaussures");
                 firstUserAds.add(twentySixthAd);
@@ -431,7 +431,7 @@ public class AdSeeder {
                 twentyNinthAd.setPrice(BigDecimal.valueOf(300.00));
                 twentyNinthAd.setTitle("Vélo de montagne en excellent état");
                 twentyNinthAd.setPublisher(users.get(1));
-                twentyNinthAd.setArticleState("Très bon état");
+                twentyNinthAd.setArticleState("Très bon");
                 twentyNinthAd.setCategory("Loisirs");
                 twentyNinthAd.setSubcategory("Sport");
                 secondUserAds.add(twentyNinthAd);
@@ -445,7 +445,7 @@ public class AdSeeder {
                 thirtiethAd.setPrice(BigDecimal.valueOf(40.00));
                 thirtiethAd.setTitle("Jeans pour femme - Coupe slim");
                 thirtiethAd.setPublisher(users.get(1));
-                thirtiethAd.setArticleState("Très bon état");
+                thirtiethAd.setArticleState("Très bon");
                 thirtiethAd.setCategory("Mode");
                 thirtiethAd.setSubcategory("bas");
                 thirtiethAd.setArticleGender("femme");
@@ -545,7 +545,7 @@ public class AdSeeder {
                 thirtySeventhAd.setPrice(BigDecimal.valueOf(30.00));
                 thirtySeventhAd.setTitle("Lampe de chevet moderne");
                 thirtySeventhAd.setPublisher(users.get(1));
-                thirtySeventhAd.setArticleState("Bon état");
+                thirtySeventhAd.setArticleState("Bon");
                 thirtySeventhAd.setCategory("Maison");
                 thirtySeventhAd.setSubcategory("décorations");
                 users.get(1).setAds(secondUserAds);
@@ -559,7 +559,7 @@ public class AdSeeder {
                 thirtyEighthAd.setPrice(BigDecimal.valueOf(35.00));
                 thirtyEighthAd.setTitle("Chemise en lin pour homme");
                 thirtyEighthAd.setPublisher(users.get(1));
-                thirtyEighthAd.setArticleState("Très bon état");
+                thirtyEighthAd.setArticleState("Très bon");
                 thirtyEighthAd.setCategory("Mode");
                 thirtyEighthAd.setSubcategory("hauts");
                 thirtyEighthAd.setArticleGender("homme");
@@ -574,7 +574,7 @@ public class AdSeeder {
                 thirtyNinthAd.setPrice(BigDecimal.valueOf(150));
                 thirtyNinthAd.setTitle("Console de jeux vidéo avec manettes et jeux");
                 thirtyNinthAd.setPublisher(users.get(1));
-                thirtyNinthAd.setArticleState("Très bon état");
+                thirtyNinthAd.setArticleState("Très bon");
                 thirtyNinthAd.setCategory("Électronique");
                 thirtyNinthAd.setSubcategory("jeux vidéo");
                 thirtyNinthAd.setStatus(AdStatus.RESERVED);
@@ -587,7 +587,7 @@ public class AdSeeder {
                 fortiethAd.setPrice(BigDecimal.valueOf(75));
                 fortiethAd.setTitle("Table verte");
                 fortiethAd.setPublisher(users.get(2));
-                fortiethAd.setArticleState("Excellent état");
+                fortiethAd.setArticleState("Neuf sans étiquette");
                 fortiethAd.setCategory("Maison");
                 fortiethAd.setSubcategory("meubles");
                 fortiethAd.setStatus(AdStatus.SOLD);
@@ -600,7 +600,7 @@ public class AdSeeder {
                 fortyFirstAd.setPrice(BigDecimal.valueOf(60));
                 fortyFirstAd.setTitle("Sac à main en cuir de marque");
                 fortyFirstAd.setPublisher(users.get(2));
-                fortyFirstAd.setArticleState("Très bon état");
+                fortyFirstAd.setArticleState("Très bon");
                 fortyFirstAd.setCategory("Mode");
                 fortyFirstAd.setSubcategory("accessoires");
                 fortyFirstAd.setStatus(AdStatus.AVAILABLE);
@@ -613,7 +613,7 @@ public class AdSeeder {
                 fortySecondAd.setPrice(BigDecimal.valueOf(350));
                 fortySecondAd.setTitle("Appareil photo reflex avec objectifs");
                 fortySecondAd.setPublisher(users.get(2));
-                fortySecondAd.setArticleState("Parfait état");
+                fortySecondAd.setArticleState("Bon");
                 fortySecondAd.setCategory("Électronique");
                 fortySecondAd.setSubcategory("autre");
                 fortySecondAd.setStatus(AdStatus.AVAILABLE);
@@ -626,7 +626,7 @@ public class AdSeeder {
                 fortyThirdAd.setPrice(BigDecimal.valueOf(100));
                 fortyThirdAd.setTitle("Tondeuse à gazon électrique");
                 fortyThirdAd.setPublisher(users.get(2));
-                fortyThirdAd.setArticleState("Bon état");
+                fortyThirdAd.setArticleState("Bon");
                 fortyThirdAd.setCategory("Maison");
                 fortyThirdAd.setSubcategory("jardin");
                 fortyThirdAd.setStatus(AdStatus.AVAILABLE);
@@ -639,7 +639,7 @@ public class AdSeeder {
                 fortyFourthAd.setPrice(BigDecimal.valueOf(200));
                 fortyFourthAd.setTitle("Canapé bohème");
                 fortyFourthAd.setPublisher(users.get(2));
-                fortyFourthAd.setArticleState("Très bon état");
+                fortyFourthAd.setArticleState("Très bon");
                 fortyFourthAd.setCategory("Maison");
                 fortyFourthAd.setSubcategory("meubles");
                 fortyFourthAd.setStatus(AdStatus.AVAILABLE);
@@ -652,7 +652,7 @@ public class AdSeeder {
                 fortyFifthAd.setPrice(BigDecimal.valueOf(120));
                 fortyFifthAd.setTitle("Montre connectée multifonctions");
                 fortyFifthAd.setPublisher(users.get(2));
-                fortyFifthAd.setArticleState("Excellent état");
+                fortyFifthAd.setArticleState("Neuf avec étiquette");
                 fortyFifthAd.setCategory("Électronique");
                 fortyFifthAd.setSubcategory("autre");
                 fortyFifthAd.setStatus(AdStatus.SOLD);
@@ -665,7 +665,7 @@ public class AdSeeder {
                 fortySixthAd.setPrice(BigDecimal.valueOf(80));
                 fortySixthAd.setTitle("Machine à café expresso");
                 fortySixthAd.setPublisher(users.get(2));
-                fortySixthAd.setArticleState("Parfait état");
+                fortySixthAd.setArticleState("Neuf avec étiquette");
                 fortySixthAd.setCategory("Électronique");
                 fortySixthAd.setSubcategory("autre");
                 fortySixthAd.setStatus(AdStatus.RESERVED);
@@ -678,7 +678,7 @@ public class AdSeeder {
                 fortySeventhAd.setPrice(BigDecimal.valueOf(50));
                 fortySeventhAd.setTitle("Vêtements de sport pour femme");
                 fortySeventhAd.setPublisher(users.get(2));
-                fortySeventhAd.setArticleState("Excellent état");
+                fortySeventhAd.setArticleState("Neuf sans étiquette");
                 fortySeventhAd.setCategory("Mode");
                 fortySeventhAd.setSubcategory("autre");
                 fortySeventhAd.setStatus(AdStatus.RESERVED);
@@ -689,25 +689,150 @@ public class AdSeeder {
                                 "Que vous aimiez le yoga nidra, le yin yoga ou que vous voulez juste vous faire une bonne séance d'étirement, ce tapis est fait pour vous.");
                 fortyEighthAd.setCreationDate(LocalDateTime.now().plusMinutes(48));
                 fortyEighthAd.setPrice(BigDecimal.valueOf(30));
-                fortyEighthAd.setTitle("tapis de yoga");
+                fortyEighthAd.setTitle("Tapis de yoga");
                 fortyEighthAd.setPublisher(users.get(3));
-                fortyEighthAd.setArticleState("Excellent état");
+                fortyEighthAd.setArticleState("Très bon");
                 fortyEighthAd.setCategory("Loisirs");
                 fortyEighthAd.setSubcategory("Sport");
                 fortyEighthAd.setStatus(AdStatus.AVAILABLE);
                 fourthUserAds.add(fortyEighthAd);
 
-                //AdSeeder 1  => 
-                // pour le 4é user (fourthUserAds - setPublisher(users.get(3)))
-                // ajouter 6 ads AVAILABLE - 2 RESERVED - 2 SOLD
-                // de fortyNinthAd à fiftyNinthAd
+                Ad fortyNinthAd = new Ad();
+                fortyNinthAd.setArticleDescription(
+                                "Cette lampe de bureau moderne et orginale offre un éclairage optimal. Design élégant et fonctionnel.");
+                fortyNinthAd.setCreationDate(LocalDateTime.now().plusMinutes(49));
+                fortyNinthAd.setPrice(BigDecimal.valueOf(45));
+                fortyNinthAd.setTitle("Lampe de bureau moderne");
+                fortyNinthAd.setPublisher(users.get(3));
+                fortyNinthAd.setArticleState("Neuf sans étiquette");
+                fortyNinthAd.setCategory("Maison");
+                fortyNinthAd.setSubcategory("décorations");
+                fortyNinthAd.setStatus(AdStatus.AVAILABLE);
+                fourthUserAds.add(fortyNinthAd);
 
-                //AdSeeder 2  => 
+                Ad fiftiethAd = new Ad();
+                fiftiethAd.setArticleDescription(
+                                "Clavier d'ordinateur sans fil ergonomique pour une saisie confortable et efficace. Idéal pour travailler sans contraintes de câbles.");
+                fiftiethAd.setCreationDate(LocalDateTime.now().plusMinutes(50));
+                fiftiethAd.setPrice(BigDecimal.valueOf(70));
+                fiftiethAd.setTitle("Clavier d'ordinateur sans fil");
+                fiftiethAd.setPublisher(users.get(3));
+                fiftiethAd.setArticleState("Neuf sans étiquette");
+                fiftiethAd.setCategory("Électronique");
+                fiftiethAd.setSubcategory("ordinateurs");
+                fiftiethAd.setStatus(AdStatus.AVAILABLE);
+                fourthUserAds.add(fiftiethAd);
+
+                Ad fiftyFirstAd = new Ad();
+                fiftyFirstAd.setArticleDescription(
+                                "Baskets de qualité permettant d'augmenter sa street cred. Confort et style assurés.");
+                fiftyFirstAd.setCreationDate(LocalDateTime.now().plusMinutes(51));
+                fiftyFirstAd.setPrice(BigDecimal.valueOf(80));
+                fiftyFirstAd.setTitle("Baskets montantes");
+                fiftyFirstAd.setPublisher(users.get(3));
+                fiftyFirstAd.setArticleState("Bon");
+                fiftyFirstAd.setCategory("Mode");
+                fiftyFirstAd.setSubcategory("chaussures");
+                fiftyFirstAd.setStatus(AdStatus.AVAILABLE);
+                fourthUserAds.add(fiftyFirstAd);
+
+                Ad fiftySecondAd = new Ad();
+                fiftySecondAd.setArticleDescription(
+                                "Un manteau chaud et stylé pour les mois d'hiver. Parfait pour rester au chaud tout en gardant un look tendance.");
+                fiftySecondAd.setCreationDate(LocalDateTime.now().plusMinutes(52));
+                fiftySecondAd.setPrice(BigDecimal.valueOf(120));
+                fiftySecondAd.setTitle("Manteau d'hiver élégant");
+                fiftySecondAd.setPublisher(users.get(3));
+                fiftySecondAd.setArticleState("Très bon");
+                fiftySecondAd.setCategory("Mode");
+                fiftySecondAd.setSubcategory("manteaux");
+                fiftySecondAd.setStatus(AdStatus.AVAILABLE);
+                fourthUserAds.add(fiftySecondAd);
+
+                Ad fiftyThirdAd = new Ad();
+                fiftyThirdAd.setArticleDescription(
+                                "Vase en céramique fait à la main, idéal pour embellir votre intérieur avec style et élégance.");
+                fiftyThirdAd.setCreationDate(LocalDateTime.now().plusMinutes(53));
+                fiftyThirdAd.setPrice(BigDecimal.valueOf(60));
+                fiftyThirdAd.setTitle("Vase en céramique");
+                fiftyThirdAd.setPublisher(users.get(3));
+                fiftyThirdAd.setArticleState("Neuf");
+                fiftyThirdAd.setCategory("Maison");
+                fiftyThirdAd.setSubcategory("décorations");
+                fiftyThirdAd.setStatus(AdStatus.AVAILABLE);
+                fourthUserAds.add(fiftyThirdAd);
+
+                Ad fiftyFourthAd = new Ad();
+                fiftyFourthAd.setArticleDescription(
+                                "Collection de statuettes grec kitch pour décorer votre espace avec une touche d'originalité et d'humour.");
+                fiftyFourthAd.setCreationDate(LocalDateTime.now().plusMinutes(54));
+                fiftyFourthAd.setPrice(BigDecimal.valueOf(150));
+                fiftyFourthAd.setTitle("Collection de statuettes grec kitch");
+                fiftyFourthAd.setPublisher(users.get(3));
+                fiftyFourthAd.setArticleState("Neuf");
+                fiftyFourthAd.setCategory("Maison");
+                fiftyFourthAd.setSubcategory("décorations");
+                fiftyFourthAd.setStatus(AdStatus.AVAILABLE);
+                fourthUserAds.add(fiftyFourthAd);
+
+                Ad fiftyFifthAd = new Ad();
+                fiftyFifthAd.setArticleDescription(
+                                "AirPods dernier cri pour une qualité audio supérieure et une expérience sans fil optimale.");
+                fiftyFifthAd.setCreationDate(LocalDateTime.now().plusMinutes(55));
+                fiftyFifthAd.setPrice(BigDecimal.valueOf(250));
+                fiftyFifthAd.setTitle("AirPods dernier cri");
+                fiftyFifthAd.setPublisher(users.get(3));
+                fiftyFifthAd.setArticleState("Neuf");
+                fiftyFifthAd.setCategory("Électronique");
+                fiftyFifthAd.setSubcategory("autre");
+                fiftyFifthAd.setStatus(AdStatus.RESERVED);
+                fourthUserAds.add(fiftyFifthAd);
+
+                Ad fiftySixthAd = new Ad();
+                fiftySixthAd.setArticleDescription(
+                                "Liseuse légère et pratique pour lire vos livres numériques préférés partout où vous allez.");
+                fiftySixthAd.setCreationDate(LocalDateTime.now().plusMinutes(56));
+                fiftySixthAd.setPrice(BigDecimal.valueOf(100));
+                fiftySixthAd.setTitle("Liseuse numérique");
+                fiftySixthAd.setPublisher(users.get(3));
+                fiftySixthAd.setArticleState("Très bon");
+                fiftySixthAd.setCategory("Électronique");
+                fiftySixthAd.setSubcategory("autre");
+                fiftySixthAd.setStatus(AdStatus.RESERVED);
+                fourthUserAds.add(fiftySixthAd);
+
+                Ad fiftySeventhAd = new Ad();
+                fiftySeventhAd.setArticleDescription(
+                                "Une trottinette colorée et en bon état qui amusera vos enfants et les motivera à faire des balades.");
+                fiftySeventhAd.setCreationDate(LocalDateTime.now().plusMinutes(57));
+                fiftySeventhAd.setPrice(BigDecimal.valueOf(300));
+                fiftySeventhAd.setTitle("Trottinette violette");
+                fiftySeventhAd.setPublisher(users.get(3));
+                fiftySeventhAd.setArticleState("Bon");
+                fiftySeventhAd.setCategory("Loisirs");
+                fiftySeventhAd.setSubcategory("Sport");
+                fiftySeventhAd.setStatus(AdStatus.SOLD);
+                fourthUserAds.add(fiftySeventhAd);
+
+                Ad fiftyEighthAd = new Ad();
+                fiftyEighthAd.setArticleDescription(
+                                "Canapé confortable et moderne. Parfait pour un salon cosy et accueillant. En excellent état.");
+                fiftyEighthAd.setCreationDate(LocalDateTime.now().plusMinutes(58));
+                fiftyEighthAd.setPrice(BigDecimal.valueOf(250));
+                fiftyEighthAd.setTitle("Canapé moderne");
+                fiftyEighthAd.setPublisher(users.get(3));
+                fiftyEighthAd.setArticleState("Très bon");
+                fiftyEighthAd.setCategory("Maison");
+                fiftyEighthAd.setSubcategory("meubles");
+                fiftyEighthAd.setStatus(AdStatus.SOLD);
+                fourthUserAds.add(fiftyEighthAd);
+
+                // AdSeeder 2 =>
                 // pour le 5é user (fifthUserAds - setPublisher(users.get(4)))
                 // ajouter 6 ads AVAILABLE - 3 RESERVED - 1 SOLD
-                // de sixtiethAd à sixtyNinthAd
+                // de fiftyNinth à sixtyNinthAd
 
-                //AdSeeder 3  => 
+                // AdSeeder 3 =>
                 // pour le 6é user (fifthUserAds - setPublisher(users.get(5)))
                 // ajouter 8 ads AVAILABLE - 1 RESERVED - 1 SOLD
                 // de seventiethAd à seventyNinthAd
@@ -724,12 +849,12 @@ public class AdSeeder {
                                 tenthAd, eleventhAd, twelfthAd, thirteenthAd, fourteenthAd, fifteenthAd, sixteenthAd,
                                 seventeenthAd, eighteenthAd, nineteethAd, twentiethAd, twentyFirstAd, twentySecondAd,
                                 twentyThirdAd, twentyFourthAd, twentyFifthAd, twentySixthAd, twentySeventhAd,
-                                twentyEighthAd,
-                                twentyNinthAd, thirtiethAd, thirtyFirstAd, thirtySecondAd, thirtyThirdAd,
-                                thirtyFourthAd, thirtyFifthAd,
-                                thirtySixthAd, thirtySeventhAd, thirtyEighthAd, thirtyNinthAd, fortiethAd, fortyFirstAd,
-                                fortySecondAd,
-                                fortyThirdAd, fortyFourthAd, fortyFifthAd, fortySixthAd, fortySeventhAd, fortyEighthAd);
+                                twentyEighthAd, twentyNinthAd, thirtiethAd, thirtyFirstAd, thirtySecondAd,
+                                thirtyThirdAd, thirtyFourthAd, thirtyFifthAd, thirtySixthAd, thirtySeventhAd,
+                                thirtyEighthAd, thirtyNinthAd, fortiethAd, fortyFirstAd, fortySecondAd, fortyThirdAd,
+                                fortyFourthAd, fortyFifthAd, fortySixthAd, fortySeventhAd, fortyEighthAd, fortyNinthAd,
+                                fiftiethAd, fiftyFirstAd, fiftySecondAd, fiftyThirdAd, fiftyFourthAd, fiftyFifthAd,
+                                fiftySixthAd, fiftySeventhAd, fiftyEighthAd);
         }
 
         /**

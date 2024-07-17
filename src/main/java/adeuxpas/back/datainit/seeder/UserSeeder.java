@@ -22,7 +22,6 @@ public class UserSeeder {
         private final UserRepository userRepository;
         private final BCryptPasswordEncoder passwordEncoder;
 
-        static final String CLOUDINARY_URL = "https://res.cloudinary.com/erikaadeuxpas/image/upload";
         @Value("${first.pass}")
         private String pass1;
         @Value("${second.pass}")
@@ -39,6 +38,9 @@ public class UserSeeder {
         private String pass7;
         @Value("${eighth.pass}")
         private String pass8;
+
+        @Value("${cloudinary.url}")
+        private String cloudinaryUrl;
 
         public UserSeeder(@Autowired BCryptPasswordEncoder passwordEncoder,
                         @Autowired UserRepository userRepository) {
@@ -64,7 +66,8 @@ public class UserSeeder {
                 first.setCity("Maisons-Alfort");
                 first.setStreet("10 rue Victor Hugo");
                 first.setPostalCode("94700");
-                first.setProfilePicture(CLOUDINARY_URL + "/profile_picture_koroviev.webp");
+                first.setProfilePicture(cloudinaryUrl
+                                + "s--s0NpLV2P--/c_fill,h_208,r_200,w_208/v1720983854/profile_picture_koroviev.webp");
                 first.setInscriptionDate(LocalDateTime.now().minusDays(2).minusMonths(12));
                 first.setAccountStatus(AccountStatus.ACTIVE);
                 first.setRole(UserRole.USER);
@@ -79,7 +82,8 @@ public class UserSeeder {
                 second.setCity("Maisons-Alfort");
                 second.setStreet("35 Rue Georges Médéric");
                 second.setPostalCode("94700");
-                second.setProfilePicture(CLOUDINARY_URL + "/profile_picture_dounia.webp");
+                second.setProfilePicture(cloudinaryUrl
+                                + "s--9rdP4C_B--/c_fill,h_208,r_200,w_208/v1720984693/profile_picture_dounia.webp");
                 second.setInscriptionDate(LocalDateTime.now().minusDays(4).minusMonths(11));
                 second.setAccountStatus(AccountStatus.REPORTED);
                 second.setRole(UserRole.USER);
@@ -94,7 +98,8 @@ public class UserSeeder {
                 third.setCity("Paris");
                 third.setStreet("130 rue des Pyrénées");
                 third.setPostalCode("75020");
-                third.setProfilePicture(CLOUDINARY_URL + "/profile_picture_leahad.webp");
+                third.setProfilePicture(cloudinaryUrl
+                                + "s--_uDaxAoO--/c_fill,h_308,r_200,w_308/v1720879460/profile_picture_leahad.webp");
                 third.setInscriptionDate(LocalDateTime.now().minusDays(1).minusMonths(8));
                 third.setAccountStatus(AccountStatus.ACTIVE);
                 third.setRole(UserRole.USER);
@@ -108,7 +113,8 @@ public class UserSeeder {
                 fourth.setCity("Paris");
                 fourth.setStreet("17 Rue du retrait");
                 fourth.setPostalCode("75020");
-                fourth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_eri.webp");
+                fourth.setProfilePicture(cloudinaryUrl
+                                + "s--5b9phm9D--/c_fill,r_200,w_208/v1720882650/profile_picture_eri.webp");
                 fourth.setInscriptionDate(LocalDateTime.now().minusDays(3).minusMonths(6));
                 fourth.setAccountStatus(AccountStatus.ACTIVE);
                 fourth.setRole(UserRole.ADMIN);
@@ -122,7 +128,8 @@ public class UserSeeder {
                 fifth.setCity("Paris");
                 fifth.setStreet("140 avenue Gambetta");
                 fifth.setPostalCode("75020");
-                fifth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_julius.webp");
+                fifth.setProfilePicture(cloudinaryUrl
+                                + "s---keIfWVu--/c_fill,e_brightness:57,h_208,r_200,w_208/v1720985054/profile_picture_julius.webp");
                 fifth.setInscriptionDate(LocalDateTime.now().minusDays(7).minusMonths(5));
                 fifth.setAccountStatus(AccountStatus.ACTIVE);
                 fifth.setRole(UserRole.ADMIN);
@@ -136,7 +143,8 @@ public class UserSeeder {
                 sixth.setCity("Paris");
                 sixth.setStreet("10 rue de la Folie-Méricourt");
                 sixth.setPostalCode("75011");
-                sixth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_cameron.webp");
+                sixth.setProfilePicture(cloudinaryUrl
+                                + "s--adsfqmAb--/c_fill,h_208,r_200,w_208/v1720987563/profile_picture_cameron.webp");
                 sixth.setInscriptionDate(LocalDateTime.now().minusDays(8).minusMonths(4));
                 sixth.setAccountStatus(AccountStatus.ACTIVE);
                 sixth.setRole(UserRole.USER);
@@ -150,7 +158,8 @@ public class UserSeeder {
                 seventh.setCity("Paris");
                 seventh.setStreet("10 rue de la Folie-Méricourt");
                 seventh.setPostalCode("75011");
-                seventh.setProfilePicture(CLOUDINARY_URL + "/profile_picture_sofia.webp");
+                seventh.setProfilePicture(cloudinaryUrl
+                                + "s--WFqIBn8W--/c_fill,h_208,r_200,w_208/v1720987858/profile_picture_sofia.webp");
                 seventh.setInscriptionDate(LocalDateTime.now().minusDays(30));
                 seventh.setAccountStatus(AccountStatus.ACTIVE);
                 seventh.setRole(UserRole.USER);
@@ -164,7 +173,8 @@ public class UserSeeder {
                 eighth.setCity("Paris");
                 eighth.setStreet("150 avenue Parmentier");
                 eighth.setPostalCode("75011");
-                eighth.setProfilePicture(CLOUDINARY_URL + "/profile_picture_max.webp");
+                eighth.setProfilePicture(cloudinaryUrl
+                                + "s--dWO0ULuj--/c_fill,h_208,r_200,w_208/v1720988533/profile_picture_max.webp");
                 eighth.setInscriptionDate(LocalDateTime.now().minusDays(15));
                 eighth.setAccountStatus(AccountStatus.ACTIVE);
                 eighth.setRole(UserRole.USER);
