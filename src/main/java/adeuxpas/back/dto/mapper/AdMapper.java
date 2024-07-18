@@ -150,23 +150,23 @@ public interface AdMapper {
         return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
-    /**
-     * Maps an adPostRequest DTO into an ad entity
-     * 
-     * @param adPostDto
-     * @return
-     */
-    @Mapping(source = "publisherId", target = "publisher.id")
-    Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
+    // /**
+    // * Maps an adPostRequest DTO into an ad entity
+    // *
+    // * @param adPostDto
+    // * @return
+    // */
+    // @Mapping(source = "publisherId", target = "publisher.id")
+    // Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
 
-    /**
-     * Maps ad entity into an an adPostRequest DTO
-     * 
-     * @param ad
-     * @return
-     */
-    @Mapping(source = "publisher.id", target = "publisherId")
-    AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
+    // /**
+    // * Maps ad entity into an an adPostRequest DTO
+    // *
+    // * @param ad
+    // * @return
+    // */
+    // @Mapping(source = "publisher.id", target = "publisherId")
+    // AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
 
     /**
      * Maps an article picture dto into an article picture entity

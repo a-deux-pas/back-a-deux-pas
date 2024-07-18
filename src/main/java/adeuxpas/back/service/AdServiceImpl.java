@@ -203,11 +203,11 @@ public class AdServiceImpl implements AdService {
         newAd.setStatus(AdStatus.AVAILABLE);
 
         List<ArticlePicture> articlePictures = new ArrayList<>();
-        List<ArticlePictureDTO> adPics = adPostRequestDTO.getArticlePictures();
+        List<String> adPics = adPostRequestDTO.getArticlePictures();
 
-        for (ArticlePictureDTO adPic : adPics) {
+        for (String adPic : adPics) {
             ArticlePicture newArticlePicture = new ArticlePicture();
-            newArticlePicture.setUrl(adPic.getUrl());
+            newArticlePicture.setUrl(adPic);
             newArticlePicture.setAd(newAd);
             articlePictures.add(newArticlePicture);
         }

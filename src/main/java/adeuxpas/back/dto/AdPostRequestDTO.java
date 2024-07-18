@@ -34,7 +34,7 @@ public class AdPostRequestDTO {
     private Long publisherId;
     @NotEmpty
     @Size(min = 2, max = 5)
-    private List<ArticlePictureDTO> articlePictures;
+    private List<String> articlePictures;
     @NotBlank
     private String articleState;
 
@@ -111,11 +111,11 @@ public class AdPostRequestDTO {
         this.publisherId = publisherId;
     }
 
-    public List<ArticlePictureDTO> getArticlePictures() {
+    public List<String> getArticlePictures() {
         return this.articlePictures;
     }
 
-    public void setArticlePictures(List<ArticlePictureDTO> articlePictures) {
+    public void setArticlePictures(List<String> articlePictures) {
         this.articlePictures = articlePictures;
     }
 }

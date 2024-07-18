@@ -19,6 +19,8 @@ import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.EventNames;
 import adeuxpas.back.enums.WeekDays;
+import adeuxpas.back.service.CloudinaryService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Mapper interface for mapping user-related entities to DTOs (Data Transfer
@@ -51,7 +53,13 @@ public interface UserMapper {
      * @param profiledDto The UserProfileRequestDTO to be mapped.
      * @param user        The target entity.
      */
+
     void mapProfileUserToUser(UserProfileRequestDTO profileDto, @MappingTarget User user);
+
+    // @Named("convertFileToString")
+    // default String MultiPartFileToString(MultipartFile file) {
+    // return CloudinaryService.upload(file);
+    // }
 
     /**
      * Maps a User entity to a UserProfileResponseDTO.

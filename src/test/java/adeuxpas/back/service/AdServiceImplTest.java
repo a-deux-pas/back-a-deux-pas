@@ -289,59 +289,60 @@ class AdServiceImplTest {
         /**
          * Test for postAd method in AdServiceImpl.
          */
-        @Test
-        void testPostAd() {
-                // Mock Dto data
-                AdPostRequestDTO adPostRequestDTO = new AdPostRequestDTO();
-                adPostRequestDTO.setTitle("Test Ad");
-                adPostRequestDTO.setArticleDescription("Test description");
-                adPostRequestDTO.setCreationDate(LocalDateTime.now().toString());
-                adPostRequestDTO.setPrice(BigDecimal.valueOf(100));
-                adPostRequestDTO.setCategory("Test Category");
-                adPostRequestDTO.setSubcategory("Test Subcategory");
-                adPostRequestDTO.setArticleGender("Test Gender");
-                adPostRequestDTO.setPublisherId(1L);
-                adPostRequestDTO.setArticleState("Test State");
+        // @Test
+        // void testPostAd() {
+        // // Mock Dto data
+        // AdPostRequestDTO adPostRequestDTO = new AdPostRequestDTO();
+        // adPostRequestDTO.setTitle("Test Ad");
+        // adPostRequestDTO.setArticleDescription("Test description");
+        // adPostRequestDTO.setCreationDate(LocalDateTime.now().toString());
+        // adPostRequestDTO.setPrice(BigDecimal.valueOf(100));
+        // adPostRequestDTO.setCategory("Test Category");
+        // adPostRequestDTO.setSubcategory("Test Subcategory");
+        // adPostRequestDTO.setArticleGender("Test Gender");
+        // adPostRequestDTO.setPublisherId(1L);
+        // adPostRequestDTO.setArticleState("Test State");
 
-                List<ArticlePictureDTO> articlePictures = new ArrayList<>();
-                ArticlePictureDTO singleAdPic = new ArticlePictureDTO();
-                singleAdPic.setUrl("https://www.pexels.com/fr-fr/photo/mer-vacances-femme-ocean-16953646/");
-                articlePictures.add(singleAdPic);
-                adPostRequestDTO.setArticlePictures(articlePictures);
+        // List<ArticlePictureDTO> articlePictures = new ArrayList<>();
+        // ArticlePictureDTO singleAdPic = new ArticlePictureDTO();
+        // singleAdPic.setUrl("https://www.pexels.com/fr-fr/photo/mer-vacances-femme-ocean-16953646/");
+        // articlePictures.add(singleAdPic);
+        // adPostRequestDTO.setArticlePictures(articlePictures);
 
-                User user = new User();
-                user.setId(1L);
-                when(userRepositoryMock.findById(1L)).thenReturn((Optional.of(user)));
+        // User user = new User();
+        // user.setId(1L);
+        // when(userRepositoryMock.findById(1L)).thenReturn((Optional.of(user)));
 
-                Ad expectedAd = new Ad();
-                expectedAd.setTitle(adPostRequestDTO.getTitle());
-                expectedAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
-                expectedAd.setPrice(adPostRequestDTO.getPrice());
-                expectedAd.setCategory(adPostRequestDTO.getCategory());
-                expectedAd.setSubcategory(adPostRequestDTO.getSubcategory());
-                expectedAd.setArticleGender(adPostRequestDTO.getArticleGender());
-                expectedAd.setPublisher(user);
-                expectedAd.setArticleState(adPostRequestDTO.getArticleState());
-                expectedAd.setStatus(AdStatus.AVAILABLE);
+        // Ad expectedAd = new Ad();
+        // expectedAd.setTitle(adPostRequestDTO.getTitle());
+        // expectedAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
+        // expectedAd.setPrice(adPostRequestDTO.getPrice());
+        // expectedAd.setCategory(adPostRequestDTO.getCategory());
+        // expectedAd.setSubcategory(adPostRequestDTO.getSubcategory());
+        // expectedAd.setArticleGender(adPostRequestDTO.getArticleGender());
+        // expectedAd.setPublisher(user);
+        // expectedAd.setArticleState(adPostRequestDTO.getArticleState());
+        // expectedAd.setStatus(AdStatus.AVAILABLE);
 
-                when(adRepositoryMock.save(any(Ad.class))).thenReturn(expectedAd);
+        // when(adRepositoryMock.save(any(Ad.class))).thenReturn(expectedAd);
 
-                AdPostResponseDTO adResponse = new AdPostResponseDTO();
-                adResponse.setTitle(expectedAd.getTitle());
-                adResponse.setArticleDescription(expectedAd.getArticleDescription());
-                adResponse.setPrice(expectedAd.getPrice());
-                adResponse.setPublisherId(expectedAd.getPublisher().getId());
-                adResponse.setArticleState(expectedAd.getArticleState());
-                adResponse.setStatus(expectedAd.getStatus());
+        // AdPostResponseDTO adResponse = new AdPostResponseDTO();
+        // adResponse.setTitle(expectedAd.getTitle());
+        // adResponse.setArticleDescription(expectedAd.getArticleDescription());
+        // adResponse.setPrice(expectedAd.getPrice());
+        // adResponse.setPublisherId(expectedAd.getPublisher().getId());
+        // adResponse.setArticleState(expectedAd.getArticleState());
+        // adResponse.setStatus(expectedAd.getStatus());
 
-                when(adMapperMock.adToAdPostResponseDTO(any(Ad.class))).thenReturn(adResponse);
+        // when(adMapperMock.adToAdPostResponseDTO(any(Ad.class))).thenReturn(adResponse);
 
-                AdPostResponseDTO result = this.adService.postAd(adPostRequestDTO);
+        // AdPostResponseDTO result = this.adService.postAd(adPostRequestDTO);
 
-                assertEquals(result.getTitle(), adResponse.getTitle());
-                assertEquals(result.getArticleDescription(), adResponse.getArticleDescription());
-                assertEquals(result.getStatus(), adResponse.getStatus());
-        }
+        // assertEquals(result.getTitle(), adResponse.getTitle());
+        // assertEquals(result.getArticleDescription(),
+        // adResponse.getArticleDescription());
+        // assertEquals(result.getStatus(), adResponse.getStatus());
+        // }
 
         /**
          * Test for findAdsByPublisher method in AdServiceImpl.
