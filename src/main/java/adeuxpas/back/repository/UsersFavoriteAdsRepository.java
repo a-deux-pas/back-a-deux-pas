@@ -47,7 +47,7 @@ public interface UsersFavoriteAdsRepository extends JpaRepository<UsersFavoriteA
          * @return a set of ads IDs that are marked as favorite by the specified user.
          */
         @Query("SELECT f.ad.id FROM UsersFavoriteAds f WHERE f.user.id = :userId")
-        Set<Long> findFavoriteAdIdsByUserId(Long userId);
+        Set<Long> findFavoriteAdIdsByUserId(@Param("userId") Long userId);
 
         /**
          * Finds a user favorite ad by their user ID and ad ID.
@@ -66,8 +66,7 @@ public interface UsersFavoriteAdsRepository extends JpaRepository<UsersFavoriteA
          * @return The number of entry this ad has in the userFavoriteAds table.
          */
         @Query("SELECT COUNT(u) FROM UsersFavoriteAds u WHERE u.ad.id = :adId")
-        Long checksFavoriteCount(
-                        @Param("adId") Long adId);
+        Long checksFavoriteCount(@Param("adId") Long adId);
 
         /**
          * Custom query that checks if the ad's publisher has ads that are in the

@@ -123,9 +123,9 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
                         "AND ( :loggedInUserId IS NULL OR u.id != :loggedInUserId ) " +
                         "ORDER BY a.creationDate DESC")
         Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(
-                        List<AdStatus> adStatuses,
-                        List<AccountStatus> accountStatuses,
-                        Long loggedInUserId,
+                        @Param("adStatuses") List<AdStatus> adStatuses,
+                        @Param("accountStatuses") List<AccountStatus> accountStatuses,
+                        @Param("loggedInUserId") Long loggedInUserId,
                         Pageable pageable);
 
         /**

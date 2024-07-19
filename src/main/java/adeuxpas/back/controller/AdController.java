@@ -140,7 +140,8 @@ public class AdController {
      * Endpoint that retrieves information about one Ad with its ID.
      * 
      * @param adId           The ad ID.
-     * @param loggedInUserId The logged in user ID.
+     * @param loggedInUserId The logged in user ID only to check if the Ad is part
+     *                       of its favorites.
      * @return ResponseEntity indicating if the Ad has been found.
      */
     @Operation(summary = "Retrieves an ad details")
@@ -149,7 +150,9 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{adId}/{loggedInUserId}")
-    public ResponseEntity<Object> findById(@PathVariable long adId, @PathVariable long loggedInUserId) {
+    public ResponseEntity<Object> findById(
+            @PathVariable long adId,
+            @PathVariable Long loggedInUserId) {
         try {
             return ResponseEntity.ok(adService.findAdById(adId, loggedInUserId));
         } catch (EntityNotFoundException e) {

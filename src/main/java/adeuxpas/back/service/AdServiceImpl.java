@@ -229,16 +229,13 @@ public class AdServiceImpl implements AdService {
      * @return An AdPostResponseDTO.
      */
     @Override
-    public AdPostResponseDTO findAdById(long adId, long loggedInUserId) {
+    public AdPostResponseDTO findAdById(long adId, Long loggedInUserId) {
         Optional<Ad> optionalAd = adRepository.findById(adId);
         Optional<User> optionalUser = userRepository.findById(loggedInUserId);
 
         if (optionalAd.isPresent()) {
-            Ad ad = optionalAd.get();
-            User loggedInUser = optionalUser.get();
-
-            AdPostResponseDTO dto = adMapper.adToAdPostResponseDTO(ad);
-            if (optionalUser.isPresent() && loggedInUser.getId() != ad.getPublisher().getId()) {
+            AdPostResponseDTO dto = adMapper.adToAdPostResponseDTO(optionalAd.get());
+            if (optionalUser.isPresent()) {
                 // Check if the ad is a favorite for the given user
                 boolean isFavorite = usersFavoriteAdsRepository.existsByUserIdAndAdId(loggedInUserId, adId);
                 dto.setFavorite(isFavorite);
