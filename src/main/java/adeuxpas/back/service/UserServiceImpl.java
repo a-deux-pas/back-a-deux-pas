@@ -1,6 +1,5 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.NotificationDTO;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
-    private final NotificationRepository notificationRepository;
     private final UserMapper userMapper;
 
     private static final String USER_NOT_FOUND_MESSAGE = "User with ID : %d not Found";
@@ -59,7 +57,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.preferredScheduleRepository = preferredScheduleRepository;
         this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
-        this.notificationRepository = notificationRepository;
         this.userMapper = userMapper;
     }
 
@@ -116,22 +113,6 @@ public class UserServiceImpl implements UserService {
             }
             userMapper.mapProfileUserToUser(profileDto, user);
             userRepository.save(user);
-            List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
-            preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
-                    .map(userMapper::mapDTOtoPreferredMeetingPlace)
-                    .toList());
-
-            List<PreferredScheduleDTO> preferredSchedulesDTO = profileDto.getPreferredSchedules();
-            preferredScheduleRepository.saveAll(preferredSchedulesDTO.stream()
-                    .map(userMapper::mapDTOtoPreferredSchedule)
-                    .toList());
-
-            List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
-            if (notificationsDTO != null) {
-                notificationRepository.saveAll(notificationsDTO.stream()
-                        .map(userMapper::mapDTOtoNotification)
-                        .toList());
-            }
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
@@ -267,8 +248,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserAliasAndLocationResponseDTO getUserAliasAndLocation(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.get();
         if (optionalUser.isPresent()) {
-            return userMapper.userToAliasAndLocationDTO(optionalUser.get());
+            boolean isExistingLocationWithAds = userRepository
+                    .existsAtLeastTwoUsersByPostalCodeWithAds(user.getPostalCode());
+            UserAliasAndLocationResponseDTO dto = userMapper.userToAliasAndLocationDTO(user);
+            dto.setIsExistingLocationWithAds(isExistingLocationWithAds);
+            return dto;
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }

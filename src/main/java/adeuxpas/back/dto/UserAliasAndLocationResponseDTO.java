@@ -19,6 +19,7 @@ public class UserAliasAndLocationResponseDTO {
     private String alias;
     private String city;
     private String postalCode;
+    private Boolean isExistingLocationWithAds;
 
     public String getAlias() {
         return alias;
@@ -42,6 +43,14 @@ public class UserAliasAndLocationResponseDTO {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public Boolean getIsExistingLocationWithAds() {
+        return isExistingLocationWithAds;
+    }
+
+    public void setIsExistingLocationWithAds(Boolean isExistingLocationWithAds) {
+        this.isExistingLocationWithAds = isExistingLocationWithAds;
     }
 
     @Override
