@@ -13,15 +13,30 @@ import static adeuxpas.back.enums.MeetingStatus.ACCEPTED;
 
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
-    List<Meeting> findByBuyerIdOrderByDateDesc(Long id);
-
-    List<Meeting> findBySellerIdOrderByDateDesc(Long id);
+    List<Meeting> findByStatusAndBuyerIdOrderByDateDesc(MeetingStatus status, Long id);
 
     List<Meeting> findByStatusAndSellerIdOrderByDateDesc(MeetingStatus status, Long id);
 
-    @Query("SELECT m FROM Meeting m WHERE (m.buyer.id = :buyerId OR m.seller.id = :sellerId) AND m.date < :date ORDER BY m.date DESC")
-    List<Meeting> findMeetings(Long buyerId, Long sellerId, LocalDateTime date);
+    @Query("SELECT m FROM Meeting m WHERE " +
+            " m.status = :status " +
+            " AND (m.seller.id = :sellerId OR m.buyer.id = :buyerId) ORDER BY m.date DESC")
+    List<Meeting> findByStatusAndSellerIdOrBuyerIdOrderByDateDesc(
+            @Param("status") MeetingStatus status,
+            @Param("sellerId") Long sellerId,
+            @Param("buyerId") Long buyerId
+    );
 
+    //@Query("SELECT m FROM Meeting m WHERE (m.buyer.id = :buyerId OR m.seller.id = :sellerId) AND m.date < :date ORDER BY m.date DESC")
+    //List<Meeting> findMeetings(@Param("buyerId") Long buyerId, @Param("sellerId") Long sellerId, @Param("date") LocalDateTime date);
 
-    //List<Meeting> findMeetings(@Param("id") Long id, @Param("date") LocalDateTime date);
+    @Query("SELECT m FROM Meeting m WHERE " +
+            "m.status = :status " +
+            "AND (m.buyer.id = :userId OR m.seller.id = :userId) " +
+            "AND m.date < :date " +
+            "ORDER BY m.date DESC")
+    List<Meeting> findMeetings(
+            @Param("status") MeetingStatus status,
+            @Param("userId") Long userId,
+            @Param("date") LocalDateTime date
+    );
 }

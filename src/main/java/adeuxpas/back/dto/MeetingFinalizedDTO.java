@@ -3,12 +3,19 @@ package adeuxpas.back.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class MeetingDisplayDTO {
+public class MeetingFinalizedDTO {
 
+    private Long idMeeting;
     private LocalDateTime date;
+    private String status;
     private String buyerAlias;
+    private String sellerAlias;
+    private Long buyerId;
+    private Long sellerId;
     private String buyerProfilePictureUrl;
-    private LocalDateTime inscriptionDate;
+    private String sellerProfilePictureUrl;
+    private String buyerInscriptionDate;
+    private String sellerInscriptionDate;
     private String meetingPlaceName;
     private String postalCode;
     private String city;
@@ -17,13 +24,28 @@ public class MeetingDisplayDTO {
     private BigDecimal adPrice;
     private String adPictureUrl;
 
-    // Getters and setters
+    public Long getIdMeeting() {
+        return idMeeting;
+    }
+
+    public void setIdMeeting(Long idMeeting) {
+        this.idMeeting = idMeeting;
+    }
+
     public LocalDateTime getDate() {
         return date;
     }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getBuyerAlias() {
@@ -34,6 +56,30 @@ public class MeetingDisplayDTO {
         this.buyerAlias = buyerAlias;
     }
 
+    public String getSellerAlias() {
+        return sellerAlias;
+    }
+
+    public void setSellerAlias(String sellerAlias) {
+        this.sellerAlias = sellerAlias;
+    }
+
+    public Long getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(Long sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public Long getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerId(Long buyerId) {
+        this.buyerId = buyerId;
+    }
+
     public String getBuyerProfilePictureUrl() {
         return buyerProfilePictureUrl;
     }
@@ -42,12 +88,28 @@ public class MeetingDisplayDTO {
         this.buyerProfilePictureUrl = buyerProfilePictureUrl;
     }
 
-    public LocalDateTime getInscriptionDate() {
-        return inscriptionDate;
+    public String getSellerProfilePictureUrl() {
+        return sellerProfilePictureUrl;
     }
 
-    public void setInscriptionDate(LocalDateTime inscriptionDate) {
-        this.inscriptionDate = inscriptionDate;
+    public void setSellerProfilePictureUrl(String sellerProfilePictureUrl) {
+        this.sellerProfilePictureUrl = sellerProfilePictureUrl;
+    }
+
+    public String getBuyerInscriptionDate() {
+        return buyerInscriptionDate;
+    }
+
+    public void setBuyerInscriptionDate(String buyerInscriptionDate) {
+        this.buyerInscriptionDate = buyerInscriptionDate;
+    }
+
+    public String getSellerInscriptionDate() {
+        return sellerInscriptionDate;
+    }
+
+    public void setSellerInscriptionDate(String sellerInscriptionDate) {
+        this.sellerInscriptionDate = sellerInscriptionDate;
     }
 
     public String getMeetingPlaceName() {

@@ -1,8 +1,9 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.MeetingDisplayDTO;
-import adeuxpas.back.enums.MeetingStatus;
-
+import adeuxpas.back.dto.MeetingFinalizedDTO;
+import adeuxpas.back.dto.MeetingProposedDTO;
+import adeuxpas.back.dto.MeetingToConfirmDTO;
+import adeuxpas.back.dto.MeetingPlannedDTO;
 import java.util.List;
 
 /**
@@ -19,11 +20,11 @@ public interface MeetingService {
      * @param status The status of the meetings to filter.
      * @return A list of meetings filtered by status and sorted by date.
      */
-    List<MeetingDisplayDTO> getMeetingsByBuyerId(Long id);
+    List<MeetingProposedDTO> getMeetingsByBuyerId(Long id);
 
-    List<MeetingDisplayDTO> getMeetingsBySellerId(Long id);
+    List<MeetingToConfirmDTO> getMeetingsBySellerId(Long id);
 
-    List<MeetingDisplayDTO> getAcceptedMeetingsBySellerId(Long id);
+    List<MeetingPlannedDTO> getAcceptedMeetingsBySellerId(Long id);
 
-    List<MeetingDisplayDTO> getDueMeetings(Long id);
+    List<MeetingFinalizedDTO> getDueMeetings(Long id);
 }

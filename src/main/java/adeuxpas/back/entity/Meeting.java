@@ -60,7 +60,29 @@ public class Meeting {
     )
     private Set<Ad> ads;
 
-    // Getters and setters
+    @Column(name = "buyer_inscription_date")
+    private LocalDateTime buyerInscriptionDate;
+
+    @Column(name = "seller_inscription_date")
+    private LocalDateTime sellerInscriptionDate;
+
+
+    public LocalDateTime getBuyerInscriptionDate() {
+        return buyerInscriptionDate;
+    }
+
+    public void setBuyerInscriptionDate(LocalDateTime buyerInscriptionDate) {
+        this.buyerInscriptionDate = buyerInscriptionDate;
+    }
+
+    public LocalDateTime getSellerInscriptionDate() {
+        return sellerInscriptionDate;
+    }
+
+    public void setSellerInscriptionDate(LocalDateTime sellerInscriptionDate) {
+        this.sellerInscriptionDate = sellerInscriptionDate;
+    }
+
     public Long getIdMeeting() {
         return idMeeting;
     }
@@ -171,6 +193,8 @@ public class Meeting {
                 ", meetingPlace=" + (meetingPlace != null ? meetingPlace.getId() : "null") +
                 ", schedule=" + (schedule != null ? schedule.getId() : "null") +
                 ", ads=" + (ads != null ? ads.size() : 0) +
+                ", buyerInscriptionDate=" + buyerInscriptionDate +
+                ", sellerInscriptionDate=" + sellerInscriptionDate +
                 '}';
     }
 }

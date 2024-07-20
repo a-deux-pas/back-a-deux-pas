@@ -1,7 +1,9 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.MeetingDisplayDTO;
-import adeuxpas.back.enums.MeetingStatus;
+import adeuxpas.back.dto.MeetingFinalizedDTO;
+import adeuxpas.back.dto.MeetingPlannedDTO;
+import adeuxpas.back.dto.MeetingProposedDTO;
+import adeuxpas.back.dto.MeetingToConfirmDTO;
 import adeuxpas.back.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,21 +37,21 @@ public class MeetingController {
      * @return A list of meetings filtered by status and sorted by date.
      */
     @GetMapping("/proposed/{id}")
-    public List<MeetingDisplayDTO> getMeetingsByBuyerId(@PathVariable Long id) {
+    public List<MeetingProposedDTO> getMeetingsByBuyerId(@PathVariable Long id) {
         return meetingService.getMeetingsByBuyerId(id);
     }
 
     @GetMapping("/toBeConfirmed/{id}")
-    public List<MeetingDisplayDTO> getMeetingsBySellerId(@PathVariable Long id) {
+    public List<MeetingToConfirmDTO> getMeetingsBySellerId(@PathVariable Long id) {
         return meetingService.getMeetingsBySellerId(id);
     }
     @GetMapping("/planned/{id}")
-    public List<MeetingDisplayDTO> getAcceptedMeetingsBySellerId(@PathVariable Long id) {
+    public List<MeetingPlannedDTO> getAcceptedMeetingsBySellerId(@PathVariable Long id) {
         return meetingService.getAcceptedMeetingsBySellerId(id);
     }
 
     @GetMapping("/toBeFinalized/{id}")
-    public List<MeetingDisplayDTO> getDueMeetings(@PathVariable Long id) {
+    public List<MeetingFinalizedDTO> getDueMeetings(@PathVariable Long id) {
         return meetingService.getDueMeetings(id);
     }
 }
