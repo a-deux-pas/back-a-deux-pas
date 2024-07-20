@@ -23,8 +23,7 @@ public class UserProfileRequestDTO {
 
     @NotBlank
     private String id;
-    // @NotBlank TO DO: à décommenter une fois cloudinary implémenté
-    private String profilePicture;
+    private String profilePicture = "";
     @NotBlank
     @Size(min = 3, max = 30)
     private String alias;
@@ -154,5 +153,16 @@ public class UserProfileRequestDTO {
 
     public void setNotifications(List<NotificationDTO> notifications) {
         this.notifications = notifications;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfileRequestDTO{" +
+                "id='" + id + '\'' +
+                ", alias='" + alias + '\'' +
+                ", bio='" + bio + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }

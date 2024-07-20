@@ -53,13 +53,8 @@ public interface UserMapper {
      * @param profiledDto The UserProfileRequestDTO to be mapped.
      * @param user        The target entity.
      */
-
+    @Mapping(target = "profilePicture", ignore = true)
     void mapProfileUserToUser(UserProfileRequestDTO profileDto, @MappingTarget User user);
-
-    // @Named("convertFileToString")
-    // default String MultiPartFileToString(MultipartFile file) {
-    // return CloudinaryService.upload(file);
-    // }
 
     /**
      * Maps a User entity to a UserProfileResponseDTO.

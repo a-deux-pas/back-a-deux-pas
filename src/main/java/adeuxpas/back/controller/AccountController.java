@@ -1,6 +1,7 @@
 package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.UserProfileRequestDTO;
+import adeuxpas.back.service.CloudinaryService;
 import adeuxpas.back.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,9 +11,13 @@ import jakarta.validation.Valid;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller class for handling account-related endpoints.
@@ -28,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/account")
 @RestController
 public class AccountController {
-
+    private static final Logger logger = LoggerFactory.getLogger(CloudinaryService.class);
     private final UserService userService;
 
     /**
@@ -53,16 +58,27 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PatchMapping("/create")
-    public ResponseEntity<Object> createProfile(@RequestBody @Valid UserProfileRequestDTO profileDto,
+    @PatchMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> createProfile(
+            @RequestPart("profileInfo") @Valid UserProfileRequestDTO profileDto,
+            @RequestPart("profilePicture") MultipartFile profilePicture,
             BindingResult bindingResult) {
+        logger.info("in the controller: {}", profileDto);
         if (bindingResult.hasErrors()) {
+            logger.info("in the controller: {}", profileDto);
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
         try {
-            userService.createProfile(profileDto);
+            System.out.println("Profile Info: " + profileDto);
+            System.out.println("Profile Picture: " + profilePicture.getOriginalFilename());
+
+            logger.info("profileDto file with name: {}", profileDto);
+            logger.info("profilePicture file with name: {}", profilePicture.getOriginalFilename());
+            logger.info("profilePicture size: {} bytes", profilePicture.getSize());
+            logger.info("profilePicture content type: {}", profilePicture.getContentType());
+            userService.createProfile(profileDto, profilePicture);
             return ResponseEntity.ok("Profile saved successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

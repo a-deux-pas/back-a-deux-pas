@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
+// TO DO : :checker si ce controller sert encore à qqchose ?
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
