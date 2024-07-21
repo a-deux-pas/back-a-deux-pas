@@ -6,10 +6,12 @@ import adeuxpas.back.entity.Meeting;
 import org.mapstruct.*;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface MeetingMapper {
+
     @Mapping(source = "idMeeting", target = "idMeeting")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "date", target = "date")
@@ -36,16 +38,29 @@ public interface MeetingMapper {
 
     @Named("adTitle")
     default String adTitle(Set<Ad> ads) {
-        return ads.isEmpty() ? null : ads.iterator().next().getTitle();
+        return getFirstAd(ads).map(Ad::getTitle).orElse(null);
     }
 
     @Named("adPrice")
     default BigDecimal adPrice(Set<Ad> ads) {
-        return ads.isEmpty() ? null : ads.iterator().next().getPrice();
+        return getFirstAd(ads).map(Ad::getPrice).orElse(null);
     }
 
     @Named("adPictureUrl")
     default String adPictureUrl(Set<Ad> ads) {
-        return ads.isEmpty() || ads.iterator().next().getArticlePictures().isEmpty() ? null : ads.iterator().next().getArticlePictures().get(0).getUrl();
+        return getFirstAd(ads)
+                .flatMap(ad -> ad.getArticlePictures().stream().findFirst())
+                .map(picture -> picture.getUrl())
+                .orElse(null);
+    }
+
+    /**
+     * Helper method to get the first ad from the set if it exists.
+     * @param ads Set of ads
+     * @return Optional containing the first ad if present, or empty Optional if the set is empty
+     */
+    default Optional<Ad> getFirstAd(Set<Ad> ads) {
+        return Optional.ofNullable(ads).filter(set -> !set.isEmpty())
+                .map(set -> set.iterator().next());
     }
 }

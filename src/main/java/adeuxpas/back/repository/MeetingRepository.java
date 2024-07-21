@@ -9,8 +9,6 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static adeuxpas.back.enums.MeetingStatus.ACCEPTED;
-
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
     List<Meeting> findByStatusAndBuyerIdOrderByDateDesc(MeetingStatus status, Long id);

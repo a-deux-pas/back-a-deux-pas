@@ -3,7 +3,6 @@ package adeuxpas.back.dto;
 import adeuxpas.back.enums.MeetingStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 public class MeetingDTO {
 

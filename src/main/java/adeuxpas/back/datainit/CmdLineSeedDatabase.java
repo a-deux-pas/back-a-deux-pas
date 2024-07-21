@@ -3,8 +3,6 @@ package adeuxpas.back.datainit;
 import adeuxpas.back.datainit.seeder.*;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
-import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
-import adeuxpas.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

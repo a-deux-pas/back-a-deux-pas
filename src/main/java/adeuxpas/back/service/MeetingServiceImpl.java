@@ -51,7 +51,7 @@ public class MeetingServiceImpl implements MeetingService {
         List<Meeting> meetings = meetingRepository.findByStatusAndBuyerIdOrderByDateDesc(MeetingStatus.INITIALIZED ,id);
         return meetings.stream()
                 .map(meetingMapper::meetingToMeetingDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MeetingServiceImpl implements MeetingService {
         List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrderByDateDesc(MeetingStatus.INITIALIZED, id);
         return meetings.stream()
                 .map(meetingMapper::meetingToMeetingDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MeetingServiceImpl implements MeetingService {
         List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrBuyerIdOrderByDateDesc(MeetingStatus.ACCEPTED, id, id);
         return meetings.stream()
                 .map( meetingMapper::meetingToMeetingDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -76,6 +76,6 @@ public class MeetingServiceImpl implements MeetingService {
         List<Meeting> meetings = meetingRepository.findMeetings(MeetingStatus.FINALIZED, id, now.toLocalDateTime());
         return meetings.stream()
                 .map(meetingMapper::meetingToMeetingDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
