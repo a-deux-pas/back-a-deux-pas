@@ -56,16 +56,16 @@ public class AdServiceImpl implements AdService {
 
     private final UserRepository userRepository;
     private final AdRepository adRepository;
-    private final UsersFavoriteAdsRepository favoriteRepository;
+    private final UsersFavoriteAdsRepository usersFavoriteAdsRepository;
     private final AdMapper adMapper;
 
     public AdServiceImpl(@Autowired UserRepository userRepository,
             @Autowired AdRepository adRepository,
-            @Autowired UsersFavoriteAdsRepository favoriteRepository,
+            @Autowired UsersFavoriteAdsRepository usersFavoriteAdsRepository,
             @Autowired AdMapper adMapper) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
-        this.favoriteRepository = favoriteRepository;
+        this.usersFavoriteAdsRepository = usersFavoriteAdsRepository;
         this.adMapper = adMapper;
     }
 
@@ -149,8 +149,9 @@ public class AdServiceImpl implements AdService {
     /**
      * Converts a page of Ad entities to a page of AdCardResponseDTOs.
      *
-     * @param pageable The pagination information.
-     * @param adsPage  The page of Ad entities.
+     * @param pageable       The pagination information.
+     * @param adsPage        The page of Ad entities.
+     * @param loggedInUserId The current user's ID.
      * @return The page of AdCardResponseDTOs.
      */
     private Page<AdCardResponseDTO> convertToPageOfAdCardResponseDTOs(Pageable pageable, Page<Ad> adsPage,
@@ -160,7 +161,7 @@ public class AdServiceImpl implements AdService {
 
         // Retrieve favorite ad IDs if logged in user ID is provided
         if (loggedInUserId != null) {
-            favoriteAdIds = favoriteRepository.findFavoriteAdIdsByUserId(loggedInUserId);
+            favoriteAdIds = usersFavoriteAdsRepository.findFavoriteAdIdsByUserId(loggedInUserId);
         }
 
         List<AdCardResponseDTO> mappedAdsList = new ArrayList<>();
@@ -179,17 +180,16 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * persist an Ad object in database
+     * Persists an Ad object in database.
      *
-     * @param adPostRequestDTO coming from the front end application
-     * @return an adPostResponseDTO to the front
+     * @param adPostRequestDTO coming from the front end application.
+     * @return An AdPostResponseDTO.
      */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
         // TODO:: A revoir (fix cloudinary branch)
         User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
                 .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
-
         Ad newAd = new Ad();
         newAd.setTitle(adPostRequestDTO.getTitle());
         newAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
@@ -218,85 +218,129 @@ public class AdServiceImpl implements AdService {
         return adMapper.adToAdPostResponseDTO(savedAd);
     }
 
+    // TO DO: (fix cloudinary branch) should return an adDetail / adCard ?
     /**
-     * Retrieves an ad information by a user's ID
+     * Retrieves an ad information by its ID.
      *
-     * @param id the concerned user.
-     * @return an ad
+     * @param adId           The concerned ad ID.
+     * @param loggedInUserId The logged in User ID.
+     * @return An AdPostResponseDTO.
      */
     @Override
-    public AdPostResponseDTO findAdById(Long id) {
-        Optional<Ad> optionalAd = adRepository.findById(id);
+    public AdPostResponseDTO findAdById(long adId, long loggedInUserId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Optional<User> optionalUser = userRepository.findById(loggedInUserId);
+
         if (optionalAd.isPresent()) {
             Ad ad = optionalAd.get();
-            return adMapper.adToAdPostResponseDTO(ad);
+            User loggedInUser = optionalUser.get();
 
+            AdPostResponseDTO dto = adMapper.adToAdPostResponseDTO(ad);
+            if (optionalUser.isPresent() && loggedInUser.getId() != ad.getPublisher().getId()) {
+                // Check if the ad is a favorite for the given user
+                boolean isFavorite = usersFavoriteAdsRepository.existsByUserIdAndAdId(loggedInUserId, adId);
+                dto.setFavorite(isFavorite);
+            }
+
+            return dto;
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     /**
-     * Finds ads and maps them to AdPostResponseDTOs.
+     * Finds ads and maps them into an AdCardResponseDTO in order to display
+     * them on an ad page content.
+     * 
+     * @param publisherId    The ad's publisher's ID.
+     * @param pageable       The pagination information.
+     * @param loggedInUserId The current user's ID.
+     * @param adId           The ID of ad to exclude from the result list.
+     * 
+     * @return The page of AdCardResponseDTO.
+     */
+    @Override
+    public Page<AdCardResponseDTO> findPageOfUserAdsList(long publisherId, Pageable pageable, Long loggedInUserId,
+            Long adId) {
+        Optional<User> optionalUser = userRepository.findById(publisherId);
+        if (optionalUser.isPresent()) {
+            Page<Ad> adsPage = adRepository.findAvailableAdsByPublisherId(publisherId, pageable, adId);
+            Page<AdCardResponseDTO> mappedAdsPage = this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
+            if (loggedInUserId != null) {
+                Set<Long> favoriteAdsIds = usersFavoriteAdsRepository.findUserPublisherFavoriteAdsIds(loggedInUserId,
+                        publisherId);
+                for (AdCardResponseDTO dto : mappedAdsPage) {
+                    if (favoriteAdsIds.contains(dto.getId())) {
+                        dto.setFavorite(true);
+                    }
+                }
+            }
+            return mappedAdsPage;
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Finds ads that are sorted by their status and maps them into
+     * AdCardResponseDTOs in order to display them on a user's ad tab.
      * 
      * @param pageable    The pagination information.
-     * @param publisherId
-     * @return The page of AdCardResponseDTOs.
+     * @param publisherId The ad's publisher's ID.
+     * 
+     * @return The page of AdCardResponseDTO.
      */
     @Override
-    public Page<AdCardResponseDTO> findPageOfUserAdsList(Long publisherId, Pageable pageable) {
+    public Page<AdCardResponseDTO> getUserAdsTab(long publisherId, Pageable pageable) {
         Optional<User> optionalUser = userRepository.findById(publisherId);
         if (optionalUser.isPresent()) {
-            Page<Ad> adsPage = adRepository.findAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
-            return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+            Page<Ad> adsPage = adRepository.findSortedAdsByPublisherIdOrderByCreationDateDesc(publisherId, pageable);
+            return this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     /**
-     * converts a page of Ad into a page of AdPostResponseDTO
-     *
-     * @param pageable The pagination information.
-     * @param adsPage  The page of Ad entities.
-     * @return The page of AdCardResponseDTOs.
-     */
-    private Page<AdCardResponseDTO> convertToPageOfAdPostResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
-        List<AdCardResponseDTO> mappedAdsList = adsPage.stream()
-                .map(adMapper::adToAdCardResponseDTO)
-                .toList();
-        return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
-    }
-
-    /**
-     * Checks how many ads have been published by a user.
+     * Finds a list containing the last four ads sharing the same category as the
+     * current ad's.
      * 
-     * @param publisherId
-     * @return The number of ads published by a user.
-     */
-    @Override
-    public Long getUserAdsListLength(Long publisherId) {
-        Optional<User> optionalUser = userRepository.findById(publisherId);
-        if (optionalUser.isPresent()) {
-            return adRepository.findAdsCountByPublisherId(publisherId);
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    /**
-     * find a list containing the last four ads sharing the same category as the
-     * current ad's
+     * @param category    The current ad's category.
+     * @param publisherId The ad's publisher's ID.
+     * @param userId      The current user's ID.
+     * @param pageable    The pagination information.
      * 
-     * @param category
-     * @param pageable
-     * @return a list of similar ads sharing the same category
+     * @return a list of similar ads sharing the same category.
      */
     @Override
     public Page<AdCardResponseDTO> findSimilarAds(String category, Long publisherId, Long userId, Pageable pageable) {
         Page<Ad> adsPage = this.adRepository.findAdsByCategoryOrderByCreationDateDesc(category, publisherId, userId,
                 pageable);
-        return this.convertToPageOfAdPostResponseDTOs(pageable, adsPage);
+        Page<AdCardResponseDTO> mappedAdsPage = this.convertToPageOfAdCardResponseDTOs(pageable, adsPage);
+        if (userId != null) {
+            for (AdCardResponseDTO dto : mappedAdsPage) {
+                Set<Long> favoriteAdsIds = usersFavoriteAdsRepository.findUserPublisherFavoriteAdsIds(userId,
+                        dto.getPublisherId());
+                if (favoriteAdsIds.contains(dto.getId())) {
+                    dto.setFavorite(true);
+                }
+            }
+        }
+        return mappedAdsPage;
+    }
+
+    /**
+     * Converts a page of Ad into a page of AdPostResponseDTO.
+     *
+     * @param pageable The pagination information.
+     * @param adsPage  The page of Ad entities.
+     * @return The page of AdCardResponseDTOs.
+     */
+    private Page<AdCardResponseDTO> convertToPageOfAdCardResponseDTOs(Pageable pageable, Page<Ad> adsPage) {
+        List<AdCardResponseDTO> mappedAdsList = adsPage.stream()
+                .map(adMapper::adToAdCardResponseDTO)
+                .toList();
+        return new PageImpl<>(mappedAdsList, pageable, adsPage.getTotalElements());
     }
 
     /**
@@ -328,7 +372,8 @@ public class AdServiceImpl implements AdService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Page<UsersFavoriteAds> favoritesAds = this.favoriteRepository.findByUserOrderByAddedAtDesc(user, pageable);
+            Page<UsersFavoriteAds> favoritesAds = this.usersFavoriteAdsRepository.findByUserOrderByAddedAtDesc(user,
+                    pageable);
             return this.convertFavoritesToPageOfAdCardResponseDTOs(pageable, favoritesAds);
         } else {
             throw new EntityNotFoundException();
@@ -336,7 +381,7 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Update the ad favorite status added by a user.
+     * Updates the ad favorite status added by a user.
      *
      * @param adId       The ID of the ad.
      * @param userId     The ID of the user.
@@ -349,14 +394,24 @@ public class AdServiceImpl implements AdService {
 
         if (optionalUser.isPresent() && optionalAd.isPresent()) {
             UsersFavoriteAdsKey favoriteKey = new UsersFavoriteAdsKey(userId, adId);
-            Optional<UsersFavoriteAds> optionalFavorite = favoriteRepository.findById(favoriteKey);
+            Optional<UsersFavoriteAds> optionalFavorite = usersFavoriteAdsRepository.findById(favoriteKey);
             if (!optionalFavorite.isPresent()) {
                 UsersFavoriteAds newFavorite = new UsersFavoriteAds(favoriteKey, optionalUser.get(), optionalAd.get(),
                         LocalDateTime.now());
-                favoriteRepository.save(newFavorite);
+                usersFavoriteAdsRepository.save(newFavorite);
             } else {
-                favoriteRepository.delete(optionalFavorite.get());
+                usersFavoriteAdsRepository.delete(optionalFavorite.get());
             }
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    @Override
+    public long checkFavoriteCount(long adId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        if (optionalAd.isPresent()) {
+            return usersFavoriteAdsRepository.checksFavoriteCount(adId);
         } else {
             throw new EntityNotFoundException();
         }

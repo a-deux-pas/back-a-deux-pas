@@ -79,7 +79,7 @@ public class UserController {
      * @return a ResponseEntity with the user's alias, city and postal code.
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "Retrieves user's alias")
+    @Operation(summary = "Retrieves a user's alias")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of sellers"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
