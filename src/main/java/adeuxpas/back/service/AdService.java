@@ -3,6 +3,8 @@ package adeuxpas.back.service;
 import adeuxpas.back.dto.AdCardResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
 
@@ -36,13 +38,14 @@ public interface AdService {
         Page<AdCardResponseDTO> findFilteredAdCardResponseDTOs(List<String> prices, List<String> cities,
                         List<String> articleStates, String category, Long loggedInUserId, Pageable pageable);
 
+        // TO DO :: revoir doc
         /**
          * Contract to post an ad.
          *
          * @param adDto The DTO containing the details of the ad to be posted.
          * @return The response DTO after posting the ad.
          */
-        AdPostResponseDTO postAd(AdPostRequestDTO adDto);
+        AdPostResponseDTO postAd(AdPostRequestDTO adDto, List<MultipartFile> pictures);
 
         /**
          * Contract to find an ad by its ID.

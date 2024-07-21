@@ -1,23 +1,18 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.lang.Nullable;
 
 import adeuxpas.back.enums.AdStatus;
+import jakarta.validation.constraints.Size;
 
 public class AdPostResponseDTO {
     private Long id;
     private String title;
-    private String firstArticlePictureUrl;
-    @Nullable
-    private String secondArticlePictureUrl;
-    @Nullable
-    private String thirdArticlePictureUrl;
-    @Nullable
-    private String fourthArticlePictureUrl;
-    @Nullable
-    private String fifthArticlePictureUrl;
+    @Size(min = 2, max = 5)
+    private List<String> articlePictures;
     private BigDecimal price;
     private String creationDate;
     private Long publisherId;
@@ -45,44 +40,12 @@ public class AdPostResponseDTO {
         this.title = title;
     }
 
-    public String getFirstArticlePictureUrl() {
-        return firstArticlePictureUrl;
+    public List<String> getArticlePictures() {
+        return articlePictures;
     }
 
-    public void setFirstArticlePictureUrl(String firstArticlePictureUrl) {
-        this.firstArticlePictureUrl = firstArticlePictureUrl;
-    }
-
-    public String getSecondArticlePictureUrl() {
-        return secondArticlePictureUrl;
-    }
-
-    public void setSecondArticlePictureUrl(String secondArticlePictureUrl) {
-        this.secondArticlePictureUrl = secondArticlePictureUrl;
-    }
-
-    public String getThirdArticlePictureUrl() {
-        return thirdArticlePictureUrl;
-    }
-
-    public void setThirdArticlePictureUrl(String thirdArticlePictureUrl) {
-        this.thirdArticlePictureUrl = thirdArticlePictureUrl;
-    }
-
-    public String getFourthArticlePictureUrl() {
-        return fourthArticlePictureUrl;
-    }
-
-    public void setFourthArticlePictureUrl(String fourthArticlePictureUrl) {
-        this.fourthArticlePictureUrl = fourthArticlePictureUrl;
-    }
-
-    public String getFifthArticlePictureUrl() {
-        return fifthArticlePictureUrl;
-    }
-
-    public void setFifthArticlePictureUrl(String fifthArticlePictureUrl) {
-        this.fifthArticlePictureUrl = fifthArticlePictureUrl;
+    public void setArticlePictures(List<String> articlePictures) {
+        this.articlePictures = articlePictures;
     }
 
     public BigDecimal getPrice() {

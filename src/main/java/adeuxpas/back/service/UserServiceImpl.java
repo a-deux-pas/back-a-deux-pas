@@ -129,7 +129,6 @@ public class UserServiceImpl implements UserService {
 
             String publicId = "profilePicture-" + profileDto.getAlias();
 
-            // PictureDTO userProfilePicture = profileDto.getProfilePicture();
             if (profilePicture != null) {
                 try {
                     Map<String, Object> profilePictureObject = cloudinaryService

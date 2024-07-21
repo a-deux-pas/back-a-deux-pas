@@ -1,8 +1,13 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import adeuxpas.back.enums.AdStatus;
 import jakarta.validation.constraints.*;
 
 /*
@@ -21,7 +26,7 @@ public class AdPostRequestDTO {
     @NotBlank
     private String articleDescription;
     @NotNull
-    private String creationDate;
+    private Date creationDate;
     @NotNull
     @Positive
     private BigDecimal price;
@@ -32,11 +37,11 @@ public class AdPostRequestDTO {
     private String articleGender;
     @NotNull
     private Long publisherId;
-    @NotEmpty
-    @Size(min = 2, max = 5)
-    private List<String> articlePictures;
     @NotBlank
     private String articleState;
+    private List<String> articlePictures;
+    @NotNull
+    AdStatus status = AdStatus.AVAILABLE;
 
     // getters and setters
     public String getTitle() {
@@ -63,11 +68,11 @@ public class AdPostRequestDTO {
         this.articleState = articleState;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -112,10 +117,41 @@ public class AdPostRequestDTO {
     }
 
     public List<String> getArticlePictures() {
-        return this.articlePictures;
+        return articlePictures;
     }
 
     public void setArticlePictures(List<String> articlePictures) {
         this.articlePictures = articlePictures;
     }
+
+    public AdStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AdStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        String articlePicturesString = articlePictures != null
+                ? articlePictures.stream()
+                        .map(String::toString)
+                        .collect(Collectors.joining(", ", "[", "]"))
+                : "null";
+
+        return "AdPostRequestDTO{" +
+                "title='" + title + '\'' +
+                ", articleDescription='" + articleDescription + '\'' +
+                ", creationDate='" + creationDate + '\'' +
+                ", price=" + price +
+                ", category='" + category + '\'' +
+                ", subcategory='" + subcategory + '\'' +
+                ", articleGender='" + articleGender + '\'' +
+                ", publisherId=" + publisherId +
+                ", articleState='" + articleState + '\'' +
+                ", articlePictures=" + articlePicturesString +
+                '}';
+    }
+
 }

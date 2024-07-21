@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import adeuxpas.back.enums.AdStatus;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 /*
  * Data transfer object (DTO) class that is used when sending

@@ -63,7 +63,7 @@ public class AccountController {
             @RequestPart("profileInfo") @Valid UserProfileRequestDTO profileDto,
             @RequestPart("profilePicture") MultipartFile profilePicture,
             BindingResult bindingResult) {
-        logger.info("in the controller: {}", profileDto);
+
         if (bindingResult.hasErrors()) {
             logger.info("in the controller: {}", profileDto);
             Map<String, String> errorMap = new HashMap<>();

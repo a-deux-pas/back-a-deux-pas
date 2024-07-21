@@ -6,7 +6,7 @@ package adeuxpas.back.dto;
  */
 public class ArticlePictureDTO {
     private String url;
-    private Long adId;
+    // private Long adId;
 
     public String getUrl() {
         return url;
@@ -16,11 +16,18 @@ public class ArticlePictureDTO {
         this.url = url;
     }
 
-    public Long getAdId() {
-        return adId;
-    }
+    // public Long getAdId() {
+    // return adId;
+    // }
 
-    public void setAdId(Long adId) {
-        this.adId = adId;
+    // public void setAdId(Long adId) {
+    // this.adId = adId;
+    // }
+
+    @Override
+    public String toString() {
+        return "ArticlePictureDTO{" +
+                "url='" + url + '\'' +
+                '}';
     }
 }

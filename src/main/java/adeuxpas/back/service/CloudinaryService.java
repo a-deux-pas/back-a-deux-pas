@@ -37,7 +37,8 @@ public class CloudinaryService {
         cloudinary = new Cloudinary(valuesMap);
     }
 
-    // Voir comment je peux operer des transformation differentes en fonction de si
+    // TODO ::Voir comment je peux operer des transformation differentes en fonction
+    // de si
     // je recois un ap ou une pp
     @SuppressWarnings("unchecked")
     public Map<String, Object> upload(String publicId, MultipartFile multipartFile) throws IOException {
