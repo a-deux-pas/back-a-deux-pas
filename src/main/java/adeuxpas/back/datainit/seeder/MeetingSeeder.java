@@ -105,7 +105,7 @@ public class MeetingSeeder {
         Meeting fourthMeeting = new Meeting();
         fourthMeeting.setBuyer(buyer5);// julien
         fourthMeeting.setSeller(seller2);//donia == user
-        fourthMeeting.setMeetingPlace(meetingPlace1);
+        fourthMeeting.setMeetingPlace(meetingPlace4);
         fourthMeeting.setDate(LocalDateTime.now());
         fourthMeeting.setStatus(MeetingStatus.ACCEPTED);
         fourthMeeting.setBuyerDistinctiveSign("Je porterai une chemise blanche.");
@@ -118,7 +118,7 @@ public class MeetingSeeder {
         Meeting fifthMeeting = new Meeting();
         fifthMeeting.setBuyer(buyer6);// cameron
         fifthMeeting.setSeller(seller2);// donia == user
-        fifthMeeting.setMeetingPlace(meetingPlace2);
+        fifthMeeting.setMeetingPlace(meetingPlace5);
         fifthMeeting.setDate(LocalDateTime.now().minusDays(1));
         fifthMeeting.setStatus(MeetingStatus.FINALIZED);
         fifthMeeting.setBuyerDistinctiveSign("Je porterai un pull rouge.");
@@ -130,7 +130,7 @@ public class MeetingSeeder {
         Meeting sixthMeeting = new Meeting();
         sixthMeeting.setBuyer(buyer2); // donia == user
         sixthMeeting.setSeller(seller7); // sofia
-        sixthMeeting.setMeetingPlace(meetingPlace3);
+        sixthMeeting.setMeetingPlace(meetingPlace6);
         sixthMeeting.setDate(LocalDateTime.now().minusDays(2));
         sixthMeeting.setStatus(MeetingStatus.FINALIZED);
         sixthMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
@@ -183,7 +183,7 @@ public class MeetingSeeder {
         Meeting tenth = new Meeting();
         tenth.setBuyer(buyer5);// julien
         tenth.setSeller(seller1);//mircea == user
-        tenth.setMeetingPlace(meetingPlace1);
+        tenth.setMeetingPlace(meetingPlace4);
         tenth.setDate(LocalDateTime.now());
         tenth.setStatus(MeetingStatus.ACCEPTED);
         tenth.setBuyerDistinctiveSign   ("Je porterai un pull vert foncé et un pantalon beige.");
@@ -196,7 +196,7 @@ public class MeetingSeeder {
         Meeting eleventh = new Meeting();
         eleventh.setBuyer(buyer6);// cameron
         eleventh.setSeller(seller1);// mircea == user
-        eleventh.setMeetingPlace(meetingPlace2);
+        eleventh.setMeetingPlace(meetingPlace5);
         eleventh.setDate(LocalDateTime.now().minusDays(1));
         eleventh.setStatus(MeetingStatus.FINALIZED);
         eleventh.setBuyerDistinctiveSign ("Je serai en chemise blanche et pantalon noir.");
@@ -208,7 +208,7 @@ public class MeetingSeeder {
         Meeting twelfth = new Meeting();
         twelfth.setBuyer(buyer1); // mircea == user
         twelfth.setSeller(seller7); // sofia
-        twelfth.setMeetingPlace(meetingPlace3);
+        twelfth.setMeetingPlace(meetingPlace6);
         twelfth.setDate(LocalDateTime.now().minusDays(2));
         twelfth.setStatus(MeetingStatus.FINALIZED);
         twelfth.setBuyerDistinctiveSign ("Je porterai un blouson en cuir marron et un jean.");
@@ -261,7 +261,7 @@ public class MeetingSeeder {
         Meeting sixteenthMeeting = new Meeting();
         sixteenthMeeting.setBuyer(buyer5);// julien
         sixteenthMeeting.setSeller(seller3);//lea == user
-        sixteenthMeeting.setMeetingPlace(meetingPlace1);
+        sixteenthMeeting.setMeetingPlace(meetingPlace4);
         sixteenthMeeting.setDate(LocalDateTime.now());
         sixteenthMeeting.setStatus(MeetingStatus.ACCEPTED);
         sixteenthMeeting.setBuyerDistinctiveSign ("Je serai en tailleur noir avec une broche dorée.");
@@ -274,7 +274,7 @@ public class MeetingSeeder {
         Meeting seventeenthMeeting = new Meeting();
         seventeenthMeeting.setBuyer(buyer6);// cameron
         seventeenthMeeting.setSeller(seller3);// lea == user
-        seventeenthMeeting.setMeetingPlace(meetingPlace2);
+        seventeenthMeeting.setMeetingPlace(meetingPlace5);
         seventeenthMeeting.setDate(LocalDateTime.now().minusDays(1));
         seventeenthMeeting.setStatus(MeetingStatus.FINALIZED);
         seventeenthMeeting.setBuyerDistinctiveSign ("Je porterai un polo bleu ciel et un pantalon kaki.");
@@ -286,7 +286,7 @@ public class MeetingSeeder {
         Meeting eighteenthMeeting = new Meeting();
         eighteenthMeeting.setBuyer(buyer3); // lea == user
         eighteenthMeeting.setSeller(seller7); // sofia
-        eighteenthMeeting.setMeetingPlace(meetingPlace3);
+        eighteenthMeeting.setMeetingPlace(meetingPlace6);
         eighteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
         eighteenthMeeting.setStatus(MeetingStatus.FINALIZED);
         eighteenthMeeting.setBuyerDistinctiveSign ("Je serai en robe noire avec un blazer blanc.");
@@ -338,7 +338,7 @@ public class MeetingSeeder {
         Meeting twentysecondMeeting = new Meeting();
         twentysecondMeeting.setBuyer(buyer5);// julien
         twentysecondMeeting.setSeller(seller4);// Erika == user
-        twentysecondMeeting.setMeetingPlace(meetingPlace1);
+        twentysecondMeeting.setMeetingPlace(meetingPlace4);
         twentysecondMeeting.setDate(LocalDateTime.now());
         twentysecondMeeting.setStatus(MeetingStatus.ACCEPTED);
         twentysecondMeeting.setBuyerDistinctiveSign ("Je serai en pull col roulé noir et pantalon gris.");
@@ -351,7 +351,7 @@ public class MeetingSeeder {
         Meeting twentythirdMeeting = new Meeting();
         twentythirdMeeting.setBuyer(buyer6);// cameron
         twentythirdMeeting.setSeller(seller4);// Erika == user
-        twentythirdMeeting.setMeetingPlace(meetingPlace2);
+        twentythirdMeeting.setMeetingPlace(meetingPlace5);
         twentythirdMeeting.setDate(LocalDateTime.now().minusDays(1));
         twentythirdMeeting.setStatus(MeetingStatus.FINALIZED);
         twentythirdMeeting.setBuyerDistinctiveSign ("J'aurai une veste matelassée bleue et une écharpe grise.");
@@ -363,7 +363,7 @@ public class MeetingSeeder {
         Meeting twentyfourthMeeting = new Meeting();
         twentyfourthMeeting.setBuyer(buyer4); // Erika == user
         twentyfourthMeeting.setSeller(seller7); // sofia
-        twentyfourthMeeting.setMeetingPlace(meetingPlace3);
+        twentyfourthMeeting.setMeetingPlace(meetingPlace6);
         twentyfourthMeeting.setDate(LocalDateTime.now().minusDays(2));
         twentyfourthMeeting.setStatus(MeetingStatus.FINALIZED);
         twentyfourthMeeting.setBuyerDistinctiveSign ("Je serai en chemise à carreaux et jean foncé.");

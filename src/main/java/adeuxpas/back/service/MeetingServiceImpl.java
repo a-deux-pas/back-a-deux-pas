@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Implementation class for the MeetingService interface.
