@@ -408,10 +408,26 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public long checkFavoriteCount(long adId) {
+    public long getFavoriteCount(long adId) {
         Optional<Ad> optionalAd = adRepository.findById(adId);
         if (optionalAd.isPresent()) {
             return usersFavoriteAdsRepository.checksFavoriteCount(adId);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Deletes an ad.
+     *
+     * @param adId The ID of the ad.
+     */
+    @Override
+    public void deleteAd(long adId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.get();
+        if (optionalAd.isPresent() && ad.getStatus() != AdStatus.RESERVED) {
+            adRepository.deleteById(adId);
         } else {
             throw new EntityNotFoundException();
         }

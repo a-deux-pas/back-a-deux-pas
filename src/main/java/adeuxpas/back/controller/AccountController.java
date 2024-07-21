@@ -47,7 +47,7 @@ public class AccountController {
      *         a 400 Bad Request if errors,
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "User's profile creation")
+    @Operation(summary = "Creates user's profile")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Profile saved successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),

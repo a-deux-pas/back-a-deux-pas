@@ -27,6 +27,9 @@ public class AdPostResponseDTO {
     private String articleDescription;
     private String articleState;
     private String category;
+    private String subcategory;
+    private String articleGender;
+
     private boolean isFavorite;
 
     public Long getId() {
@@ -163,6 +166,22 @@ public class AdPostResponseDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public String getArticleGender() {
+        return articleGender;
+    }
+
+    public void setArticleGender(String articleGender) {
+        this.articleGender = articleGender;
     }
 
     public boolean isFavorite() {

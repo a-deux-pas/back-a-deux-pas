@@ -110,5 +110,12 @@ public interface AdService {
          * @param adId The ID of the ad.
          * @return The favorite count.
          */
-        long checkFavoriteCount(long adId);
+        long getFavoriteCount(long adId);
+
+        /**
+         * Contract that deletes an ad.
+         * 
+         * @param adId The ID of the ad.
+         */
+        void deleteAd(long adId);
 }

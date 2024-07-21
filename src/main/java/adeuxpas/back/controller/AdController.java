@@ -115,14 +115,14 @@ public class AdController {
      * @param adDto The AdDTO.
      * @return The AdDTO.
      */
-    // TO DO :: à revoir (fix Cloudinary branch)
-    @Operation(summary = "New Ad creation")
+    // TO DO : à revoir (fix Cloudinary branch)
+    @Operation(summary = "Creates an Ad")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful ad creation"),
+            @ApiResponse(responseCode = "200", description = "Ad successfully created"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/create")
-    public ResponseEntity<Object> postAd(@RequestBody @Valid AdPostRequestDTO adDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createAd(@RequestBody @Valid AdPostRequestDTO adDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
@@ -134,6 +134,33 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad");
+        }
+    }
+
+    /**
+     * Endpoint to update an ad.
+     *
+     * @param adDto The AdDTO.
+     * @return The AdPostDTO updated.
+     */
+    @Operation(summary = "Updates an ad")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ad successfully updated"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateAd(@RequestBody @Valid AdPostRequestDTO adDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        }
+        try {
+            return ResponseEntity.ok(adService.postAd(adDto));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update ad");
         }
     }
 
@@ -305,7 +332,7 @@ public class AdController {
     }
 
     /**
-     * Endpoint that checks how many users have added an ad as favorite.
+     * Endpoint that counts how many users have added an ad as favorite.
      * 
      * @param adId the ad ID.
      * @return The favorite ads count.
@@ -316,10 +343,25 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/favoriteCount/{adId}")
-    public ResponseEntity<Object> checksFavoriteCount(
+    public ResponseEntity<Object> getFavoriteCount(
             @PathVariable long adId) {
         try {
-            return ResponseEntity.ok(adService.checkFavoriteCount(adId));
+            return ResponseEntity.ok(adService.getFavoriteCount(adId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint that deletes an ad.
+     * 
+     * @param adId the ad ID.
+     */
+    @DeleteMapping("/{adId}")
+    public ResponseEntity<Object> deleteAd(@PathVariable long adId) {
+        try {
+            adService.deleteAd(adId);
+            return ResponseEntity.ok("Ad deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
