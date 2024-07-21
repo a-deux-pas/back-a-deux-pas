@@ -1,9 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.MeetingFinalizedDTO;
-import adeuxpas.back.dto.MeetingProposedDTO;
-import adeuxpas.back.dto.MeetingToConfirmDTO;
-import adeuxpas.back.dto.MeetingPlannedDTO;
+import adeuxpas.back.dto.*;
+
 import java.util.List;
 
 /**
@@ -20,11 +18,11 @@ public interface MeetingService {
      * @param status The status of the meetings to filter.
      * @return A list of meetings filtered by status and sorted by date.
      */
-    List<MeetingProposedDTO> getMeetingsByBuyerId(Long id);
+    List<MeetingDTO> getMeetingsByBuyerId(Long id);
 
-    List<MeetingToConfirmDTO> getMeetingsBySellerId(Long id);
+    List<MeetingDTO> getMeetingsBySellerId(Long id);
 
-    List<MeetingPlannedDTO> getAcceptedMeetingsBySellerId(Long id);
+    List<MeetingDTO> getAcceptedMeetingsBySellerId(Long id);
 
-    List<MeetingFinalizedDTO> getDueMeetings(Long id);
+    List<MeetingDTO> getDueMeetings(Long id);
 }

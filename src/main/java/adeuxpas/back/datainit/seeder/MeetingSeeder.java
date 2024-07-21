@@ -62,13 +62,6 @@ public class MeetingSeeder {
         PreferredMeetingPlace meetingPlace5 = preferredMeetingPlaceRepository.findById(5L).orElseThrow(() -> new RuntimeException("Meeting Place not found"));
         PreferredMeetingPlace meetingPlace6 = preferredMeetingPlaceRepository.findById(6L).orElseThrow(() -> new RuntimeException("Meeting Place not found"));
 
-        PreferredSchedule schedule1 = preferredScheduleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Schedule not found"));
-        PreferredSchedule schedule2 = preferredScheduleRepository.findById(2L).orElseThrow(() -> new RuntimeException("Schedule not found"));
-        PreferredSchedule schedule3 = preferredScheduleRepository.findById(3L).orElseThrow(() -> new RuntimeException("Schedule not found"));
-        PreferredSchedule schedule4 = preferredScheduleRepository.findById(4L).orElseThrow(() -> new RuntimeException("Schedule not found"));
-        PreferredSchedule schedule5 = preferredScheduleRepository.findById(5L).orElseThrow(() -> new RuntimeException("Schedule not found"));
-        PreferredSchedule schedule6 = preferredScheduleRepository.findById(6L).orElseThrow(() -> new RuntimeException("Schedule not found"));
-
         List<Ad> existingAds = adRepository.findAll();
 
         // Proposed
@@ -76,7 +69,6 @@ public class MeetingSeeder {
         firstMeeting.setBuyer(buyer2);//donia == user
         firstMeeting.setSeller(seller1);//mircea
         firstMeeting.setMeetingPlace(meetingPlace1);
-        firstMeeting.setSchedule(schedule1);
         firstMeeting.setDate(LocalDateTime.now().minusDays(2));
         firstMeeting.setStatus(MeetingStatus.INITIALIZED);
         firstMeeting.setBuyerDistinctiveSign("Je suis chauve et je porte des lunettes rouges.");
@@ -88,9 +80,8 @@ public class MeetingSeeder {
         // ToConfirm
         Meeting secondMeeting = new Meeting();
         secondMeeting.setBuyer(buyer3);//lea
-        secondMeeting.setSeller(seller2);//donia == user
+        secondMeeting.setSeller(seller4);//donia == user
         secondMeeting.setMeetingPlace(meetingPlace2);
-        secondMeeting.setSchedule(schedule2);
         secondMeeting.setDate(LocalDateTime.now());
         secondMeeting.setStatus(MeetingStatus.INITIALIZED);
         secondMeeting.setBuyerDistinctiveSign("Je porterai un chapeau bleu.");
@@ -104,7 +95,6 @@ public class MeetingSeeder {
         thirdMeeting.setBuyer(buyer2);// donia == user
         thirdMeeting.setSeller(seller4);// eri
         thirdMeeting.setMeetingPlace(meetingPlace3);
-        thirdMeeting.setSchedule(schedule3);
         thirdMeeting.setDate(LocalDateTime.now());
         thirdMeeting.setStatus(MeetingStatus.ACCEPTED);
         thirdMeeting.setBuyerDistinctiveSign("Je porterai une écharpe rouge.");
@@ -117,7 +107,6 @@ public class MeetingSeeder {
         fourthMeeting.setBuyer(buyer5);// julien
         fourthMeeting.setSeller(seller2);//donia == user
         fourthMeeting.setMeetingPlace(meetingPlace1);
-        fourthMeeting.setSchedule(schedule2);
         fourthMeeting.setDate(LocalDateTime.now());
         fourthMeeting.setStatus(MeetingStatus.ACCEPTED);
         fourthMeeting.setBuyerDistinctiveSign("Je porterai une chemise blanche.");
@@ -131,7 +120,6 @@ public class MeetingSeeder {
         fifthMeeting.setBuyer(buyer6);// cameron
         fifthMeeting.setSeller(seller2);// donia == user
         fifthMeeting.setMeetingPlace(meetingPlace2);
-        fifthMeeting.setSchedule(schedule3);
         fifthMeeting.setDate(LocalDateTime.now().minusDays(1));
         fifthMeeting.setStatus(MeetingStatus.FINALIZED);
         fifthMeeting.setBuyerDistinctiveSign("Je porterai un pull rouge.");
@@ -144,7 +132,6 @@ public class MeetingSeeder {
         sixthMeeting.setBuyer(buyer2); // donia == user
         sixthMeeting.setSeller(seller7); // sofia
         sixthMeeting.setMeetingPlace(meetingPlace3);
-        sixthMeeting.setSchedule(schedule1);
         sixthMeeting.setDate(LocalDateTime.now().minusDays(2));
         sixthMeeting.setStatus(MeetingStatus.FINALIZED);
         sixthMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
@@ -157,7 +144,6 @@ public class MeetingSeeder {
         seventhMeeting.setBuyer(buyer5); // julien
         seventhMeeting.setSeller(seller7); // sofia
         seventhMeeting.setMeetingPlace(meetingPlace3);
-        seventhMeeting.setSchedule(schedule1);
         seventhMeeting.setDate(LocalDateTime.now());
         seventhMeeting.setStatus(MeetingStatus.FINALIZED);
         seventhMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");

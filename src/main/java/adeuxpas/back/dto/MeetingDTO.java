@@ -9,17 +9,17 @@ public class MeetingDTO {
 
     private Long idMeeting;
     private MeetingStatus status;
+    private LocalDateTime date;
+    private Long buyerId;
+    private Long sellerId;
+    private String buyerAlias;
+    private String sellerAlias;
+    private LocalDateTime buyerInscriptionDate;
+    private LocalDateTime sellerInscriptionDate;
     private String buyerAdditionalInfo;
     private String sellerAdditionalInfo;
     private String buyerDistinctiveSign;
     private String sellerDistinctiveSign;
-    private LocalDateTime date;
-    private Long buyerId;
-    private Long sellerId;
-    private LocalDateTime buyerInscriptionDate;
-    private LocalDateTime sellerInscriptionDate;
-    private String buyerAlias;
-    private String sellerAlias;
     private String buyerProfilePictureUrl;
     private String sellerProfilePictureUrl;
     private String meetingPlaceName;
@@ -29,7 +29,6 @@ public class MeetingDTO {
     private String adTitle;
     private BigDecimal adPrice;
     private String adPictureUrl;
-    private Set<Long> adIds;
 
     // Getters and setters
 
@@ -209,11 +208,4 @@ public class MeetingDTO {
         this.adPictureUrl = adPictureUrl;
     }
 
-    public Set<Long> getAdIds() {
-        return adIds;
-    }
-
-    public void setAdIds(Set<Long> adIds) {
-        this.adIds = adIds;
-    }
 }

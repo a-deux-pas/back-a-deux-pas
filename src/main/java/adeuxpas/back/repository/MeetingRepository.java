@@ -26,9 +26,6 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
             @Param("buyerId") Long buyerId
     );
 
-    //@Query("SELECT m FROM Meeting m WHERE (m.buyer.id = :buyerId OR m.seller.id = :sellerId) AND m.date < :date ORDER BY m.date DESC")
-    //List<Meeting> findMeetings(@Param("buyerId") Long buyerId, @Param("sellerId") Long sellerId, @Param("date") LocalDateTime date);
-
     @Query("SELECT m FROM Meeting m WHERE " +
             "m.status = :status " +
             "AND (m.buyer.id = :userId OR m.seller.id = :userId) " +

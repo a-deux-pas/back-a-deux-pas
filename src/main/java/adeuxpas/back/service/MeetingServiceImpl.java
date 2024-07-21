@@ -1,13 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.MeetingFinalizedDTO;
-import adeuxpas.back.dto.MeetingPlannedDTO;
-import adeuxpas.back.dto.MeetingProposedDTO;
-import adeuxpas.back.dto.MeetingToConfirmDTO;
-import adeuxpas.back.dto.mapper.MeetingFinalizedMapper;
-import adeuxpas.back.dto.mapper.MeetingPlannedMapper;
-import adeuxpas.back.dto.mapper.MeetingProposedMapper;
-import adeuxpas.back.dto.mapper.MeetingToConfirmMapper;
+import adeuxpas.back.dto.*;
+import adeuxpas.back.dto.mapper.*;
 import adeuxpas.back.entity.Meeting;
 import adeuxpas.back.enums.MeetingStatus;
 import adeuxpas.back.repository.MeetingRepository;
@@ -32,26 +26,18 @@ import java.util.stream.Collectors;
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
-    private final MeetingProposedMapper meetingProposedMapper;
-    private final MeetingToConfirmMapper meetingToConfirmMapper;
-    private final MeetingPlannedMapper meetingPlannedMapper;
-    private final MeetingFinalizedMapper meetingFinalizedMapper;
+    private final MeetingMapper meetingMapper;
 
     /**
      * Constructor for MeetingServiceImpl.
      *
      * @param meetingRepository The MeetingRepository for interacting with meeting-related database operations.
-     * @param meetingProposedMapper The MeetingMapper for converting entities to DTOs.
-     * @param meetingToConfirmMapper The MeetingMapper for converting entities to DTOs.
-     * @param meetingPlannedMapper The MeetingMapper for converting entities to DTOs.
+     * @param meetingMapper The MeetingMapper for converting entities to DTOs.
      */
     @Autowired
-    public MeetingServiceImpl(MeetingRepository meetingRepository, MeetingProposedMapper meetingProposedMapper, MeetingToConfirmMapper meetingToConfirmMapper, MeetingPlannedMapper meetingPlannedMapper, MeetingFinalizedMapper meetingFinalizedMapper) {
+    public MeetingServiceImpl(MeetingRepository meetingRepository, MeetingMapper meetingMapper) {
         this.meetingRepository = meetingRepository;
-        this.meetingProposedMapper = meetingProposedMapper;
-        this.meetingToConfirmMapper = meetingToConfirmMapper;
-        this.meetingPlannedMapper = meetingPlannedMapper;
-        this.meetingFinalizedMapper = meetingFinalizedMapper;
+        this.meetingMapper = meetingMapper;
     }
 
     /**
@@ -61,35 +47,35 @@ public class MeetingServiceImpl implements MeetingService {
      * @return A list of meetings filtered by status and sorted by date.
      */
     @Override
-    public List<MeetingProposedDTO> getMeetingsByBuyerId(Long id) {
+    public List<MeetingDTO> getMeetingsByBuyerId(Long id) {
         List<Meeting> meetings = meetingRepository.findByStatusAndBuyerIdOrderByDateDesc(MeetingStatus.INITIALIZED ,id);
         return meetings.stream()
-                .map(meetingProposedMapper::meetingToMeetingProposedDTO)
+                .map(meetingMapper::meetingToMeetingDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<MeetingToConfirmDTO> getMeetingsBySellerId(Long id) {
+    public List<MeetingDTO> getMeetingsBySellerId(Long id) {
         List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrderByDateDesc(MeetingStatus.INITIALIZED, id);
         return meetings.stream()
-                .map(meetingToConfirmMapper::meetingToMeetingToConfirmDTO)
+                .map(meetingMapper::meetingToMeetingDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<MeetingPlannedDTO> getAcceptedMeetingsBySellerId(Long id) {
+    public List<MeetingDTO> getAcceptedMeetingsBySellerId(Long id) {
         List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrBuyerIdOrderByDateDesc(MeetingStatus.ACCEPTED, id, id);
         return meetings.stream()
-                .map( meetingPlannedMapper::meetingToMeetingPlannedDTO)
+                .map( meetingMapper::meetingToMeetingDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<MeetingFinalizedDTO> getDueMeetings(Long id) {
+    public List<MeetingDTO> getDueMeetings(Long id) {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Europe/Paris"));
         List<Meeting> meetings = meetingRepository.findMeetings(MeetingStatus.FINALIZED, id, now.toLocalDateTime());
         return meetings.stream()
-                .map(meetingFinalizedMapper::meetingToMeetingFinalizedDTO)
+                .map(meetingMapper::meetingToMeetingDTO)
                 .collect(Collectors.toList());
     }
 }

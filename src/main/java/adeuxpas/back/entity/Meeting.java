@@ -48,10 +48,6 @@ public class Meeting {
     @JoinColumn(name = "meeting_place_id", nullable = false)
     private PreferredMeetingPlace meetingPlace;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id", nullable = false)
-    private PreferredSchedule schedule;
-
     @ManyToMany
     @JoinTable(
             name = "ads_meetings",
@@ -162,14 +158,6 @@ public class Meeting {
         this.meetingPlace = meetingPlace;
     }
 
-    public PreferredSchedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(PreferredSchedule schedule) {
-        this.schedule = schedule;
-    }
-
     public Set<Ad> getAds() {
         return ads;
     }
@@ -191,7 +179,6 @@ public class Meeting {
                 ", buyer=" + (buyer != null ? buyer.getId() : "null") +
                 ", seller=" + (seller != null ? seller.getId() : "null") +
                 ", meetingPlace=" + (meetingPlace != null ? meetingPlace.getId() : "null") +
-                ", schedule=" + (schedule != null ? schedule.getId() : "null") +
                 ", ads=" + (ads != null ? ads.size() : 0) +
                 ", buyerInscriptionDate=" + buyerInscriptionDate +
                 ", sellerInscriptionDate=" + sellerInscriptionDate +

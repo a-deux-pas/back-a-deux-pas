@@ -1,6 +1,6 @@
 package adeuxpas.back.dto.mapper;
 
-import adeuxpas.back.dto.MeetingProposedDTO;
+import adeuxpas.back.dto.MeetingDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.Meeting;
 import org.mapstruct.*;
@@ -9,17 +9,22 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
-public interface MeetingProposedMapper {
+public interface MeetingMapper {
     @Mapping(source = "idMeeting", target = "idMeeting")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "date", target = "date")
-    @Mapping(source = "seller.alias", target = "sellerAlias")
-    @Mapping(source = "buyer.alias", target = "buyerAlias")
     @Mapping(source = "buyer.id", target = "buyerId")
-    @Mapping(source = "seller.profilePicture", target = "sellerProfilePictureUrl")
+    @Mapping(source = "seller.id", target = "sellerId")
+    @Mapping(source = "buyer.alias", target = "buyerAlias")
+    @Mapping(source = "seller.alias", target = "sellerAlias")
+    @Mapping(source = "buyer.inscriptionDate", target = "buyerInscriptionDate")
+    @Mapping(source = "seller.inscriptionDate", target = "sellerInscriptionDate")
+    @Mapping(source = "buyerAdditionalInfo", target = "buyerAdditionalInfo")
+    @Mapping(source = "sellerAdditionalInfo", target = "sellerAdditionalInfo")
+    @Mapping(source = "buyerDistinctiveSign", target = "buyerDistinctiveSign")
+    @Mapping(source = "sellerDistinctiveSign", target = "sellerDistinctiveSign")
     @Mapping(source = "buyer.profilePicture", target = "buyerProfilePictureUrl")
-    @Mapping(source = "buyer.inscriptionDate", target = "buyerInscriptionDate", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "seller.inscriptionDate", target = "sellerInscriptionDate", dateFormat = "yyyy-MM-dd")
+    @Mapping(source = "seller.profilePicture", target = "sellerProfilePictureUrl")
     @Mapping(source = "meetingPlace.name", target = "meetingPlaceName")
     @Mapping(source = "meetingPlace.postalCode", target = "postalCode")
     @Mapping(source = "meetingPlace.city", target = "city")
@@ -27,9 +32,7 @@ public interface MeetingProposedMapper {
     @Mapping(source = "ads", target = "adTitle", qualifiedByName = "adTitle")
     @Mapping(source = "ads", target = "adPrice", qualifiedByName = "adPrice")
     @Mapping(source = "ads", target = "adPictureUrl", qualifiedByName = "adPictureUrl")
-    @Mapping(source = "buyerAdditionalInfo", target = "buyerAdditionalInfo")
-    @Mapping(source = "sellerAdditionalInfo", target = "sellerAdditionalInfo")
-    MeetingProposedDTO meetingToMeetingProposedDTO(Meeting meeting);
+    MeetingDTO meetingToMeetingDTO(Meeting meeting);
 
     @Named("adTitle")
     default String adTitle(Set<Ad> ads) {
