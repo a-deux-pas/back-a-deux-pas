@@ -148,10 +148,10 @@ public class MeetingSeeder {
         seventhMeeting.setMeetingPlace(meetingPlace1);
         seventhMeeting.setDate(LocalDateTime.now().minusDays(2));
         seventhMeeting.setStatus(MeetingStatus.INITIALIZED);
-        seventhMeeting.setBuyerDistinctiveSign("Je suis chauve et je porte des lunettes rouges.");
-        seventhMeeting.setSellerDistinctiveSign("Je porterai un grand cabas doré.");
-        seventhMeeting.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
-        seventhMeeting.setSellerAdditionalInfo("Merci de porter un masque.");
+        seventhMeeting.setBuyerDistinctiveSign ("Je porterai un manteau noir et une écharpe bleue.");
+        seventhMeeting.setSellerDistinctiveSign("J'aurai une mallette en cuir marron.");
+        seventhMeeting.setBuyerAdditionalInfo  ("Je préfère un paiement par virement bancaire.");
+        seventhMeeting.setSellerAdditionalInfo ("Merci d'apporter la facture originale si possible.");
         seventhMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(6))));
 
         // ToConfirm
@@ -161,10 +161,10 @@ public class MeetingSeeder {
         eighthMeeting.setMeetingPlace(meetingPlace2);
         eighthMeeting.setDate(LocalDateTime.now());
         eighthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        eighthMeeting.setBuyerDistinctiveSign("Je porterai un chapeau bleu.");
-        eighthMeeting.setSellerDistinctiveSign("Je porterai un manteau vert.");
-        eighthMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
-        eighthMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
+        eighthMeeting.setBuyerDistinctiveSign ("Je serai en costume gris avec une cravate rouge.") ;
+        eighthMeeting.setSellerDistinctiveSign("Je porterai un sac à dos noir de marque.") ;
+        eighthMeeting.setBuyerAdditionalInfo  ("Je souhaite examiner l'objet en détail avant l'achat.");
+        eighthMeeting.setSellerAdditionalInfo ("Pouvez-vous fournir un certificat d'authenticité ?") ;
         eighthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(7))));
 
         // Planned
@@ -174,10 +174,10 @@ public class MeetingSeeder {
         ninthMeeting.setMeetingPlace(meetingPlace3);
         ninthMeeting.setDate(LocalDateTime.now());
         ninthMeeting.setStatus(MeetingStatus.ACCEPTED);
-        ninthMeeting.setBuyerDistinctiveSign("Je porterai une écharpe rouge.");
-        ninthMeeting.setSellerDistinctiveSign("Je porterai un sac à dos noir.");
-        ninthMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
-        ninthMeeting.setSellerAdditionalInfo("Merci de confirmer l'heure du rendez-vous.");
+        ninthMeeting.setBuyerDistinctiveSign ("J'aurai une veste en jean et des lunettes de vue.");
+        ninthMeeting.setSellerDistinctiveSign("Je tiendrai un parapluie noir classique.");
+        ninthMeeting.setBuyerAdditionalInfo  ("Je peux payer en espèces ou par carte bancaire.");
+        ninthMeeting.setSellerAdditionalInfo ("Merci de prévoir un reçu pour la transaction.");
         ninthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(8))));
 
         Meeting tenth = new Meeting();
@@ -186,10 +186,10 @@ public class MeetingSeeder {
         tenth.setMeetingPlace(meetingPlace1);
         tenth.setDate(LocalDateTime.now());
         tenth.setStatus(MeetingStatus.ACCEPTED);
-        tenth.setBuyerDistinctiveSign("Je porterai une chemise blanche.");
-        tenth.setSellerDistinctiveSign("Je porterai des lunettes de soleil.");
-        tenth.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
-        tenth.setSellerAdditionalInfo("Merci de respecter la distance sociale.");
+        tenth.setBuyerDistinctiveSign   ("Je porterai un pull vert foncé et un pantalon beige.");
+        tenth.setSellerDistinctiveSign  ("J'aurai un sac en toile écru sur l'épaule.");
+        tenth.setBuyerAdditionalInfo    ("Je préfère effectuer la transaction dans un lieu public.");
+        tenth.setSellerAdditionalInfo   ("Pouvez-vous apporter l'emballage d'origine ?");
         tenth.setAds(new HashSet<>(Arrays.asList(existingAds.get(9))));
 
         //FINALIZED
@@ -199,10 +199,10 @@ public class MeetingSeeder {
         eleventh.setMeetingPlace(meetingPlace2);
         eleventh.setDate(LocalDateTime.now().minusDays(1));
         eleventh.setStatus(MeetingStatus.FINALIZED);
-        eleventh.setBuyerDistinctiveSign("Je porterai un pull rouge.");
-        eleventh.setSellerDistinctiveSign("Je porterai un manteau noir.");
-        eleventh.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
-        eleventh.setSellerAdditionalInfo("Merci d'apporter l'article.");
+        eleventh.setBuyerDistinctiveSign ("Je serai en chemise blanche et pantalon noir.");
+        eleventh.setSellerDistinctiveSign("J'aurai une sacoche pour ordinateur portable.");
+        eleventh.setBuyerAdditionalInfo  ("Je souhaite vérifier le fonctionnement de l'objet sur place.");
+        eleventh.setSellerAdditionalInfo ("Merci de prévoir une garantie écrite si applicable.");
         eleventh.setAds(new HashSet<>(Arrays.asList(existingAds.get(10))));
 
         Meeting twelfth = new Meeting();
@@ -211,10 +211,10 @@ public class MeetingSeeder {
         twelfth.setMeetingPlace(meetingPlace3);
         twelfth.setDate(LocalDateTime.now().minusDays(2));
         twelfth.setStatus(MeetingStatus.FINALIZED);
-        twelfth.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
-        twelfth.setSellerDistinctiveSign("Je porterai une veste en cuir.");
-        twelfth.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
-        twelfth.setSellerAdditionalInfo("Merci de venir à l'heure.");
+        twelfth.setBuyerDistinctiveSign ("Je porterai un blouson en cuir marron et un jean.");
+        twelfth.setSellerDistinctiveSign("J'aurai des écouteurs autour du cou.");
+        twelfth.setBuyerAdditionalInfo  ("Je peux payer par chèque si vous préférez.");
+        twelfth.setSellerAdditionalInfo ("Pouvez-vous fournir un historique d'entretien de l'objet ?");
         twelfth.setAds(new HashSet<>(Arrays.asList(existingAds.get(11))));
 
 
@@ -226,10 +226,10 @@ public class MeetingSeeder {
         thirteenthMeeting.setMeetingPlace(meetingPlace1);
         thirteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
         thirteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        thirteenthMeeting.setBuyerDistinctiveSign("Je suis chauve et je porte des lunettes rouges.");
-        thirteenthMeeting.setSellerDistinctiveSign("Je porterai un grand cabas doré.");
-        thirteenthMeeting.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
-        thirteenthMeeting.setSellerAdditionalInfo("Merci de porter un masque.");
+        thirteenthMeeting.setBuyerDistinctiveSign ("J'aurai une casquette bleue marine et des baskets blanches.");
+        thirteenthMeeting.setSellerDistinctiveSign("Je porterai une montre argentée visible.");
+        thirteenthMeeting.setBuyerAdditionalInfo  ("Je préfère un échange rapide, mon temps est limité.");
+        thirteenthMeeting.setSellerAdditionalInfo ("Merci d'informer de tout défaut connu à l'avance.");
         thirteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(12))));
 
         // ToConfirm
@@ -239,10 +239,10 @@ public class MeetingSeeder {
         fourteenthMeeting.setMeetingPlace(meetingPlace2);
         fourteenthMeeting.setDate(LocalDateTime.now());
         fourteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        fourteenthMeeting.setBuyerDistinctiveSign("Je porterai un chapeau bleu.");
-        fourteenthMeeting.setSellerDistinctiveSign("Je porterai un manteau vert.");
-        fourteenthMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
-        fourteenthMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
+        fourteenthMeeting.setBuyerDistinctiveSign ("Je serai en tailleur noir avec une broche dorée.");
+        fourteenthMeeting.setSellerDistinctiveSign("J'aurai un porte-documents en cuir noir.");
+        fourteenthMeeting.setBuyerAdditionalInfo  ("Je souhaite un reçu détaillé pour ma comptabilité.");
+        fourteenthMeeting.setSellerAdditionalInfo ("Pouvez-vous démontrer le fonctionnement de l'objet ?");
         fourteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(13))));
 
         // Planned
@@ -252,10 +252,10 @@ public class MeetingSeeder {
         fifteenthMeeting.setMeetingPlace(meetingPlace3);
         fifteenthMeeting.setDate(LocalDateTime.now());
         fifteenthMeeting.setStatus(MeetingStatus.ACCEPTED);
-        fifteenthMeeting.setBuyerDistinctiveSign("Je porterai une écharpe rouge.");
-        fifteenthMeeting.setSellerDistinctiveSign("Je porterai un sac à dos noir.");
-        fifteenthMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
-        fifteenthMeeting.setSellerAdditionalInfo("Merci de confirmer l'heure du rendez-vous.");
+        fifteenthMeeting.setBuyerDistinctiveSign ("J'aurai une casquette bleue marine et des baskets blanches.");
+        fifteenthMeeting.setSellerDistinctiveSign("Je porterai une montre argentée visible.");
+        fifteenthMeeting.setBuyerAdditionalInfo  ("Je préfère un échange rapide, mon temps est limité.");
+        fifteenthMeeting.setSellerAdditionalInfo ("Merci d'informer de tout défaut connu à l'avance.");
         fifteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(14))));
 
         Meeting sixteenthMeeting = new Meeting();
@@ -264,10 +264,10 @@ public class MeetingSeeder {
         sixteenthMeeting.setMeetingPlace(meetingPlace1);
         sixteenthMeeting.setDate(LocalDateTime.now());
         sixteenthMeeting.setStatus(MeetingStatus.ACCEPTED);
-        sixteenthMeeting.setBuyerDistinctiveSign("Je porterai une chemise blanche.");
-        sixteenthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil.");
-        sixteenthMeeting.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
-        sixteenthMeeting.setSellerAdditionalInfo("Merci de respecter la distance sociale.");
+        sixteenthMeeting.setBuyerDistinctiveSign ("Je serai en tailleur noir avec une broche dorée.");
+        sixteenthMeeting.setSellerDistinctiveSign("J'aurai un porte-documents en cuir noir.");
+        sixteenthMeeting.setBuyerAdditionalInfo  ("Je souhaite un reçu détaillé pour ma comptabilité.");
+        sixteenthMeeting.setSellerAdditionalInfo ("Pouvez-vous démontrer le fonctionnement de l'objet ?");
         sixteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(15))));
 
         //FINALIZED
@@ -277,10 +277,10 @@ public class MeetingSeeder {
         seventeenthMeeting.setMeetingPlace(meetingPlace2);
         seventeenthMeeting.setDate(LocalDateTime.now().minusDays(1));
         seventeenthMeeting.setStatus(MeetingStatus.FINALIZED);
-        seventeenthMeeting.setBuyerDistinctiveSign("Je porterai un pull rouge.");
-        seventeenthMeeting.setSellerDistinctiveSign("Je porterai un manteau noir.");
-        seventeenthMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
-        seventeenthMeeting.setSellerAdditionalInfo("Merci d'apporter l'article.");
+        seventeenthMeeting.setBuyerDistinctiveSign ("Je porterai un polo bleu ciel et un pantalon kaki.");
+        seventeenthMeeting.setSellerDistinctiveSign("J'aurai une sacoche en bandoulière grise.");
+        seventeenthMeeting.setBuyerAdditionalInfo  ("Je préfère payer par virement instantané si possible.");
+        seventeenthMeeting.setSellerAdditionalInfo ("Merci de préparer tous les accessoires inclus.");
         seventeenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(16))));
 
         Meeting eighteenthMeeting = new Meeting();
@@ -289,10 +289,10 @@ public class MeetingSeeder {
         eighteenthMeeting.setMeetingPlace(meetingPlace3);
         eighteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
         eighteenthMeeting.setStatus(MeetingStatus.FINALIZED);
-        eighteenthMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
-        eighteenthMeeting.setSellerDistinctiveSign("Je porterai une veste en cuir.");
-        eighteenthMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
-        eighteenthMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
+        eighteenthMeeting.setBuyerDistinctiveSign ("Je serai en robe noire avec un blazer blanc.");
+        eighteenthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil sur la tête.");
+        eighteenthMeeting.setBuyerAdditionalInfo  ("J'apporterai un appareil pour vérifier l'authenticité.");
+        eighteenthMeeting.setSellerAdditionalInfo ("Pouvez-vous fournir une preuve d'achat ?");
         eighteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(17))));
 
         //User4 = Erika
@@ -303,10 +303,10 @@ public class MeetingSeeder {
         nineteenthMeeting.setMeetingPlace(meetingPlace1);
         nineteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
         nineteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        nineteenthMeeting.setBuyerDistinctiveSign("Je suis chauve et je porte des lunettes rouges.");
-        nineteenthMeeting.setSellerDistinctiveSign("Je porterai un grand cabas doré.");
-        nineteenthMeeting.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
-        nineteenthMeeting.setSellerAdditionalInfo("Merci de porter un masque.");
+        nineteenthMeeting.setBuyerDistinctiveSign ("J'aurai une écharpe rouge et des gants en cuir.");
+        nineteenthMeeting.setSellerDistinctiveSign("Je tiendrai un journal sous le bras.");
+        nineteenthMeeting.setBuyerAdditionalInfo  ("Je préfère négocier le prix final après inspection.");
+        nineteenthMeeting.setSellerAdditionalInfo ("Merci de prévoir un emballage sécurisé pour le transport.");
         nineteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(18))));
 
         // ToConfirm
@@ -316,10 +316,10 @@ public class MeetingSeeder {
         twentiethMeeting.setMeetingPlace(meetingPlace2);
         twentiethMeeting.setDate(LocalDateTime.now());
         twentiethMeeting.setStatus(MeetingStatus.INITIALIZED);
-        twentiethMeeting.setBuyerDistinctiveSign("Je porterai un chapeau bleu.");
-        twentiethMeeting.setSellerDistinctiveSign("Je porterai un manteau vert.");
-        twentiethMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
-        twentiethMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
+        twentiethMeeting.setBuyerDistinctiveSign ("Je serai en costume bleu marine avec une pochette.");
+        twentiethMeeting.setSellerDistinctiveSign("J'aurai une cravate à motifs géométriques.");
+        twentiethMeeting.setBuyerAdditionalInfo  ("Je peux payer par PayPal ou virement bancaire.");
+        twentiethMeeting.setSellerAdditionalInfo ("Pouvez-vous fournir les spécifications techniques de l'objet ?");
         twentiethMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(19))));
 
         // Planned
@@ -329,10 +329,10 @@ public class MeetingSeeder {
         twentyfirstMeeting.setMeetingPlace(meetingPlace3);
         twentyfirstMeeting.setDate(LocalDateTime.now());
         twentyfirstMeeting.setStatus(MeetingStatus.ACCEPTED);
-        twentyfirstMeeting.setBuyerDistinctiveSign("Je porterai une écharpe rouge.");
-        twentyfirstMeeting.setSellerDistinctiveSign("Je porterai un sac à dos noir.");
-        twentyfirstMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
-        twentyfirstMeeting.setSellerAdditionalInfo("Merci de confirmer l'heure du rendez-vous.");
+        twentyfirstMeeting.setBuyerDistinctiveSign ("Je porterai un trench beige et des chaussures marron.");
+        twentyfirstMeeting.setSellerDistinctiveSign("J'aurai un parapluie rétractable noir.");
+        twentyfirstMeeting.setBuyerAdditionalInfo  ("Je souhaite effectuer la transaction dans un café calme.");
+        twentyfirstMeeting.setSellerAdditionalInfo ("Merci d'apporter toute documentation pertinente.");
         twentyfirstMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(20))));
 
         Meeting twentysecondMeeting = new Meeting();
@@ -341,10 +341,10 @@ public class MeetingSeeder {
         twentysecondMeeting.setMeetingPlace(meetingPlace1);
         twentysecondMeeting.setDate(LocalDateTime.now());
         twentysecondMeeting.setStatus(MeetingStatus.ACCEPTED);
-        twentysecondMeeting.setBuyerDistinctiveSign("Je porterai une chemise blanche.");
-        twentysecondMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil.");
-        twentysecondMeeting.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
-        twentysecondMeeting.setSellerAdditionalInfo("Merci de respecter la distance sociale.");
+        twentysecondMeeting.setBuyerDistinctiveSign ("Je serai en pull col roulé noir et pantalon gris.");
+        twentysecondMeeting.setSellerDistinctiveSign("Je porterai une montre connectée visible.");
+        twentysecondMeeting.setBuyerAdditionalInfo  ("Je préfère payer avec des billets de petite coupure.");
+        twentysecondMeeting.setSellerAdditionalInfo ("Pouvez-vous confirmer la compatibilité avec mon équipement ?");
         twentysecondMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(21))));
 
         //FINALIZED
@@ -354,10 +354,10 @@ public class MeetingSeeder {
         twentythirdMeeting.setMeetingPlace(meetingPlace2);
         twentythirdMeeting.setDate(LocalDateTime.now().minusDays(1));
         twentythirdMeeting.setStatus(MeetingStatus.FINALIZED);
-        twentythirdMeeting.setBuyerDistinctiveSign("Je porterai un pull rouge.");
-        twentythirdMeeting.setSellerDistinctiveSign("Je porterai un manteau noir.");
-        twentythirdMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
-        twentythirdMeeting.setSellerAdditionalInfo("Merci d'apporter l'article.");
+        twentythirdMeeting.setBuyerDistinctiveSign ("J'aurai une veste matelassée bleue et une écharpe grise.");
+        twentythirdMeeting.setSellerDistinctiveSign("Je tiendrai un dossier avec des papiers visibles.");
+        twentythirdMeeting.setBuyerAdditionalInfo  ("J'aimerais avoir la possibilité d'un retour sous conditions.");
+        twentythirdMeeting.setSellerAdditionalInfo ("Merci de prévoir un temps pour répondre à mes questions.");
         twentythirdMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(22))));
 
         Meeting twentyfourthMeeting = new Meeting();
@@ -366,10 +366,10 @@ public class MeetingSeeder {
         twentyfourthMeeting.setMeetingPlace(meetingPlace3);
         twentyfourthMeeting.setDate(LocalDateTime.now().minusDays(2));
         twentyfourthMeeting.setStatus(MeetingStatus.FINALIZED);
-        twentyfourthMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
-        twentyfourthMeeting.setSellerDistinctiveSign("Je porterai une veste en cuir.");
-        twentyfourthMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
-        twentyfourthMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
+        twentyfourthMeeting.setBuyerDistinctiveSign ("Je serai en chemise à carreaux et jean foncé.");
+        twentyfourthMeeting.setSellerDistinctiveSign("J'aurai une sacoche pour appareil photo.");
+        twentyfourthMeeting.setBuyerAdditionalInfo  ("Je peux payer par chèque de banque si le montant est élevé.");
+        twentyfourthMeeting.setSellerAdditionalInfo ("Pouvez-vous fournir un certificat de conformité ?");
         twentyfourthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(23))));
 
 
