@@ -10,7 +10,6 @@ public class AdPostResponseDTO {
     private Long id;
     private String title;
     private String firstArticlePictureUrl;
-    @Nullable
     private String secondArticlePictureUrl;
     @Nullable
     private String thirdArticlePictureUrl;
@@ -22,12 +21,14 @@ public class AdPostResponseDTO {
     private String creationDate;
     private Long publisherId;
     private String publisherAlias;
+    private String publisherEmail;
     private String publisherInscriptionDate;
     private String publisherCity;
     private AdStatus status;
     private String articleDescription;
     private String articleState;
     private String category;
+    private boolean isFavorite;
 
     public Long getId() {
         return id;
@@ -109,6 +110,14 @@ public class AdPostResponseDTO {
         this.publisherId = publisher;
     }
 
+    public String getPublisherEmail() {
+        return publisherEmail;
+    }
+
+    public void setPublisherEmail(String publisherEmail) {
+        this.publisherEmail = publisherEmail;
+    }
+
     public AdStatus getStatus() {
         return status;
     }
@@ -163,5 +172,13 @@ public class AdPostResponseDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 }

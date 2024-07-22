@@ -3,6 +3,7 @@ package adeuxpas.back.repository;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.AdStatus;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -116,56 +117,74 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          *                        sorting.
          * @return Page of Ad entities matching the specified criteria.
          */
-        @Query("SELECT ad FROM Ad ad JOIN ad.publisher user " +
-                        "WHERE ad.status IN :adStatuses AND user.accountStatus IN :accountStatuses AND " +
-                        "( :loggedInUserId IS NULL OR user.id != :loggedInUserId ) " +
-                        "ORDER BY ad.creationDate DESC")
+        @Query("SELECT a FROM Ad a JOIN a.publisher u " +
+                        "WHERE a.status IN :adStatuses " +
+                        "AND u.accountStatus IN :accountStatuses " +
+                        "AND ( :loggedInUserId IS NULL OR u.id != :loggedInUserId ) " +
+                        "ORDER BY a.creationDate DESC")
         Page<Ad> findByAcceptedStatusesOrderedByCreationDateDesc(
-                        List<AdStatus> adStatuses,
-                        List<AccountStatus> accountStatuses,
-                        Long loggedInUserId,
+                        @Param("adStatuses") List<AdStatus> adStatuses,
+                        @Param("accountStatuses") List<AccountStatus> accountStatuses,
+                        @Param("loggedInUserId") Long loggedInUserId,
                         Pageable pageable);
 
         /**
-         * Find a user's ad list
+         * Custom query that retrieves ads by sorting them in order for the ones
+         * having a 'reserved' or 'sold' to be called at the very end
          * 
-         * @param publisherId
-         * @return a list of ads
+         * @param publisherId ID of the current ad's publisher.
+         * @param pageable    Pageable object to specify page number, page size, and
+         *                    sorting.
+         * @return Page of Ad entities matching the specified criteria.
          */
-        List<Ad> findAdsByPublisherId(Long publisherId);
+        @Query("SELECT a FROM Ad a " +
+                        "WHERE a.publisher.id = :publisherId " +
+                        "ORDER BY CASE WHEN a.status = 'AVAILABLE' " +
+                        "THEN 0 ELSE 1 END, " +
+                        "a.creationDate DESC")
+        Page<Ad> findSortedAdsByPublisherIdOrderByCreationDateDesc(
+                        @Param("publisherId") Long publisherId,
+                        Pageable pageable);
 
         /**
-         * 
-         * @param publisherId
-         * @param pageable    carries information about the process and pagination and
-         *                    sorting
-         *                    such as the page number, its size or how it's sorted (asc
-         *                    or desc). It equivalates the sql's LIMIT clause that is
-         *                    not available
-         *                    in JPQL(Java Persistence Query Language).
-         * @return a page of Ad
+         * Custom query that gets a page of available ads created by a user
+         * but excluding the sold and reserved ones, and excluding a specific adId
+         *
+         * @param publisherId ID of the current ad's publisher.
+         * @param pageable    Pageable object to specify page number, page size, and
+         *                    sorting.
+         * @param adId        The ID of the ad to be excluded from the results.
+         * @return Page of Ad entities matching the specified criteria.
          */
-        Page<Ad> findAdsByPublisherIdOrderByCreationDateDesc(Long publisherId, Pageable pageable);
+        @Query("SELECT a FROM Ad a " +
+                        "WHERE a.publisher.id = :publisherId " +
+                        "AND a.status = 'AVAILABLE' " +
+                        "AND ( :adId IS NULL OR a.id <> :adId ) " +
+                        "ORDER BY a.creationDate DESC")
+        Page<Ad> findAvailableAdsByPublisherId(
+                        @Param("publisherId") Long publisherId,
+                        Pageable pageable,
+                        @Param("adId") Long adId);
 
         /**
-         * Check how many ads have been published by a user
-         * 
-         * @param publisherId
-         * @return the number of ads
-         */
-        @Query("SELECT COUNT(a) FROM Ad a WHERE a.publisher.id = :publisherId")
-        Long findAdsCountByPublisherId(Long publisherId);
-
-        /**
-         * find ads sharing the same category as the current one's
+         * Find ads sharing the same category as the current one's
          * 
          * @param category    category of the current ad
          * @param publisherId ID of the current ad's publisher
          * @param userId      optionally , the current user's ID
-         * @param pageable
-         * @return a list of similar ads
+         * @param pageable    Pageable object to specify page number, page size, and
+         *                    sorting.
+         * @return Page of Ad entities matching the specified criteria.
          */
-        @Query("SELECT a FROM Ad a WHERE a.category = :category AND a.publisher.id <> :publisherId AND a.publisher.id <> :userId ORDER BY a.creationDate DESC")
-        Page<Ad> findAdsByCategoryOrderByCreationDateDesc(String category, Long publisherId, Long userId,
+        @Query("SELECT a FROM Ad a " +
+                        "WHERE a.category = :category " +
+                        "AND a.status = 'AVAILABLE' " +
+                        "AND a.publisher.id <> :publisherId " +
+                        "AND a.publisher.id <> :userId " +
+                        "ORDER BY a.creationDate DESC")
+        Page<Ad> findAdsByCategoryOrderByCreationDateDesc(
+                        @Param("category") String category,
+                        @Param("publisherId") Long publisherId,
+                        @Param("userId") Long userId,
                         Pageable pageable);
 }

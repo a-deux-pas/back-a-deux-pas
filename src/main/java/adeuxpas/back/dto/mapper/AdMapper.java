@@ -49,6 +49,7 @@ public interface AdMapper {
     @Mapping(source = "publisher.id", target = "publisherId")
     AdCardResponseDTO adToAdCardResponseDTO(Ad ad);
 
+    // TO DO: à virer? (fix cloudinary branch)
     /**
      * Maps an ad entity to an adPostResponseDTO
      * 
@@ -64,6 +65,7 @@ public interface AdMapper {
     @Mapping(source = "creationDate", target = "creationDate", qualifiedByName = "convertDateToString")
     @Mapping(source = "publisher.id", target = "publisherId")
     @Mapping(source = "publisher.alias", target = "publisherAlias")
+    @Mapping(source = "publisher.email", target = "publisherEmail")
     @Mapping(source = "publisher.city", target = "publisherCity")
     @Mapping(source = "publisher.inscriptionDate", target = "publisherInscriptionDate", qualifiedByName = "convertDateToString")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
