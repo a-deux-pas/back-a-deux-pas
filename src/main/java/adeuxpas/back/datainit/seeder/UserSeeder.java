@@ -67,6 +67,8 @@ public class UserSeeder {
                 first.setInscriptionDate(LocalDateTime.now());
                 first.setAccountStatus(AccountStatus.ACTIVE);
                 first.setRole(UserRole.USER);
+                first.setBankAccountHolder("Mircea Bardan");
+                first.setBankAccountNumber("0000");
 
                 User second = new User();
                 second.setEmail("daouali@email.com");

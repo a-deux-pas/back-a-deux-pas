@@ -1,11 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
-import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.SellerHomeResponseDTO;
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
-import adeuxpas.back.dto.UserProfileResponseDTO;
-import adeuxpas.back.dto.UserProfileRequestDTO;
+import adeuxpas.back.dto.*;
 import adeuxpas.back.entity.User;
 
 import java.util.*;
@@ -98,4 +93,6 @@ public interface UserService {
      * @return a list of SellerHomeResponseDTO.
      */
     List<SellerHomeResponseDTO> getSellersNearby(long userId);
+
+    SellerCheckoutDTO findCheckoutSellerInfoByAlias(String alias);
 }

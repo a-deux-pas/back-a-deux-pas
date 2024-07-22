@@ -1,13 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.NotificationDTO;
+import adeuxpas.back.dto.*;
 import adeuxpas.back.dto.mapper.UserMapper;
-import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
-import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.SellerHomeResponseDTO;
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
-import adeuxpas.back.dto.UserProfileResponseDTO;
-import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
@@ -99,7 +93,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Saves an user profile and preferrences.
+     * Saves a user profile and preferences.
      *
      * @param profileDto the profile dto to save.
      */
@@ -293,5 +287,26 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
+    }
+
+    @Override
+    public SellerCheckoutDTO findCheckoutSellerInfoByAlias(String alias) {
+        // TODO : refactor to use MapStruct
+        Optional<User> optionalUser = this.findUserByAlias(alias);
+        if (optionalUser.isPresent()){
+            SellerCheckoutDTO sellerCheckoutDTO = new SellerCheckoutDTO();
+            List<PreferredMeetingPlaceDTO> preferredMeetingPlaceDTOS = optionalUser.get()
+                    .getPreferredMeetingPlaces().stream().map(userMapper::mapPreferredMeetingPlaceToDTO).toList();
+            List<PreferredScheduleDTO> preferredScheduleDTOS = optionalUser.get()
+                    .getPreferredSchedules().stream().map(userMapper::mapPreferredScheduleToDTO).toList();
+            sellerCheckoutDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
+            sellerCheckoutDTO.setPreferredSchedules(preferredScheduleDTOS);
+            sellerCheckoutDTO.setId(optionalUser.get().getId());
+            sellerCheckoutDTO.setBankAccountNumber(optionalUser.get().getBankAccountNumber());
+            sellerCheckoutDTO.setBankAccountHolder(optionalUser.get().getBankAccountHolder());
+
+            return sellerCheckoutDTO;
+        }
+        return null;
     }
 }
