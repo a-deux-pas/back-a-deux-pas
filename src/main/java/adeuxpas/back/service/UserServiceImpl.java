@@ -9,7 +9,6 @@ import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
-import adeuxpas.back.repository.NotificationRepository;
 import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
@@ -52,7 +51,6 @@ public class UserServiceImpl implements UserService {
             @Autowired UserRepository userRepository,
             @Autowired PreferredScheduleRepository preferredScheduleRepository,
             @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository,
-            @Autowired NotificationRepository notificationRepository,
             @Autowired UserMapper userMapper) {
         this.userRepository = userRepository;
         this.preferredScheduleRepository = preferredScheduleRepository;
