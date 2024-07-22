@@ -31,36 +31,30 @@ public class MeetingSeeder {
     }
 
     public void seedMeetings() {
-        User buyer1 = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
-        User seller1 = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
+        User buyer1 = userRepository.findById(1L).get();
+        User seller1 = userRepository.findById(1L).get();
 
-        User buyer2 = userRepository.findById(2L).orElseThrow(() -> new RuntimeException("User not found"));
-        User seller2 = userRepository.findById(2L).orElseThrow(() -> new RuntimeException("User not found"));
+        User buyer2 = userRepository.findById(2L).get();
+        User seller2 = userRepository.findById(2L).get();
 
-        User buyer3 = userRepository.findById(3L).orElseThrow(() -> new RuntimeException("User not found"));
-        User seller3 = userRepository.findById(3L).orElseThrow(() -> new RuntimeException("User not found"));
+        User buyer3 = userRepository.findById(3L).get();
+        User seller3 = userRepository.findById(3L).get();
 
-        User buyer4 = userRepository.findById(4L).orElseThrow(() -> new RuntimeException("User not found"));
-        User seller4 = userRepository.findById(4L).orElseThrow(() -> new RuntimeException("User not found"));
+        User buyer4 = userRepository.findById(4L).get();
+        User seller4 = userRepository.findById(4L).get();
 
-        User buyer5 = userRepository.findById(5L).orElseThrow(() -> new RuntimeException("User not found"));
+        User buyer5 = userRepository.findById(5L).get();
 
-        User buyer6 = userRepository.findById(6L).orElseThrow(() -> new RuntimeException("User not found"));
+        User buyer6 = userRepository.findById(6L).get();
 
-        User seller7 = userRepository.findById(7L).orElseThrow(() -> new RuntimeException("User not found"));
+        User seller7 = userRepository.findById(7L).get();
 
-        PreferredMeetingPlace meetingPlace1 = preferredMeetingPlaceRepository.findById(1L)
-                .orElseThrow(() -> new RuntimeException("Meeting Place not found"));
-        PreferredMeetingPlace meetingPlace2 = preferredMeetingPlaceRepository.findById(2L)
-                .orElseThrow(() -> new RuntimeException("Meeting Place not found"));
-        PreferredMeetingPlace meetingPlace3 = preferredMeetingPlaceRepository.findById(3L)
-                .orElseThrow(() -> new RuntimeException("Meeting Place not found"));
-        PreferredMeetingPlace meetingPlace4 = preferredMeetingPlaceRepository.findById(4L)
-                .orElseThrow(() -> new RuntimeException("Meeting Place not found"));
-        PreferredMeetingPlace meetingPlace5 = preferredMeetingPlaceRepository.findById(5L)
-                .orElseThrow(() -> new RuntimeException("Meeting Place not found"));
-        PreferredMeetingPlace meetingPlace6 = preferredMeetingPlaceRepository.findById(6L)
-                .orElseThrow(() -> new RuntimeException("Meeting Place not found"));
+        PreferredMeetingPlace meetingPlace1 = preferredMeetingPlaceRepository.findById(1L).get();
+        PreferredMeetingPlace meetingPlace2 = preferredMeetingPlaceRepository.findById(2L).get();
+        PreferredMeetingPlace meetingPlace3 = preferredMeetingPlaceRepository.findById(3L).get();
+        PreferredMeetingPlace meetingPlace4 = preferredMeetingPlaceRepository.findById(4L).get();
+        PreferredMeetingPlace meetingPlace5 = preferredMeetingPlaceRepository.findById(5L).get();
+        PreferredMeetingPlace meetingPlace6 = preferredMeetingPlaceRepository.findById(6L).get();
 
         List<Ad> existingAds = adRepository.findAll();
 
