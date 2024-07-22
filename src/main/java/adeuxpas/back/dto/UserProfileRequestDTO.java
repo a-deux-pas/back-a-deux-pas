@@ -39,10 +39,7 @@ public class UserProfileRequestDTO {
     private String city;
     private String country = "France";
     @NotBlank
-    private String bankAccountHolder;
-    @NotNull
-    @Size(max = 34)
-    private String bankAccountNumber;
+    private String bankAccountTokenId;
     @NotEmpty
     @Size(min = 1, max = 5)
     private List<PreferredMeetingPlaceDTO> preferredMeetingPlaces;
@@ -116,20 +113,12 @@ public class UserProfileRequestDTO {
         this.country = country;
     }
 
-    public String getBankAccountHolder() {
-        return bankAccountHolder;
+    public String getBankAccountTokenId() {
+        return bankAccountTokenId;
     }
 
-    public void setBankAccountHolder(String bankAccountHolde) {
-        this.bankAccountHolder = bankAccountHolde;
-    }
-
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public void setBankAccountTokenId(String bankAccountTokenId) {
+        this.bankAccountTokenId = bankAccountTokenId;
     }
 
     public List<PreferredMeetingPlaceDTO> getPreferredMeetingPlaces() {

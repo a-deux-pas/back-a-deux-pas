@@ -302,8 +302,7 @@ public class UserServiceImpl implements UserService {
             sellerCheckoutDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
             sellerCheckoutDTO.setPreferredSchedules(preferredScheduleDTOS);
             sellerCheckoutDTO.setId(optionalUser.get().getId());
-            sellerCheckoutDTO.setBankAccountNumber(optionalUser.get().getBankAccountNumber());
-            sellerCheckoutDTO.setBankAccountHolder(optionalUser.get().getBankAccountHolder());
+            sellerCheckoutDTO.setBankAccountTokenId(optionalUser.get().getBankAccountTokenId());
 
             return sellerCheckoutDTO;
         }

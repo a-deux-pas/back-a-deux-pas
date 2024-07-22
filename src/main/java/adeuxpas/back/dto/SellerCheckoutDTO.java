@@ -4,8 +4,7 @@ import java.util.List;
 
 public class SellerCheckoutDTO {
     private Long id;
-    private String bankAccountHolder;
-    private String bankAccountNumber;
+    private String bankAccountTokenId;
     private List<PreferredMeetingPlaceDTO> preferredMeetingPlaces;
     private List<PreferredScheduleDTO> preferredSchedules;
 
@@ -18,20 +17,12 @@ public class SellerCheckoutDTO {
         this.id = id;
     }
 
-    public String getBankAccountHolder() {
-        return bankAccountHolder;
+    public String getBankAccountTokenId() {
+        return bankAccountTokenId;
     }
 
-    public void setBankAccountHolder(String bankAccountHolder) {
-        this.bankAccountHolder = bankAccountHolder;
-    }
-
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public void setBankAccountTokenId(String bankAccountTokenId) {
+        this.bankAccountTokenId = bankAccountTokenId;
     }
 
     public List<PreferredMeetingPlaceDTO> getPreferredMeetingPlaces() {
