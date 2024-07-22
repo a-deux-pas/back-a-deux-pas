@@ -18,7 +18,6 @@ import java.util.List;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.entity.Ad;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
@@ -26,9 +25,6 @@ import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
 
 import org.springframework.http.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Controller class for handling ad-related endpoints.
@@ -47,7 +43,6 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api/ads")
 public class AdController {
-    private static final Logger logger = LoggerFactory.getLogger(CloudinaryService.class);
     private final AdService adService;
 
     /**
@@ -122,17 +117,15 @@ public class AdController {
      * front-end.
      *
      * @param adDto The AdDTO.
-     * @return The AdDTO.
+     * @return The AdDTO that'll be return to the front end.
      */
-    // TO DO :: à revoir (fix Cloudinary branch)
     @Operation(summary = "new Ad creation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful ad creation"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    // TO DO :: revoir doc
-    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/create")
     public ResponseEntity<Object> postAd(
             @RequestPart("adInfo") @Valid AdPostRequestDTO adDto,
             @RequestPart("adPicture-1") MultipartFile adPicture1,
@@ -156,11 +149,7 @@ public class AdController {
                 pictures.add(adPicture4);
             if (adPicture5 != null)
                 pictures.add(adPicture5);
-
-            logger.info("adDto in the controller: {}", adDto);
-            logger.info("pictures in the controller: {}", pictures);
-            // TODO :: modifier pour mettre 'HttpStatus.CREATED'
-            return ResponseEntity.ok(adService.postAd(adDto, pictures));
+            return ResponseEntity.status(HttpStatus.CREATED).body(adService.postAd(adDto, pictures));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {

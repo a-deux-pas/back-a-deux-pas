@@ -200,6 +200,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO, List<MultipartFile> articlePictures) {
+        // savedAd publisher: null
         Optional<User> optionalUser = userRepository.findById(adPostRequestDTO.getPublisherId());
         if (!optionalUser.isPresent()) {
             throw new UsernameNotFoundException("Publisher not found");
@@ -219,36 +220,36 @@ public class AdServiceImpl implements AdService {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to upload article picture", e);
             }
+            // TO DO :: checker comment faire le lien entre cette expection et le message
+            // d'erreur coresspondant dans le front
         }
         adPostRequestDTO.setArticlePictures(articlePictureUrls);
-        logger.info("DTO COMPLETED: {}", adPostRequestDTO);
-
-        // Ad newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
-        // logger.info("newAd mapped: {}", newAd);
-
-        Ad newAd;
-        try {
-            newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
-            logger.info("newAd mapped: {}", newAd);
-        } catch (Exception e) {
-            logger.error("Error during mapping: ", e);
-            throw new RuntimeException("Failed to map DTO to Ad", e);
-        }
-
+        Ad newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
+        newAd.setPublisher(publisher);
+        newAd.setCreationDate(LocalDateTime.now());
         for (String url : articlePictureUrls) {
             ArticlePicture articlePicture = new ArticlePicture();
             articlePicture.setUrl(url);
             articlePicture.setAd(newAd);
             newAd.addArticlePicture(articlePicture);
         }
-        logger.info("newAd in the service: {}", newAd);
-
-        Ad savedAd = adRepository.save(newAd);
-        logger.info("savedAd: {}", savedAd);
-        return adMapper.adToAdPostResponseDTO(savedAd);
+        Ad savedAd;
+        try {
+            savedAd = adRepository.save(newAd);
+        } catch (Exception e) {
+            logger.error("Error during saving Ad to repository: ", e);
+            throw new RuntimeException("Failed to save Ad", e);
+        }
+        AdPostResponseDTO responseDTO;
+        try {
+            responseDTO = adMapper.adToAdPostResponseDTO(savedAd);
+        } catch (Exception e) {
+            logger.error("Error during mapping savedAd to AdPostResponseDTO: ", e);
+            throw new RuntimeException("Failed to map Ad to ResponseDTO", e);
+        }
+        return responseDTO;
     }
 
-    // TO DO :: (fix cloudinary branch) should return an adDetail / adCard ?
     /**
      * Retrieves an ad information by a its id
      *

@@ -11,9 +11,6 @@ import jakarta.validation.Valid;
 
 import java.util.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/account")
 @RestController
 public class AccountController {
-    private static final Logger logger = LoggerFactory.getLogger(CloudinaryService.class);
     private final UserService userService;
 
     /**
@@ -65,19 +61,11 @@ public class AccountController {
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            logger.info("in the controller: {}", profileDto);
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
         try {
-            System.out.println("Profile Info: " + profileDto);
-            System.out.println("Profile Picture: " + profilePicture.getOriginalFilename());
-
-            logger.info("profileDto file with name: {}", profileDto);
-            logger.info("profilePicture file with name: {}", profilePicture.getOriginalFilename());
-            logger.info("profilePicture size: {} bytes", profilePicture.getSize());
-            logger.info("profilePicture content type: {}", profilePicture.getContentType());
             userService.createProfile(profileDto, profilePicture);
             return ResponseEntity.ok("Profile saved successfully");
         } catch (Exception e) {

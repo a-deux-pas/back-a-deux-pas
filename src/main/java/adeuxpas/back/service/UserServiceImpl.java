@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import adeuxpas.back.datainit.seeder.PreferredMeetingPlaceSeeder;
 import adeuxpas.back.dto.NotificationDTO;
-import adeuxpas.back.dto.PictureDTO;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
 import adeuxpas.back.dto.SellerHomeResponseDTO;
@@ -118,7 +117,6 @@ public class UserServiceImpl implements UserService {
     public void createProfile(UserProfileRequestDTO profileDto, MultipartFile profilePicture) {
         Long userId = Long.parseLong(profileDto.getId());
         Optional<User> optionalUser = userRepository.findById(userId);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             User alias = findUserByAlias(profileDto.getAlias()).orElse(null);
@@ -126,9 +124,7 @@ public class UserServiceImpl implements UserService {
                 throw new IllegalArgumentException(
                         "A user with alias '" + profileDto.getAlias() + "' already exists");
             }
-
             String publicId = "profilePicture-" + profileDto.getAlias();
-
             if (profilePicture != null) {
                 try {
                     Map<String, Object> profilePictureObject = cloudinaryService
@@ -139,10 +135,8 @@ public class UserServiceImpl implements UserService {
                     throw new RuntimeException("Failed to upload profile picture", e);
                 }
             }
-
             userMapper.mapProfileUserToUser(profileDto, user);
             userRepository.save(user);
-
             List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
             preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
                     .map(userMapper::mapDTOtoPreferredMeetingPlace)

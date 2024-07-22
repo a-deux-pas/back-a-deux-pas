@@ -4,26 +4,19 @@ import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
-import adeuxpas.back.service.CloudinaryService;
 import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.ArticlePictureDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Mapper interface for mapping Ad entities to DTOs (Data Transfer Objects).
@@ -46,11 +39,6 @@ import org.slf4j.LoggerFactory;
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface AdMapper {
-    Logger LOGGER = LoggerFactory.getLogger(AdMapper.class);
-
-    default Logger getLogger() {
-        return LoggerFactory.getLogger(AdMapper.class);
-    }
 
     /**
      * Maps an ad entity to an AdCardResponseDTO
@@ -64,22 +52,21 @@ public interface AdMapper {
     @Mapping(source = "publisher.id", target = "publisherId")
     AdCardResponseDTO adToAdCardResponseDTO(Ad ad);
 
-    // TO DO: à virer? (fix cloudinary branch)
-    /**
-     * Maps an ad entity to an adPostResponseDTO
-     * 
-     * @param ad
-     * @return adPostResponseDTO
-     * @see AdPostResponseDTO
-     */
-    // @Mapping(source = "articlePictures", target = "articlePictures")
-    @Mapping(target = "articlePictures", ignore = true)
+    // TO DO: ecrire doc
+    @Mapping(target = "articlePictures", qualifiedByName = "convertArticlePicturesToUrls")
     @Mapping(source = "creationDate", target = "creationDate", qualifiedByName = "convertDateToString")
     @Mapping(source = "publisher.id", target = "publisherId")
     @Mapping(source = "publisher.alias", target = "publisherAlias")
     @Mapping(source = "publisher.city", target = "publisherCity")
     @Mapping(source = "publisher.inscriptionDate", target = "publisherInscriptionDate", qualifiedByName = "convertDateToString")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
+
+    @Named("convertArticlePicturesToUrls")
+    default List<String> convertArticlePicturesToUrls(List<ArticlePicture> pictures) {
+        return pictures != null ? pictures.stream()
+                .map(ArticlePicture::getUrl)
+                .collect(Collectors.toList()) : null;
+    }
 
     /**
      * Gets the first article picture's url
@@ -112,8 +99,9 @@ public interface AdMapper {
      * @param adPostDto
      * @return
      */
-    @Mapping(source = "publisherId", target = "publisher.id")
+    @Mapping(target = "publisher", ignore = true)
     @Mapping(target = "articlePictures", ignore = true)
+    @Mapping(target = "creationDate", ignore = true)
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
 
     // /**

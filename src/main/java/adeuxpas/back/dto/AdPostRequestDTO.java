@@ -1,6 +1,7 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +27,6 @@ public class AdPostRequestDTO {
     @NotBlank
     private String articleDescription;
     @NotNull
-    private Date creationDate;
-    @NotNull
     @Positive
     private BigDecimal price;
     @NotBlank
@@ -36,7 +35,7 @@ public class AdPostRequestDTO {
     private String subcategory;
     private String articleGender;
     @NotNull
-    private Long publisherId;
+    private long publisherId;
     @NotBlank
     private String articleState;
     private List<String> articlePictures;
@@ -68,13 +67,13 @@ public class AdPostRequestDTO {
         this.articleState = articleState;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
+    // public LocalDateTime getCreationDate() {
+    // return creationDate;
+    // }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
+    // public void setCreationDate(LocalDateTime creationDate) {
+    // this.creationDate = creationDate;
+    // }
 
     public BigDecimal getPrice() {
         return price;
@@ -143,7 +142,6 @@ public class AdPostRequestDTO {
         return "AdPostRequestDTO{" +
                 "title='" + title + '\'' +
                 ", articleDescription='" + articleDescription + '\'' +
-                ", creationDate='" + creationDate + '\'' +
                 ", price=" + price +
                 ", category='" + category + '\'' +
                 ", subcategory='" + subcategory + '\'' +

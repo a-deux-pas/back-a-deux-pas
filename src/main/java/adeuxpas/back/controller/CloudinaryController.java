@@ -1,8 +1,5 @@
 package adeuxpas.back.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
@@ -34,8 +31,6 @@ import adeuxpas.back.service.ImageService;
 @RequestMapping("api/cloudinary")
 public class CloudinaryController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CloudinaryController.class);
-
     private final CloudinaryService cloudinaryService;
     private final ImageService imageService;
 
@@ -46,12 +41,7 @@ public class CloudinaryController {
         this.imageService = imageService;
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<Image>> list() {
-        List<Image> list = imageService.list();
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-
+    // TO DO :: check si j'ai besoin de l'objecr IMAGE
     @PostMapping("/upload/{type}")
     @ResponseBody
     public ResponseEntity<Object> upload(@PathVariable String type,
@@ -109,21 +99,22 @@ public class CloudinaryController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        Optional<Image> imageOptional = imageService.getOne(id);
-        if (imageOptional.isEmpty()) {
-            return new ResponseEntity<>("doesn't exist", HttpStatus.NOT_FOUND);
-        }
-        Image image = imageOptional.get();
-        String cloudinaryImageId = image.getImageId();
-        try {
-            cloudinaryService.delete(cloudinaryImageId);
-        } catch (IOException e) {
-            return new ResponseEntity<>("Failed to delete image from Cloudinary", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        imageService.delete(id);
-        return new ResponseEntity<>("image has been deleted !", HttpStatus.OK);
-    }
+    // @DeleteMapping("/delete/{id}")
+    // public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+    // Optional<Image> imageOptional = imageService.getOne(id);
+    // if (imageOptional.isEmpty()) {
+    // return new ResponseEntity<>("doesn't exist", HttpStatus.NOT_FOUND);
+    // }
+    // Image image = imageOptional.get();
+    // String cloudinaryImageId = image.getImageId();
+    // try {
+    // cloudinaryService.delete(cloudinaryImageId);
+    // } catch (IOException e) {
+    // return new ResponseEntity<>("Failed to delete image from Cloudinary",
+    // HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
+    // imageService.delete(id);
+    // return new ResponseEntity<>("image has been deleted !", HttpStatus.OK);
+    // }
 
 }
