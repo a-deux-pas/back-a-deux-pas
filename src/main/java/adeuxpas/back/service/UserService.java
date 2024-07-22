@@ -2,7 +2,6 @@ package adeuxpas.back.service;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.SellerHomeResponseDTO;
 import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.UserProfileRequestDTO;
@@ -54,12 +53,12 @@ public interface UserService {
     void createProfile(UserProfileRequestDTO profileDto, MultipartFile profilePicture);
 
     /**
-     * Abstract method that attempts to find the user info with its ID.
+     * Abstract method that attempts to find the user info with its alias.
      * 
-     * @param userId The user ID used in the search.
+     * @param userAlias The user's alias.
      * @return the profile information of the user.
      */
-    UserProfileResponseDTO findUserProfileInfoById(long userId);
+    UserProfileResponseDTO findUserProfileInfoByAlias(String userAlias);
 
     /**
      * Abstract method that attempts to find preferred schedule of an user.
@@ -97,7 +96,7 @@ public interface UserService {
      * code as the user.
      * 
      * @param userId the user's ID.
-     * @return a list of SellerHomeResponseDTO.
+     * @return a list of UserProfileResponseDTO.
      */
-    List<SellerHomeResponseDTO> getSellersNearby(long userId);
+    List<UserProfileResponseDTO> getSellersNearby(long userId);
 }

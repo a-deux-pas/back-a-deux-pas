@@ -73,13 +73,13 @@ public class UserController {
     }
 
     /**
-     * Endpoint to access the user's alias.
+     * Endpoint to access the user's alias and location.
      *
      * @param id the user ID
      * @return a ResponseEntity with the user's alias, city and postal code.
      *         or a 500 Internal Server Error response if an exception occurs.
      */
-    @Operation(summary = "Retrieves user's alias")
+    @Operation(summary = "Retrieves a user's alias and location")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of sellers"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -88,6 +88,27 @@ public class UserController {
     public ResponseEntity<Object> getUserAliasAndLocation(@PathVariable long id) {
         try {
             return ResponseEntity.ok(this.userService.getUserAliasAndLocation(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint to access a user's profile information.
+     *
+     * @param userAlias The user Alias.
+     * @return a ResponseEntity with the user profile information if successful,
+     *         or a 500 Internal Server Error response if an exception occurs.
+     */
+    @Operation(summary = "User's profile information")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of user profile information"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/{userAlias}/presentation")
+    public ResponseEntity<Object> getUserInformation(@PathVariable String userAlias) {
+        try {
+            return ResponseEntity.ok(userService.findUserProfileInfoByAlias(userAlias));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

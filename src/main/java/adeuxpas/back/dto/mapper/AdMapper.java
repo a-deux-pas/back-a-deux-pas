@@ -57,6 +57,7 @@ public interface AdMapper {
     @Mapping(source = "creationDate", target = "creationDate", qualifiedByName = "convertDateToString")
     @Mapping(source = "publisher.id", target = "publisherId")
     @Mapping(source = "publisher.alias", target = "publisherAlias")
+    @Mapping(source = "publisher.email", target = "publisherEmail")
     @Mapping(source = "publisher.city", target = "publisherCity")
     @Mapping(source = "publisher.inscriptionDate", target = "publisherInscriptionDate", qualifiedByName = "convertDateToString")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);

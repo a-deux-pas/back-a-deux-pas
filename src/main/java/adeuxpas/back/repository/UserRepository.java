@@ -74,5 +74,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return A list containing up to 5 users if found.
      */
     @Query("SELECT u FROM User u WHERE u.postalCode = :postalCode AND u.id <> :userId")
-    List<User> findFirst5ByPostalCode(@Param("postalCode") String postalCode, @Param("userId") long userId);
+    List<User> findFirst5ByPostalCode(
+            @Param("postalCode") String postalCode,
+            @Param("userId") long userId);
 }

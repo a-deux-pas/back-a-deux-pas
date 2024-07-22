@@ -9,7 +9,6 @@ import org.mapstruct.*;
 
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.SellerHomeResponseDTO;
 import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.UserProfileRequestDTO;
@@ -166,12 +165,4 @@ public interface UserMapper {
      * @return The mapped UserAliasAndLocationResponseDTO.
      */
     UserAliasAndLocationResponseDTO userToAliasAndLocationDTO(User user);
-
-    /**
-     * Maps a user entity to a SellerHomeResponseDTO.
-     *
-     * @param user The user to be mapped.
-     * @return The mapped SellerHomeResponseDTO.
-     */
-    SellerHomeResponseDTO userToSellerHomeResponseDTO(User user);
 }

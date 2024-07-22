@@ -1,10 +1,7 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.lang.Nullable;
 
 import adeuxpas.back.enums.AdStatus;
 import jakarta.validation.constraints.Size;
@@ -18,12 +15,14 @@ public class AdPostResponseDTO {
     private String creationDate;
     private Long publisherId;
     private String publisherAlias;
+    private String publisherEmail;
     private String publisherInscriptionDate;
     private String publisherCity;
     private AdStatus status;
     private String articleDescription;
     private String articleState;
     private String category;
+    private boolean isFavorite;
 
     public Long getId() {
         return id;
@@ -71,6 +70,14 @@ public class AdPostResponseDTO {
 
     public void setPublisherId(Long publisher) {
         this.publisherId = publisher;
+    }
+
+    public String getPublisherEmail() {
+        return publisherEmail;
+    }
+
+    public void setPublisherEmail(String publisherEmail) {
+        this.publisherEmail = publisherEmail;
     }
 
     public AdStatus getStatus() {
@@ -127,5 +134,13 @@ public class AdPostResponseDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 }
