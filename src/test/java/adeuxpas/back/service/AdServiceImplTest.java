@@ -56,7 +56,9 @@ class AdServiceImplTest {
                         "Très bon état",
                         "Bon état", "Satisfaisant");
         private final List<String> citiesAndPostalCodes = new ArrayList<>();
-        private final Pageable pageable = PageRequest.of(0, 8);
+        private int pageNumber = 0;
+        private int pageSize = 8;
+        private final Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
         @Captor
         private ArgumentCaptor<List<String>> postalCodesCaptor;
@@ -102,7 +104,7 @@ class AdServiceImplTest {
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Long, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Long, int, int)}
          * method with no filters applied.
          * </p>
          */
@@ -114,7 +116,7 @@ class AdServiceImplTest {
 
                 // Act
                 adService.findFilteredAdCardResponseDTOs(new ArrayList<>(), new ArrayList<>(),
-                                new ArrayList<>(), "Catégorie", null, pageable);
+                                new ArrayList<>(), "Catégorie", null, pageNumber, pageSize);
 
                 // Assert :
                 // that this method was called by the repository mock inside the tested filter
@@ -134,7 +136,7 @@ class AdServiceImplTest {
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, int, int)}
          * method with all filters applied, except category.
          * </p>
          */
@@ -146,7 +148,7 @@ class AdServiceImplTest {
 
                 // Act
                 adService.findFilteredAdCardResponseDTOs(priceRanges, citiesAndPostalCodes,
-                                articleStates, "Catégorie", null, pageable);
+                                articleStates, "Catégorie", null, pageNumber, pageSize);
 
                 // Assert:
                 // that this method was called inside the tested filter method
@@ -186,7 +188,7 @@ class AdServiceImplTest {
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, int, int)}
          * method with all filters, including category, applied.
          * </p>
          */
@@ -199,7 +201,7 @@ class AdServiceImplTest {
                 // Act
                 adService.findFilteredAdCardResponseDTOs(List.of(priceRanges.getFirst()),
                                 List.of(citiesAndPostalCodes.getFirst()),
-                                List.of(articleStates.getFirst()), "Mode", null, pageable);
+                                List.of(articleStates.getFirst()), "Mode", null, pageNumber, pageSize);
 
                 // Assert:
                 // that this method was called inside the tested filter method
@@ -237,7 +239,7 @@ class AdServiceImplTest {
 
         /**
          * This method tests the
-         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, Pageable)}
+         * {@link AdServiceImpl#findFilteredAdCardResponseDTOs(List, List, List, String, int, int)}
          * method with all filters, including category, subcategory and gender, applied.
          * </p>
          */
@@ -250,7 +252,7 @@ class AdServiceImplTest {
                 // Act
                 adService.findFilteredAdCardResponseDTOs(List.of(priceRanges.getFirst()),
                                 List.of(citiesAndPostalCodes.getFirst()),
-                                List.of(articleStates.getFirst()), "Mode ▸ Hauts ▸ Homme", null, pageable);
+                                List.of(articleStates.getFirst()), "Mode ▸ Hauts ▸ Homme", null, pageNumber, pageSize);
 
                 // Assert:
                 // that this method was called inside the tested filter method
@@ -367,7 +369,7 @@ class AdServiceImplTest {
                 when(adMapperMock.adToAdCardResponseDTO(ad2)).thenReturn(dto2);
 
                 Page<AdCardResponseDTO> result = adService.findPageOfUserAdsList(publisherId,
-                                pageable, loggedInUserId, adId);
+                                pageNumber, pageSize, loggedInUserId, adId);
 
                 assertEquals(2, result.getNumberOfElements());
                 assertEquals(dto1, result.getContent().get(0));
