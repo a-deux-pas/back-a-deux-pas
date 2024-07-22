@@ -37,6 +37,7 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
     private final ArticlePictureSeeder articlePictureSeeder;
     private final PreferredScheduleSeeder preferredScheduleSeeder;
     private final PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder;
+    private final MeetingSeeder meetingSeeder;
 
     /**
      * Constructor for CmdLineSeedDatabase.
@@ -45,17 +46,20 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
      * @param adSeeder
      * @param preferredScheduleSeeder
      * @param preferredMeetingPlaceSeeder
+     * @param meetingSeeder
      */
     public CmdLineSeedDatabase(@Autowired UserSeeder userSeeder,
-            @Autowired AdSeeder adSeeder,
-            @Autowired ArticlePictureSeeder articlePictureSeeder,
-            @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
-            @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder) {
+                               @Autowired AdSeeder adSeeder,
+                               @Autowired ArticlePictureSeeder articlePictureSeeder,
+                               @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
+                               @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder,
+                               @Autowired MeetingSeeder meetingSeeder){
         this.userSeeder = userSeeder;
         this.adSeeder = adSeeder;
         this.articlePictureSeeder = articlePictureSeeder;
         this.preferredScheduleSeeder = preferredScheduleSeeder;
         this.preferredMeetingPlaceSeeder = preferredMeetingPlaceSeeder;
+        this.meetingSeeder = meetingSeeder;
     }
 
     /**
@@ -81,5 +85,8 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
             // Seeds the database with users preferred meeting places
             this.preferredMeetingPlaceSeeder.generatePreferredMeetingPlacesForUser(user);
         }
+
+        // Seed meetings
+        this.meetingSeeder.seedMeetings();
     }
 }
