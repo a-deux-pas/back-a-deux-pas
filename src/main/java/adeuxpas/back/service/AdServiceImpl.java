@@ -9,8 +9,6 @@ import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
-// TODO :: pas sûre d'avoir besoin de ce DTO 
-import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 import adeuxpas.back.repository.UserRepository;

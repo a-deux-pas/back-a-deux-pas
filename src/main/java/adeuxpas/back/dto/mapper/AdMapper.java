@@ -5,14 +5,12 @@ import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.dto.AdPostResponseDTO;
-import adeuxpas.back.dto.ArticlePictureDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -37,8 +35,6 @@ import org.mapstruct.ReportingPolicy;
  * </p>
  *
  */
-// TO DO :: checker si j'ai besoin de collectionMappingStrategy =
-// CollectionMappingStrategy.ADDER_PREFERRED
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdMapper {
 
@@ -118,21 +114,4 @@ public interface AdMapper {
     @Mapping(target = "articlePictures", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
-
-    // TO DO : ces deux dernieres methodes seront certainement à virer
-    /**
-     * Maps an article picture dto into an article picture entity
-     * 
-     * @param articlePictureDTO
-     * @return
-     */
-    ArticlePicture articlePictureDTOToArticlePicture(ArticlePictureDTO articlePictureDTO);
-
-    /**
-     * Maps an article picture entity into an article picture dto
-     * 
-     * @param articlePicture
-     * @return
-     */
-    ArticlePictureDTO articlePictureToArticlePictureDTO(ArticlePicture articlePicture);
 }

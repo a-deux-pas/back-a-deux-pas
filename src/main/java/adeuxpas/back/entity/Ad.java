@@ -1,6 +1,5 @@
 package adeuxpas.back.entity;
 
-import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.enums.AdStatus;
 import jakarta.persistence.*;
 import java.math.BigDecimal;

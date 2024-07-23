@@ -2,7 +2,6 @@ package adeuxpas.back.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.mapper.AdMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,17 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
-import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UserRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

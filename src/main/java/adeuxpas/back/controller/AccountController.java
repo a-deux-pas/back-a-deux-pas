@@ -1,7 +1,6 @@
 package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.UserProfileRequestDTO;
-import adeuxpas.back.service.CloudinaryService;
 import adeuxpas.back.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,14 +53,11 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    // TODO :: checker si j'ai besoin de , consumes =
-    // MediaType.MULTIPART_FORM_DATA_VALUE
     @PatchMapping(value = "/create")
     public ResponseEntity<Object> createProfile(
             @RequestPart("profileInfo") @Valid UserProfileRequestDTO profileDto,
             @RequestPart("profilePicture") MultipartFile profilePicture,
             BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
