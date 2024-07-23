@@ -18,21 +18,21 @@ import java.util.Optional;
 public interface AuthenticationService {
 
     /**
+     * Abstract method that attempts to check if address mail exists and if password
+     * matches with the address mail.
+     * 
+     * @param credentialsRequestDTO The user credentials.
+     * @return true if the credentials are correct.
+     */
+    Boolean checkCredentials(CredentialsRequestDTO credentialsRequestDTO);
+
+    /**
      * Abstract method that attempts to check if an email already exist.
      * 
      * @param email The email to check.
      * @return true if the email address already exists.
      */
     Boolean checkIfEmailAlreadyExist(String email);
-
-    /**
-     * Abstract method that attempts to check if a password matches
-     * with a user address email.
-     * 
-     * @param credentialsRequestDTO The user credentials.
-     * @return true if the password is correct.
-     */
-    Boolean checkIfPasswordMatchesWithEmail(CredentialsRequestDTO credentialsRequestDTO);
 
     /**
      * Abstract method that attempts to check if an alias already exist.

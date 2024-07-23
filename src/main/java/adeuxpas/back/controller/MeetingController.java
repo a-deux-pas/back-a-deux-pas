@@ -41,6 +41,7 @@ public class MeetingController {
     public List<MeetingDTO> getMeetingsBySellerId(@PathVariable Long id) {
         return meetingService.getMeetingsBySellerId(id);
     }
+
     @GetMapping("/planned/{id}")
     public List<MeetingDTO> getAcceptedMeetingsBySellerId(@PathVariable Long id) {
         return meetingService.getAcceptedMeetingsBySellerId(id);
