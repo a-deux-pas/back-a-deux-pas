@@ -16,9 +16,7 @@ import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UserRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 
-import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
