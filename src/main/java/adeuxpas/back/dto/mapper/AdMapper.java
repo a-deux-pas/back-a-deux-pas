@@ -37,7 +37,9 @@ import org.mapstruct.ReportingPolicy;
  * </p>
  *
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
+// TO DO :: checker si j'ai besoin de collectionMappingStrategy =
+// CollectionMappingStrategy.ADDER_PREFERRED
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdMapper {
 
     /**
@@ -52,7 +54,12 @@ public interface AdMapper {
     @Mapping(source = "publisher.id", target = "publisherId")
     AdCardResponseDTO adToAdCardResponseDTO(Ad ad);
 
-    // TO DO: ecrire doc
+    /**
+     * Maps an ad entity into an adPostResponse DTO
+     * 
+     * @param ad
+     * @return
+     */
     @Mapping(target = "articlePictures", qualifiedByName = "convertArticlePicturesToUrls")
     @Mapping(source = "creationDate", target = "creationDate", qualifiedByName = "convertDateToString")
     @Mapping(source = "publisher.id", target = "publisherId")
@@ -62,6 +69,13 @@ public interface AdMapper {
     @Mapping(source = "publisher.inscriptionDate", target = "publisherInscriptionDate", qualifiedByName = "convertDateToString")
     AdPostResponseDTO adToAdPostResponseDTO(Ad ad);
 
+    /**
+     * Gets all the article picture objects from the Ad entity and retrieves their
+     * urls
+     * 
+     * @param pictures
+     * @return a list of string
+     */
     @Named("convertArticlePicturesToUrls")
     default List<String> convertArticlePicturesToUrls(List<ArticlePicture> pictures) {
         return pictures != null ? pictures.stream()
@@ -87,7 +101,7 @@ public interface AdMapper {
      * Convert a date to a string
      * 
      * @param date
-     * @return
+     * @return a string returning the date under the dd/MM/yyyy format
      */
     @Named("convertDateToString")
     default String dateToString(LocalDateTime date) {
@@ -98,22 +112,14 @@ public interface AdMapper {
      * Maps an adPostRequest DTO into an ad entity
      *
      * @param adPostDto
-     * @return
+     * @return an Ad entity
      */
     @Mapping(target = "publisher", ignore = true)
     @Mapping(target = "articlePictures", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
 
-    // /**
-    // * Maps ad entity into an an adPostRequest DTO
-    // *
-    // * @param ad
-    // * @return
-    // */
-    // @Mapping(source = "publisher.id", target = "publisherId")
-    // AdPostRequestDTO adToAdPostRequestDTO(Ad ad);
-
+    // TO DO : ces deux dernieres methodes seront certainement à virer
     /**
      * Maps an article picture dto into an article picture entity
      * 

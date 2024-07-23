@@ -37,23 +37,26 @@ public class CloudinaryService {
         cloudinary = new Cloudinary(valuesMap);
     }
 
-    // TODO ::Voir comment je peux operer des transformation differentes en fonction
-    // de si
-    // je recois un ap ou une pp
     @SuppressWarnings("unchecked")
     public Map<String, Object> upload(String publicId, MultipartFile multipartFile) throws IOException {
-        logger.info("Received file with name: {}", multipartFile.getOriginalFilename());
-        logger.info("File size: {} bytes", multipartFile.getSize());
-        logger.info("File content type: {}", multipartFile.getContentType());
         File file = convert(multipartFile);
-
         try {
+            Transformation<?> transformation;
+            if (publicId.startsWith("profilePicture")) {
+                System.out.println("profilePicturetoUpload");
+                transformation = new Transformation<>()
+                        .gravity("face")
+                        .height(208).width(208).crop("fill").quality("auto")
+                        .radius("max").chain()
+                        .fetchFormat("webp");
+            } else {
+                transformation = new Transformation<>()
+                        .height(400).width(600).crop("fill").quality("auto")
+                        .fetchFormat("webp");
+            }
             Map<String, Object> result = cloudinary.uploader().upload(file,
                     ObjectUtils.asMap(
-                            "transformation", new Transformation()
-                                    .gravity("face")
-                                    .height(400).width(600).crop("fill").quality("auto")
-                                    .fetchFormat("webp"),
+                            "transformation", transformation,
                             "public_id", publicId));
             if (!Files.deleteIfExists(file.toPath())) {
                 throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());
@@ -65,9 +68,9 @@ public class CloudinaryService {
         }
     }
 
-    public Map delete(String id) throws IOException {
-        return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
-    }
+    // public Map delete(String id) throws IOException {
+    // return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
+    // }
 
     private File convert(MultipartFile multipartFile) throws IOException {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));

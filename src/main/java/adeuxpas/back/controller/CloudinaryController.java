@@ -47,17 +47,11 @@ public class CloudinaryController {
     public ResponseEntity<Object> upload(@PathVariable String type,
             @RequestParam("multipartFile") MultipartFile multipartFile) {
         try {
-            // Logging information about the received file
-            System.out.println("Received file with name: " + multipartFile.getOriginalFilename());
-            System.out.println("File size: " + multipartFile.getSize() + " bytes");
-            System.out.println("File content type: " + multipartFile.getContentType());
-
             // Check if the uploaded file is a valid image
             BufferedImage bi = ImageIO.read(multipartFile.getInputStream());
             if (bi == null) {
                 return ResponseEntity.badRequest().body("The uploaded file is not a valid image.");
             }
-
             // Upload the file to Cloudinary
             Map<String, Object> result = cloudinaryService.upload(type, multipartFile);
 
@@ -66,9 +60,6 @@ public class CloudinaryController {
                     (String) result.get("url"),
                     (String) result.get("public_id"));
             imageService.save(image);
-
-            System.out.println("url: " + result.get("url"));
-
             // Prepare response object with URL
             UploadResponse response = new UploadResponse("Image successfully uploaded.", (String) result.get("url"));
             return ResponseEntity.ok(response);

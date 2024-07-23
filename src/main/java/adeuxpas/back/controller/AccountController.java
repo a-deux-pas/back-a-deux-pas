@@ -54,7 +54,9 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PatchMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // TODO :: checker si j'ai besoin de , consumes =
+    // MediaType.MULTIPART_FORM_DATA_VALUE
+    @PatchMapping(value = "/create")
     public ResponseEntity<Object> createProfile(
             @RequestPart("profileInfo") @Valid UserProfileRequestDTO profileDto,
             @RequestPart("profilePicture") MultipartFile profilePicture,

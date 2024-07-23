@@ -39,7 +39,6 @@ public interface AdService {
         Page<AdCardResponseDTO> findFilteredAdCardResponseDTOs(List<String> prices, List<String> cities,
                         List<String> articleStates, String category, Long loggedInUserId, int pageNumber, int pageSize);
 
-        // TO DO :: revoir doc
         /**
          * Contract to post an ad.
          *

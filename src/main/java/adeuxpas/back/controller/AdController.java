@@ -2,7 +2,6 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
-import adeuxpas.back.service.CloudinaryService;
 
 import java.util.ArrayList;
 import java.util.HashMap;

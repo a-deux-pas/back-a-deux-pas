@@ -205,7 +205,7 @@ public class AdServiceImpl implements AdService {
         // savedAd publisher: null
         Optional<User> optionalUser = userRepository.findById(adPostRequestDTO.getPublisherId());
         if (!optionalUser.isPresent()) {
-            throw new UsernameNotFoundException("Invalid credentials");
+            throw new EntityNotFoundException("Invalid credentials");
         }
         User publisher = optionalUser.get();
         List<String> articlePictureUrls = new ArrayList<>();
