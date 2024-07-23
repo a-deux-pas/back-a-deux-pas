@@ -3,6 +3,7 @@ package adeuxpas.back.controller;
 import adeuxpas.back.dto.*;
 import adeuxpas.back.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class MeetingController {
      *
      * @param meetingService The MeetingService for meeting-related operations.
      */
-    @Autowired
-    public MeetingController(MeetingService meetingService) {
+
+    public MeetingController(@Autowired MeetingService meetingService) {
         this.meetingService = meetingService;
     }
 
@@ -49,5 +50,12 @@ public class MeetingController {
     @GetMapping("/toBeFinalized/{id}")
     public List<MeetingDTO> getDueMeetings(@PathVariable Long id) {
         return meetingService.getDueMeetings(id);
+    }
+
+    @PutMapping("/{id}/accept")
+    public ResponseEntity<MeetingDTO> acceptMeeting(@PathVariable Long id) {
+        return meetingService.acceptMeeting(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
