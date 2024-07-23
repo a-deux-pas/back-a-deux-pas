@@ -1,12 +1,8 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import adeuxpas.back.enums.AdStatus;
 import jakarta.validation.constraints.*;

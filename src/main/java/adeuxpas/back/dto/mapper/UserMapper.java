@@ -18,8 +18,6 @@ import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.EventNames;
 import adeuxpas.back.enums.WeekDays;
-import adeuxpas.back.service.CloudinaryService;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Mapper interface for mapping user-related entities to DTOs (Data Transfer

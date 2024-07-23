@@ -15,7 +15,6 @@ import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -200,7 +199,6 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO, List<MultipartFile> articlePictures) {
-        // savedAd publisher: null
         Optional<User> optionalUser = userRepository.findById(adPostRequestDTO.getPublisherId());
         if (!optionalUser.isPresent()) {
             throw new EntityNotFoundException("Invalid credentials");
@@ -220,8 +218,6 @@ public class AdServiceImpl implements AdService {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to upload article picture", e);
             }
-            // TO DO :: checker comment faire le lien entre cette expection et le message
-            // d'erreur coresspondant dans le front
         }
         adPostRequestDTO.setArticlePictures(articlePictureUrls);
         Ad newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);

@@ -1,9 +1,5 @@
 package adeuxpas.back.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import adeuxpas.back.datainit.seeder.PreferredMeetingPlaceSeeder;
 import adeuxpas.back.dto.NotificationDTO;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
@@ -42,7 +38,6 @@ import java.util.*;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    private final Logger logger = LoggerFactory.getLogger(PreferredMeetingPlaceSeeder.class);
     private final UserRepository userRepository;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
