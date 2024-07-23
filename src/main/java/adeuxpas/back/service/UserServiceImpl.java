@@ -5,7 +5,6 @@ import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
-import adeuxpas.back.repository.NotificationRepository;
 import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
@@ -34,7 +33,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
-    private final NotificationRepository notificationRepository;
     private final UserMapper userMapper;
 
     private static final String USER_NOT_FOUND_MESSAGE = "User with ID : %d not Found";
@@ -49,12 +47,10 @@ public class UserServiceImpl implements UserService {
             @Autowired UserRepository userRepository,
             @Autowired PreferredScheduleRepository preferredScheduleRepository,
             @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository,
-            @Autowired NotificationRepository notificationRepository,
             @Autowired UserMapper userMapper) {
         this.userRepository = userRepository;
         this.preferredScheduleRepository = preferredScheduleRepository;
         this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
-        this.notificationRepository = notificationRepository;
         this.userMapper = userMapper;
     }
 
@@ -111,22 +107,6 @@ public class UserServiceImpl implements UserService {
             }
             userMapper.mapProfileUserToUser(profileDto, user);
             userRepository.save(user);
-            List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
-            preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
-                    .map(userMapper::mapDTOtoPreferredMeetingPlace)
-                    .toList());
-
-            List<PreferredScheduleDTO> preferredSchedulesDTO = profileDto.getPreferredSchedules();
-            preferredScheduleRepository.saveAll(preferredSchedulesDTO.stream()
-                    .map(userMapper::mapDTOtoPreferredSchedule)
-                    .toList());
-
-            List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
-            if (notificationsDTO != null) {
-                notificationRepository.saveAll(notificationsDTO.stream()
-                        .map(userMapper::mapDTOtoNotification)
-                        .toList());
-            }
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
@@ -250,7 +230,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<UserAliasAndLocationResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
-        return users.stream().map(userMapper::userToAliasAndLocationDTO).collect(Collectors.toSet());
+        return users.stream()
+                .filter(user -> user.getPostalCode() != null || user.getCity() != null)
+                .map(userMapper::userToAliasAndLocationDTO)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -262,8 +245,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserAliasAndLocationResponseDTO getUserAliasAndLocation(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.get();
         if (optionalUser.isPresent()) {
-            return userMapper.userToAliasAndLocationDTO(optionalUser.get());
+            boolean isExistingLocationWithAds = userRepository
+                    .existsUsersWithAdsByPostalCode(user.getPostalCode());
+            UserAliasAndLocationResponseDTO dto = userMapper.userToAliasAndLocationDTO(user);
+            dto.setIsExistingLocationWithAds(isExistingLocationWithAds);
+            return dto;
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
