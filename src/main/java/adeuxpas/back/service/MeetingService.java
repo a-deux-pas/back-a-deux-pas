@@ -25,4 +25,6 @@ public interface MeetingService {
     List<MeetingDTO> getAcceptedMeetingsBySellerId(Long id);
 
     List<MeetingDTO> getDueMeetings(Long id);
+
+    void initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
 }

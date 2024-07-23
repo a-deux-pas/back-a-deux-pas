@@ -2,10 +2,17 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.*;
 import adeuxpas.back.service.MeetingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * REST controller for managing meetings.
@@ -49,5 +56,22 @@ public class MeetingController {
     @GetMapping("/toBeFinalized/{id}")
     public List<MeetingDTO> getDueMeetings(@PathVariable Long id) {
         return meetingService.getDueMeetings(id);
+    }
+
+    @PostMapping("/initialize")
+    public ResponseEntity<Object> initializeMeeting(@RequestBody @Valid ProposedMeetingRequestDTO meetingRequestDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        }
+        try {
+            meetingService.initializeMeeting(meetingRequestDTO);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Meeting created successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create meeting : error occurred in the meeting service");
+        }
     }
 }

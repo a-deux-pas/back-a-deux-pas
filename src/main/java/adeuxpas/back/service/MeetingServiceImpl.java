@@ -2,15 +2,20 @@ package adeuxpas.back.service;
 
 import adeuxpas.back.dto.*;
 import adeuxpas.back.dto.mapper.*;
+import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.Meeting;
 import adeuxpas.back.enums.MeetingStatus;
+import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Implementation class for the MeetingService interface.
@@ -26,6 +31,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
     private final MeetingMapper meetingMapper;
+    private final AdRepository adRepository;
 
     /**
      * Constructor for MeetingServiceImpl.
@@ -34,9 +40,10 @@ public class MeetingServiceImpl implements MeetingService {
      * @param meetingMapper The MeetingMapper for converting entities to DTOs.
      */
     @Autowired
-    public MeetingServiceImpl(MeetingRepository meetingRepository, MeetingMapper meetingMapper) {
+    public MeetingServiceImpl(MeetingRepository meetingRepository, MeetingMapper meetingMapper, AdRepository adRepository) {
         this.meetingRepository = meetingRepository;
         this.meetingMapper = meetingMapper;
+        this.adRepository = adRepository;
     }
 
     /**
@@ -76,5 +83,20 @@ public class MeetingServiceImpl implements MeetingService {
         return meetings.stream()
                 .map(meetingMapper::meetingToMeetingDTO)
                 .toList();
+    }
+
+    @Override
+    public void initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO) {
+        Meeting meeting = meetingMapper.proposedMeetingRequestDTOToMeeting(meetingRequestDTO);
+
+        Optional<Ad> optionalAd = adRepository.findById(meetingRequestDTO.adId);
+        if(optionalAd.isPresent()){
+            Set<Ad> ads = new HashSet<>();
+            ads.add(optionalAd.get());
+            meeting.setAds(ads);
+        }
+        meeting.setStatus(MeetingStatus.INITIALIZED);
+
+        meetingRepository.save(meeting);
     }
 }
