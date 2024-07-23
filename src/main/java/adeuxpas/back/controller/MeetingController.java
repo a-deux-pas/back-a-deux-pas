@@ -21,7 +21,8 @@ public class MeetingController {
      *
      * @param meetingService The MeetingService for meeting-related operations.
      */
-    public MeetingController(@Autowired MeetingService meetingService) {
+    @Autowired
+    public MeetingController(MeetingService meetingService) {
         this.meetingService = meetingService;
     }
 

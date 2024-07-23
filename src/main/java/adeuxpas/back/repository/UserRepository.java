@@ -60,16 +60,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
         Optional<User> findByAlias(String alias);
 
         /**
-         * Checks if there are at least two users who have posted ads and live in the
+         * Checks if there are users who have posted ads and live in the
          * specified postal code.
          *
          * @param postalCode The postal code of the user.
          * @return if there are at least two users with ads, false otherwise.
          */
-        @Query("SELECT CASE WHEN COUNT(DISTINCT u.id) >= 2 THEN true ELSE false END " +
+        @Query("SELECT COUNT(DISTINCT u.id) > 0 " +
                         "FROM User u JOIN Ad a ON a.publisher.id = u.id " +
-                        "WHERE u.postalCode = :postalCode AND a.id IS NOT NULL")
-        boolean existsAtLeastTwoUsersByPostalCodeWithAds(@Param("postalCode") String postalCode);
+                        "WHERE u.postalCode = :postalCode")
+        boolean existsUsersWithAdsByPostalCode(@Param("postalCode") String postalCode);
 
         /**
          * Retrieves a list of up to 5 users from the database by their postal code,

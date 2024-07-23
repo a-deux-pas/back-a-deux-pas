@@ -234,7 +234,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<UserAliasAndLocationResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
-        return users.stream().map(userMapper::userToAliasAndLocationDTO).collect(Collectors.toSet());
+        return users.stream()
+                .filter(user -> user.getPostalCode() != null || user.getCity() != null)
+                .map(userMapper::userToAliasAndLocationDTO)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -249,7 +252,7 @@ public class UserServiceImpl implements UserService {
         User user = optionalUser.get();
         if (optionalUser.isPresent()) {
             boolean isExistingLocationWithAds = userRepository
-                    .existsAtLeastTwoUsersByPostalCodeWithAds(user.getPostalCode());
+                    .existsUsersWithAdsByPostalCode(user.getPostalCode());
             UserAliasAndLocationResponseDTO dto = userMapper.userToAliasAndLocationDTO(user);
             dto.setIsExistingLocationWithAds(isExistingLocationWithAds);
             return dto;
