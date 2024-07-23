@@ -319,7 +319,7 @@ public class MeetingSeeder {
         // Planned
         Meeting twentyfirstMeeting = new Meeting();
         twentyfirstMeeting.setBuyer(buyer4);// Erika == user
-        twentyfirstMeeting.setSeller(seller5);// eri
+        twentyfirstMeeting.setSeller(seller7);// eri
         twentyfirstMeeting.setMeetingPlace(meetingPlace3);
         twentyfirstMeeting.setDate(LocalDateTime.now().plusDays(3));
         twentyfirstMeeting.setStatus(MeetingStatus.ACCEPTED);
