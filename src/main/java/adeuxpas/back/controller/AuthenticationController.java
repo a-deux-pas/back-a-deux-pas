@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Mircea Bardan
  */
 
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @RestController
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
