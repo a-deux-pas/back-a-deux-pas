@@ -1,7 +1,6 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.CredentialsRequestDTO;
-import adeuxpas.back.entity.User;
 
 import java.util.Optional;
 
@@ -41,15 +40,6 @@ public interface AuthenticationService {
      * @return true if the alias already exists.
      */
     Boolean checkIfAliasAlreadyExist(String alias);
-
-    /**
-     * Abstract method that creates a Jwt token.
-     * 
-     * @param credentialsRequestDTO The user credentials.
-     * @return An optional containing the JWT string if authentication is
-     *         successful, or an empty optional otherwise.
-     */
-    Optional<String> createToken(Optional<User> user);
 
     /**
      * Abstract method that validates the signup request and creates a new user
