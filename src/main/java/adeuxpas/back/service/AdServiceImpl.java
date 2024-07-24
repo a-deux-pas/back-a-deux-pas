@@ -209,8 +209,7 @@ public class AdServiceImpl implements AdService {
             try {
                 for (int index = 0; index < articlePictures.size(); index++) {
                     MultipartFile picture = articlePictures.get(index);
-                    String publicId = publisher.getAlias() + "-articlePicture-" + adPostRequestDTO.getTitle() + "-"
-                            + index;
+                    String publicId = adPostRequestDTO.getTitle() + "-" + index;
                     Map<String, Object> profilePictureObject = cloudinaryService.upload(publicId, picture);
                     String articlePictureUrl = (String) profilePictureObject.get("url");
                     articlePictureUrls.add(articlePictureUrl);
