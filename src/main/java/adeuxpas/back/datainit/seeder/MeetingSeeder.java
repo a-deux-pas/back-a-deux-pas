@@ -116,7 +116,7 @@ public class MeetingSeeder {
         fifthMeeting.setSeller(seller2);// donia == user
         fifthMeeting.setMeetingPlace(meetingPlace5);
         fifthMeeting.setDate(LocalDateTime.now().minusDays(1));
-        fifthMeeting.setStatus(MeetingStatus.FINALIZED);
+        fifthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         fifthMeeting.setBuyerDistinctiveSign("Je porterai un pull rouge.");
         fifthMeeting.setSellerDistinctiveSign("Je porterai un manteau noir.");
         fifthMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
@@ -128,7 +128,7 @@ public class MeetingSeeder {
         sixthMeeting.setSeller(seller7); // sofia
         sixthMeeting.setMeetingPlace(meetingPlace6);
         sixthMeeting.setDate(LocalDateTime.now().minusDays(2));
-        sixthMeeting.setStatus(MeetingStatus.FINALIZED);
+        sixthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         sixthMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
         sixthMeeting.setSellerDistinctiveSign("Je porterai une veste en cuir.");
         sixthMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
@@ -193,7 +193,7 @@ public class MeetingSeeder {
         eleventh.setSeller(seller1);// mircea == user
         eleventh.setMeetingPlace(meetingPlace5);
         eleventh.setDate(LocalDateTime.now().minusDays(1));
-        eleventh.setStatus(MeetingStatus.FINALIZED);
+        eleventh.setStatus(MeetingStatus.TOBEFINALIZED);
         eleventh.setBuyerDistinctiveSign("Je serai en chemise blanche et pantalon noir.");
         eleventh.setSellerDistinctiveSign("J'aurai une sacoche pour ordinateur portable.");
         eleventh.setBuyerAdditionalInfo("Je souhaite vérifier le fonctionnement de l'objet sur place.");
@@ -205,7 +205,7 @@ public class MeetingSeeder {
         twelfth.setSeller(seller7); // sofia
         twelfth.setMeetingPlace(meetingPlace6);
         twelfth.setDate(LocalDateTime.now().minusDays(2));
-        twelfth.setStatus(MeetingStatus.FINALIZED);
+        twelfth.setStatus(MeetingStatus.TOBEFINALIZED);
         twelfth.setBuyerDistinctiveSign("Je porterai un blouson en cuir marron et un jean.");
         twelfth.setSellerDistinctiveSign("J'aurai des écouteurs autour du cou.");
         twelfth.setBuyerAdditionalInfo("Je peux payer par chèque si vous préférez.");
@@ -270,7 +270,7 @@ public class MeetingSeeder {
         seventeenthMeeting.setSeller(seller3);// lea == user
         seventeenthMeeting.setMeetingPlace(meetingPlace5);
         seventeenthMeeting.setDate(LocalDateTime.now().minusDays(1));
-        seventeenthMeeting.setStatus(MeetingStatus.FINALIZED);
+        seventeenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         seventeenthMeeting.setBuyerDistinctiveSign("Je porterai un polo bleu ciel et un pantalon kaki.");
         seventeenthMeeting.setSellerDistinctiveSign("J'aurai une sacoche en bandoulière grise.");
         seventeenthMeeting.setBuyerAdditionalInfo("Je préfère payer par virement instantané si possible.");
@@ -282,7 +282,7 @@ public class MeetingSeeder {
         eighteenthMeeting.setSeller(seller7); // sofia
         eighteenthMeeting.setMeetingPlace(meetingPlace6);
         eighteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
-        eighteenthMeeting.setStatus(MeetingStatus.FINALIZED);
+        eighteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         eighteenthMeeting.setBuyerDistinctiveSign("Je serai en robe noire avec un blazer blanc.");
         eighteenthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil sur la tête.");
         eighteenthMeeting.setBuyerAdditionalInfo("J'apporterai un appareil pour vérifier l'authenticité.");
@@ -347,7 +347,7 @@ public class MeetingSeeder {
         twentythirdMeeting.setSeller(seller4);// Erika == user
         twentythirdMeeting.setMeetingPlace(meetingPlace5);
         twentythirdMeeting.setDate(LocalDateTime.now().minusDays(1));
-        twentythirdMeeting.setStatus(MeetingStatus.FINALIZED);
+        twentythirdMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         twentythirdMeeting.setBuyerDistinctiveSign("J'aurai une veste matelassée bleue et une écharpe grise.");
         twentythirdMeeting.setSellerDistinctiveSign("Je tiendrai un dossier avec des papiers visibles.");
         twentythirdMeeting.setBuyerAdditionalInfo("J'aimerais avoir la possibilité d'un retour sous conditions.");
@@ -359,7 +359,7 @@ public class MeetingSeeder {
         twentyfourthMeeting.setSeller(seller7); // sofia
         twentyfourthMeeting.setMeetingPlace(meetingPlace6);
         twentyfourthMeeting.setDate(LocalDateTime.now().minusDays(2));
-        twentyfourthMeeting.setStatus(MeetingStatus.FINALIZED);
+        twentyfourthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         twentyfourthMeeting.setBuyerDistinctiveSign("Je serai en chemise à carreaux et jean foncé.");
         twentyfourthMeeting.setSellerDistinctiveSign("J'aurai une sacoche pour appareil photo.");
         twentyfourthMeeting.setBuyerAdditionalInfo("Je peux payer par chèque de banque si le montant est élevé.");
