@@ -42,11 +42,20 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    // Test endpoint to imitate access to a restricted page; to be REMOVED /
-    // REPLACED
-    @GetMapping("/admin-page")
-    public ResponseEntity<String> accessAdminPage() {
-        return ResponseEntity.ok("Welcome, ADMIN");
+    /**
+     * Endpoint to check if address mail exists and if password matches with the
+     * address mail.
+     *
+     * @param credentialsRequestDTO The login request containing user credentials.
+     * @return ResponseEntity indicating true or false.
+     */
+    @PostMapping("/check-credentials")
+    public ResponseEntity<Boolean> checkCredentials(@RequestBody CredentialsRequestDTO credentialsRequestDTO) {
+        try {
+            return ResponseEntity.ok(authenticationService.checkCredentials(credentialsRequestDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
     }
 
     /**
@@ -59,22 +68,6 @@ public class AuthenticationController {
     public ResponseEntity<Boolean> checkEmail(@RequestBody String email) {
         try {
             return ResponseEntity.ok(authenticationService.checkIfEmailAlreadyExist(email));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
-        }
-    }
-
-    /**
-     * Endpoint to check if a password matches with a user address mail.
-     *
-     * @param credentialsRequestDTO The check password request containing the user
-     *                              credentials.
-     * @return ResponseEntity indicating true or false.
-     */
-    @PostMapping("/check-password")
-    public ResponseEntity<Boolean> checkPassword(@RequestBody CredentialsRequestDTO credentialsRequestDTO) {
-        try {
-            return ResponseEntity.ok(authenticationService.checkIfPasswordMatchesWithEmail(credentialsRequestDTO));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
         }
