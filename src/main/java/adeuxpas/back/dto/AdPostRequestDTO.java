@@ -63,14 +63,6 @@ public class AdPostRequestDTO {
         this.articleState = articleState;
     }
 
-    // public LocalDateTime getCreationDate() {
-    // return creationDate;
-    // }
-
-    // public void setCreationDate(LocalDateTime creationDate) {
-    // this.creationDate = creationDate;
-    // }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -147,5 +139,4 @@ public class AdPostRequestDTO {
                 ", articlePictures=" + articlePicturesString +
                 '}';
     }
-
 }

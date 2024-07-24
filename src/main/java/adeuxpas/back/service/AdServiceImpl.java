@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 @Service
 public class AdServiceImpl implements AdService {
-    private static final Logger logger = LoggerFactory.getLogger(CloudinaryService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
     private final List<AdStatus> acceptedAdStatuses = List.of(AdStatus.AVAILABLE);
     private final List<AccountStatus> acceptedAccountStatuses = List.of(AccountStatus.ACTIVE, AccountStatus.REPORTED);
     private BigDecimal maxPrice1 = null;

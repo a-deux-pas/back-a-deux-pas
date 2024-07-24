@@ -15,18 +15,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import java.nio.file.Path;
 
 @Service
 public class CloudinaryServiceImpl implements CloudinaryService {
-    private static final Logger logger = LoggerFactory.getLogger(CloudinaryService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CloudinaryServiceImpl.class);
     private final Cloudinary cloudinary;
 
     public CloudinaryServiceImpl(
@@ -49,12 +46,11 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         try {
             String safePublicId = sanitizePublicId(publicId);
             Transformation<?> transformation = getTheRightTransformation(safePublicId);
-            Map<String, Object> uploadedPicture = cloudinary.uploader().upload(file,
+            return cloudinary.uploader().upload(file,
                     ObjectUtils.asMap(
                             "transformation", transformation,
                             "public_id", publicId));
-            return uploadedPicture;
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error("Error uploading file to Cloudinary", e);
             throw new IOException("Failed to upload file to Cloudinary: " + e.getMessage(), e);
         } finally {
@@ -82,23 +78,6 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             throw e;
         }
     }
-
-    // TODO :: à virer
-    // private void deleteDirectory(Path directory) {
-    // try {
-    // Files.walk(directory)
-    // .sorted(Comparator.reverseOrder())
-    // .forEach(path -> {
-    // try {
-    // Files.delete(path);
-    // } catch (IOException e) {
-    // logger.error("Failed to delete " + path, e);
-    // }
-    // });
-    // } catch (IOException e) {
-    // logger.error("Failed to clean up directory " + directory, e);
-    // }
-    // }
 
     // Defines what transformation to apply on the file depending whether
     // it is a new user's profile picture or a new article's pictures

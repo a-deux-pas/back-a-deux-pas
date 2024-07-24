@@ -9,7 +9,6 @@ import adeuxpas.back.dto.AdPostResponseDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -76,7 +75,7 @@ public interface AdMapper {
     default List<String> convertArticlePicturesToUrls(List<ArticlePicture> pictures) {
         return pictures != null ? pictures.stream()
                 .map(ArticlePicture::getUrl)
-                .collect(Collectors.toList()) : null;
+                .toList() : null;
     }
 
     /**

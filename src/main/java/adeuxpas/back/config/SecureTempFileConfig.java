@@ -10,9 +10,20 @@ import java.util.Set;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import adeuxpas.back.datainit.seeder.PreferredMeetingPlaceSeeder;
+
 public class SecureTempFileConfig {
     private static final Path SECURE_TEMP_DIR;
     private static final boolean IS_UNIX_LIKE;
+    private static final Logger logger = LoggerFactory.getLogger(PreferredMeetingPlaceSeeder.class);
+
+    // Private constructor to prevent instantiation
+    private SecureTempFileConfig() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
     // Static block to initialize the secure temp directory
     static {
@@ -24,11 +35,20 @@ public class SecureTempFileConfig {
         try {
             // Create the secure temporary directory
             Files.createDirectories(SECURE_TEMP_DIR);
-            // If the operating system is Unix-like, set POSIX permissions
+            // If the operating system is Unix-like (Linux and MacOs), set POSIX
+            // permissions, otherwise, we skip this part
+            //
+            // PosixFilePermissions is a class in the java.nio.file.attribute package of the
+            // Java Standard Library. It provides methods for working with POSIX (Portable
+            // Operating System Interface) file permissions. These permissions are used to
+            // control access to files and directories in Unix-like operating systems, such
+            // as Linux and macOS.
+            // The permission is represented by a string, here 'rwx' means Read Write and
+            // eXecute
             if (IS_UNIX_LIKE) {
                 Files.setPosixFilePermissions(SECURE_TEMP_DIR, PosixFilePermissions.fromString("rwx------"));
             } else {
-                System.out.println("Non-Unix-like OS detected, skipping POSIX permissions.");
+                logger.info("Non-Unix-like OS detected, skipping POSIX permissions.");
             }
         } catch (IOException e) {
             throw new ExceptionInInitializerError("Failed to create secure temp directory: " + e.getMessage());
@@ -36,7 +56,10 @@ public class SecureTempFileConfig {
     }
 
     public static Path createSecureTempFile(String prefix, String suffix) throws IOException {
+        // Makes sure that the file name is unique
         String fileName = prefix + UUID.randomUUID() + suffix;
+        // Generates the path from the file name and the secure temporary directory's
+        // path
         Path filePath = SECURE_TEMP_DIR.resolve(fileName);
 
         if (IS_UNIX_LIKE) {
@@ -52,7 +75,7 @@ public class SecureTempFileConfig {
         try {
             Files.deleteIfExists(file);
         } catch (IOException e) {
-            System.err.println("Failed to delete file: " + file + ". Error: " + e.getMessage());
+            logger.atError().log("Failed to delete file: " + file + ". Error: " + e.getMessage());
         }
     }
 }
