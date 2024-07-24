@@ -13,12 +13,10 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import adeuxpas.back.datainit.seeder.PreferredMeetingPlaceSeeder;
-
 public class SecureTempFileConfig {
     private static final Path SECURE_TEMP_DIR;
     private static final boolean IS_UNIX_LIKE;
-    private static final Logger logger = LoggerFactory.getLogger(PreferredMeetingPlaceSeeder.class);
+    private static final Logger logger = LoggerFactory.getLogger(SecureTempFileConfig.class);
 
     // Private constructor to prevent instantiation
     private SecureTempFileConfig() {
@@ -48,6 +46,7 @@ public class SecureTempFileConfig {
             if (IS_UNIX_LIKE) {
                 Files.setPosixFilePermissions(SECURE_TEMP_DIR, PosixFilePermissions.fromString("rwx------"));
             } else {
+                logger.info(System.getProperty("os.name").toLowerCase());
                 logger.info("Non-Unix-like OS detected, skipping POSIX permissions.");
             }
         } catch (IOException e) {
