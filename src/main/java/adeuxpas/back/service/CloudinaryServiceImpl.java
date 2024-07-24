@@ -44,6 +44,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         try {
             Transformation<?> transformation;
             if (publicId.startsWith("profilePicture")) {
+                System.out.println("profilePicturetoUpload");
                 transformation = new Transformation<>()
                         .gravity("face")
                         .height(208).width(208).crop("fill").quality("auto")
@@ -58,9 +59,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                     ObjectUtils.asMap(
                             "transformation", transformation,
                             "public_id", publicId));
-            if (!Files.deleteIfExists(file.toPath())) {
-                throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());
-            }
+           
             return result;
         } catch (Exception e) {
             logger.error("Error uploading file to Cloudinary", e);
@@ -68,7 +67,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
     }
 
-    // TO DO :: to see if I can implement it once I get the delete ad process
+    // TO DO :: to see if I can implement it once I get the ad deleting process
     // public Map delete(String id) throws IOException {
     // return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
     // }
