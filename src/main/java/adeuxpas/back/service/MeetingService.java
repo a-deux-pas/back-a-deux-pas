@@ -3,6 +3,7 @@ package adeuxpas.back.service;
 import adeuxpas.back.dto.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Interface defining meeting-related operations for the application.
@@ -25,4 +26,6 @@ public interface MeetingService {
     List<MeetingDTO> getAcceptedMeetingsBySellerId(Long id);
 
     List<MeetingDTO> getDueMeetings(Long id);
+
+    Optional<MeetingDTO> acceptMeeting(Long meetingId);
 }
