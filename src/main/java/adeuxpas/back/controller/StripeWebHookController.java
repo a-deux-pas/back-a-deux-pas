@@ -30,15 +30,22 @@ public class StripeWebHookController {
         }
 
         // Handle the event
-        switch (event.getType()){
-            case "charge.refund.updated": {
-                System.out.println("Charge refund updated");
+        switch (event.getType()) {
+            case "payment_intent.created":
+                System.out.println("Payment intent created");
                 break;
-            }
-            case "payment_intent.succeeded": {
+            case "payment_intent.succeeded":
                 System.out.println("Payment intent succeeded");
                 break;
-            }
+            case "charge.succeeded":
+                System.out.println("Holding the transaction amount as 'pending' in the account. The card is not yet charged.");
+                break;
+            case "payment_intent.amount_capturable_updated":
+                System.out.println("The Payment event has funds to be captured");
+                break;
+            case "charge.captured":
+                System.out.println("The transaction is finalized, funds are withdrawn from the buyer's account and transferred to the seller's account");
+                break;
             default:
                 System.out.println("Unhandled event type: " + event.getType());
         }

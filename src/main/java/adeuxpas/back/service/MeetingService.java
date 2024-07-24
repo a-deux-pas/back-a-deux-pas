@@ -26,5 +26,7 @@ public interface MeetingService {
 
     List<MeetingDTO> getDueMeetings(Long id);
 
-    void initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
+    Long initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
+
+    void finalizeMeeting(Long meetingId);
 }

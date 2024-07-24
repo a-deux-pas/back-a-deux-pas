@@ -67,12 +67,25 @@ public class MeetingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
         try {
-            meetingService.initializeMeeting(meetingRequestDTO);
-            Map<String, String> response = new HashMap<>();
+            Long meetingId = meetingService.initializeMeeting(meetingRequestDTO);
+            Map<String, Object> response = new HashMap<>();
             response.put("message", "Meeting created successfully");
+            response.put("meetingId", meetingId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create meeting : error occurred in the meeting service");
+        }
+    }
+
+    // Stub method chain: to be completed with business logic and called when a meeting is finalized
+    // All it does for now is capture the Stripe Card Payment for demonstration and testing purposes
+    @PostMapping("/finalize/{meetingId}")
+    public ResponseEntity<Object> finalizeMeeting(@PathVariable Long meetingId) {
+        try {
+            this.meetingService.finalizeMeeting(meetingId);
+            return ResponseEntity.ok("Meeting finalized successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to finalize meeting : error occurred in the meeting service");
         }
     }
 }

@@ -56,11 +56,20 @@ public class Meeting {
     )
     private Set<Ad> ads;
 
+    @Column(name = "is_validated_by_buyer")
+    private Boolean isValidatedByBuyer;
+
+    @Column(name = "is_validated_by_seller")
+    private Boolean isValidatedBySeller;
+
     @Column(name = "buyer_inscription_date")
     private LocalDateTime buyerInscriptionDate;
 
     @Column(name = "seller_inscription_date")
     private LocalDateTime sellerInscriptionDate;
+
+    @Column(name = "stripe_payment_intent_id")
+    private String stripePaymentIntentId;
 
 
     public LocalDateTime getBuyerInscriptionDate() {
@@ -77,6 +86,14 @@ public class Meeting {
 
     public void setSellerInscriptionDate(LocalDateTime sellerInscriptionDate) {
         this.sellerInscriptionDate = sellerInscriptionDate;
+    }
+
+    public String getStripePaymentIntentId() {
+        return stripePaymentIntentId;
+    }
+
+    public void setStripePaymentIntentId(String stripePaymentIntentId) {
+        this.stripePaymentIntentId = stripePaymentIntentId;
     }
 
     public Long getIdMeeting() {
@@ -164,6 +181,22 @@ public class Meeting {
 
     public void setAds(Set<Ad> ads) {
         this.ads = ads;
+    }
+
+    public Boolean getValidatedByBuyer() {
+        return isValidatedByBuyer;
+    }
+
+    public void setValidatedByBuyer(Boolean validatedByBuyer) {
+        isValidatedByBuyer = validatedByBuyer;
+    }
+
+    public Boolean getValidatedBySeller() {
+        return isValidatedBySeller;
+    }
+
+    public void setValidatedBySeller(Boolean validatedBySeller) {
+        isValidatedBySeller = validatedBySeller;
     }
 
     @Override
