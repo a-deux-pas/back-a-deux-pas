@@ -12,13 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import java.nio.file.Path;
@@ -48,11 +47,11 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         try {
             String safePublicId = sanitizePublicId(publicId);
             Transformation<?> transformation = getTheRightTransformation(safePublicId);
-            Map<String, Object> result = cloudinary.uploader().upload(file,
+            Map<String, Object> uploadedPicture = cloudinary.uploader().upload(file,
                     ObjectUtils.asMap(
                             "transformation", transformation,
                             "public_id", publicId));
-            return result;
+            return uploadedPicture;
         } catch (Exception e) {
             logger.error("Error uploading file to Cloudinary", e);
             throw new IOException("Failed to upload file to Cloudinary: " + e.getMessage(), e);
@@ -63,25 +62,48 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
     }
 
-    // TO DO :: to see if I can implement it once I get the ad deleting process
-    // public Map delete(String id) throws IOException {
-    // return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
-    // }
-
+    // This method takes a MultipartFile (typically a file uploaded via an HTTP
+    // request)
+    // creates a temporary file with a unique name in a temporary directory
+    // writes the content of the uploaded file to it, and returns a reference to
+    // this temporary file.
+    // This approach is useful for securely handling uploaded files
+    // before further processing them (in this case, before uploading them to
+    // Cloudinary)
     private File convert(MultipartFile multipartFile) throws IOException {
         String fileName = UUID.randomUUID().toString();
-        Path tempDir = Files.createTempDirectory("upload-");
-        Path filePath = tempDir.resolve(fileName);
-        try (OutputStream os = Files.newOutputStream(filePath)) {
-            os.write(multipartFile.getBytes());
+        Path tempDir = Files.createTempDirectory("upload-" + UUID.randomUUID());
+
+        try {
+            Path filePath = tempDir.resolve(fileName);
+            try (OutputStream os = Files.newOutputStream(filePath)) {
+                os.write(multipartFile.getBytes());
+            }
+            return filePath.toFile();
+        } catch (IOException e) {
+            deleteDirectory(tempDir);
+            throw e;
         }
-        return filePath.toFile();
     }
 
-    private String sanitizePublicId(String publicId) {
-        return publicId.replaceAll("[^a-zA-Z0-9_-]", "");
+    private void deleteDirectory(Path directory) {
+        try {
+            Files.walk(directory)
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path);
+                        } catch (IOException e) {
+                            logger.error("Failed to delete " + path, e);
+                        }
+                    });
+        } catch (IOException e) {
+            logger.error("Failed to clean up directory " + directory, e);
+        }
     }
 
+    // Defines what transformation to apply on the file depending whether
+    // it is a new user's profile picture or a new article's pictures
     private Transformation<?> getTheRightTransformation(String publicId) {
         if (publicId.startsWith("profilePicture")) {
             return new Transformation<>()
@@ -95,4 +117,13 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                     .fetchFormat("webp");
         }
     }
+
+    private String sanitizePublicId(String publicId) {
+        return publicId.replaceAll("[^a-zA-Z0-9_-]", "");
+    }
+
+    // TO DO :: to see if I can implement it once I get the ad deleting process
+    // public Map delete(String id) throws IOException {
+    // return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
+    // }
 }
