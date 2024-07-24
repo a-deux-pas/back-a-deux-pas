@@ -2,9 +2,7 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
-
-import java.util.HashMap;
-import java.util.Map;
+import adeuxpas.back.util.ValidationHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -123,9 +121,7 @@ public class AdController {
     @PostMapping("/create")
     public ResponseEntity<Object> createAd(@RequestBody @Valid AdPostRequestDTO adDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
         try {
             return ResponseEntity.ok(adService.postAd(adDto));
@@ -150,9 +146,7 @@ public class AdController {
     @PutMapping("/update")
     public ResponseEntity<Object> updateAd(@RequestBody @Valid AdPostRequestDTO adDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
         try {
             return ResponseEntity.ok(adService.postAd(adDto));

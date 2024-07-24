@@ -2,13 +2,14 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.service.UserService;
+import adeuxpas.back.util.ValidationHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.validation.BindingResult;
-import jakarta.validation.Valid;
 
-import java.util.*;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -57,13 +58,13 @@ public class AccountController {
     public ResponseEntity<Object> createProfile(@RequestBody @Valid UserProfileRequestDTO profileDto,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
         try {
             userService.createProfile(profileDto);
             return ResponseEntity.ok("Profile saved successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -85,6 +86,8 @@ public class AccountController {
     public ResponseEntity<Object> getPreferredSchedules(@PathVariable long userId) {
         try {
             return ResponseEntity.ok(userService.findPreferredSchedulesByUserId(userId));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -107,6 +110,8 @@ public class AccountController {
     public ResponseEntity<Object> getPreferredMeetingPlaces(@PathVariable long userId) {
         try {
             return ResponseEntity.ok(userService.findPreferredMeetingPlacesByUserId(userId));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
