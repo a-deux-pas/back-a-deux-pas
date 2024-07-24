@@ -4,6 +4,8 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 
+import adeuxpas.back.config.SecureTempFileConfig;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,36 +73,32 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     // before further processing them (in this case, before uploading them to
     // Cloudinary)
     private File convert(MultipartFile multipartFile) throws IOException {
-        String fileName = UUID.randomUUID().toString();
-        Path tempDir = Files.createTempDirectory("upload-" + UUID.randomUUID());
-
+        Path tempFile = SecureTempFileConfig.createSecureTempFile("upload-", ".tmp");
         try {
-            Path filePath = tempDir.resolve(fileName);
-            try (OutputStream os = Files.newOutputStream(filePath)) {
-                os.write(multipartFile.getBytes());
-            }
-            return filePath.toFile();
+            Files.write(tempFile, multipartFile.getBytes());
+            return tempFile.toFile();
         } catch (IOException e) {
-            deleteDirectory(tempDir);
+            SecureTempFileConfig.safelyDeleteFile(tempFile);
             throw e;
         }
     }
 
-    private void deleteDirectory(Path directory) {
-        try {
-            Files.walk(directory)
-                    .sorted(Comparator.reverseOrder())
-                    .forEach(path -> {
-                        try {
-                            Files.delete(path);
-                        } catch (IOException e) {
-                            logger.error("Failed to delete " + path, e);
-                        }
-                    });
-        } catch (IOException e) {
-            logger.error("Failed to clean up directory " + directory, e);
-        }
-    }
+    // TODO :: à virer
+    // private void deleteDirectory(Path directory) {
+    // try {
+    // Files.walk(directory)
+    // .sorted(Comparator.reverseOrder())
+    // .forEach(path -> {
+    // try {
+    // Files.delete(path);
+    // } catch (IOException e) {
+    // logger.error("Failed to delete " + path, e);
+    // }
+    // });
+    // } catch (IOException e) {
+    // logger.error("Failed to clean up directory " + directory, e);
+    // }
+    // }
 
     // Defines what transformation to apply on the file depending whether
     // it is a new user's profile picture or a new article's pictures
