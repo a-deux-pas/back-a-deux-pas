@@ -1,9 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.NotificationDTO;
 import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
 import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.SellerHomeResponseDTO;
 import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
@@ -11,7 +9,6 @@ import adeuxpas.back.dto.UserProfileRequestDTO;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
-import adeuxpas.back.repository.NotificationRepository;
 import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
@@ -40,7 +37,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
-    private final NotificationRepository notificationRepository;
     private final UserMapper userMapper;
 
     private static final String USER_NOT_FOUND_MESSAGE = "User with ID : %d not Found";
@@ -55,12 +51,10 @@ public class UserServiceImpl implements UserService {
             @Autowired UserRepository userRepository,
             @Autowired PreferredScheduleRepository preferredScheduleRepository,
             @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository,
-            @Autowired NotificationRepository notificationRepository,
             @Autowired UserMapper userMapper) {
         this.userRepository = userRepository;
         this.preferredScheduleRepository = preferredScheduleRepository;
         this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
-        this.notificationRepository = notificationRepository;
         this.userMapper = userMapper;
     }
 
@@ -117,22 +111,6 @@ public class UserServiceImpl implements UserService {
             }
             userMapper.mapProfileUserToUser(profileDto, user);
             userRepository.save(user);
-            List<PreferredMeetingPlaceDTO> preferredMeetingPlacesDTO = profileDto.getPreferredMeetingPlaces();
-            preferredMeetingPlaceRepository.saveAll(preferredMeetingPlacesDTO.stream()
-                    .map(userMapper::mapDTOtoPreferredMeetingPlace)
-                    .toList());
-
-            List<PreferredScheduleDTO> preferredSchedulesDTO = profileDto.getPreferredSchedules();
-            preferredScheduleRepository.saveAll(preferredSchedulesDTO.stream()
-                    .map(userMapper::mapDTOtoPreferredSchedule)
-                    .toList());
-
-            List<NotificationDTO> notificationsDTO = profileDto.getNotifications();
-            if (notificationsDTO != null) {
-                notificationRepository.saveAll(notificationsDTO.stream()
-                        .map(userMapper::mapDTOtoNotification)
-                        .toList());
-            }
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
@@ -145,18 +123,18 @@ public class UserServiceImpl implements UserService {
      * user ID.
      * It maps the user entity to a DTO representing profile page user information.
      *
-     * @param userId the ID of the user to retrieve profile information for.
+     * @param userAlias the alias of the user to retrieve profile information.
      * @return the profile information of the user or an exception if the user is
      *         not found.
      */
     @Override
-    public UserProfileResponseDTO findUserProfileInfoById(long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
+    public UserProfileResponseDTO findUserProfileInfoByAlias(String userAlias) {
+        Optional<User> optionalUser = this.findUserByAlias(userAlias);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             return userMapper.mapUserToUserProfileResponseDTO(user);
         } else {
-            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
+            throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userAlias));
         }
     }
 
@@ -256,7 +234,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<UserAliasAndLocationResponseDTO> getUniqueCitiesAndPostalCodes() {
         List<User> users = this.userRepository.findAll();
-        return users.stream().map(userMapper::userToAliasAndLocationDTO).collect(Collectors.toSet());
+        return users.stream()
+                .filter(user -> user.getPostalCode() != null || user.getCity() != null)
+                .map(userMapper::userToAliasAndLocationDTO)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -268,8 +249,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserAliasAndLocationResponseDTO getUserAliasAndLocation(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.get();
         if (optionalUser.isPresent()) {
-            return userMapper.userToAliasAndLocationDTO(optionalUser.get());
+            boolean isExistingLocationWithAds = userRepository
+                    .existsUsersWithAdsByPostalCode(user.getPostalCode());
+            UserAliasAndLocationResponseDTO dto = userMapper.userToAliasAndLocationDTO(user);
+            dto.setIsExistingLocationWithAds(isExistingLocationWithAds);
+            return dto;
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
@@ -279,17 +265,17 @@ public class UserServiceImpl implements UserService {
      * Retrieves the sellers which have the same postal code as the user.
      * 
      * @param userId the user's ID.
-     * @return a list of SellerHomeResponseDTO.
+     * @return a list of UserProfileResponseDTO.
      */
     @Override
-    public List<SellerHomeResponseDTO> getSellersNearby(long userId) {
+    public List<UserProfileResponseDTO> getSellersNearby(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             // TO DO: à modifier pour trier par nombre de transactions une fois la table
             // implémenté
             List<User> sellersNearby = this.userRepository.findFirst5ByPostalCode(user.getPostalCode(), user.getId());
-            return sellersNearby.stream().map(userMapper::userToSellerHomeResponseDTO).toList();
+            return sellersNearby.stream().map(userMapper::mapUserToUserProfileResponseDTO).toList();
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }

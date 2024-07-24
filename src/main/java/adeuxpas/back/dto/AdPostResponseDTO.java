@@ -21,6 +21,7 @@ public class AdPostResponseDTO {
     private String creationDate;
     private Long publisherId;
     private String publisherAlias;
+    private String publisherEmail;
     private String publisherInscriptionDate;
     private String publisherCity;
     private AdStatus status;
@@ -110,6 +111,14 @@ public class AdPostResponseDTO {
 
     public void setPublisherId(Long publisher) {
         this.publisherId = publisher;
+    }
+
+    public String getPublisherEmail() {
+        return publisherEmail;
+    }
+
+    public void setPublisherEmail(String publisherEmail) {
+        this.publisherEmail = publisherEmail;
     }
 
     public AdStatus getStatus() {

@@ -79,7 +79,7 @@ public class AdController {
      *         or a 500 Internal Server Error response if an exception occurs.
      *
      * @see AdService#findFilteredAdCardResponseDTOs(List, List, List, String, Long,
-     *      Pageable)
+     *      int, int)
      */
     @Operation(summary = "Retrieves a paginated list of ads based on specified filters")
     @ApiResponses(value = {
@@ -97,10 +97,9 @@ public class AdController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
             Page<AdCardResponseDTO> adsPage = this.adService.findFilteredAdCardResponseDTOs(priceRangesFilter,
-                    citiesAndPostalCodesFilter,
-                    articleStatesFilter, categoryFilter, loggedInUserId, pageable);
+                    citiesAndPostalCodesFilter, articleStatesFilter, categoryFilter, loggedInUserId, pageNumber,
+                    pageSize);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -168,7 +167,8 @@ public class AdController {
      * Endpoint that retrieves information about one Ad with its ID.
      * 
      * @param adId           The ad ID.
-     * @param loggedInUserId The logged in user ID.
+     * @param loggedInUserId The logged in user ID only to check if the Ad is part
+     *                       of its favorites.
      * @return ResponseEntity indicating if the Ad has been found.
      */
     @Operation(summary = "Retrieves an ad details")
@@ -177,11 +177,13 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{adId}/{loggedInUserId}")
-    public ResponseEntity<Object> findById(@PathVariable long adId, @PathVariable long loggedInUserId) {
+    public ResponseEntity<Object> findById(
+            @PathVariable long adId,
+            @PathVariable Long loggedInUserId) {
         try {
             return ResponseEntity.ok(adService.findAdById(adId, loggedInUserId));
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no ad found for this id");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No ad found with this id");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -203,15 +205,14 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/adPageContentList/{publisherId}/{loggedInUserId}/{adId}")
-    public ResponseEntity<Object> getMyAds(
+    public ResponseEntity<Object> getUserAds(
             @PathVariable long publisherId,
             @PathVariable Long loggedInUserId,
-            @PathVariable Long adId,
+            @PathVariable(required = false) Long adId,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "8") int pageSize) {
         try {
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(publisherId, pageable,
+            Page<AdCardResponseDTO> adsPage = this.adService.findPageOfUserAdsList(publisherId, pageNumber, pageSize,
                     loggedInUserId, adId);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
@@ -239,8 +240,7 @@ public class AdController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "12") int pageSize) {
         try {
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.getUserAdsTab(userId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.getUserAdsTab(userId, pageNumber, pageSize);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -270,8 +270,8 @@ public class AdController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "4") int pageSize) {
         try {
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            Page<AdCardResponseDTO> adsPage = this.adService.findSimilarAds(category, publisherId, userId, pageable);
+            Page<AdCardResponseDTO> adsPage = this.adService.findSimilarAds(category, publisherId, userId, pageNumber,
+                    pageSize);
             return ResponseEntity.ok(adsPage.getContent());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -298,8 +298,7 @@ public class AdController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "12") int pageSize) {
         try {
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            return ResponseEntity.ok(adService.findFavoriteAdsByUserId(userId, pageable).getContent());
+            return ResponseEntity.ok(adService.findFavoriteAdsByUserId(userId, pageNumber, pageSize).getContent());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

@@ -52,31 +52,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
-     * Check if a user is already registered with an email address
+     * Check if address mail exists and if password matches with the address
+     * mail.
      *
-     * @param email The email address to check.
-     * @return true if the email address already exists.
+     * @param credentialsRequestDTO The user credentials.
+     * @return True if the password is correct.
      */
     @Override
-    public Boolean checkIfEmailAlreadyExist(String email) {
-        Optional<User> optionalUser = this.userService.findUserByEmail(email);
-        return optionalUser.isPresent();
-    }
-
-    /**
-     * check if a password matches with a user address email.
-     *
-     * @param credentialsRequestDTO user credentials.
-     * @return true if the password is correct.
-     */
-    @Override
-    public Boolean checkIfPasswordMatchesWithEmail(CredentialsRequestDTO credentialsRequestDTO) {
+    public Boolean checkCredentials(CredentialsRequestDTO credentialsRequestDTO) {
         Optional<User> optionalUser = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
         if (optionalUser.isPresent()) {
             String userPassword = optionalUser.get().getPassword();
             return encoder.matches(credentialsRequestDTO.getPassword(), userPassword);
         }
         return false;
+    }
+
+    /**
+     * Check if a user is already registered with an email address
+     *
+     * @param email The email address to check.
+     * @return True if the email address already exists.
+     */
+    @Override
+    public Boolean checkIfEmailAlreadyExist(String email) {
+        Optional<User> optionalUser = this.userService.findUserByEmail(email);
+        return optionalUser.isPresent();
     }
 
     /**
@@ -94,7 +95,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * Method to generate and returns a JWT token representing the user's session.
      *
-     * @param user optional user.
+     * @param user The optional user.
      * @return a JWT token if user exists, or an empty optional otherwise.
      * 
      */
