@@ -13,6 +13,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller class for handling account-related endpoints.
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/account")
 @RestController
 public class AccountController {
-
     private final UserService userService;
 
     /**
@@ -53,8 +53,10 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PatchMapping("/create")
-    public ResponseEntity<Object> createProfile(@RequestBody @Valid UserProfileRequestDTO profileDto,
+    @PatchMapping(value = "/create")
+    public ResponseEntity<Object> createProfile(
+            @RequestPart("profileInfo") @Valid UserProfileRequestDTO profileDto,
+            @RequestPart("profilePicture") MultipartFile profilePicture,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
@@ -62,7 +64,7 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
         try {
-            userService.createProfile(profileDto);
+            userService.createProfile(profileDto, profilePicture);
             return ResponseEntity.ok("Profile saved successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

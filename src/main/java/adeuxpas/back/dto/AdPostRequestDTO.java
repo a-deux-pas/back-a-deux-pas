@@ -1,8 +1,8 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
-import java.util.List;
 
+import adeuxpas.back.enums.AdStatus;
 import jakarta.validation.constraints.*;
 
 /*
@@ -21,8 +21,6 @@ public class AdPostRequestDTO {
     @NotBlank
     private String articleDescription;
     @NotNull
-    private String creationDate;
-    @NotNull
     @Positive
     private BigDecimal price;
     @NotBlank
@@ -31,12 +29,11 @@ public class AdPostRequestDTO {
     private String subcategory;
     private String articleGender;
     @NotNull
-    private Long publisherId;
-    @NotEmpty
-    @Size(min = 2, max = 5)
-    private List<ArticlePictureDTO> articlePictures;
+    private long publisherId;
     @NotBlank
     private String articleState;
+    @NotNull
+    AdStatus status = AdStatus.AVAILABLE;
 
     // getters and setters
     public String getTitle() {
@@ -61,14 +58,6 @@ public class AdPostRequestDTO {
 
     public void setArticleState(String articleState) {
         this.articleState = articleState;
-    }
-
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
     }
 
     public BigDecimal getPrice() {
@@ -111,11 +100,25 @@ public class AdPostRequestDTO {
         this.publisherId = publisherId;
     }
 
-    public List<ArticlePictureDTO> getArticlePictures() {
-        return this.articlePictures;
+    public AdStatus getStatus() {
+        return status;
     }
 
-    public void setArticlePictures(List<ArticlePictureDTO> articlePictures) {
-        this.articlePictures = articlePictures;
+    public void setStatus(AdStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "AdPostRequestDTO{" +
+                "title='" + title + '\'' +
+                ", articleDescription='" + articleDescription + '\'' +
+                ", price=" + price +
+                ", category='" + category + '\'' +
+                ", subcategory='" + subcategory + '\'' +
+                ", articleGender='" + articleGender + '\'' +
+                ", publisherId=" + publisherId +
+                ", articleState='" + articleState + '\'' +
+                '}';
     }
 }

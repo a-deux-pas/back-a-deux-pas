@@ -3,24 +3,25 @@ package adeuxpas.back.controller;
 import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.UncheckedIOException;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.AdPostResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
 import jakarta.validation.Valid;
 
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
+
+import org.springframework.http.*;
 
 /**
  * Controller class for handling ad-related endpoints.
@@ -112,27 +113,39 @@ public class AdController {
      * front-end.
      *
      * @param adDto The AdDTO.
-     * @return The AdDTO.
+     * @return The AdDTO that'll be return to the front end.
      */
-    // TO DO :: à revoir (fix Cloudinary branch)
-    @Operation(summary = "New Ad creation")
+    @Operation(summary = "new Ad creation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful ad creation"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/create")
-    public ResponseEntity<Object> postAd(@RequestBody @Valid AdPostRequestDTO adDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> postAd(
+            @RequestPart("adInfo") @Valid AdPostRequestDTO adDto,
+            @RequestPart("adPicture-1") MultipartFile adPicture1,
+            @RequestPart("adPicture-2") MultipartFile adPicture2,
+            @RequestPart(value = "adPicture-3", required = false) MultipartFile adPicture3,
+            @RequestPart(value = "adPicture-4", required = false) MultipartFile adPicture4,
+            @RequestPart(value = "adPicture-5", required = false) MultipartFile adPicture5,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
         try {
-            return ResponseEntity.ok(adService.postAd(adDto));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            AdPostResponseDTO response = adService.postAd(adDto, adPicture1, adPicture2, adPicture3, adPicture4,
+                    adPicture5);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid credentials: " + e.getMessage());
+        } catch (UncheckedIOException | PersistenceException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
         }
     }
 
