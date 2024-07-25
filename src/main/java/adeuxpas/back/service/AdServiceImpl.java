@@ -1,28 +1,29 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.entity.Ad;
-import adeuxpas.back.entity.ArticlePicture;
-import adeuxpas.back.entity.UsersFavoriteAds;
-import adeuxpas.back.entity.UsersFavoriteAdsKey;
-import adeuxpas.back.entity.User;
+import adeuxpas.back.entity.*;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
-import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
 import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigDecimal;
 
 /**
@@ -58,15 +59,19 @@ public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final UsersFavoriteAdsRepository usersFavoriteAdsRepository;
     private final AdMapper adMapper;
+    private final CloudinaryService cloudinaryService;
 
-    public AdServiceImpl(@Autowired UserRepository userRepository,
+    public AdServiceImpl(
+            @Autowired UserRepository userRepository,
             @Autowired AdRepository adRepository,
             @Autowired UsersFavoriteAdsRepository usersFavoriteAdsRepository,
-            @Autowired AdMapper adMapper) {
+            @Autowired AdMapper adMapper,
+            @Autowired CloudinaryService cloudinaryService) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
         this.usersFavoriteAdsRepository = usersFavoriteAdsRepository;
         this.adMapper = adMapper;
+        this.cloudinaryService = cloudinaryService;
     }
 
     /**
@@ -188,39 +193,66 @@ public class AdServiceImpl implements AdService {
      * @return An AdPostResponseDTO.
      */
     @Override
-    public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO) {
-        // TODO:: A revoir (fix cloudinary branch)
-        User publisher = userRepository.findById(adPostRequestDTO.getPublisherId())
-                .orElseThrow(() -> new UsernameNotFoundException("Publisher not found"));
-        Ad newAd = new Ad();
-        newAd.setTitle(adPostRequestDTO.getTitle());
-        newAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
-        newAd.setCreationDate(LocalDateTime.now());
-        newAd.setPrice(adPostRequestDTO.getPrice());
-        newAd.setCategory(adPostRequestDTO.getCategory());
-        newAd.setSubcategory(adPostRequestDTO.getSubcategory());
-        newAd.setArticleGender(adPostRequestDTO.getArticleGender());
-        newAd.setPublisher(publisher);
-        newAd.setArticleState(adPostRequestDTO.getArticleState());
-        newAd.setStatus(AdStatus.AVAILABLE);
+    public AdPostResponseDTO postAd(
+            AdPostRequestDTO adPostRequestDTO,
+            MultipartFile adPicture1,
+            MultipartFile adPicture2,
+            MultipartFile adPicture3,
+            MultipartFile adPicture4,
+            MultipartFile adPicture5) {
+        Optional<User> optionalUser = userRepository.findById(adPostRequestDTO.getPublisherId());
+        if (!optionalUser.isPresent()) {
+            throw new EntityNotFoundException("Invalid credentials");
+        }
+        User publisher = optionalUser.get();
 
-        List<ArticlePicture> articlePictures = new ArrayList<>();
-        List<ArticlePictureDTO> adPics = adPostRequestDTO.getArticlePictures();
+        List<String> articlePictureUrls = new ArrayList<>();
+        List<MultipartFile> articlePictures = new ArrayList<>();
+        Arrays.asList(adPicture1, adPicture2, adPicture3, adPicture4, adPicture5).forEach(picture -> {
+            if (picture != null) {
+                articlePictures.add(picture);
+            }
+        });
 
-        for (ArticlePictureDTO adPic : adPics) {
-            ArticlePicture newArticlePicture = new ArticlePicture();
-            newArticlePicture.setUrl(adPic.getUrl());
-            newArticlePicture.setAd(newAd);
-            articlePictures.add(newArticlePicture);
+        try {
+            for (int index = 0; index < articlePictures.size(); index++) {
+                MultipartFile picture = articlePictures.get(index);
+                String publicId = adPostRequestDTO.getTitle() + "-" + index;
+                Map<String, Object> profilePictureObject = cloudinaryService.upload(publicId, picture);
+                String articlePictureUrl = (String) profilePictureObject.get("url");
+                articlePictureUrls.add(articlePictureUrl);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException("Failed to upload article picture", e);
         }
 
-        newAd.setArticlePictures(articlePictures);
+        Ad newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
+        newAd.setPublisher(publisher);
+        newAd.setCreationDate(LocalDateTime.now());
+        for (String url : articlePictureUrls) {
+            ArticlePicture articlePicture = new ArticlePicture();
+            articlePicture.setUrl(url);
+            articlePicture.setAd(newAd);
+            newAd.addArticlePicture(articlePicture);
+        }
 
-        Ad savedAd = adRepository.save(newAd);
-        return adMapper.adToAdPostResponseDTO(savedAd);
+        Ad savedAd;
+        try {
+            savedAd = adRepository.save(newAd);
+        } catch (Exception e) {
+            throw new PersistenceException("Failed to save Ad", e);
+        }
+
+        AdPostResponseDTO responseDTO;
+        try {
+            responseDTO = adMapper.adToAdPostResponseDTO(savedAd);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to map Ad to ResponseDTO", e);
+        }
+
+        return responseDTO;
     }
 
-    // TO DO: (fix cloudinary branch) should return an adDetail / adCard ?
     /**
      * Retrieves an ad information by its ID.
      *
