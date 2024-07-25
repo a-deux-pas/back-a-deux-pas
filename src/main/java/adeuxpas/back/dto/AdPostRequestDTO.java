@@ -1,8 +1,6 @@
 package adeuxpas.back.dto;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import adeuxpas.back.enums.AdStatus;
 import jakarta.validation.constraints.*;
@@ -34,7 +32,6 @@ public class AdPostRequestDTO {
     private long publisherId;
     @NotBlank
     private String articleState;
-    private List<String> articlePictures;
     @NotNull
     AdStatus status = AdStatus.AVAILABLE;
 
@@ -103,14 +100,6 @@ public class AdPostRequestDTO {
         this.publisherId = publisherId;
     }
 
-    public List<String> getArticlePictures() {
-        return articlePictures;
-    }
-
-    public void setArticlePictures(List<String> articlePictures) {
-        this.articlePictures = articlePictures;
-    }
-
     public AdStatus getStatus() {
         return status;
     }
@@ -121,12 +110,6 @@ public class AdPostRequestDTO {
 
     @Override
     public String toString() {
-        String articlePicturesString = articlePictures != null
-                ? articlePictures.stream()
-                        .map(String::toString)
-                        .collect(Collectors.joining(", ", "[", "]"))
-                : "null";
-
         return "AdPostRequestDTO{" +
                 "title='" + title + '\'' +
                 ", articleDescription='" + articleDescription + '\'' +
@@ -136,7 +119,6 @@ public class AdPostRequestDTO {
                 ", articleGender='" + articleGender + '\'' +
                 ", publisherId=" + publisherId +
                 ", articleState='" + articleState + '\'' +
-                ", articlePictures=" + articlePicturesString +
                 '}';
     }
 }

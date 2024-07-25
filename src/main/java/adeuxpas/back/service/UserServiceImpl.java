@@ -14,6 +14,7 @@ import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -121,7 +122,7 @@ public class UserServiceImpl implements UserService {
                     String profilePictureUrl = (String) profilePictureObject.get("url");
                     user.setProfilePicture(profilePictureUrl);
                 } catch (IOException e) {
-                    throw new RuntimeException("Failed to upload profile picture", e);
+                    throw new UncheckedIOException("Failed to upload profile picture", e);
                 }
             }
             userMapper.mapProfileUserToUser(profileDto, user);

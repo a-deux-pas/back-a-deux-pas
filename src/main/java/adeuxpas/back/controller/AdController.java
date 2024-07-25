@@ -3,6 +3,7 @@ package adeuxpas.back.controller;
 import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
 
+import java.io.UncheckedIOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,11 @@ import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.AdPostResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
 import jakarta.validation.Valid;
 
 import io.swagger.v3.oas.annotations.responses.*;
@@ -134,12 +136,22 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
         try {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(adService.postAd(adDto, adPicture1, adPicture2, adPicture3, adPicture4, adPicture5));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            AdPostResponseDTO response = adService.postAd(adDto, adPicture1, adPicture2, adPicture3, adPicture4,
+                    adPicture5);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid credentials: " + e.getMessage());
+        } catch (UncheckedIOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to upload article picture: " + e.getMessage());
+        } catch (PersistenceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save Ad: " + e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to map Ad to ResponseDTO: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
         }
     }
 

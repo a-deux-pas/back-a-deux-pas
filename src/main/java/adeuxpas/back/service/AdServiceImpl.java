@@ -1,10 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.entity.Ad;
-import adeuxpas.back.entity.ArticlePicture;
-import adeuxpas.back.entity.UsersFavoriteAds;
-import adeuxpas.back.entity.UsersFavoriteAdsKey;
-import adeuxpas.back.entity.User;
+import adeuxpas.back.entity.*;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.dto.AdPostRequestDTO;
@@ -13,6 +9,8 @@ import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -25,10 +23,8 @@ import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigDecimal;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation class for the AdService interface.
@@ -43,7 +39,6 @@ import org.slf4j.LoggerFactory;
 
 @Service
 public class AdServiceImpl implements AdService {
-    private static final Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
     private final List<AdStatus> acceptedAdStatuses = List.of(AdStatus.AVAILABLE);
     private final List<AccountStatus> acceptedAccountStatuses = List.of(AccountStatus.ACTIVE, AccountStatus.REPORTED);
     private BigDecimal maxPrice1 = null;
@@ -212,15 +207,12 @@ public class AdServiceImpl implements AdService {
         User publisher = optionalUser.get();
         List<String> articlePictureUrls = new ArrayList<>();
         List<MultipartFile> articlePictures = new ArrayList<>();
-        articlePictures.add(adPicture1);
-        articlePictures.add(adPicture2);
-        if (adPicture3 != null)
-            articlePictures.add(adPicture3);
-        if (adPicture4 != null)
-            articlePictures.add(adPicture4);
-        if (adPicture5 != null)
-            articlePictures.add(adPicture5);
-        if (articlePictures != null) {
+        Arrays.asList(adPicture1, adPicture2, adPicture3, adPicture4, adPicture5).forEach(picture -> {
+            if (picture != null) {
+                articlePictures.add(picture);
+            }
+        });
+        {
             try {
                 for (int index = 0; index < articlePictures.size(); index++) {
                     MultipartFile picture = articlePictures.get(index);
@@ -230,10 +222,10 @@ public class AdServiceImpl implements AdService {
                     articlePictureUrls.add(articlePictureUrl);
                 }
             } catch (IOException e) {
-                throw new RuntimeException("Failed to upload article picture", e);
+                throw new UncheckedIOException("Failed to upload article picture", e);
             }
         }
-        adPostRequestDTO.setArticlePictures(articlePictureUrls);
+        // adPostRequestDTO.setArticlePictures(articlePictureUrls);
         Ad newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
         newAd.setPublisher(publisher);
         newAd.setCreationDate(LocalDateTime.now());
@@ -247,15 +239,13 @@ public class AdServiceImpl implements AdService {
         try {
             savedAd = adRepository.save(newAd);
         } catch (Exception e) {
-            logger.error("Error during saving Ad to repository: ", e);
-            throw new RuntimeException("Failed to save Ad", e);
+            throw new PersistenceException("Failed to save Ad", e);
         }
         AdPostResponseDTO responseDTO;
         try {
             responseDTO = adMapper.adToAdPostResponseDTO(savedAd);
         } catch (Exception e) {
-            logger.error("Error during mapping savedAd to AdPostResponseDTO: ", e);
-            throw new RuntimeException("Failed to map Ad to ResponseDTO", e);
+            throw new IllegalStateException("Failed to map Ad to ResponseDTO", e);
         }
         return responseDTO;
     }

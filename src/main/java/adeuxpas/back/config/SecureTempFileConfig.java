@@ -1,6 +1,5 @@
 package adeuxpas.back.config;
 
-
 import java.nio.file.*;
 import java.nio.file.attribute.*;
 import java.util.Set;
@@ -43,7 +42,6 @@ public class SecureTempFileConfig {
             if (IS_UNIX_LIKE) {
                 Files.setPosixFilePermissions(SECURE_TEMP_DIR, PosixFilePermissions.fromString("rwx------"));
             } else {
-                logger.info(System.getProperty("os.name").toLowerCase());
                 logger.info("Non-Unix-like OS detected, skipping POSIX permissions.");
             }
         } catch (IOException e) {

@@ -110,7 +110,6 @@ public interface AdMapper {
      * @return an Ad entity
      */
     @Mapping(target = "publisher", ignore = true)
-    @Mapping(target = "articlePictures", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
 }

@@ -7,7 +7,9 @@ import java.util.Objects;
 /**
  * Entity class representing an article picture in the application.
  * This class encapsulates article picture related information, such as its url.
- * Instances of this class are persisted to the database by the ArticlePictureRepository.
+ * Instances of this class are persisted to the database by the
+ * ArticlePictureRepository.
+ * 
  * @author Mircea Bardan
  */
 @Entity
@@ -16,7 +18,7 @@ public class ArticlePicture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150, nullable = false)
+    @Column(length = 250, nullable = false)
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,7 +26,8 @@ public class ArticlePicture {
     private Ad ad;
 
     // constructors
-    public ArticlePicture(){}
+    public ArticlePicture() {
+    }
 
     public ArticlePicture(String url, Ad ad) {
         this.url = url;
@@ -59,8 +62,10 @@ public class ArticlePicture {
     // equals, hashCode, toString
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ArticlePicture that)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof ArticlePicture that))
+            return false;
         return Objects.equals(url, that.url) && Objects.equals(ad, that.ad);
     }
 
