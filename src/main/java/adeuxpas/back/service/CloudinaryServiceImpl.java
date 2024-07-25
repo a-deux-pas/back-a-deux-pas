@@ -10,11 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +21,6 @@ import java.nio.file.Path;
 
 @Service
 public class CloudinaryServiceImpl implements CloudinaryService {
-    private static final Logger logger = LoggerFactory.getLogger(CloudinaryServiceImpl.class);
     private final Cloudinary cloudinary;
 
     public CloudinaryServiceImpl(
@@ -51,8 +48,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                             "transformation", transformation,
                             "public_id", publicId));
         } catch (IOException e) {
-            logger.error("Error uploading file to Cloudinary", e);
-            throw new IOException("Failed to upload file to Cloudinary: " + e.getMessage(), e);
+            throw new UncheckedIOException("Failed to upload file to Cloudinary: " + e.getMessage(), e);
         } finally {
             if (file != null) {
                 // Deletes the secured temporary file

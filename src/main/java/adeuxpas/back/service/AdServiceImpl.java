@@ -205,6 +205,7 @@ public class AdServiceImpl implements AdService {
             throw new EntityNotFoundException("Invalid credentials");
         }
         User publisher = optionalUser.get();
+
         List<String> articlePictureUrls = new ArrayList<>();
         List<MultipartFile> articlePictures = new ArrayList<>();
         Arrays.asList(adPicture1, adPicture2, adPicture3, adPicture4, adPicture5).forEach(picture -> {
@@ -212,20 +213,19 @@ public class AdServiceImpl implements AdService {
                 articlePictures.add(picture);
             }
         });
-        {
-            try {
-                for (int index = 0; index < articlePictures.size(); index++) {
-                    MultipartFile picture = articlePictures.get(index);
-                    String publicId = adPostRequestDTO.getTitle() + "-" + index;
-                    Map<String, Object> profilePictureObject = cloudinaryService.upload(publicId, picture);
-                    String articlePictureUrl = (String) profilePictureObject.get("url");
-                    articlePictureUrls.add(articlePictureUrl);
-                }
-            } catch (IOException e) {
-                throw new UncheckedIOException("Failed to upload article picture", e);
+
+        try {
+            for (int index = 0; index < articlePictures.size(); index++) {
+                MultipartFile picture = articlePictures.get(index);
+                String publicId = adPostRequestDTO.getTitle() + "-" + index;
+                Map<String, Object> profilePictureObject = cloudinaryService.upload(publicId, picture);
+                String articlePictureUrl = (String) profilePictureObject.get("url");
+                articlePictureUrls.add(articlePictureUrl);
             }
+        } catch (IOException e) {
+            throw new UncheckedIOException("Failed to upload article picture", e);
         }
-        // adPostRequestDTO.setArticlePictures(articlePictureUrls);
+
         Ad newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
         newAd.setPublisher(publisher);
         newAd.setCreationDate(LocalDateTime.now());
@@ -235,18 +235,21 @@ public class AdServiceImpl implements AdService {
             articlePicture.setAd(newAd);
             newAd.addArticlePicture(articlePicture);
         }
+
         Ad savedAd;
         try {
             savedAd = adRepository.save(newAd);
         } catch (Exception e) {
             throw new PersistenceException("Failed to save Ad", e);
         }
+
         AdPostResponseDTO responseDTO;
         try {
             responseDTO = adMapper.adToAdPostResponseDTO(savedAd);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to map Ad to ResponseDTO", e);
         }
+
         return responseDTO;
     }
 
