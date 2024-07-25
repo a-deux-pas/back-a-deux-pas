@@ -310,10 +310,15 @@ class AdServiceImplTest {
                 adPostRequestDTO.setPublisherId(1L);
                 adPostRequestDTO.setArticleState("Test State");
 
-                // Simulate a MultipartFile
-                MultipartFile singleAdPic = new MockMultipartFile("file", "test.jpg", "image/jpeg", "test".getBytes());
-                List<MultipartFile> articlePictures = new ArrayList<>();
-                articlePictures.add(singleAdPic);
+                // Simulate MultipartFiles
+                MultipartFile adPicture1 = new MockMultipartFile("file1", "test1.jpg", "image/jpeg",
+                                "test1".getBytes());
+                MultipartFile adPicture2 = new MockMultipartFile("file2", "test2.jpg", "image/jpeg",
+                                "test2".getBytes());
+                MultipartFile adPicture3 = new MockMultipartFile("file3", "test3.jpg", "image/jpeg",
+                                "test3".getBytes());
+                MultipartFile adPicture4 = null;
+                MultipartFile adPicture5 = null;
 
                 // Mock User
                 User user = new User();
@@ -353,8 +358,9 @@ class AdServiceImplTest {
 
                 when(adMapperMock.adToAdPostResponseDTO(any(Ad.class))).thenReturn(adResponse);
 
-                // Call the method
-                AdPostResponseDTO result = adService.postAd(adPostRequestDTO, articlePictures);
+                // Call the method with the new signature
+                AdPostResponseDTO result = adService.postAd(adPostRequestDTO, adPicture1, adPicture2, adPicture3,
+                                adPicture4, adPicture5);
 
                 // Verify results
                 assertEquals(adResponse.getTitle(), result.getTitle());
@@ -368,8 +374,7 @@ class AdServiceImplTest {
                 verify(userRepositoryMock).findById(adPostRequestDTO.getPublisherId());
                 verify(adRepositoryMock).save(any(Ad.class));
                 verify(adMapperMock).adToAdPostResponseDTO(any(Ad.class));
-                verify(cloudinaryService, times(articlePictures.size())).upload(any(String.class),
-                                any(MultipartFile.class));
+                verify(cloudinaryService, times(3)).upload(any(String.class), any(MultipartFile.class));
         }
 
         /**
@@ -443,5 +448,4 @@ class AdServiceImplTest {
                         return adCardResponseDTO;
                 });
         }
-
 }

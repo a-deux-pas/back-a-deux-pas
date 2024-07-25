@@ -50,7 +50,6 @@ public interface UserMapper {
      * @param profiledDto The UserProfileRequestDTO to be mapped.
      * @param user        The target entity.
      */
-    @Mapping(target = "profilePicture", ignore = true)
     void mapProfileUserToUser(UserProfileRequestDTO profileDto, @MappingTarget User user);
 
     /**

@@ -54,8 +54,9 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             logger.error("Error uploading file to Cloudinary", e);
             throw new IOException("Failed to upload file to Cloudinary: " + e.getMessage(), e);
         } finally {
-            if (file != null && !file.delete()) {
-                logger.warn("Failed to delete temporary file: " + file.getAbsolutePath());
+            if (file != null) {
+                // Deletes the secured temporary file
+                SecureTempFileConfig.safelyDeleteFile(file.toPath());
             }
         }
     }

@@ -198,13 +198,28 @@ public class AdServiceImpl implements AdService {
      * @return An AdPostResponseDTO.
      */
     @Override
-    public AdPostResponseDTO postAd(AdPostRequestDTO adPostRequestDTO, List<MultipartFile> articlePictures) {
+    public AdPostResponseDTO postAd(
+            AdPostRequestDTO adPostRequestDTO,
+            MultipartFile adPicture1,
+            MultipartFile adPicture2,
+            MultipartFile adPicture3,
+            MultipartFile adPicture4,
+            MultipartFile adPicture5) {
         Optional<User> optionalUser = userRepository.findById(adPostRequestDTO.getPublisherId());
         if (!optionalUser.isPresent()) {
             throw new EntityNotFoundException("Invalid credentials");
         }
         User publisher = optionalUser.get();
         List<String> articlePictureUrls = new ArrayList<>();
+        List<MultipartFile> articlePictures = new ArrayList<>();
+        articlePictures.add(adPicture1);
+        articlePictures.add(adPicture2);
+        if (adPicture3 != null)
+            articlePictures.add(adPicture3);
+        if (adPicture4 != null)
+            articlePictures.add(adPicture4);
+        if (adPicture5 != null)
+            articlePictures.add(adPicture5);
         if (articlePictures != null) {
             try {
                 for (int index = 0; index < articlePictures.size(); index++) {

@@ -55,7 +55,7 @@ public class Ad {
     private User publisher;
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ArticlePicture> articlePictures = new ArrayList<>();
+    private List<ArticlePicture> articlePictures;
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UsersFavoriteAds> usersFavorite;

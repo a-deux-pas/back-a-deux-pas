@@ -45,7 +45,13 @@ public interface AdService {
          * @param adDto The DTO containing the details of the ad to be posted.
          * @return The response DTO after posting the ad.
          */
-        AdPostResponseDTO postAd(AdPostRequestDTO adDto, List<MultipartFile> pictures);
+        AdPostResponseDTO postAd(
+                        AdPostRequestDTO adDto,
+                        MultipartFile adPicture1,
+                        MultipartFile adPicture2,
+                        MultipartFile adPicture3,
+                        MultipartFile adPicture4,
+                        MultipartFile adPicture5);
 
         /**
          * Contract to find an ad by its ID.

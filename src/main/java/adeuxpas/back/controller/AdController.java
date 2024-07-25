@@ -3,16 +3,12 @@ package adeuxpas.back.controller;
 import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
@@ -138,16 +134,8 @@ public class AdController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
         try {
-            List<MultipartFile> pictures = new ArrayList<>();
-            pictures.add(adPicture1);
-            pictures.add(adPicture2);
-            if (adPicture3 != null)
-                pictures.add(adPicture3);
-            if (adPicture4 != null)
-                pictures.add(adPicture4);
-            if (adPicture5 != null)
-                pictures.add(adPicture5);
-            return ResponseEntity.status(HttpStatus.CREATED).body(adService.postAd(adDto, pictures));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(adService.postAd(adDto, adPicture1, adPicture2, adPicture3, adPicture4, adPicture5));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
