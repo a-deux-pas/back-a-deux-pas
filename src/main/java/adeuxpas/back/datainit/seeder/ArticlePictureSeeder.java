@@ -33,7 +33,6 @@ public class ArticlePictureSeeder {
          * 
          * @param ads The list of ads for which article pictures will be seeded.
          */
-        // MAnque deux images
         public void seedArticlePictures(List<Ad> ads) {
                 this.articlePictureRepository.save(new ArticlePicture((cloudinaryUrl
                                 + "t_finalADeuxPasTransform/v1719728385/pexels-luftschnitzel-100582_c22r28.webp"),

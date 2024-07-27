@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Entity class representing an ad in the application.
@@ -160,6 +161,14 @@ public class Ad {
         this.articlePictures = articlePictures;
     }
 
+    public void addArticlePicture(ArticlePicture articlePicture) {
+        if (this.articlePictures == null) {
+            this.articlePictures = new ArrayList<>();
+        }
+        this.articlePictures.add(articlePicture);
+        articlePicture.setAd(this);
+    }
+
     public Set<UsersFavoriteAds> getUsersFavorite() {
         return usersFavorite;
     }
@@ -178,6 +187,12 @@ public class Ad {
 
     @Override
     public String toString() {
+        String articlePicturesString = articlePictures != null
+                ? articlePictures.stream()
+                        .map(ArticlePicture::toString)
+                        .collect(Collectors.joining(", ", "[", "]"))
+                : "null";
+
         return "Ad{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
@@ -190,7 +205,7 @@ public class Ad {
                 ", subcategory='" + subcategory + '\'' +
                 ", articleGender='" + articleGender + '\'' +
                 ", publisher=" + (publisher != null ? publisher.getId() : "null") +
-                ", articlePictures=" + (articlePictures != null ? articlePictures.size() : 0) +
+                ", articlePictures=" + articlePicturesString +
                 '}';
     }
 }

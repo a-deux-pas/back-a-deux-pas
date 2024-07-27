@@ -9,9 +9,13 @@ import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.stream.Collectors;
 import java.util.*;
 
@@ -29,11 +33,11 @@ import java.util.*;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
     private final UserMapper userMapper;
+    private final CloudinaryService cloudinaryService;
 
     private static final String USER_NOT_FOUND_MESSAGE = "User with ID : %d not Found";
 
@@ -47,11 +51,13 @@ public class UserServiceImpl implements UserService {
             @Autowired UserRepository userRepository,
             @Autowired PreferredScheduleRepository preferredScheduleRepository,
             @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository,
+            @Autowired CloudinaryService cloudinaryService,
             @Autowired UserMapper userMapper) {
         this.userRepository = userRepository;
         this.preferredScheduleRepository = preferredScheduleRepository;
         this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
         this.userMapper = userMapper;
+        this.cloudinaryService = cloudinaryService;
     }
 
     /**
@@ -94,16 +100,26 @@ public class UserServiceImpl implements UserService {
      * @param profileDto the profile dto to save.
      */
     @Override
-    public void createProfile(UserProfileRequestDTO profileDto) {
+    public void createProfile(UserProfileRequestDTO profileDto, MultipartFile profilePicture) {
         Long userId = Long.parseLong(profileDto.getId());
         Optional<User> optionalUser = userRepository.findById(userId);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             User alias = findUserByAlias(profileDto.getAlias()).orElse(null);
             if (alias != null) {
                 throw new IllegalArgumentException(
                         "A user with alias '" + profileDto.getAlias() + "' already exists");
+            }
+            String publicId = "profilePicture-" + profileDto.getAlias();
+            if (profilePicture != null) {
+                try {
+                    Map<String, Object> profilePictureObject = cloudinaryService
+                            .upload(publicId, profilePicture);
+                    String profilePictureUrl = (String) profilePictureObject.get("url");
+                    user.setProfilePicture(profilePictureUrl);
+                } catch (IOException e) {
+                    throw new UncheckedIOException("Failed to upload profile picture", e);
+                }
             }
             userMapper.mapProfileUserToUser(profileDto, user);
             userRepository.save(user);

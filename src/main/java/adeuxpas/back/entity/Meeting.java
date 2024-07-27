@@ -216,8 +216,6 @@ public class Meeting {
                 ", seller=" + (seller != null ? seller.getId() : "null") +
                 ", meetingPlace=" + (meetingPlace != null ? meetingPlace.getId() : "null") +
                 ", ads=" + (ads != null ? ads.size() : 0) +
-                ", buyerInscriptionDate=" + buyerInscriptionDate +
-                ", sellerInscriptionDate=" + sellerInscriptionDate +
                 '}';
     }
 }

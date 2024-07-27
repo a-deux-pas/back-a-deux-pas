@@ -5,6 +5,8 @@ import adeuxpas.back.entity.User;
 
 import java.util.*;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * Interface defining user-related operations for the application.
  * <p>
@@ -44,7 +46,7 @@ public interface UserService {
      * 
      * @param profileDto The DTO containing the details of an user Profile.
      */
-    void createProfile(UserProfileRequestDTO profileDto);
+    void createProfile(UserProfileRequestDTO profileDto, MultipartFile profilePicture);
 
     /**
      * Abstract method that attempts to find the user info with its alias.

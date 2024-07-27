@@ -234,7 +234,18 @@ public class User {
     // toString
     @Override
     public String toString() {
-        return this.email;
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", alias='" + alias + '\'' +
+                ", bio='" + bio + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", bankAccountHolder='" + bankAccountHolder + '\'' +
+                ", bankAccountNumber='" + bankAccountNumber + '\'' +
+                ", profilePicture='" + profilePicture + '\'';
     }
 
     // equals
