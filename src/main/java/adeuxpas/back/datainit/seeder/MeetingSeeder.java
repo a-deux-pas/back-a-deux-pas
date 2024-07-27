@@ -1,15 +1,14 @@
 package adeuxpas.back.datainit.seeder;
 
 import adeuxpas.back.entity.*;
+import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.enums.MeetingStatus;
 import adeuxpas.back.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class MeetingSeeder {
@@ -122,6 +121,7 @@ public class MeetingSeeder {
         fifthMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
         fifthMeeting.setSellerAdditionalInfo("Merci d'apporter l'article.");
         fifthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(4))));
+        existingAds.get(4).setStatus(AdStatus.RESERVED);
 
         Meeting sixthMeeting = new Meeting();
         sixthMeeting.setBuyer(buyer2); // donia == user
@@ -151,8 +151,8 @@ public class MeetingSeeder {
 
         // ToConfirm
         Meeting eighthMeeting = new Meeting();
-        eighthMeeting.setBuyer(buyer3);// lea
-        eighthMeeting.setSeller(seller1);// mircea == user
+        eighthMeeting.setBuyer(buyer1); // mircea == user
+        eighthMeeting.setSeller(seller3);// lea
         eighthMeeting.setMeetingPlace(meetingPlace2);
         eighthMeeting.setDate(LocalDateTime.now().plusDays(2));
         eighthMeeting.setStatus(MeetingStatus.INITIALIZED);
@@ -365,6 +365,11 @@ public class MeetingSeeder {
         twentyfourthMeeting.setBuyerAdditionalInfo("Je peux payer par chèque de banque si le montant est élevé.");
         twentyfourthMeeting.setSellerAdditionalInfo("Pouvez-vous fournir un certificat de conformité ?");
         twentyfourthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(23))));
+
+        for (int i = 0; i <= 23; i++) {
+            existingAds.get(i).setStatus(AdStatus.RESERVED);
+        }
+        adRepository.saveAll(existingAds);
 
         List<Meeting> meetings = Arrays.asList(
                 firstMeeting, secondMeeting, thirdMeeting, fourthMeeting, fifthMeeting,
