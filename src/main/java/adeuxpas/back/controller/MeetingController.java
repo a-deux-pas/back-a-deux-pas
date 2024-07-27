@@ -62,7 +62,8 @@ public class MeetingController {
      * GET /planned/:id : Get all accepted meetings for a seller.
      *
      * @param id The ID of the seller.
-     * @return A ResponseEntity containing a list of accepted meetings filtered by seller ID.
+     * @return A ResponseEntity containing a list of accepted meetings filtered by
+     *         seller ID.
      */
     @GetMapping("/planned/{id}")
     public ResponseEntity<List<MeetingDTO>> getAcceptedMeetingsBySellerId(@PathVariable Long id) {
@@ -77,7 +78,8 @@ public class MeetingController {
      * GET /toBeFinalized/:id : Get all due meetings for a user.
      *
      * @param id The ID of the user.
-     * @return A ResponseEntity containing a list of due meetings filtered by user ID.
+     * @return A ResponseEntity containing a list of due meetings filtered by user
+     *         ID.
      */
     @GetMapping("/toBeFinalized/{id}")
     public ResponseEntity<List<MeetingDTO>> getDueMeetings(@PathVariable Long id) {
@@ -92,7 +94,8 @@ public class MeetingController {
      * PUT /:id/accept : Accept a meeting.
      *
      * @param id The ID of the meeting to accept.
-     * @return A ResponseEntity containing the updated MeetingDTO if found, or a not found status.
+     * @return A ResponseEntity containing the updated MeetingDTO if found, or a not
+     *         found status.
      */
     @PutMapping("/{id}/accept")
     public ResponseEntity<MeetingDTO> acceptMeeting(@PathVariable Long id) {
@@ -102,6 +105,45 @@ public class MeetingController {
                     .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Retrieves the alias of the buyer associated with the specified ad
+     * ID.
+     *
+     * @param adId The ID of the ad for which the buyer's alias is to be
+     *             retrieved.
+     * @return A ResponseEntity containing the buyer's alias if successful, or an
+     *         error message if an exception occurs.
+     * @throws Exception if there is an error while retrieving the buyer's alias.
+     */
+    @GetMapping("/{adId}/buyer")
+    public ResponseEntity<Object> getBuyer(@PathVariable Long adId) {
+        try {
+            return ResponseEntity.ok(meetingService.getBuyer(adId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Retrieves the date and time of the meeting associated with the specified
+     * ad ID.
+     *
+     * @param adId The ID of the ad for which the meeting date and time
+     *             is to be retrieved.
+     * @return A ResponseEntity containing the meeting date and time if successful,
+     *         or an error message if an exception occurs.
+     * @throws Exception if there is an error while retrieving the meeting date and
+     *                   time.
+     */
+    @GetMapping("/{adId}/date")
+    public ResponseEntity<Object> getMeetingDate(@PathVariable Long adId) {
+        try {
+            return ResponseEntity.ok(meetingService.getMeetingDate(adId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }
