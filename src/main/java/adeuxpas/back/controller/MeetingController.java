@@ -151,6 +151,14 @@ public class MeetingController {
         }
     }
 
+    /**
+     * Initializes a new meeting based on the provided {@link ProposedMeetingRequestDTO}.
+     *
+     * @param meetingRequestDTO the DTO containing the proposed meeting details
+     * @param bindingResult     the result of the validation of the request body
+     * @return a {@link ResponseEntity} containing either a success message and the meeting ID,
+     *         or an error message if the validation or meeting creation fails
+     */
     @PostMapping("/initialize")
     public ResponseEntity<Object> initializeMeeting(@RequestBody @Valid ProposedMeetingRequestDTO meetingRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
