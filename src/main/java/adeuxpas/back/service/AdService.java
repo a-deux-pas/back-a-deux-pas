@@ -40,10 +40,24 @@ public interface AdService {
                         List<String> articleStates, String category, Long loggedInUserId, int pageNumber, int pageSize);
 
         /**
-         * Contract to post an ad.
+         * Persists an Ad object in the database.
          *
-         * @param adDto The DTO containing the details of the ad to be posted.
-         * @return The response DTO after posting the ad.
+         * This method handles both the creation of a new ad and the update of an
+         * existing ad.
+         * It updates the ad's details and manages its associated images. If the ad is
+         * being updated,
+         * it removes all existing images and replaces them with new ones provided in
+         * the request.
+         *
+         * @param adPostRequestDTO The data transfer object containing ad details from
+         *                         the front-end application.
+         * @param adPicture1       The first image file associated with the ad.
+         * @param adPicture2       The second image.
+         * @param adPicture3       The third image (optional).
+         * @param adPicture4       The fourth image (optional).
+         * @param adPicture5       The fifth image (optional).
+         * @return An AdPostResponseDTO containing the details of the saved or updated
+         *         ad.
          */
         AdPostResponseDTO postAd(
                         AdPostRequestDTO adDto,
