@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,11 +78,13 @@ public class MeetingController {
 
     // Stub method chain: to be completed with business logic and called when a meeting is finalized
     // All it does for now is capture the Stripe Card Payment for demonstration and testing purposes
-    @PostMapping("/finalize/{meetingId}")
+    @GetMapping("/finalize/{meetingId}")
     public ResponseEntity<Object> finalizeMeeting(@PathVariable Long meetingId) {
         try {
             this.meetingService.finalizeMeeting(meetingId);
-            return ResponseEntity.ok("Meeting finalized successfully");
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Meeting finalized successfully");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to finalize meeting : error occurred in the meeting service");
         }
