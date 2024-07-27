@@ -243,8 +243,6 @@ public class User {
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +
-                ", bankAccountHolder='" + bankAccountHolder + '\'' +
-                ", bankAccountNumber='" + bankAccountNumber + '\'' +
                 ", profilePicture='" + profilePicture + '\'';
     }
 
