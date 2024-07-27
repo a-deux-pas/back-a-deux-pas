@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import adeuxpas.back.dto.AdCardResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
@@ -248,7 +247,7 @@ public class AdServiceImpl implements AdService {
         List<MultipartFile> newPictures = Arrays.asList(adPicture1, adPicture2, adPicture3, adPicture4, adPicture5)
                 .stream()
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
         // Upload new pictures and associate them with the ad
         for (int i = 0; i < newPictures.size(); i++) {
             MultipartFile newPicture = newPictures.get(i);

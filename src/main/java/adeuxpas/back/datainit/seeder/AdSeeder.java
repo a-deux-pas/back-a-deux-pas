@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Seeder class responsible for generating sample ad entities.
@@ -890,7 +889,7 @@ public class AdSeeder {
                 for (User user : users) {
                         List<Ad> matchedAds = ads.stream().filter(ad -> ad.getStatus() == AdStatus.AVAILABLE)
                                         .limit(2)
-                                        .collect(Collectors.toList());
+                                        .toList();
 
                         for (Ad ad : matchedAds) {
                                 createFavoriteAd(user, ad);
