@@ -5,14 +5,13 @@ import adeuxpas.back.dto.mapper.*;
 import adeuxpas.back.entity.Meeting;
 import adeuxpas.back.enums.MeetingStatus;
 import adeuxpas.back.repository.MeetingRepository;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.time.*;
+import java.util.*;
 
 /**
  * Implementation class for the MeetingService interface.
@@ -20,7 +19,8 @@ import java.util.Optional;
  * This service class provides implementations for meeting-related operations.
  * </p>
  * <p>
- * It interacts with the MeetingRepository to perform database operations related to meetings.
+ * It interacts with the MeetingRepository to perform database operations
+ * related to meetings.
  * </p>
  */
 @Service
@@ -28,12 +28,14 @@ public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
     private final MeetingMapper meetingMapper;
+    private static final String MEETING_NOT_FOUND_MESSAGE = "Meeting not found for ad ID: ";
 
     /**
      * Constructor for MeetingServiceImpl.
      *
-     * @param meetingRepository The MeetingRepository for interacting with meeting-related database operations.
-     * @param meetingMapper The MeetingMapper for converting entities to DTOs.
+     * @param meetingRepository The MeetingRepository for interacting with
+     *                          meeting-related database operations.
+     * @param meetingMapper     The MeetingMapper for converting entities to DTOs.
      */
 
     public MeetingServiceImpl(@Autowired MeetingRepository meetingRepository, @Autowired MeetingMapper meetingMapper) {
@@ -67,7 +69,8 @@ public class MeetingServiceImpl implements MeetingService {
      */
     @Override
     public List<MeetingDTO> getMeetingsBySellerId(Long id) {
-        List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrderByDateDesc(MeetingStatus.INITIALIZED, id);
+        List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrderByDateDesc(MeetingStatus.INITIALIZED,
+                id);
         LocalDateTime now = LocalDateTime.now();
         return meetings.stream()
                 .filter(meeting -> meeting.getDate().isAfter(now))
@@ -79,12 +82,14 @@ public class MeetingServiceImpl implements MeetingService {
      * Retrieves a list of accepted meetings for a specific seller or buyer.
      *
      * @param id The ID of the seller or buyer.
-     * @return A list of MeetingDTO objects representing accepted meetings for the user,
+     * @return A list of MeetingDTO objects representing accepted meetings for the
+     *         user,
      *         with status updated to PLANNED for past meetings.
      */
     @Override
     public List<MeetingDTO> getAcceptedMeetingsBySellerId(Long id) {
-        List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrBuyerIdOrderByDateDesc(MeetingStatus.ACCEPTED, id, id);
+        List<Meeting> meetings = meetingRepository
+                .findByStatusAndSellerIdOrBuyerIdOrderByDateDesc(MeetingStatus.ACCEPTED, id, id);
         LocalDateTime now = LocalDateTime.now();
         return meetings.stream()
                 .map(meeting -> {
@@ -109,7 +114,8 @@ public class MeetingServiceImpl implements MeetingService {
         List<Meeting> meetings = meetingRepository.findPastMeetings(id, now.toLocalDateTime());
         return meetings.stream()
                 .map(meeting -> {
-                    if (meeting.getStatus() == MeetingStatus.ACCEPTED && meeting.getDate().isBefore(now.toLocalDateTime())) {
+                    if (meeting.getStatus() == MeetingStatus.ACCEPTED
+                            && meeting.getDate().isBefore(now.toLocalDateTime())) {
                         meeting.setStatus(MeetingStatus.TOBEFINALIZED);
                         meetingRepository.save(meeting);
                     }
@@ -122,8 +128,10 @@ public class MeetingServiceImpl implements MeetingService {
      * Accepts a meeting by changing its status to ACCEPTED.
      *
      * @param meetingId The ID of the meeting to accept.
-     * @return An Optional containing the updated MeetingDTO if the meeting was found and accepted,
-     *         or an empty Optional if the meeting was not found or couldn't be accepted.
+     * @return An Optional containing the updated MeetingDTO if the meeting was
+     *         found and accepted,
+     *         or an empty Optional if the meeting was not found or couldn't be
+     *         accepted.
      */
     @Override
     public Optional<MeetingDTO> acceptMeeting(Long meetingId) {
@@ -139,5 +147,33 @@ public class MeetingServiceImpl implements MeetingService {
         }
 
         return Optional.empty();
+    }
+
+    /**
+     * Retrieves the alias of the buyer associated with the ad.
+     *
+     * @param adId The ID of the ad.
+     * @return The alias of the buyer.
+     * @throws EntityNotFoundException if no meeting is found for the given ad ID.
+     */
+    @Override
+    public String getBuyer(Long adId) {
+        Meeting meeting = meetingRepository.findByAdsId(adId)
+                .orElseThrow(() -> new EntityNotFoundException(MEETING_NOT_FOUND_MESSAGE + adId));
+        return meeting.getBuyer().getAlias();
+    }
+
+    /**
+     * Retrieves the date of the meeting associated with the ad.
+     *
+     * @param adId The ID of the ad.
+     * @return The date and time of the meeting.
+     * @throws EntityNotFoundException if no meeting is found for the given ad ID.
+     */
+    @Override
+    public LocalDateTime getMeetingDate(Long adId) {
+        Meeting meeting = meetingRepository.findByAdsId(adId)
+                .orElseThrow(() -> new EntityNotFoundException(MEETING_NOT_FOUND_MESSAGE + adId));
+        return meeting.getDate();
     }
 }

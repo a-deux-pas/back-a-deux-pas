@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import adeuxpas.back.enums.AdStatus;
-import jakarta.validation.constraints.Size;
 
 public class AdPostResponseDTO {
     private Long id;
     private String title;
-    @Size(min = 2, max = 5)
     private List<String> articlePictures;
     private BigDecimal price;
     private String creationDate;
@@ -22,6 +20,8 @@ public class AdPostResponseDTO {
     private String articleDescription;
     private String articleState;
     private String category;
+    private String subcategory;
+    private String articleGender;
     private boolean isFavorite;
 
     public Long getId() {
@@ -134,6 +134,22 @@ public class AdPostResponseDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public String getArticleGender() {
+        return articleGender;
+    }
+
+    public void setArticleGender(String articleGender) {
+        this.articleGender = articleGender;
     }
 
     public boolean isFavorite() {

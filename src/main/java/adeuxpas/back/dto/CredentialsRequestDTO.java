@@ -28,6 +28,7 @@ public class CredentialsRequestDTO {
     // (.*): anywhere within the string
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$")
     private String password;
+    private boolean rememberMe;
 
     public String getEmail() {
         return email;
@@ -43,5 +44,13 @@ public class CredentialsRequestDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 }

@@ -6,6 +6,7 @@ import adeuxpas.back.dto.mapper.AdMapper;
 import adeuxpas.back.dto.AdPostRequestDTO;
 import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.ArticlePictureRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +15,7 @@ import jakarta.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -60,18 +62,21 @@ public class AdServiceImpl implements AdService {
     private final UsersFavoriteAdsRepository usersFavoriteAdsRepository;
     private final AdMapper adMapper;
     private final CloudinaryService cloudinaryService;
+    private final ArticlePictureRepository articlePictureRepository;
 
     public AdServiceImpl(
             @Autowired UserRepository userRepository,
             @Autowired AdRepository adRepository,
             @Autowired UsersFavoriteAdsRepository usersFavoriteAdsRepository,
             @Autowired AdMapper adMapper,
-            @Autowired CloudinaryService cloudinaryService) {
+            @Autowired CloudinaryService cloudinaryService,
+            @Autowired ArticlePictureRepository articlePictureRepository) {
         this.userRepository = userRepository;
         this.adRepository = adRepository;
         this.usersFavoriteAdsRepository = usersFavoriteAdsRepository;
         this.adMapper = adMapper;
         this.cloudinaryService = cloudinaryService;
+        this.articlePictureRepository = articlePictureRepository;
     }
 
     /**
@@ -187,12 +192,27 @@ public class AdServiceImpl implements AdService {
     }
 
     /**
-     * Persists an Ad object in database.
+     * Persists an Ad object in the database.
      *
-     * @param adPostRequestDTO coming from the front end application.
-     * @return An AdPostResponseDTO.
+     * This method handles both the creation of a new ad and the update of an
+     * existing ad.
+     * It updates the ad's details and manages its associated images. If the ad is
+     * being updated,
+     * it removes all existing images and replaces them with new ones provided in
+     * the request.
+     *
+     * @param adPostRequestDTO The data transfer object containing ad details from
+     *                         the front-end application.
+     * @param adPicture1       The first image file associated with the ad.
+     * @param adPicture2       The second image.
+     * @param adPicture3       The third image (optional).
+     * @param adPicture4       The fourth image (optional).
+     * @param adPicture5       The fifth image (optional).
+     * @return An AdPostResponseDTO containing the details of the saved or updated
+     *         ad.
      */
     @Override
+    @Transactional // Ensures that all database operations are executed in a single transaction
     public AdPostResponseDTO postAd(
             AdPostRequestDTO adPostRequestDTO,
             MultipartFile adPicture1,
@@ -206,45 +226,56 @@ public class AdServiceImpl implements AdService {
         }
         User publisher = optionalUser.get();
 
-        List<String> articlePictureUrls = new ArrayList<>();
-        List<MultipartFile> articlePictures = new ArrayList<>();
-        Arrays.asList(adPicture1, adPicture2, adPicture3, adPicture4, adPicture5).forEach(picture -> {
-            if (picture != null) {
-                articlePictures.add(picture);
-            }
-        });
-
-        try {
-            for (int index = 0; index < articlePictures.size(); index++) {
-                MultipartFile picture = articlePictures.get(index);
-                String publicId = adPostRequestDTO.getTitle() + "-" + index;
-                Map<String, Object> profilePictureObject = cloudinaryService.upload(publicId, picture);
-                String articlePictureUrl = (String) profilePictureObject.get("url");
-                articlePictureUrls.add(articlePictureUrl);
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed to upload article picture", e);
+        Ad ad;
+        Optional<Ad> optionalAd = adRepository.findById(adPostRequestDTO.getId());
+        // Check if the ad already exists.
+        if (optionalAd.isPresent()) {
+            ad = optionalAd.get();
+            // Update existing ad
+            adMapper.updateAdFromDto(adPostRequestDTO, ad);
+            // Remove all existing pictures from the ad and clear the list
+            articlePictureRepository.deleteAll(ad.getArticlePictures());
+            ad.getArticlePictures().clear();
+        } else {
+            // Create a new ad
+            ad = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
+            ad.setPublisher(publisher);
+            ad.setCreationDate(LocalDateTime.now());
         }
 
-        Ad newAd = adMapper.adPostRequestDTOToAd(adPostRequestDTO);
-        newAd.setPublisher(publisher);
-        newAd.setCreationDate(LocalDateTime.now());
-        for (String url : articlePictureUrls) {
-            ArticlePicture articlePicture = new ArticlePicture();
-            articlePicture.setUrl(url);
-            articlePicture.setAd(newAd);
-            newAd.addArticlePicture(articlePicture);
+        // Collect new picture files
+        List<MultipartFile> newPictures = Arrays.asList(adPicture1, adPicture2, adPicture3, adPicture4, adPicture5)
+                .stream()
+                .filter(Objects::nonNull)
+                .toList();
+        // Upload new pictures and associate them with the ad
+        for (int i = 0; i < newPictures.size(); i++) {
+            MultipartFile newPicture = newPictures.get(i);
+            try {
+                String publicId = adPostRequestDTO.getTitle() + "-" + i;
+                Map<String, Object> uploadResult = cloudinaryService.upload(publicId, newPicture);
+                String newUrl = (String) uploadResult.get("url");
+
+                ArticlePicture articlePicture = new ArticlePicture();
+                articlePicture.setUrl(newUrl);
+                articlePicture.setAd(ad);
+                ad.addArticlePicture(articlePicture);
+            } catch (IOException e) {
+                throw new UncheckedIOException("Failed to upload article picture", e);
+            }
         }
 
         Ad savedAd;
         try {
-            savedAd = adRepository.save(newAd);
+            // Save the ad to the database
+            savedAd = adRepository.save(ad);
         } catch (Exception e) {
             throw new PersistenceException("Failed to save Ad", e);
         }
 
         AdPostResponseDTO responseDTO;
         try {
+            // Map the saved ad to a response DTO
             responseDTO = adMapper.adToAdPostResponseDTO(savedAd);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to map Ad to ResponseDTO", e);
@@ -450,10 +481,26 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public long checkFavoriteCount(long adId) {
+    public long getFavoriteCount(long adId) {
         Optional<Ad> optionalAd = adRepository.findById(adId);
         if (optionalAd.isPresent()) {
             return usersFavoriteAdsRepository.checksFavoriteCount(adId);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    /**
+     * Deletes an ad.
+     *
+     * @param adId The ID of the ad.
+     */
+    @Override
+    public void deleteAd(long adId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.get();
+        if (optionalAd.isPresent() && ad.getStatus() != AdStatus.RESERVED) {
+            adRepository.deleteById(adId);
         } else {
             throw new EntityNotFoundException();
         }

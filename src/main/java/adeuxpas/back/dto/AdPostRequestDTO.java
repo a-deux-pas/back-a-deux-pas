@@ -14,7 +14,7 @@ import jakarta.validation.constraints.*;
  */
 
 public class AdPostRequestDTO {
-
+    private Long id;
     @Size(min = 4, max = 150)
     @NotBlank
     private String title;
@@ -36,6 +36,14 @@ public class AdPostRequestDTO {
     AdStatus status = AdStatus.AVAILABLE;
 
     // getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }

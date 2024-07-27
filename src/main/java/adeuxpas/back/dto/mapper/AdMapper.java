@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
@@ -104,12 +105,21 @@ public interface AdMapper {
     }
 
     /**
-     * Maps an adPostRequest DTO into an ad entity
+     * Maps an adPostRequest DTO into an Ad entity.
      *
      * @param adPostDto
-     * @return an Ad entity
+     * @return an Ad entity.
      */
-    @Mapping(target = "publisher", ignore = true)
-    @Mapping(target = "creationDate", ignore = true)
     Ad adPostRequestDTOToAd(AdPostRequestDTO adPostDto);
+
+    /**
+     * Updates an existing Ad entity with values from the provided AdPostRequestDTO.
+     *
+     * This method maps non-null fields from the DTO to the specified Ad entity.
+     * The `ad` entity is modified directly.
+     *
+     * @param adPostRequestDTO The DTO containing updated ad details.
+     * @param ad               The Ad entity to be updated.
+     */
+    void updateAdFromDto(AdPostRequestDTO adPostRequestDTO, @MappingTarget Ad ad);
 }

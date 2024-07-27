@@ -28,7 +28,10 @@ public class JWTService {
     private String jwtSecret;
 
     @Value("${app.jwt.expiration}")
-    private int jwtExpiration;
+    private long jwtExpiration;
+
+    @Value("${app.jwt.expiration.remember}")
+    private long jwtExpirationRemember;
 
     /**
      * Generates a JWT token based on the provided user id and role.
@@ -37,13 +40,16 @@ public class JWTService {
      * @param role The role associated with the user.
      * @return The generated JWT token.
      */
-    public String generateToken(Long id, UserRole role) {
+    public String generateToken(Long id, UserRole role, boolean rememberMe) {
+        Date now = new Date();
+        long expirationTime = rememberMe ? jwtExpirationRemember : jwtExpiration;
+
         return Jwts.builder()
                 .subject(Long.toString(id))
                 .claim("user", role.equals(UserRole.USER))
                 .claim("admin", role.equals(UserRole.ADMIN))
                 .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + jwtExpiration))
+                .expiration(new Date(now.getTime() + expirationTime))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
                 .compact();
     }
