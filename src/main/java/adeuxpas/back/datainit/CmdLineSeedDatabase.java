@@ -88,6 +88,6 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
         // Seed meetings
         this.meetingSeeder.seedMeetings();
         // Seed favorite ads
-        this.adSeeder.seedFavoritesAds(users);
+        this.adSeeder.seedFavoritesAds();
     }
 }
