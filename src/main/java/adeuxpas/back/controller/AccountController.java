@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.UserProfileRequestDTO;
+import adeuxpas.back.dto.user.UserProfileRequestDTO;
 import adeuxpas.back.service.UserService;
 import adeuxpas.back.util.ValidationHelper;
 import io.swagger.v3.oas.annotations.Operation;

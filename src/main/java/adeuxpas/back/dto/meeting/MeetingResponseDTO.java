@@ -1,10 +1,10 @@
-package adeuxpas.back.dto;
+package adeuxpas.back.dto.meeting;
 
 import adeuxpas.back.enums.MeetingStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class MeetingDTO {
+public class MeetingResponseDTO {
 
     private Long idMeeting;
     private MeetingStatus status;

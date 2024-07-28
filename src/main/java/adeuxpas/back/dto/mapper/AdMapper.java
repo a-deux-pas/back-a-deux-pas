@@ -1,10 +1,10 @@
 package adeuxpas.back.dto.mapper;
 
-import adeuxpas.back.dto.AdCardResponseDTO;
-import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdPostRequestDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.ArticlePicture;
-import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.dto.ad.AdPostResponseDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

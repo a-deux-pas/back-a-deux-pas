@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.PreferredScheduleDTO;
+import adeuxpas.back.dto.user.PreferredScheduleDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
