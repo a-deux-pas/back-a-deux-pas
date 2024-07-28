@@ -6,4 +6,3 @@ public enum MeetingStatus {
     TOBEFINALIZED,
     CANCELLED
 }
-
