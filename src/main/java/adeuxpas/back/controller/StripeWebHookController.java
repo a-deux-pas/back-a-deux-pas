@@ -69,7 +69,7 @@ public class StripeWebHookController {
                 logger.info("The transaction is finalized, funds are withdrawn from the buyer's account and ready to be transferred to the seller's account");
                 break;
             default:
-                logger.warn("Unhandled event type: " + event.getType());
+                logger.warn("Unhandled event type: {}", event.getType());
         }
 
         return ResponseEntity.ok("Event received");
