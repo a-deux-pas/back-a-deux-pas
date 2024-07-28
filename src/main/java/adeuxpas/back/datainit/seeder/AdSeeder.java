@@ -6,14 +6,17 @@ import adeuxpas.back.entity.UsersFavoriteAdsKey;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.UserRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Seeder class responsible for generating sample ad entities.
@@ -24,6 +27,7 @@ import java.util.*;
 public class AdSeeder {
 
         private final AdRepository adRepository;
+        private final UserRepository userRepository;
         private final UsersFavoriteAdsRepository favoriteRepository;
 
         /**
@@ -32,8 +36,10 @@ public class AdSeeder {
          * @param adRepository the AdRepository to be used for database seeding
          *                     operations.
          */
-        AdSeeder(@Autowired AdRepository adRepository, @Autowired UsersFavoriteAdsRepository favoriteRepository) {
+        AdSeeder(@Autowired AdRepository adRepository, @Autowired UsersFavoriteAdsRepository favoriteRepository,
+                        @Autowired UserRepository userRepository) {
                 this.adRepository = adRepository;
+                this.userRepository = userRepository;
                 this.favoriteRepository = favoriteRepository;
         }
 
@@ -884,12 +890,18 @@ public class AdSeeder {
          * @param user The list of users.
          * @param ads  The list of ads.
          */
-        public void seedFavoritesAds(List<User> users) {
+        @Transactional
+        public void seedFavoritesAds() {
                 List<Ad> ads = adRepository.findAll();
+                List<User> users = userRepository.findAll();
                 for (User user : users) {
-                        List<Ad> matchedAds = ads.stream().filter(ad -> ad.getStatus() == AdStatus.AVAILABLE)
+                        List<Ad> matchedAds = ads.stream()
+                                        .filter(ad -> ad.getStatus() == AdStatus.AVAILABLE
+                                                        && ad.getPublisher().getId() != user.getId()
+                                                        && ad.getPublisher().getPostalCode()
+                                                                        .equals(user.getPostalCode()))
                                         .limit(2)
-                                        .toList();
+                                        .collect(Collectors.toList());
 
                         for (Ad ad : matchedAds) {
                                 createFavoriteAd(user, ad);

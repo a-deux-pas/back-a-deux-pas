@@ -30,354 +30,292 @@ public class MeetingSeeder {
     }
 
     public void seedMeetings() {
-        User buyer1 = userRepository.findById(1L).get();
-        User seller1 = userRepository.findById(1L).get();
+        User user1 = userRepository.findById(1L).get();
+        User user2 = userRepository.findById(2L).get();
+        User user3 = userRepository.findById(3L).get();
+        User user4 = userRepository.findById(4L).get();
+        User user5 = userRepository.findById(5L).get();
 
-        User buyer2 = userRepository.findById(2L).get();
-        User seller2 = userRepository.findById(2L).get();
+        List<PreferredMeetingPlace> meetingPlacesUser1 = preferredMeetingPlaceRepository
+                .findPreferredMeetingPlacesByUser(user1);
+        List<PreferredMeetingPlace> meetingPlacesUser2 = preferredMeetingPlaceRepository
+                .findPreferredMeetingPlacesByUser(user2);
+        List<PreferredMeetingPlace> meetingPlacesUser3 = preferredMeetingPlaceRepository
+                .findPreferredMeetingPlacesByUser(user3);
+        List<PreferredMeetingPlace> meetingPlacesUser4 = preferredMeetingPlaceRepository
+                .findPreferredMeetingPlacesByUser(user4);
 
-        User buyer3 = userRepository.findById(3L).get();
-        User seller3 = userRepository.findById(3L).get();
-
-        User buyer4 = userRepository.findById(4L).get();
-        User seller4 = userRepository.findById(4L).get();
-
-        User buyer5 = userRepository.findById(5L).get();
-
-        User buyer6 = userRepository.findById(6L).get();
-
-        User seller7 = userRepository.findById(7L).get();
-
-        PreferredMeetingPlace meetingPlace1 = preferredMeetingPlaceRepository.findById(1L).get();
-        PreferredMeetingPlace meetingPlace2 = preferredMeetingPlaceRepository.findById(2L).get();
-        PreferredMeetingPlace meetingPlace3 = preferredMeetingPlaceRepository.findById(3L).get();
-        PreferredMeetingPlace meetingPlace4 = preferredMeetingPlaceRepository.findById(4L).get();
-        PreferredMeetingPlace meetingPlace5 = preferredMeetingPlaceRepository.findById(5L).get();
-        PreferredMeetingPlace meetingPlace6 = preferredMeetingPlaceRepository.findById(6L).get();
-
-        List<Ad> existingAds = adRepository.findAll();
+        List<Ad> adsUser1 = adRepository.findAdsByPublisherId(1L);
+        List<Ad> adsUser2 = adRepository.findAdsByPublisherId(2L);
+        List<Ad> adsUser3 = adRepository.findAdsByPublisherId(3L);
+        List<Ad> adsUser4 = adRepository.findAdsByPublisherId(4L);
 
         // user2 => Donia
         // Proposed
         Meeting firstMeeting = new Meeting();
-        firstMeeting.setBuyer(buyer2);// donia == user
-        firstMeeting.setSeller(seller1);// mircea
-        firstMeeting.setMeetingPlace(meetingPlace1);
+        firstMeeting.setBuyer(user2);// Dounia == user
+        firstMeeting.setSeller(user1);// Koroviev
+        firstMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
         firstMeeting.setDate(LocalDateTime.now().plusDays(3));
         firstMeeting.setStatus(MeetingStatus.INITIALIZED);
-        firstMeeting.setBuyerDistinctiveSign("Je suis chauve et je porte des lunettes rouges.");
-        firstMeeting.setSellerDistinctiveSign("Je porterai un grand cabas doré.");
-        firstMeeting.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
+        firstMeeting.setBuyerDistinctiveSign("Je porterai un grand cabas doré.");
+        firstMeeting.setSellerDistinctiveSign("Je porte des lunettes rouges.");
+        firstMeeting.setBuyerAdditionalInfo("J'ai hâte de voir l'article en vrai !.");
         firstMeeting.setSellerAdditionalInfo("Merci de porter un masque.");
-        firstMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(0))));
+        firstMeeting.setAds(new HashSet<>(Arrays.asList(adsUser1.get(0))));
+        adsUser1.get(0).setStatus(AdStatus.RESERVED);
 
         // ToConfirm
         Meeting secondMeeting = new Meeting();
-        secondMeeting.setBuyer(buyer3);// lea
-        secondMeeting.setSeller(seller2);// donia == user
-        secondMeeting.setMeetingPlace(meetingPlace2);
+        secondMeeting.setBuyer(user1); // Koroviev
+        secondMeeting.setSeller(user2); // Dounia == user
+        secondMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
         secondMeeting.setDate(LocalDateTime.now().plusDays(3));
         secondMeeting.setStatus(MeetingStatus.INITIALIZED);
         secondMeeting.setBuyerDistinctiveSign("Je porterai un chapeau bleu.");
         secondMeeting.setSellerDistinctiveSign("Je porterai un manteau vert.");
         secondMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
         secondMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
-        secondMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(1))));
+        secondMeeting.setAds(new HashSet<>(Arrays.asList(adsUser2.get(0))));
+        adsUser2.get(0).setStatus(AdStatus.RESERVED);
 
         // Planned
-        Meeting thirdMeeting = new Meeting();
-        thirdMeeting.setBuyer(buyer2);// donia == user
-        thirdMeeting.setSeller(seller4);// eri
-        thirdMeeting.setMeetingPlace(meetingPlace3);
-        thirdMeeting.setDate(LocalDateTime.now());
-        thirdMeeting.setStatus(MeetingStatus.ACCEPTED);
-        thirdMeeting.setBuyerDistinctiveSign("Je porterai une écharpe rouge.");
-        thirdMeeting.setSellerDistinctiveSign("Je porterai un sac à dos noir.");
-        thirdMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
-        thirdMeeting.setSellerAdditionalInfo("Merci de confirmer l'heure du rendez-vous.");
-        thirdMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(2))));
-
         Meeting fourthMeeting = new Meeting();
-        fourthMeeting.setBuyer(buyer5);// julien
-        fourthMeeting.setSeller(seller2);// donia == user
-        fourthMeeting.setMeetingPlace(meetingPlace4);
+        fourthMeeting.setBuyer(user1); // Koroviev
+        fourthMeeting.setSeller(user2); // Dounia == user
+        fourthMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
         fourthMeeting.setDate(LocalDateTime.now().plusDays(3));
         fourthMeeting.setStatus(MeetingStatus.ACCEPTED);
         fourthMeeting.setBuyerDistinctiveSign("Je porterai une chemise blanche.");
         fourthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil.");
         fourthMeeting.setBuyerAdditionalInfo("Je préfère un paiement en espèces.");
         fourthMeeting.setSellerAdditionalInfo("Merci de respecter la distance sociale.");
-        fourthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(3))));
+        fourthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser2.get(1))));
+        adsUser2.get(1).setStatus(AdStatus.RESERVED);
 
         // Finalized
         Meeting fifthMeeting = new Meeting();
-        fifthMeeting.setBuyer(buyer6);// cameron
-        fifthMeeting.setSeller(seller2);// donia == user
-        fifthMeeting.setMeetingPlace(meetingPlace5);
+        fifthMeeting.setBuyer(user1); // Koroviev
+        fifthMeeting.setSeller(user2); // Dounia == user
+        fifthMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
         fifthMeeting.setDate(LocalDateTime.now().minusDays(1));
         fifthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         fifthMeeting.setBuyerDistinctiveSign("Je porterai un pull rouge.");
         fifthMeeting.setSellerDistinctiveSign("Je porterai un manteau noir.");
         fifthMeeting.setBuyerAdditionalInfo("Je préfère une transaction rapide.");
         fifthMeeting.setSellerAdditionalInfo("Merci d'apporter l'article.");
-        fifthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(4))));
-        existingAds.get(4).setStatus(AdStatus.RESERVED);
+        fifthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser2.get(2))));
+        adsUser2.get(2).setStatus(AdStatus.RESERVED);
 
         Meeting sixthMeeting = new Meeting();
-        sixthMeeting.setBuyer(buyer2); // donia == user
-        sixthMeeting.setSeller(seller7); // sofia
-        sixthMeeting.setMeetingPlace(meetingPlace6);
+        sixthMeeting.setBuyer(user2); // Dounia == user
+        sixthMeeting.setSeller(user1); // Koroviev
+        sixthMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
         sixthMeeting.setDate(LocalDateTime.now().minusDays(2));
         sixthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
         sixthMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
         sixthMeeting.setSellerDistinctiveSign("Je porterai une veste en cuir.");
         sixthMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement.");
         sixthMeeting.setSellerAdditionalInfo("Merci de venir à l'heure.");
-        sixthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(5))));
+        sixthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser1.get(1))));
+        adsUser1.get(1).setStatus(AdStatus.RESERVED);
 
-        // User1 => Mircea
+        // User1 => Koroviev
         // Proposed
         Meeting seventhMeeting = new Meeting();
-        seventhMeeting.setBuyer(buyer1);// mircea == user
-        seventhMeeting.setSeller(seller2);// DONIA
-        seventhMeeting.setMeetingPlace(meetingPlace1);
+        seventhMeeting.setBuyer(user1); // Koroviev == user
+        seventhMeeting.setSeller(user2); // Dounia
+        seventhMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
         seventhMeeting.setDate(LocalDateTime.now().plusDays(3));
         seventhMeeting.setStatus(MeetingStatus.INITIALIZED);
         seventhMeeting.setBuyerDistinctiveSign("Je porterai un manteau noir et une écharpe bleue.");
         seventhMeeting.setSellerDistinctiveSign("J'aurai une mallette en cuir marron.");
-        seventhMeeting.setBuyerAdditionalInfo("Je préfère un paiement par virement bancaire.");
-        seventhMeeting.setSellerAdditionalInfo("Merci d'apporter la facture originale si possible.");
-        seventhMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(6))));
+        seventhMeeting.setBuyerAdditionalInfo("Merci d'apporter la facture originale si possible.");
+        seventhMeeting.setSellerAdditionalInfo("Je risque d'avoir quelques minutes de retard.");
+        seventhMeeting.setAds(new HashSet<>(Arrays.asList(adsUser2.get(3))));
+        adsUser2.get(3).setStatus(AdStatus.RESERVED);
 
-        // ToConfirm
+        // Planned
         Meeting eighthMeeting = new Meeting();
-        eighthMeeting.setBuyer(buyer1); // mircea == user
-        eighthMeeting.setSeller(seller3);// lea
-        eighthMeeting.setMeetingPlace(meetingPlace2);
-        eighthMeeting.setDate(LocalDateTime.now().plusDays(2));
-        eighthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        eighthMeeting.setBuyerDistinctiveSign("Je serai en costume gris avec une cravate rouge.");
-        eighthMeeting.setSellerDistinctiveSign("Je porterai un sac à dos noir de marque.");
-        eighthMeeting.setBuyerAdditionalInfo("Je souhaite examiner l'objet en détail avant l'achat.");
-        eighthMeeting.setSellerAdditionalInfo("Pouvez-vous fournir un certificat d'authenticité ?");
-        eighthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(7))));
+        eighthMeeting.setBuyer(user2); // Dounia
+        eighthMeeting.setSeller(user1); // Koroviev == user
+        eighthMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
+        eighthMeeting.setDate(LocalDateTime.now().plusDays(3));
+        eighthMeeting.setStatus(MeetingStatus.ACCEPTED);
+        eighthMeeting.setBuyerDistinctiveSign("Je porterai un pull vert foncé et un pantalon beige.");
+        eighthMeeting.setSellerDistinctiveSign("J'aurai un sac en toile écru sur l'épaule.");
+        eighthMeeting.setBuyerAdditionalInfo("Pouvez-vous apporter l'emballage d'origine ?");
+        eighthMeeting.setSellerAdditionalInfo("Je préfère effectuer la transaction dans un lieu public.");
+        eighthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser1.get(2))));
+        adsUser1.get(2).setStatus(AdStatus.RESERVED);
 
-        // Planned
+        // Finalized
         Meeting ninthMeeting = new Meeting();
-        ninthMeeting.setBuyer(buyer1);// mircea == user
-        ninthMeeting.setSeller(seller4);// eri
-        ninthMeeting.setMeetingPlace(meetingPlace3);
-        ninthMeeting.setDate(LocalDateTime.now().plusDays(3));
-        ninthMeeting.setStatus(MeetingStatus.ACCEPTED);
-        ninthMeeting.setBuyerDistinctiveSign("J'aurai une veste en jean et des lunettes de vue.");
-        ninthMeeting.setSellerDistinctiveSign("Je tiendrai un parapluie noir classique.");
-        ninthMeeting.setBuyerAdditionalInfo("Je peux payer en espèces ou par carte bancaire.");
-        ninthMeeting.setSellerAdditionalInfo("Merci de prévoir un reçu pour la transaction.");
-        ninthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(8))));
+        ninthMeeting.setBuyer(user2); // Dounia
+        ninthMeeting.setSeller(user1); // Koroviev == user
+        ninthMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
+        ninthMeeting.setDate(LocalDateTime.now().minusDays(1));
+        ninthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
+        ninthMeeting.setBuyerDistinctiveSign("Je serai en chemise blanche et pantalon noir.");
+        ninthMeeting.setSellerDistinctiveSign("J'aurai une sacoche pour ordinateur portable.");
+        ninthMeeting.setBuyerAdditionalInfo("Je souhaite vérifier le fonctionnement de l'objet sur place.");
+        ninthMeeting.setSellerAdditionalInfo("Merci de prévoir une garantie écrite si applicable.");
+        ninthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser1.get(3))));
+        adsUser1.get(3).setStatus(AdStatus.RESERVED);
 
-        Meeting tenth = new Meeting();
-        tenth.setBuyer(buyer5);// julien
-        tenth.setSeller(seller1);// mircea == user
-        tenth.setMeetingPlace(meetingPlace4);
-        tenth.setDate(LocalDateTime.now().plusDays(3));
-        tenth.setStatus(MeetingStatus.ACCEPTED);
-        tenth.setBuyerDistinctiveSign("Je porterai un pull vert foncé et un pantalon beige.");
-        tenth.setSellerDistinctiveSign("J'aurai un sac en toile écru sur l'épaule.");
-        tenth.setBuyerAdditionalInfo("Je préfère effectuer la transaction dans un lieu public.");
-        tenth.setSellerAdditionalInfo("Pouvez-vous apporter l'emballage d'origine ?");
-        tenth.setAds(new HashSet<>(Arrays.asList(existingAds.get(9))));
+        Meeting tenthMeeting = new Meeting();
+        tenthMeeting.setBuyer(user1); // Koroviev == user
+        tenthMeeting.setSeller(user2); // Dounia
+        tenthMeeting.setMeetingPlace(meetingPlacesUser2.get(1));
+        tenthMeeting.setDate(LocalDateTime.now().minusDays(2));
+        tenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
+        tenthMeeting.setBuyerDistinctiveSign("Je porterai un blouson en cuir marron et un jean.");
+        tenthMeeting.setSellerDistinctiveSign("J'aurai des écouteurs autour du cou.");
+        tenthMeeting.setBuyerAdditionalInfo("Je peux payer par chèque si vous préférez.");
+        tenthMeeting.setSellerAdditionalInfo("Pouvez-vous fournir un historique d'entretien de l'objet ?");
+        tenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser2.get(4))));
+        adsUser2.get(4).setStatus(AdStatus.RESERVED);
+
+        // User3 = Leahad
+        // Proposed
+        Meeting eleventhMeeting = new Meeting();
+        eleventhMeeting.setBuyer(user3); // Leahad == user
+        eleventhMeeting.setSeller(user4); // Eri
+        eleventhMeeting.setMeetingPlace(meetingPlacesUser4.get(0));
+        eleventhMeeting.setDate(LocalDateTime.now().plusDays(3));
+        eleventhMeeting.setStatus(MeetingStatus.INITIALIZED);
+        eleventhMeeting.setBuyerDistinctiveSign("J'aurai une casquette bleue marine et des baskets blanches.");
+        eleventhMeeting.setSellerDistinctiveSign("Je porterai une montre argentée visible.");
+        eleventhMeeting.setBuyerAdditionalInfo("Je préfère un échange rapide, mon temps est limité.");
+        eleventhMeeting.setSellerAdditionalInfo("Merci d'informer de tout défaut connu à l'avance.");
+        eleventhMeeting.setAds(new HashSet<>(Arrays.asList(adsUser4.get(2))));
+        adsUser4.get(2).setStatus(AdStatus.RESERVED);
+
+        Meeting twelfthMeeting = new Meeting();
+        twelfthMeeting.setBuyer(user5); // Julius
+        twelfthMeeting.setSeller(user3); // Leahad == user
+        twelfthMeeting.setMeetingPlace(meetingPlacesUser3.get(2));
+        twelfthMeeting.setDate(LocalDateTime.now().plusDays(3));
+        twelfthMeeting.setStatus(MeetingStatus.ACCEPTED);
+        twelfthMeeting.setBuyerDistinctiveSign("Je serai en tailleur noir avec une broche dorée.");
+        twelfthMeeting.setSellerDistinctiveSign("J'aurai un porte-documents en cuir noir.");
+        twelfthMeeting.setBuyerAdditionalInfo("Je souhaite un reçu détaillé pour ma comptabilité.");
+        twelfthMeeting.setSellerAdditionalInfo("Merci pour votre réservation !");
+        twelfthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser3.get(2))));
+        adsUser3.get(2).setStatus(AdStatus.RESERVED);
 
         // Finalized
-        Meeting eleventh = new Meeting();
-        eleventh.setBuyer(buyer6);// cameron
-        eleventh.setSeller(seller1);// mircea == user
-        eleventh.setMeetingPlace(meetingPlace5);
-        eleventh.setDate(LocalDateTime.now().minusDays(1));
-        eleventh.setStatus(MeetingStatus.TOBEFINALIZED);
-        eleventh.setBuyerDistinctiveSign("Je serai en chemise blanche et pantalon noir.");
-        eleventh.setSellerDistinctiveSign("J'aurai une sacoche pour ordinateur portable.");
-        eleventh.setBuyerAdditionalInfo("Je souhaite vérifier le fonctionnement de l'objet sur place.");
-        eleventh.setSellerAdditionalInfo("Merci de prévoir une garantie écrite si applicable.");
-        eleventh.setAds(new HashSet<>(Arrays.asList(existingAds.get(10))));
-
-        Meeting twelfth = new Meeting();
-        twelfth.setBuyer(buyer1); // mircea == user
-        twelfth.setSeller(seller7); // sofia
-        twelfth.setMeetingPlace(meetingPlace6);
-        twelfth.setDate(LocalDateTime.now().minusDays(2));
-        twelfth.setStatus(MeetingStatus.TOBEFINALIZED);
-        twelfth.setBuyerDistinctiveSign("Je porterai un blouson en cuir marron et un jean.");
-        twelfth.setSellerDistinctiveSign("J'aurai des écouteurs autour du cou.");
-        twelfth.setBuyerAdditionalInfo("Je peux payer par chèque si vous préférez.");
-        twelfth.setSellerAdditionalInfo("Pouvez-vous fournir un historique d'entretien de l'objet ?");
-        twelfth.setAds(new HashSet<>(Arrays.asList(existingAds.get(11))));
-
-        // User3 = Lea
-        // Proposed
         Meeting thirteenthMeeting = new Meeting();
-        thirteenthMeeting.setBuyer(buyer3);// lea == user
-        thirteenthMeeting.setSeller(seller1);// mircea
-        thirteenthMeeting.setMeetingPlace(meetingPlace1);
-        thirteenthMeeting.setDate(LocalDateTime.now().plusDays(3));
-        thirteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        thirteenthMeeting.setBuyerDistinctiveSign("J'aurai une casquette bleue marine et des baskets blanches.");
-        thirteenthMeeting.setSellerDistinctiveSign("Je porterai une montre argentée visible.");
-        thirteenthMeeting.setBuyerAdditionalInfo("Je préfère un échange rapide, mon temps est limité.");
-        thirteenthMeeting.setSellerAdditionalInfo("Merci d'informer de tout défaut connu à l'avance.");
-        thirteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(12))));
+        thirteenthMeeting.setBuyer(user4); // Eri
+        thirteenthMeeting.setSeller(user3); // Leahad == user
+        thirteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(3));
+        thirteenthMeeting.setDate(LocalDateTime.now().minusDays(1));
+        thirteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
+        thirteenthMeeting.setBuyerDistinctiveSign("Je porterai un polo bleu ciel et un pantalon kaki.");
+        thirteenthMeeting.setSellerDistinctiveSign("J'aurai une sacoche en bandoulière grise.");
+        thirteenthMeeting.setBuyerAdditionalInfo("Je risque d'avoir 5 minutes de retard.");
+        thirteenthMeeting.setSellerAdditionalInfo("Je vous attendrai prêt du kiosque à journaux.");
+        thirteenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser3.get(3))));
+        adsUser3.get(3).setStatus(AdStatus.RESERVED);
 
-        // ToConfirm
         Meeting fourteenthMeeting = new Meeting();
-        fourteenthMeeting.setBuyer(buyer2);// donia
-        fourteenthMeeting.setSeller(seller3);// lea == user
-        fourteenthMeeting.setMeetingPlace(meetingPlace2);
-        fourteenthMeeting.setDate(LocalDateTime.now().plusDays(1));
-        fourteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        fourteenthMeeting.setBuyerDistinctiveSign("Je serai en tailleur noir avec une broche dorée.");
-        fourteenthMeeting.setSellerDistinctiveSign("J'aurai un porte-documents en cuir noir.");
-        fourteenthMeeting.setBuyerAdditionalInfo("Je souhaite un reçu détaillé pour ma comptabilité.");
-        fourteenthMeeting.setSellerAdditionalInfo("Pouvez-vous démontrer le fonctionnement de l'objet ?");
-        fourteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(13))));
+        fourteenthMeeting.setBuyer(user5); // Julius
+        fourteenthMeeting.setSeller(user3); // Leahad == user
+        fourteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(1));
+        fourteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
+        fourteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
+        fourteenthMeeting.setBuyerDistinctiveSign("Je porterai un blazer blanc.");
+        fourteenthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil sur la tête.");
+        fourteenthMeeting.setBuyerAdditionalInfo("Pouvez-vous fournir une preuve d'achat ?");
+        fourteenthMeeting.setSellerAdditionalInfo("Je vous apporterai la facture.");
+        fourteenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser3.get(4))));
+        adsUser3.get(4).setStatus(AdStatus.RESERVED);
 
-        // Planned
-        Meeting fifteenthMeeting = new Meeting();
-        fifteenthMeeting.setBuyer(buyer3);// lea == user
-        fifteenthMeeting.setSeller(seller4);// eri
-        fifteenthMeeting.setMeetingPlace(meetingPlace3);
-        fifteenthMeeting.setDate(LocalDateTime.now().plusDays(2));
-        fifteenthMeeting.setStatus(MeetingStatus.ACCEPTED);
-        fifteenthMeeting.setBuyerDistinctiveSign("J'aurai une casquette bleue marine et des baskets blanches.");
-        fifteenthMeeting.setSellerDistinctiveSign("Je porterai une montre argentée visible.");
-        fifteenthMeeting.setBuyerAdditionalInfo("Je préfère un échange rapide, mon temps est limité.");
-        fifteenthMeeting.setSellerAdditionalInfo("Merci d'informer de tout défaut connu à l'avance.");
-        fifteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(14))));
-
-        Meeting sixteenthMeeting = new Meeting();
-        sixteenthMeeting.setBuyer(buyer5);// julien
-        sixteenthMeeting.setSeller(seller3);// lea == user
-        sixteenthMeeting.setMeetingPlace(meetingPlace4);
-        sixteenthMeeting.setDate(LocalDateTime.now().plusDays(3));
-        sixteenthMeeting.setStatus(MeetingStatus.ACCEPTED);
-        sixteenthMeeting.setBuyerDistinctiveSign("Je serai en tailleur noir avec une broche dorée.");
-        sixteenthMeeting.setSellerDistinctiveSign("J'aurai un porte-documents en cuir noir.");
-        sixteenthMeeting.setBuyerAdditionalInfo("Je souhaite un reçu détaillé pour ma comptabilité.");
-        sixteenthMeeting.setSellerAdditionalInfo("Pouvez-vous démontrer le fonctionnement de l'objet ?");
-        sixteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(15))));
-
-        // Finalized
-        Meeting seventeenthMeeting = new Meeting();
-        seventeenthMeeting.setBuyer(buyer6);// cameron
-        seventeenthMeeting.setSeller(seller3);// lea == user
-        seventeenthMeeting.setMeetingPlace(meetingPlace5);
-        seventeenthMeeting.setDate(LocalDateTime.now().minusDays(1));
-        seventeenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
-        seventeenthMeeting.setBuyerDistinctiveSign("Je porterai un polo bleu ciel et un pantalon kaki.");
-        seventeenthMeeting.setSellerDistinctiveSign("J'aurai une sacoche en bandoulière grise.");
-        seventeenthMeeting.setBuyerAdditionalInfo("Je préfère payer par virement instantané si possible.");
-        seventeenthMeeting.setSellerAdditionalInfo("Merci de préparer tous les accessoires inclus.");
-        seventeenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(16))));
-
-        Meeting eighteenthMeeting = new Meeting();
-        eighteenthMeeting.setBuyer(buyer3); // lea == user
-        eighteenthMeeting.setSeller(seller7); // sofia
-        eighteenthMeeting.setMeetingPlace(meetingPlace6);
-        eighteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
-        eighteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
-        eighteenthMeeting.setBuyerDistinctiveSign("Je serai en robe noire avec un blazer blanc.");
-        eighteenthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil sur la tête.");
-        eighteenthMeeting.setBuyerAdditionalInfo("J'apporterai un appareil pour vérifier l'authenticité.");
-        eighteenthMeeting.setSellerAdditionalInfo("Pouvez-vous fournir une preuve d'achat ?");
-        eighteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(17))));
-
-        // User4 = Erika
+        // User4 = Eri
         // Proposed
-        Meeting nineteenthMeeting = new Meeting();
-        nineteenthMeeting.setBuyer(buyer4);// Erika == user
-        nineteenthMeeting.setSeller(seller1);// mircea
-        nineteenthMeeting.setMeetingPlace(meetingPlace1);
-        nineteenthMeeting.setDate(LocalDateTime.now().plusDays(3));
-        nineteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
-        nineteenthMeeting.setBuyerDistinctiveSign("J'aurai une écharpe rouge et des gants en cuir.");
-        nineteenthMeeting.setSellerDistinctiveSign("Je tiendrai un journal sous le bras.");
-        nineteenthMeeting.setBuyerAdditionalInfo("Je préfère négocier le prix final après inspection.");
-        nineteenthMeeting.setSellerAdditionalInfo("Merci de prévoir un emballage sécurisé pour le transport.");
-        nineteenthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(18))));
+        Meeting fifteenthMeeting = new Meeting();
+        fifteenthMeeting.setBuyer(user4); // Eri == user
+        fifteenthMeeting.setSeller(user3); // Leahad
+        fifteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(2));
+        fifteenthMeeting.setDate(LocalDateTime.now().plusDays(3));
+        fifteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
+        fifteenthMeeting.setBuyerDistinctiveSign("J'aurai une écharpe rouge et des gants en cuir.");
+        fifteenthMeeting.setSellerDistinctiveSign("Je tiendrai un journal sous le bras.");
+        fifteenthMeeting.setBuyerAdditionalInfo("Je préfère négocier le prix final après inspection.");
+        fifteenthMeeting
+                .setSellerAdditionalInfo("Je vous conseille de prévoir un diable pour le transport.");
+        fifteenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser3.get(5))));
+        adsUser3.get(5).setStatus(AdStatus.RESERVED);
 
         // ToConfirm
-        Meeting twentiethMeeting = new Meeting();
-        twentiethMeeting.setBuyer(buyer2);// donia
-        twentiethMeeting.setSeller(seller4);// Erika == user
-        twentiethMeeting.setMeetingPlace(meetingPlace2);
-        twentiethMeeting.setDate(LocalDateTime.now().plusDays(3));
-        twentiethMeeting.setStatus(MeetingStatus.INITIALIZED);
-        twentiethMeeting.setBuyerDistinctiveSign("Je serai en costume bleu marine avec une pochette.");
-        twentiethMeeting.setSellerDistinctiveSign("J'aurai une cravate à motifs géométriques.");
-        twentiethMeeting.setBuyerAdditionalInfo("Je peux payer par PayPal ou virement bancaire.");
-        twentiethMeeting.setSellerAdditionalInfo("Pouvez-vous fournir les spécifications techniques de l'objet ?");
-        twentiethMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(19))));
+        Meeting sixteenthMeeting = new Meeting();
+        sixteenthMeeting.setBuyer(user3);// Leahad
+        sixteenthMeeting.setSeller(user4); // Eri == user
+        sixteenthMeeting.setMeetingPlace(meetingPlacesUser4.get(2));
+        sixteenthMeeting.setDate(LocalDateTime.now().plusDays(3));
+        sixteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
+        sixteenthMeeting.setBuyerDistinctiveSign("Je serai en costume bleu marine avec une pochette.");
+        sixteenthMeeting.setSellerDistinctiveSign("J'aurai une cravate à motifs géométriques.");
+        sixteenthMeeting.setBuyerAdditionalInfo("J'ai hâte de procéder à l'échange !");
+        sixteenthMeeting
+                .setSellerAdditionalInfo("Bravo pour avoir choisi ce magnifique objet, vous avez beaucoup de goût :)");
+        sixteenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser4.get(4))));
+        adsUser4.get(4).setStatus(AdStatus.RESERVED);
 
         // Planned
-        Meeting twentyfirstMeeting = new Meeting();
-        twentyfirstMeeting.setBuyer(buyer4);// Erika == user
-        twentyfirstMeeting.setSeller(seller7);// eri
-        twentyfirstMeeting.setMeetingPlace(meetingPlace3);
-        twentyfirstMeeting.setDate(LocalDateTime.now().plusDays(3));
-        twentyfirstMeeting.setStatus(MeetingStatus.ACCEPTED);
-        twentyfirstMeeting.setBuyerDistinctiveSign("Je porterai un trench beige et des chaussures marron.");
-        twentyfirstMeeting.setSellerDistinctiveSign("J'aurai un parapluie rétractable noir.");
-        twentyfirstMeeting.setBuyerAdditionalInfo("Je souhaite effectuer la transaction dans un café calme.");
-        twentyfirstMeeting.setSellerAdditionalInfo("Merci d'apporter toute documentation pertinente.");
-        twentyfirstMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(20))));
-
-        Meeting twentysecondMeeting = new Meeting();
-        twentysecondMeeting.setBuyer(buyer5);// julien
-        twentysecondMeeting.setSeller(seller4);// Erika == user
-        twentysecondMeeting.setMeetingPlace(meetingPlace4);
-        twentysecondMeeting.setDate(LocalDateTime.now().plusDays(2));
-        twentysecondMeeting.setStatus(MeetingStatus.ACCEPTED);
-        twentysecondMeeting.setBuyerDistinctiveSign("Je serai en pull col roulé noir et pantalon gris.");
-        twentysecondMeeting.setSellerDistinctiveSign("Je porterai une montre connectée visible.");
-        twentysecondMeeting.setBuyerAdditionalInfo("Je préfère payer avec des billets de petite coupure.");
-        twentysecondMeeting.setSellerAdditionalInfo("Pouvez-vous confirmer la compatibilité avec mon équipement ?");
-        twentysecondMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(21))));
+        Meeting seventeenthMeeting = new Meeting();
+        seventeenthMeeting.setBuyer(user5); // Julius
+        seventeenthMeeting.setSeller(user4); // Eri == user
+        seventeenthMeeting.setMeetingPlace(meetingPlacesUser4.get(0));
+        seventeenthMeeting.setDate(LocalDateTime.now().plusDays(2));
+        seventeenthMeeting.setStatus(MeetingStatus.ACCEPTED);
+        seventeenthMeeting.setBuyerDistinctiveSign("Je serai en pull col roulé noir et pantalon gris.");
+        seventeenthMeeting.setSellerDistinctiveSign("Je porterai une montre connectée visible.");
+        seventeenthMeeting.setBuyerAdditionalInfo("Je préfère payer avec de la monnaie");
+        seventeenthMeeting.setSellerAdditionalInfo("Pouvez-vous confirmer la compatibilité avec mon équipement ?");
+        seventeenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser4.get(5))));
+        adsUser4.get(5).setStatus(AdStatus.RESERVED);
 
         // Finalized
-        Meeting twentythirdMeeting = new Meeting();
-        twentythirdMeeting.setBuyer(buyer6);// cameron
-        twentythirdMeeting.setSeller(seller4);// Erika == user
-        twentythirdMeeting.setMeetingPlace(meetingPlace5);
-        twentythirdMeeting.setDate(LocalDateTime.now().minusDays(1));
-        twentythirdMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
-        twentythirdMeeting.setBuyerDistinctiveSign("J'aurai une veste matelassée bleue et une écharpe grise.");
-        twentythirdMeeting.setSellerDistinctiveSign("Je tiendrai un dossier avec des papiers visibles.");
-        twentythirdMeeting.setBuyerAdditionalInfo("J'aimerais avoir la possibilité d'un retour sous conditions.");
-        twentythirdMeeting.setSellerAdditionalInfo("Merci de prévoir un temps pour répondre à mes questions.");
-        twentythirdMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(22))));
+        Meeting eighteenthMeeting = new Meeting();
+        eighteenthMeeting.setBuyer(user5); // Julius
+        eighteenthMeeting.setSeller(user4); // Eri == user
+        eighteenthMeeting.setMeetingPlace(meetingPlacesUser4.get(1));
+        eighteenthMeeting.setDate(LocalDateTime.now().minusDays(1));
+        eighteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
+        eighteenthMeeting.setBuyerDistinctiveSign("J'aurai une veste matelassée bleue et une écharpe grise.");
+        eighteenthMeeting.setSellerDistinctiveSign("Je tiendrai un dossier avec des papiers visibles.");
+        eighteenthMeeting.setBuyerAdditionalInfo("J'aimerais avoir la possibilité d'un retour sous conditions.");
+        eighteenthMeeting.setSellerAdditionalInfo("Merci de prévoir un temps pour répondre à mes questions.");
+        eighteenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser4.get(6))));
+        adsUser4.get(6).setStatus(AdStatus.RESERVED);
 
-        Meeting twentyfourthMeeting = new Meeting();
-        twentyfourthMeeting.setBuyer(buyer4); // Erika == user
-        twentyfourthMeeting.setSeller(seller7); // sofia
-        twentyfourthMeeting.setMeetingPlace(meetingPlace6);
-        twentyfourthMeeting.setDate(LocalDateTime.now().minusDays(2));
-        twentyfourthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
-        twentyfourthMeeting.setBuyerDistinctiveSign("Je serai en chemise à carreaux et jean foncé.");
-        twentyfourthMeeting.setSellerDistinctiveSign("J'aurai une sacoche pour appareil photo.");
-        twentyfourthMeeting.setBuyerAdditionalInfo("Je peux payer par chèque de banque si le montant est élevé.");
-        twentyfourthMeeting.setSellerAdditionalInfo("Pouvez-vous fournir un certificat de conformité ?");
-        twentyfourthMeeting.setAds(new HashSet<>(Arrays.asList(existingAds.get(23))));
+        Meeting nineteenthMeeting = new Meeting();
+        nineteenthMeeting.setBuyer(user4); // Erika == user
+        nineteenthMeeting.setSeller(user3); // Leahad
+        nineteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(0));
+        nineteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
+        nineteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
+        nineteenthMeeting.setBuyerDistinctiveSign("Je serai en chemise à carreaux et jean foncé.");
+        nineteenthMeeting.setSellerDistinctiveSign("J'aurai une sacoche pour appareil photo.");
+        nineteenthMeeting.setBuyerAdditionalInfo("Article incroyable, hâte de le découvrir IRL !");
+        nineteenthMeeting.setSellerAdditionalInfo("Merci pour votre réservation !");
+        nineteenthMeeting.setAds(new HashSet<>(Arrays.asList(adsUser3.get(7))));
+        adsUser3.get(7).setStatus(AdStatus.RESERVED);
 
-        for (int i = 0; i <= 23; i++) {
-            existingAds.get(i).setStatus(AdStatus.RESERVED);
-        }
-        adRepository.saveAll(existingAds);
+        List<Ad> allAds = new ArrayList<>();
+        allAds.addAll(adsUser1);
+        allAds.addAll(adsUser2);
+        allAds.addAll(adsUser3);
+        allAds.addAll(adsUser4);
+        adRepository.saveAll(allAds);
 
         List<Meeting> meetings = Arrays.asList(
-                firstMeeting, secondMeeting, thirdMeeting, fourthMeeting, fifthMeeting,
-                sixthMeeting, seventhMeeting, eighthMeeting, ninthMeeting, tenth,
-                eleventh, twelfth, thirteenthMeeting, fourteenthMeeting, fifteenthMeeting,
-                sixteenthMeeting, seventeenthMeeting, eighteenthMeeting, nineteenthMeeting,
-                twentiethMeeting, twentyfirstMeeting, twentysecondMeeting, twentythirdMeeting,
-                twentyfourthMeeting);
+                firstMeeting, secondMeeting, fourthMeeting, fifthMeeting,
+                sixthMeeting, seventhMeeting, eighthMeeting, ninthMeeting, tenthMeeting,
+                eleventhMeeting, twelfthMeeting, thirteenthMeeting, fourteenthMeeting, fifteenthMeeting,
+                sixteenthMeeting, seventeenthMeeting, eighteenthMeeting,
+                nineteenthMeeting);
         this.meetingRepository.saveAll(meetings);
     }
 }

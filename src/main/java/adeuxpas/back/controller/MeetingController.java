@@ -4,6 +4,9 @@ import adeuxpas.back.dto.meeting.MeetingResponseDTO;
 import adeuxpas.back.dto.meeting.MeetingRequestDTO;
 import adeuxpas.back.service.MeetingService;
 import adeuxpas.back.util.ValidationHelper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +43,11 @@ public class MeetingController {
      * @param id The ID of the buyer.
      * @return A ResponseEntity containing a list of meetings filtered by buyer ID.
      */
+    @Operation(summary = "Retrieves proposed meetings for a buyer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meetings retrieved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/proposed/{id}")
     public ResponseEntity<List<MeetingResponseDTO>> getMeetingsByBuyerId(@PathVariable Long id) {
         try {
@@ -55,6 +63,11 @@ public class MeetingController {
      * @param id The ID of the seller.
      * @return A ResponseEntity containing a list of meetings filtered by seller ID.
      */
+    @Operation(summary = "Retrieves meetings to be confirmed for a seller")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meetings retrieved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/toBeConfirmed/{id}")
     public ResponseEntity<List<MeetingResponseDTO>> getMeetingsBySellerId(@PathVariable Long id) {
         try {
@@ -71,6 +84,11 @@ public class MeetingController {
      * @return A ResponseEntity containing a list of accepted meetings filtered by
      *         seller ID.
      */
+    @Operation(summary = "Retrieves accepted meetings for a seller")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meetings retrieved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/planned/{id}")
     public ResponseEntity<List<MeetingResponseDTO>> getAcceptedMeetingsBySellerId(@PathVariable Long id) {
         try {
@@ -87,6 +105,11 @@ public class MeetingController {
      * @return A ResponseEntity containing a list of due meetings filtered by user
      *         ID.
      */
+    @Operation(summary = "Retrieves due meetings for a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meetings retrieved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/toBeFinalized/{id}")
     public ResponseEntity<List<MeetingResponseDTO>> getDueMeetings(@PathVariable Long id) {
         try {
@@ -103,6 +126,11 @@ public class MeetingController {
      * @return A ResponseEntity containing the updated MeetingDTO if found, or a not
      *         found status.
      */
+    @Operation(summary = "Accepts a meeting")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting accepted successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PutMapping("/{id}/accept")
     public ResponseEntity<MeetingResponseDTO> acceptMeeting(@PathVariable Long id) {
         try {
@@ -124,6 +152,11 @@ public class MeetingController {
      *         error message if an exception occurs.
      * @throws Exception if there is an error while retrieving the buyer's alias.
      */
+    @Operation(summary = "Retrieves the alias of the buyer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Buyer Alias retrieved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{adId}/buyer")
     public ResponseEntity<Object> getBuyer(@PathVariable Long adId) {
         try {
@@ -144,6 +177,11 @@ public class MeetingController {
      * @throws Exception if there is an error while retrieving the meeting date and
      *                   time.
      */
+    @Operation(summary = "Retrieves the date of the meeting")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting date retrieved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{adId}/date")
     public ResponseEntity<Object> getMeetingDate(@PathVariable Long adId) {
         try {
@@ -158,11 +196,18 @@ public class MeetingController {
      *
      * @param meetingRequestDTO the DTO containing the proposed meeting details
      * @param bindingResult     the result of the validation of the request body
-     * @return a {@link ResponseEntity} containing either a success message and the meeting ID,
+     * @return a {@link ResponseEntity} containing either a success message and the
+     *         meeting ID,
      *         or an error message if the validation or meeting creation fails
      */
+    @Operation(summary = "Initializes a meeting")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting initialized successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping("/initialize")
-    public ResponseEntity<Object> initializeMeeting(@RequestBody @Valid MeetingRequestDTO meetingRequestDTO, BindingResult bindingResult) {
+    public ResponseEntity<Object> initializeMeeting(@RequestBody @Valid MeetingRequestDTO meetingRequestDTO,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
@@ -171,23 +216,28 @@ public class MeetingController {
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Meeting created successfully");
             // the meeting id is expected by the front end code, as it will
-            // immediately call the create-payment-intent endpoint, and pass it this meeting id
+            // immediately call the create-payment-intent endpoint, and pass it this meeting
+            // id
             response.put("meetingId", meetingId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create meeting : error occurred in the meeting service");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to create meeting : error occurred in the meeting service");
         }
     }
 
-    // Stub method chain: to be completed with business logic and called when a meeting is finalized
-    // All it does for now is capture the Stripe Card Payment for demonstration and testing purposes
+    // Stub method chain: to be completed with business logic and called when a
+    // meeting is finalized
+    // All it does for now is capture the Stripe Card Payment for demonstration and
+    // testing purposes
     @GetMapping("/finalize/{meetingId}")
     public ResponseEntity<Object> finalizeMeeting(@PathVariable Long meetingId) {
         try {
             this.meetingService.finalizeMeeting(meetingId);
             return ResponseEntity.ok("Meeting finalized successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to finalize meeting : error occurred in the meeting service");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to finalize meeting : error occurred in the meeting service");
         }
     }
 }

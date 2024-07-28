@@ -81,7 +81,7 @@ public class AccountController {
      */
     @Operation(summary = "Retrieves a user's preferred schedules")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred schedules"),
+            @ApiResponse(responseCode = "200", description = "User's preferred schedules retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{userId}/schedules")
@@ -105,7 +105,7 @@ public class AccountController {
      */
     @Operation(summary = "Retrieves a user's preferred meeting places")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of user preferred meeting places"),
+            @ApiResponse(responseCode = "200", description = "User's preferred meeting places retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{userId}/meeting-places")

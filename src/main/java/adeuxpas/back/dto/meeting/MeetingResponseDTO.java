@@ -15,6 +15,8 @@ public class MeetingResponseDTO {
     private String sellerAlias;
     private LocalDateTime buyerInscriptionDate;
     private LocalDateTime sellerInscriptionDate;
+    private String buyerCity;
+    private String sellerCity;
     private String buyerAdditionalInfo;
     private String sellerAdditionalInfo;
     private String buyerDistinctiveSign;
@@ -25,6 +27,8 @@ public class MeetingResponseDTO {
     private String postalCode;
     private String city;
     private String street;
+    private Long adId;
+    private String adPublisherAlias;
     private String adTitle;
     private BigDecimal adPrice;
     private String adPictureUrl;
@@ -119,6 +123,22 @@ public class MeetingResponseDTO {
         this.sellerInscriptionDate = sellerInscriptionDate;
     }
 
+    public String getBuyerCity() {
+        return buyerCity;
+    }
+
+    public void setBuyerCity(String buyerCity) {
+        this.buyerCity = buyerCity;
+    }
+
+    public String getSellerCity() {
+        return sellerCity;
+    }
+
+    public void setSellerCity(String sellerCity) {
+        this.sellerCity = sellerCity;
+    }
+
     public String getBuyerAlias() {
         return buyerAlias;
     }
@@ -181,6 +201,22 @@ public class MeetingResponseDTO {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public Long getAdId() {
+        return adId;
+    }
+
+    public void setAdId(Long adId) {
+        this.adId = adId;
+    }
+
+    public String getAdPublisherAlias() {
+        return adPublisherAlias;
+    }
+
+    public void setAdPublisherAlias(String adPublisherAlias) {
+        this.adPublisherAlias = adPublisherAlias;
     }
 
     public String getAdTitle() {
