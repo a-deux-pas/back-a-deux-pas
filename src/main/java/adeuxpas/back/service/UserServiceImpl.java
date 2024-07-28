@@ -295,7 +295,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SellerCheckoutDTO findCheckoutSellerInfoByAlias(String alias) {
-        // TODO : refactor to use MapStruct
         Optional<User> optionalUser = this.findUserByAlias(alias);
         if (optionalUser.isPresent()){
             SellerCheckoutDTO sellerCheckoutDTO = new SellerCheckoutDTO();

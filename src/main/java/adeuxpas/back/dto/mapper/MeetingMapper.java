@@ -3,12 +3,10 @@ package adeuxpas.back.dto.mapper;
 import adeuxpas.back.dto.MeetingDTO;
 import adeuxpas.back.dto.ProposedMeetingRequestDTO;
 import adeuxpas.back.entity.Ad;
-import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.entity.Meeting;
 import org.mapstruct.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 

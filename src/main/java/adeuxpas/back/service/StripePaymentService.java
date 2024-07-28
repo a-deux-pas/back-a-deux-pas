@@ -13,7 +13,7 @@ import java.util.Map;
 public interface StripePaymentService {
     Map<String, String> createPaymentIntent(Map<String, Object> paymentInfo) throws StripeException;
     void capturePayment(String paymentIntentId) throws StripeException;
-    Payout createPayout(String accountId, Long amount, String currency, String bankAccountTokenId) throws StripeException;
+    void createPayout(String accountId, Long amount, String currency, String bankAccountTokenId) throws StripeException;
     Account createConnectAccountWithToken(String accountToken, String businessProfileUrl) throws StripeException;
     public Token createAccountToken(String email, String city, String line1,
                                     String postalCode, String dobDay, String dobMonth, String dobYear, String firstName,

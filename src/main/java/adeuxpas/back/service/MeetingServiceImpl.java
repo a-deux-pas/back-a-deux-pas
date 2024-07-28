@@ -272,10 +272,10 @@ public class MeetingServiceImpl implements MeetingService {
                         this.stripePaymentService.capturePayment(stripePaymentIntentId);
 
                         // Create a payout to the external account (and its associated bank account)
-                        Payout payout = stripePaymentService.createPayout(account.getId(), amount.longValue() * 100, "eur", externalAccount.getId());
+                        stripePaymentService.createPayout(account.getId(), amount.longValue() * 100, "eur", externalAccount.getId());
 
                     } catch(StripeException stripeException){
-                        logger.error("Error capturing payment or creating payout: " + stripeException.getMessage());
+                        logger.error("Error capturing payment or creating payout: {}", stripeException.getMessage());
                     }
                  }
             }

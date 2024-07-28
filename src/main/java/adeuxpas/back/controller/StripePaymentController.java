@@ -2,6 +2,7 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.service.StripePaymentService;
 import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,10 +52,10 @@ public class StripePaymentController {
      *
      * @param paymentInfo the payment information
      * @return a map containing the payment intent details
-     * @throws Exception if an error occurs while creating the payment intent
+     * @throws StripeException if an error occurs while creating the payment intent
      */
     @PostMapping("/create-payment-intent")
-    public Map<String, String> createPaymentIntent(@RequestBody Map<String, Object> paymentInfo) throws Exception {
+    public Map<String, String> createPaymentIntent(@RequestBody Map<String, Object> paymentInfo) throws StripeException {
             return stripePaymentService.createPaymentIntent(paymentInfo);
     }
 }

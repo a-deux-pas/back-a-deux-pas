@@ -211,7 +211,7 @@ public class StripePaymentServiceImpl implements StripePaymentService{
      * @throws StripeException if an error occurs while creating the payout
      */
     @Override
-    public Payout createPayout(String accountId, Long amount, String currency, String externalAccountId) throws StripeException {
+    public void createPayout(String accountId, Long amount, String currency, String externalAccountId) throws StripeException {
         PayoutCreateParams params = PayoutCreateParams.builder()
                 .setAmount(amount)
                 .setCurrency(currency)
@@ -222,7 +222,7 @@ public class StripePaymentServiceImpl implements StripePaymentService{
                 .setStripeAccount(accountId)
                 .build();
 
-        return Payout.create(params, requestOptions);
+        Payout.create(params, requestOptions);
     }
 }
 

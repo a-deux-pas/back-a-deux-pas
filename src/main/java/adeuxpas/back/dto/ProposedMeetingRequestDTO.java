@@ -15,8 +15,8 @@ public class ProposedMeetingRequestDTO {
     public Long proposedMeetingPlaceId;
     @NotNull
     public LocalDateTime date;
-    public String buyerAdditionalInfo;
-    public String buyerDistinctiveSign;
+    private String buyerAdditionalInfo;
+    private String buyerDistinctiveSign;
 
     public Long getBuyerId() {
         return buyerId;
