@@ -84,7 +84,7 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "User's preferred schedules retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/profile/{userId}/schedules")
+    @GetMapping("/{userId}/schedules")
     public ResponseEntity<Object> getPreferredSchedules(@PathVariable long userId) {
         try {
             return ResponseEntity.ok(userService.findPreferredSchedulesByUserId(userId));
@@ -108,7 +108,7 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "User's preferred meeting places retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/profile/{userId}/meeting-places")
+    @GetMapping("/{userId}/meeting-places")
     public ResponseEntity<Object> getPreferredMeetingPlaces(@PathVariable long userId) {
         try {
             return ResponseEntity.ok(userService.findPreferredMeetingPlacesByUserId(userId));
