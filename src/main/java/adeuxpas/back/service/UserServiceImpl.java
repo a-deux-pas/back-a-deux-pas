@@ -293,21 +293,31 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Finds and returns the checkout information of a seller identified by their alias.
+     * <p>
+     * This method searches for a user by the given alias. If the user is found, it constructs and returns a
+     * {@link SellerCheckoutResponseDTO} containing the user's preferred meeting places, preferred schedules,
+     * ID, and bank account token ID. If the user is not found, the method returns {@code null}.
+     *
+     * @param alias the alias of the user to find.
+     * @return a {@link SellerCheckoutResponseDTO} containing the user's checkout information, or {@code null} if the user is not found.
+     */
     @Override
-    public SellerCheckoutRequestDTO findCheckoutSellerInfoByAlias(String alias) {
+    public SellerCheckoutResponseDTO findCheckoutSellerInfoByAlias(String alias) {
         Optional<User> optionalUser = this.findUserByAlias(alias);
         if (optionalUser.isPresent()){
-            SellerCheckoutRequestDTO sellerCheckoutRequestDTO = new SellerCheckoutRequestDTO();
+            SellerCheckoutResponseDTO sellerCheckoutResponseDTO = new SellerCheckoutResponseDTO();
             List<PreferredMeetingPlaceDTO> preferredMeetingPlaceDTOS = optionalUser.get()
                     .getPreferredMeetingPlaces().stream().map(userMapper::mapPreferredMeetingPlaceToDTO).toList();
             List<PreferredScheduleDTO> preferredScheduleDTOS = optionalUser.get()
                     .getPreferredSchedules().stream().map(userMapper::mapPreferredScheduleToDTO).toList();
-            sellerCheckoutRequestDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
-            sellerCheckoutRequestDTO.setPreferredSchedules(preferredScheduleDTOS);
-            sellerCheckoutRequestDTO.setId(optionalUser.get().getId());
-            sellerCheckoutRequestDTO.setBankAccountTokenId(optionalUser.get().getBankAccountTokenId());
+            sellerCheckoutResponseDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
+            sellerCheckoutResponseDTO.setPreferredSchedules(preferredScheduleDTOS);
+            sellerCheckoutResponseDTO.setId(optionalUser.get().getId());
+            sellerCheckoutResponseDTO.setBankAccountTokenId(optionalUser.get().getBankAccountTokenId());
 
-            return sellerCheckoutRequestDTO;
+            return sellerCheckoutResponseDTO;
         }
         return null;
     }

@@ -48,7 +48,17 @@ public interface MeetingService {
      */
     LocalDateTime getMeetingDate(Long adId);
 
-    void initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
+    /**
+     * Contract to initialize a meeting
+     *
+     * @param meetingRequestDTO The DTo containing the request data needed for the operation.
+     */
+    Long initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
 
+    /**
+     * Contract to finalize a meeting
+     *
+     * @param meetingId The id of the meeting to be finalized.
+     */
     void finalizeMeeting(Long meetingId);
 }

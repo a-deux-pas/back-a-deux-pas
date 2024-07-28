@@ -2,7 +2,7 @@ package adeuxpas.back.dto.user;
 
 import java.util.List;
 
-public class SellerCheckoutRequestDTO {
+public class SellerCheckoutResponseDTO {
     private Long id;
     private String bankAccountTokenId;
     private List<PreferredMeetingPlaceDTO> preferredMeetingPlaces;

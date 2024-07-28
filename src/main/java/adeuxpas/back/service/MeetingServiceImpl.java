@@ -207,7 +207,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @return the ID of the initialized and saved meeting
      */
     @Override
-    public void initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO) {
+    public Long initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO) {
         Meeting meeting = meetingMapper.proposedMeetingRequestDTOToMeeting(meetingRequestDTO);
 
         Optional<Ad> optionalAd = adRepository.findById(meetingRequestDTO.adId);
@@ -218,7 +218,8 @@ public class MeetingServiceImpl implements MeetingService {
         }
         meeting.setStatus(MeetingStatus.INITIALIZED);
 
-        meetingRepository.save(meeting);
+        Meeting savedMeeting = meetingRepository.save(meeting);
+        return savedMeeting.getIdMeeting();
     }
 
     // Stub method chain: to be completed with business logic and called when a meeting is finalized

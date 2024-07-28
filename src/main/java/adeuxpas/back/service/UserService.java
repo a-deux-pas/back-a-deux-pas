@@ -96,5 +96,10 @@ public interface UserService {
      */
     List<UserProfileResponseDTO> getSellersNearby(long userId);
 
-    SellerCheckoutRequestDTO findCheckoutSellerInfoByAlias(String alias);
+    /**
+     * Contract to return the necessary seller info needed for the Checkout process
+     * @param alias the seller's alias, by which the search is made.
+     * @return a SellerCheckoutResponseDTO with the required data.
+     */
+    SellerCheckoutResponseDTO findCheckoutSellerInfoByAlias(String alias);
 }

@@ -167,9 +167,10 @@ public class MeetingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
         try {
-            meetingService.initializeMeeting(meetingRequestDTO);
+            Long meetingId = meetingService.initializeMeeting(meetingRequestDTO);
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Meeting created successfully");
+            response.put("meetingId", meetingId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create meeting : error occurred in the meeting service");
@@ -182,9 +183,7 @@ public class MeetingController {
     public ResponseEntity<Object> finalizeMeeting(@PathVariable Long meetingId) {
         try {
             this.meetingService.finalizeMeeting(meetingId);
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Meeting finalized successfully");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok("Meeting finalized successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to finalize meeting : error occurred in the meeting service");
         }

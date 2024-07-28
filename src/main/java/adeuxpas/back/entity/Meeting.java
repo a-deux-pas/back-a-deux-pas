@@ -62,34 +62,8 @@ public class Meeting {
     @Column(name = "is_validated_by_seller")
     private Boolean isValidatedBySeller;
 
-    // The 2 inscription date fields shouldn't actually be in this entity,
-    // because they are accessible via other means in our business logic,
-    // and because they add redundancy to our DB.
-    // To be corrected/refactored at a later date (as it would need time and attention, and we are stretched thin right now)
-    @Column(name = "buyer_inscription_date")
-    private LocalDateTime buyerInscriptionDate;
-    @Column(name = "seller_inscription_date")
-    private LocalDateTime sellerInscriptionDate;
-
     @Column(name = "stripe_payment_intent_id")
     private String stripePaymentIntentId;
-
-
-    public LocalDateTime getBuyerInscriptionDate() {
-        return buyerInscriptionDate;
-    }
-
-    public void setBuyerInscriptionDate(LocalDateTime buyerInscriptionDate) {
-        this.buyerInscriptionDate = buyerInscriptionDate;
-    }
-
-    public LocalDateTime getSellerInscriptionDate() {
-        return sellerInscriptionDate;
-    }
-
-    public void setSellerInscriptionDate(LocalDateTime sellerInscriptionDate) {
-        this.sellerInscriptionDate = sellerInscriptionDate;
-    }
 
     public String getStripePaymentIntentId() {
         return stripePaymentIntentId;
