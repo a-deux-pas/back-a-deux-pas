@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MeetingMapper {
 
     @Mapping(source = "idMeeting", target = "idMeeting")
@@ -42,26 +42,57 @@ public interface MeetingMapper {
     @Mapping(source = "ads", target = "adPictureUrl", qualifiedByName = "adPictureUrl")
     MeetingResponseDTO meetingToMeetingDTO(Meeting meeting);
 
+    /**
+     * Returns the ID of the first ad in the given set.
+     *
+     * @param ads The set of ad.
+     * @return The ID of the first ad, or null if the set is empty.
+     */
     @Named("adId")
     default Long adId(Set<Ad> ads) {
         return getFirstAd(ads).map(Ad::getId).orElse(null);
     }
 
+    /**
+     * Returns the alias of the publisher of the first ad in the given set.
+     *
+     * @param ads The set of ads.
+     * @return The alias of the publisher of the first ad, or null if the set is
+     *         empty.
+     */
     @Named("adPublisherAlias")
     default String adPublisherAlias(Set<Ad> ads) {
         return getFirstAd(ads).map(ad -> ad.getPublisher().getAlias()).orElse(null);
     }
 
+    /**
+     * Returns the title of the first ad in the given set.
+     *
+     * @param ads The set of ads.
+     * @return The title of the first ad, or null if the set is empty.
+     */
     @Named("adTitle")
     default String adTitle(Set<Ad> ads) {
         return getFirstAd(ads).map(Ad::getTitle).orElse(null);
     }
 
+    /**
+     * Returns the price of the first ad in the given set.
+     *
+     * @param ads The set of ads.
+     * @return The price of the first ad, or null if the set is empty.
+     */
     @Named("adPrice")
     default BigDecimal adPrice(Set<Ad> ads) {
         return getFirstAd(ads).map(Ad::getPrice).orElse(null);
     }
 
+    /**
+     * Returns the URL of the picture of the first ad in the given set.
+     *
+     * @param ads The set of ads.
+     * @return The URL of the picture of the first ad, or null if the set is empty.
+     */
     @Named("adPictureUrl")
     default String adPictureUrl(Set<Ad> ads) {
         return getFirstAd(ads)

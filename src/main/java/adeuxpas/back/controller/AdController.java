@@ -85,7 +85,7 @@ public class AdController {
      */
     @Operation(summary = "Retrieves a paginated list of ads based on specified filters")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of ads"),
+            @ApiResponse(responseCode = "200", description = "Ads retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping(value = "/list", params = { "priceRanges", "citiesAndPostalCodes", "articleStates", "category",
@@ -129,7 +129,7 @@ public class AdController {
      */
     @Operation(summary = "Creates an Ad")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ad successfully created"),
+            @ApiResponse(responseCode = "200", description = "Ad created successfully"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
@@ -183,7 +183,7 @@ public class AdController {
      */
     @Operation(summary = "Updates an ad")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ad successfully updated"),
+            @ApiResponse(responseCode = "200", description = "Ad updated successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/update")
@@ -221,7 +221,7 @@ public class AdController {
      */
     @Operation(summary = "Retrieves an ad details")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of ad information"),
+            @ApiResponse(responseCode = "200", description = "Ad information retrieved successfuly"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{adId}/{loggedInUserId}")
@@ -249,7 +249,7 @@ public class AdController {
      */
     @Operation(summary = "Retrieves a user's ads list excluding those that are sold or reserved")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of the user's ad list"),
+            @ApiResponse(responseCode = "200", description = "User's ad list retrieved successfuly"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/adPageContentList/{publisherId}/{loggedInUserId}/{adId}")
@@ -279,7 +279,7 @@ public class AdController {
      */
     @Operation(summary = "Retrieves a user's ads list, sorted by status, with sold or reserved ads listed last")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of the user's ad list"),
+            @ApiResponse(responseCode = "200", description = "User's ad list retrieved successfuly"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/adTablist/{userId}")
@@ -307,7 +307,7 @@ public class AdController {
      */
     @Operation(summary = "Retrieves a list of ads with the same category")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of the list of similar ads"),
+            @ApiResponse(responseCode = "200", description = "Similar ads list retrieved successfuly"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/similarAdsList/{category}/{publisherId}/{userId}")
@@ -337,7 +337,7 @@ public class AdController {
      */
     @Operation(summary = "Retrieves a user's favorites ads list")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful retrieval of a user's favorites ads"),
+            @ApiResponse(responseCode = "200", description = "User's favorites ads retrieved successfuly"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/favorites/{userId}")
@@ -404,6 +404,11 @@ public class AdController {
      * 
      * @param adId the ad ID.
      */
+    @Operation(summary = "Deletes an ad")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ad deleted successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("/{adId}")
     public ResponseEntity<Object> deleteAd(@PathVariable long adId) {
         try {
