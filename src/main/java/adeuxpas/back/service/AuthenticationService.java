@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.CredentialsRequestDTO;
+import adeuxpas.back.dto.user.CredentialsRequestDTO;
 
 import java.util.Optional;
 

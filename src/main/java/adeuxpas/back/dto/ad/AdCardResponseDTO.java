@@ -1,4 +1,4 @@
-package adeuxpas.back.dto;
+package adeuxpas.back.dto.ad;
 
 import java.math.BigDecimal;
 import java.util.Objects;

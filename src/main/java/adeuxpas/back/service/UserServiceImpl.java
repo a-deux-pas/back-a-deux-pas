@@ -1,7 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.*;
 import adeuxpas.back.dto.mapper.UserMapper;
+import adeuxpas.back.dto.user.*;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
@@ -294,20 +294,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SellerCheckoutDTO findCheckoutSellerInfoByAlias(String alias) {
+    public SellerCheckoutRequestDTO findCheckoutSellerInfoByAlias(String alias) {
         Optional<User> optionalUser = this.findUserByAlias(alias);
         if (optionalUser.isPresent()){
-            SellerCheckoutDTO sellerCheckoutDTO = new SellerCheckoutDTO();
+            SellerCheckoutRequestDTO sellerCheckoutRequestDTO = new SellerCheckoutRequestDTO();
             List<PreferredMeetingPlaceDTO> preferredMeetingPlaceDTOS = optionalUser.get()
                     .getPreferredMeetingPlaces().stream().map(userMapper::mapPreferredMeetingPlaceToDTO).toList();
             List<PreferredScheduleDTO> preferredScheduleDTOS = optionalUser.get()
                     .getPreferredSchedules().stream().map(userMapper::mapPreferredScheduleToDTO).toList();
-            sellerCheckoutDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
-            sellerCheckoutDTO.setPreferredSchedules(preferredScheduleDTOS);
-            sellerCheckoutDTO.setId(optionalUser.get().getId());
-            sellerCheckoutDTO.setBankAccountTokenId(optionalUser.get().getBankAccountTokenId());
+            sellerCheckoutRequestDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
+            sellerCheckoutRequestDTO.setPreferredSchedules(preferredScheduleDTOS);
+            sellerCheckoutRequestDTO.setId(optionalUser.get().getId());
+            sellerCheckoutRequestDTO.setBankAccountTokenId(optionalUser.get().getBankAccountTokenId());
 
-            return sellerCheckoutDTO;
+            return sellerCheckoutRequestDTO;
         }
         return null;
     }

@@ -1,4 +1,4 @@
-package adeuxpas.back.dto;
+package adeuxpas.back.dto.meeting;
 
 import jakarta.validation.constraints.NotNull;
 

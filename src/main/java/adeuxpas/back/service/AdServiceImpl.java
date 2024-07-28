@@ -3,8 +3,8 @@ package adeuxpas.back.service;
 import adeuxpas.back.entity.*;
 import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.dto.mapper.AdMapper;
-import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.dto.ad.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdPostResponseDTO;
 import adeuxpas.back.repository.AdRepository;
 import adeuxpas.back.repository.ArticlePictureRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import adeuxpas.back.dto.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdCardResponseDTO;
 import adeuxpas.back.enums.AccountStatus;
 
 import java.io.IOException;

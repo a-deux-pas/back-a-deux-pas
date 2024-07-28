@@ -1,7 +1,9 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.*;
+import adeuxpas.back.dto.meeting.MeetingResponseDTO;
+import adeuxpas.back.dto.meeting.ProposedMeetingRequestDTO;
 import adeuxpas.back.service.MeetingService;
+import adeuxpas.back.util.ValidationHelper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class MeetingController {
      * @return A ResponseEntity containing a list of meetings filtered by buyer ID.
      */
     @GetMapping("/proposed/{id}")
-    public ResponseEntity<List<MeetingDTO>> getMeetingsByBuyerId(@PathVariable Long id) {
+    public ResponseEntity<List<MeetingResponseDTO>> getMeetingsByBuyerId(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(meetingService.getMeetingsByBuyerId(id));
         } catch (Exception e) {
@@ -54,7 +56,7 @@ public class MeetingController {
      * @return A ResponseEntity containing a list of meetings filtered by seller ID.
      */
     @GetMapping("/toBeConfirmed/{id}")
-    public ResponseEntity<List<MeetingDTO>> getMeetingsBySellerId(@PathVariable Long id) {
+    public ResponseEntity<List<MeetingResponseDTO>> getMeetingsBySellerId(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(meetingService.getMeetingsBySellerId(id));
         } catch (Exception e) {
@@ -70,7 +72,7 @@ public class MeetingController {
      *         seller ID.
      */
     @GetMapping("/planned/{id}")
-    public ResponseEntity<List<MeetingDTO>> getAcceptedMeetingsBySellerId(@PathVariable Long id) {
+    public ResponseEntity<List<MeetingResponseDTO>> getAcceptedMeetingsBySellerId(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(meetingService.getAcceptedMeetingsBySellerId(id));
         } catch (Exception e) {
@@ -86,7 +88,7 @@ public class MeetingController {
      *         ID.
      */
     @GetMapping("/toBeFinalized/{id}")
-    public ResponseEntity<List<MeetingDTO>> getDueMeetings(@PathVariable Long id) {
+    public ResponseEntity<List<MeetingResponseDTO>> getDueMeetings(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(meetingService.getDueMeetings(id));
         } catch (Exception e) {
@@ -102,7 +104,7 @@ public class MeetingController {
      *         found status.
      */
     @PutMapping("/{id}/accept")
-    public ResponseEntity<MeetingDTO> acceptMeeting(@PathVariable Long id) {
+    public ResponseEntity<MeetingResponseDTO> acceptMeeting(@PathVariable Long id) {
         try {
             return meetingService.acceptMeeting(id)
                     .map(ResponseEntity::ok)
@@ -162,15 +164,12 @@ public class MeetingController {
     @PostMapping("/initialize")
     public ResponseEntity<Object> initializeMeeting(@RequestBody @Valid ProposedMeetingRequestDTO meetingRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
         try {
-            Long meetingId = meetingService.initializeMeeting(meetingRequestDTO);
+            meetingService.initializeMeeting(meetingRequestDTO);
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Meeting created successfully");
-            response.put("meetingId", meetingId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create meeting : error occurred in the meeting service");

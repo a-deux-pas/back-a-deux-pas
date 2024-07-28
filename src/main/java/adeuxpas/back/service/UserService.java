@@ -1,6 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.*;
+import adeuxpas.back.dto.user.*;
 import adeuxpas.back.entity.User;
 
 import java.util.*;
@@ -96,5 +96,5 @@ public interface UserService {
      */
     List<UserProfileResponseDTO> getSellersNearby(long userId);
 
-    SellerCheckoutDTO findCheckoutSellerInfoByAlias(String alias);
+    SellerCheckoutRequestDTO findCheckoutSellerInfoByAlias(String alias);
 }

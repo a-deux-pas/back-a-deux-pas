@@ -1,6 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.*;
+import adeuxpas.back.dto.meeting.MeetingResponseDTO;
+import adeuxpas.back.dto.meeting.ProposedMeetingRequestDTO;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -20,15 +21,15 @@ public interface MeetingService {
      * @param status The status of the meetings to filter.
      * @return A list of meetings filtered by status and sorted by date.
      */
-    List<MeetingDTO> getMeetingsByBuyerId(Long id);
+    List<MeetingResponseDTO> getMeetingsByBuyerId(Long id);
 
-    List<MeetingDTO> getMeetingsBySellerId(Long id);
+    List<MeetingResponseDTO> getMeetingsBySellerId(Long id);
 
-    List<MeetingDTO> getAcceptedMeetingsBySellerId(Long id);
+    List<MeetingResponseDTO> getAcceptedMeetingsBySellerId(Long id);
 
-    List<MeetingDTO> getDueMeetings(Long id);
+    List<MeetingResponseDTO> getDueMeetings(Long id);
 
-    Optional<MeetingDTO> acceptMeeting(Long meetingId);
+    Optional<MeetingResponseDTO> acceptMeeting(Long meetingId);
 
     /**
      * Retrieves the alias of the buyer associated with the specified ad ID.
@@ -47,7 +48,7 @@ public interface MeetingService {
      */
     LocalDateTime getMeetingDate(Long adId);
 
-    Long initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
+    void initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
 
     void finalizeMeeting(Long meetingId);
 }

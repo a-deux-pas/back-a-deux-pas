@@ -1,12 +1,12 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdCardResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.dto.ad.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdPostResponseDTO;
 
 import java.util.List;
 

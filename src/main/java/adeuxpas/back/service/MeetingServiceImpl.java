@@ -1,7 +1,8 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.*;
 import adeuxpas.back.dto.mapper.*;
+import adeuxpas.back.dto.meeting.MeetingResponseDTO;
+import adeuxpas.back.dto.meeting.ProposedMeetingRequestDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.Meeting;
 import adeuxpas.back.entity.User;
@@ -71,7 +72,7 @@ public class MeetingServiceImpl implements MeetingService {
      *         filtered by INITIALIZED status and future dates.
      */
     @Override
-    public List<MeetingDTO> getMeetingsByBuyerId(Long id) {
+    public List<MeetingResponseDTO> getMeetingsByBuyerId(Long id) {
         List<Meeting> meetings = meetingRepository.findByStatusAndBuyerIdOrderByDateDesc(MeetingStatus.INITIALIZED, id);
         LocalDateTime now = LocalDateTime.now();
         return meetings.stream()
@@ -88,7 +89,7 @@ public class MeetingServiceImpl implements MeetingService {
      *         filtered by INITIALIZED status and future dates.
      */
     @Override
-    public List<MeetingDTO> getMeetingsBySellerId(Long id) {
+    public List<MeetingResponseDTO> getMeetingsBySellerId(Long id) {
         List<Meeting> meetings = meetingRepository.findByStatusAndSellerIdOrderByDateDesc(MeetingStatus.INITIALIZED,
                 id);
         LocalDateTime now = LocalDateTime.now();
@@ -107,7 +108,7 @@ public class MeetingServiceImpl implements MeetingService {
      *         with status updated to PLANNED for past meetings.
      */
     @Override
-    public List<MeetingDTO> getAcceptedMeetingsBySellerId(Long id) {
+    public List<MeetingResponseDTO> getAcceptedMeetingsBySellerId(Long id) {
         List<Meeting> meetings = meetingRepository
                 .findByStatusAndSellerIdOrBuyerIdOrderByDateDesc(MeetingStatus.ACCEPTED, id, id);
         LocalDateTime now = LocalDateTime.now();
@@ -129,7 +130,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @return A list of MeetingDTO objects representing past meetings for the user.
      */
     @Override
-    public List<MeetingDTO> getDueMeetings(Long id) {
+    public List<MeetingResponseDTO> getDueMeetings(Long id) {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Europe/Paris"));
         List<Meeting> meetings = meetingRepository.findPastMeetings(id, now.toLocalDateTime());
         return meetings.stream()
@@ -154,7 +155,7 @@ public class MeetingServiceImpl implements MeetingService {
      *         accepted.
      */
     @Override
-    public Optional<MeetingDTO> acceptMeeting(Long meetingId) {
+    public Optional<MeetingResponseDTO> acceptMeeting(Long meetingId) {
         Optional<Meeting> meetingOptional = meetingRepository.findById(meetingId);
 
         if (meetingOptional.isPresent()) {
@@ -206,7 +207,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @return the ID of the initialized and saved meeting
      */
     @Override
-    public Long initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO) {
+    public void initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO) {
         Meeting meeting = meetingMapper.proposedMeetingRequestDTOToMeeting(meetingRequestDTO);
 
         Optional<Ad> optionalAd = adRepository.findById(meetingRequestDTO.adId);
@@ -217,8 +218,7 @@ public class MeetingServiceImpl implements MeetingService {
         }
         meeting.setStatus(MeetingStatus.INITIALIZED);
 
-        Meeting savedMeeting = meetingRepository.save(meeting);
-        return savedMeeting.getIdMeeting();
+        meetingRepository.save(meeting);
     }
 
     // Stub method chain: to be completed with business logic and called when a meeting is finalized

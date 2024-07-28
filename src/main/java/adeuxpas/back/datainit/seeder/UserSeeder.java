@@ -71,7 +71,6 @@ public class UserSeeder {
                 first.setInscriptionDate(LocalDateTime.now().minusDays(2).minusMonths(12));
                 first.setAccountStatus(AccountStatus.ACTIVE);
                 first.setRole(UserRole.USER);
-                first.setBankAccountTokenId("batid");
 
                 User second = new User();
                 second.setEmail("daouali@email.com");
