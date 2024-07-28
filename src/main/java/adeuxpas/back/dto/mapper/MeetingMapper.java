@@ -1,7 +1,7 @@
 package adeuxpas.back.dto.mapper;
 
+import adeuxpas.back.dto.meeting.MeetingRequestDTO;
 import adeuxpas.back.dto.meeting.MeetingResponseDTO;
-import adeuxpas.back.dto.meeting.ProposedMeetingRequestDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.Meeting;
 import org.mapstruct.*;
@@ -68,6 +68,6 @@ public interface MeetingMapper {
     @Mapping(source = "buyerId", target = "buyer.id")
     @Mapping(source = "sellerId", target = "seller.id")
     @Mapping(source = "proposedMeetingPlaceId", target = "meetingPlace.id")
-    Meeting proposedMeetingRequestDTOToMeeting(ProposedMeetingRequestDTO proposedMeetingRequestDTO);
+    Meeting proposedMeetingRequestDTOToMeeting(MeetingRequestDTO meetingRequestDTO);
 
 }

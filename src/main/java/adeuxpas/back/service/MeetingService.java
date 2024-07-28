@@ -1,7 +1,7 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.meeting.MeetingResponseDTO;
-import adeuxpas.back.dto.meeting.ProposedMeetingRequestDTO;
+import adeuxpas.back.dto.meeting.MeetingRequestDTO;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -53,7 +53,7 @@ public interface MeetingService {
      *
      * @param meetingRequestDTO The DTo containing the request data needed for the operation.
      */
-    Long initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO);
+    Long initializeMeeting(MeetingRequestDTO meetingRequestDTO);
 
     /**
      * Contract to finalize a meeting

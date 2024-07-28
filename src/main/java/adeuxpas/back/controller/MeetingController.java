@@ -1,7 +1,7 @@
 package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.meeting.MeetingResponseDTO;
-import adeuxpas.back.dto.meeting.ProposedMeetingRequestDTO;
+import adeuxpas.back.dto.meeting.MeetingRequestDTO;
 import adeuxpas.back.service.MeetingService;
 import adeuxpas.back.util.ValidationHelper;
 import jakarta.validation.Valid;
@@ -154,7 +154,7 @@ public class MeetingController {
     }
 
     /**
-     * Initializes a new meeting based on the provided {@link ProposedMeetingRequestDTO}.
+     * Initializes a new meeting based on the provided {@link MeetingRequestDTO}.
      *
      * @param meetingRequestDTO the DTO containing the proposed meeting details
      * @param bindingResult     the result of the validation of the request body
@@ -162,7 +162,7 @@ public class MeetingController {
      *         or an error message if the validation or meeting creation fails
      */
     @PostMapping("/initialize")
-    public ResponseEntity<Object> initializeMeeting(@RequestBody @Valid ProposedMeetingRequestDTO meetingRequestDTO, BindingResult bindingResult) {
+    public ResponseEntity<Object> initializeMeeting(@RequestBody @Valid MeetingRequestDTO meetingRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
@@ -170,6 +170,8 @@ public class MeetingController {
             Long meetingId = meetingService.initializeMeeting(meetingRequestDTO);
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Meeting created successfully");
+            // the meeting id is expected by the front end code, as it will
+            // immediately call the create-payment-intent endpoint, and pass it this meeting id
             response.put("meetingId", meetingId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {

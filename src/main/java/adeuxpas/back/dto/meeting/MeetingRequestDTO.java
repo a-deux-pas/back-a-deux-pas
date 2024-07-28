@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public class ProposedMeetingRequestDTO {
+public class MeetingRequestDTO {
     @NotNull
     public Long buyerId;
     @NotNull

@@ -1,8 +1,8 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.dto.mapper.*;
+import adeuxpas.back.dto.meeting.MeetingRequestDTO;
 import adeuxpas.back.dto.meeting.MeetingResponseDTO;
-import adeuxpas.back.dto.meeting.ProposedMeetingRequestDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.Meeting;
 import adeuxpas.back.entity.User;
@@ -55,8 +55,10 @@ public class MeetingServiceImpl implements MeetingService {
      *                          meeting-related database operations.
      * @param meetingMapper     The MeetingMapper for converting entities to DTOs.
      */
-    @Autowired
-    public MeetingServiceImpl(MeetingRepository meetingRepository, MeetingMapper meetingMapper, AdRepository adRepository, StripePaymentService stripePaymentService, UserRepository userRepository) {
+
+    public MeetingServiceImpl(@Autowired MeetingRepository meetingRepository, @Autowired MeetingMapper meetingMapper,
+                              @Autowired AdRepository adRepository, @Autowired StripePaymentService stripePaymentService,
+                              @Autowired UserRepository userRepository) {
         this.meetingRepository = meetingRepository;
         this.meetingMapper = meetingMapper;
         this.adRepository = adRepository;
@@ -207,7 +209,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @return the ID of the initialized and saved meeting
      */
     @Override
-    public Long initializeMeeting(ProposedMeetingRequestDTO meetingRequestDTO) {
+    public Long initializeMeeting(MeetingRequestDTO meetingRequestDTO) {
         Meeting meeting = meetingMapper.proposedMeetingRequestDTOToMeeting(meetingRequestDTO);
 
         Optional<Ad> optionalAd = adRepository.findById(meetingRequestDTO.adId);
