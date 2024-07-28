@@ -1,7 +1,7 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.auth.JWTService;
-import adeuxpas.back.dto.CredentialsRequestDTO;
+import adeuxpas.back.dto.user.CredentialsRequestDTO;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;

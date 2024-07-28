@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
 import adeuxpas.back.util.ValidationHelper;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.validation.BindingResult;
-import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.dto.ad.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdPostResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
 import jakarta.validation.Valid;

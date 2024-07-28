@@ -1,10 +1,6 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
-import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
-import adeuxpas.back.dto.UserProfileResponseDTO;
-import adeuxpas.back.dto.UserProfileRequestDTO;
+import adeuxpas.back.dto.user.*;
 import adeuxpas.back.entity.User;
 
 import java.util.*;
@@ -99,4 +95,11 @@ public interface UserService {
      * @return a list of UserProfileResponseDTO.
      */
     List<UserProfileResponseDTO> getSellersNearby(long userId);
+
+    /**
+     * Contract to return the necessary seller info needed for the Checkout process
+     * @param alias the seller's alias, by which the search is made.
+     * @return a SellerCheckoutResponseDTO with the required data.
+     */
+    SellerCheckoutResponseDTO findCheckoutSellerInfoByAlias(String alias);
 }

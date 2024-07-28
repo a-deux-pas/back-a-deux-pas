@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import adeuxpas.back.dto.AdCardResponseDTO;
-import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.AdPostResponseDTO;
+import adeuxpas.back.dto.ad.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdPostResponseDTO;
 import adeuxpas.back.utils.UnitTestUtils;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;

@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
+import adeuxpas.back.dto.user.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -138,6 +138,22 @@ public class UserController {
             return ResponseEntity.ok(this.userService.getSellersNearby(id));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint that handles the retrieval of checkout seller information by alias.
+     *
+     * @param alias the alias of the seller
+     * @return a ResponseEntity containing the seller information if found,
+     *         or an error message if an exception occurs
+     */
+    @GetMapping("{alias}")
+    public ResponseEntity<Object> getByAlias(@PathVariable String alias){
+        try {
+            return ResponseEntity.ok(this.userService.findCheckoutSellerInfoByAlias(alias));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

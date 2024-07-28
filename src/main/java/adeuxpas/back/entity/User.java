@@ -47,11 +47,8 @@ public class User {
     @Column(name = "postal_code", length = 5)
     private String postalCode;
 
-    @Column(name = "bank_account_holder", length = 150)
-    private String bankAccountHolder;
-
-    @Column(name = "bank_account_number", length = 34)
-    private String bankAccountNumber;
+    @Column(name = "bank_account_token", length = 50)
+    private String bankAccountTokenId;
 
     @Column(name = "profile_picture")
     private String profilePicture;
@@ -154,20 +151,12 @@ public class User {
         this.postalCode = postalCode;
     }
 
-    public String getBankAccountHolder() {
-        return bankAccountHolder;
+    public String getBankAccountTokenId() {
+        return bankAccountTokenId;
     }
 
-    public void setBankAccountHolder(String bankAccountHolder) {
-        this.bankAccountHolder = bankAccountHolder;
-    }
-
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public void setBankAccountTokenId(String bankAccountTokenId) {
+        this.bankAccountTokenId = bankAccountTokenId;
     }
 
     public String getProfilePicture() {
@@ -254,8 +243,6 @@ public class User {
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +
-                ", bankAccountHolder='" + bankAccountHolder + '\'' +
-                ", bankAccountNumber='" + bankAccountNumber + '\'' +
                 ", profilePicture='" + profilePicture + '\'';
     }
 

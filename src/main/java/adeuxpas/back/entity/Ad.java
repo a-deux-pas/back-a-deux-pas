@@ -60,6 +60,10 @@ public class Ad {
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UsersFavoriteAds> usersFavorite;
 
+    @ManyToOne
+    @JoinColumn(name = "transaction_id")
+    private Transaction transaction;
+
     // getters and setters
     public Long getId() {
         return id;
@@ -171,6 +175,14 @@ public class Ad {
 
     public void setUsersFavorite(Set<UsersFavoriteAds> usersFavorite) {
         this.usersFavorite = usersFavorite;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 
     @Override

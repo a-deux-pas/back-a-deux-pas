@@ -1,11 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
-import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
-import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
-import adeuxpas.back.dto.UserProfileRequestDTO;
+import adeuxpas.back.dto.user.*;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
@@ -99,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Saves an user profile and preferrences.
+     * Saves a user profile and preferences.
      *
      * @param profileDto the profile dto to save.
      */
@@ -295,5 +291,34 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
+    }
+
+    /**
+     * Finds and returns the checkout information of a seller identified by their alias.
+     * <p>
+     * This method searches for a user by the given alias. If the user is found, it constructs and returns a
+     * {@link SellerCheckoutResponseDTO} containing the user's preferred meeting places, preferred schedules,
+     * ID, and bank account token ID. If the user is not found, the method returns {@code null}.
+     *
+     * @param alias the alias of the user to find.
+     * @return a {@link SellerCheckoutResponseDTO} containing the user's checkout information, or {@code null} if the user is not found.
+     */
+    @Override
+    public SellerCheckoutResponseDTO findCheckoutSellerInfoByAlias(String alias) {
+        Optional<User> optionalUser = this.findUserByAlias(alias);
+        if (optionalUser.isPresent()){
+            SellerCheckoutResponseDTO sellerCheckoutResponseDTO = new SellerCheckoutResponseDTO();
+            List<PreferredMeetingPlaceDTO> preferredMeetingPlaceDTOS = optionalUser.get()
+                    .getPreferredMeetingPlaces().stream().map(userMapper::mapPreferredMeetingPlaceToDTO).toList();
+            List<PreferredScheduleDTO> preferredScheduleDTOS = optionalUser.get()
+                    .getPreferredSchedules().stream().map(userMapper::mapPreferredScheduleToDTO).toList();
+            sellerCheckoutResponseDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
+            sellerCheckoutResponseDTO.setPreferredSchedules(preferredScheduleDTOS);
+            sellerCheckoutResponseDTO.setId(optionalUser.get().getId());
+            sellerCheckoutResponseDTO.setBankAccountTokenId(optionalUser.get().getBankAccountTokenId());
+
+            return sellerCheckoutResponseDTO;
+        }
+        return null;
     }
 }
