@@ -1,6 +1,7 @@
 package adeuxpas.back.dto.mapper;
 
-import adeuxpas.back.dto.MeetingDTO;
+import adeuxpas.back.dto.meeting.MeetingRequestDTO;
+import adeuxpas.back.dto.meeting.MeetingResponseDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.Meeting;
 import org.mapstruct.*;
@@ -34,7 +35,7 @@ public interface MeetingMapper {
     @Mapping(source = "ads", target = "adTitle", qualifiedByName = "adTitle")
     @Mapping(source = "ads", target = "adPrice", qualifiedByName = "adPrice")
     @Mapping(source = "ads", target = "adPictureUrl", qualifiedByName = "adPictureUrl")
-    MeetingDTO meetingToMeetingDTO(Meeting meeting);
+    MeetingResponseDTO meetingToMeetingDTO(Meeting meeting);
 
     @Named("adTitle")
     default String adTitle(Set<Ad> ads) {
@@ -63,4 +64,10 @@ public interface MeetingMapper {
         return Optional.ofNullable(ads).filter(set -> !set.isEmpty())
                 .map(set -> set.iterator().next());
     }
+
+    @Mapping(source = "buyerId", target = "buyer.id")
+    @Mapping(source = "sellerId", target = "seller.id")
+    @Mapping(source = "proposedMeetingPlaceId", target = "meetingPlace.id")
+    Meeting proposedMeetingRequestDTOToMeeting(MeetingRequestDTO meetingRequestDTO);
+
 }

@@ -1,26 +1,28 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdCardResponseDTO;
 import adeuxpas.back.service.AdService;
+import adeuxpas.back.util.ValidationHelper;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.UncheckedIOException;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
-import adeuxpas.back.dto.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdPostResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
 import jakarta.validation.Valid;
 
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.Operation;
+
+import org.springframework.http.*;
 
 /**
  * Controller class for handling ad-related endpoints.
@@ -107,32 +109,105 @@ public class AdController {
     }
 
     /**
-     * Endpoint getting a Dto to transform it into an Ad object that will be saved
-     * in the database before using it to get a ResponseDto to send to the
-     * front-end.
+     * Creates a new Ad with the provided details.
      *
-     * @param adDto The AdDTO.
-     * @return The AdDTO.
+     * This endpoint handles the creation of a new ad. It expects an
+     * AdPostRequestDTO containing the ad's information and up to five image files
+     * associated with the ad.
+     * 
+     * @param adDto         The data transfer object containing ad details, such as
+     *                      title, description, and price.
+     * @param adPicture1    The first image file associated with the ad.
+     * @param adPicture2    The second image.
+     * @param adPicture3    The third image (optional).
+     * @param adPicture4    The fourth image (optional).
+     * @param adPicture5    The fifth image (optional).
+     * @param bindingResult Contains validation errors if the DTO has any. Used to
+     *                      generate a detailed error response.
+     * @return A ResponseEntity containing the response status and the
+     *         AdPostResponseDTO if successful, or error details.
      */
-    // TO DO :: à revoir (fix Cloudinary branch)
-    @Operation(summary = "New Ad creation")
+    @Operation(summary = "Creates an Ad")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful ad creation"),
+            @ApiResponse(responseCode = "200", description = "Ad successfully created"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/create")
-    public ResponseEntity<Object> postAd(@RequestBody @Valid AdPostRequestDTO adDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createAd(
+            @RequestPart("adInfo") @Valid AdPostRequestDTO adDto,
+            @RequestPart("adPicture-1") MultipartFile adPicture1,
+            @RequestPart("adPicture-2") MultipartFile adPicture2,
+            @RequestPart(value = "adPicture-3", required = false) MultipartFile adPicture3,
+            @RequestPart(value = "adPicture-4", required = false) MultipartFile adPicture4,
+            @RequestPart(value = "adPicture-5", required = false) MultipartFile adPicture5,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
         try {
-            return ResponseEntity.ok(adService.postAd(adDto));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            AdPostResponseDTO response = adService.postAd(adDto, adPicture1, adPicture2, adPicture3, adPicture4,
+                    adPicture5);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid credentials: " + e.getMessage());
+        } catch (UncheckedIOException | PersistenceException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create ad");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Updates an existing Ad with new details and images.
+     *
+     * This endpoint handles updating an existing ad. It expects an AdPostRequestDTO
+     * containing the updated ad's information
+     * and up to five image files. The ad is identified and updated based on the
+     * information provided. If the request
+     * contains validation errors, a 400 Bad Request response is returned. On
+     * successful update, a 200 OK response with
+     * the updated ad details is returned.
+     * 
+     * @param adDto         The data transfer object containing updated ad details.
+     * @param adPicture1    The first image file associated with the ad.
+     * @param adPicture2    The second image.
+     * @param adPicture3    The third image (optional).
+     * @param adPicture4    The fourth image (optional).
+     * @param adPicture5    The fifth image (optional).
+     * @param bindingResult Contains validation errors if the DTO has any. Used to
+     *                      generate a detailed error response.
+     * @return A ResponseEntity containing the response status and the updated
+     *         AdPostResponseDTO if successful, or error details.
+     */
+    @Operation(summary = "Updates an ad")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ad successfully updated"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateAd(
+            @RequestPart("adInfo") @Valid AdPostRequestDTO adDto,
+            @RequestPart("adPicture-1") MultipartFile adPicture1,
+            @RequestPart("adPicture-2") MultipartFile adPicture2,
+            @RequestPart(value = "adPicture-3", required = false) MultipartFile adPicture3,
+            @RequestPart(value = "adPicture-4", required = false) MultipartFile adPicture4,
+            @RequestPart(value = "adPicture-5", required = false) MultipartFile adPicture5,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
+        }
+        try {
+            return ResponseEntity
+                    .ok(adService.postAd(adDto, adPicture1, adPicture2, adPicture3, adPicture4, adPicture5));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid credentials: " + e.getMessage());
+        } catch (UncheckedIOException | PersistenceException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -304,7 +379,7 @@ public class AdController {
     }
 
     /**
-     * Endpoint that checks how many users have added an ad as favorite.
+     * Endpoint that counts how many users have added an ad as favorite.
      * 
      * @param adId the ad ID.
      * @return The favorite ads count.
@@ -315,10 +390,25 @@ public class AdController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/favoriteCount/{adId}")
-    public ResponseEntity<Object> checksFavoriteCount(
+    public ResponseEntity<Object> getFavoriteCount(
             @PathVariable long adId) {
         try {
-            return ResponseEntity.ok(adService.checkFavoriteCount(adId));
+            return ResponseEntity.ok(adService.getFavoriteCount(adId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint that deletes an ad.
+     * 
+     * @param adId the ad ID.
+     */
+    @DeleteMapping("/{adId}")
+    public ResponseEntity<Object> deleteAd(@PathVariable long adId) {
+        try {
+            adService.deleteAd(adId);
+            return ResponseEntity.ok("Ad deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

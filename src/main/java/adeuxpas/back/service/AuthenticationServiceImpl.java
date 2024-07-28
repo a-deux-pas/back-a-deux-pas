@@ -1,7 +1,7 @@
 package adeuxpas.back.service;
 
 import adeuxpas.back.auth.JWTService;
-import adeuxpas.back.dto.CredentialsRequestDTO;
+import adeuxpas.back.dto.user.CredentialsRequestDTO;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AccountStatus;
 import adeuxpas.back.enums.UserRole;
@@ -99,10 +99,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @return a JWT token if user exists, or an empty optional otherwise.
      * 
      */
-    @Override
-    public Optional<String> createToken(Optional<User> user) {
+    private Optional<String> createToken(Optional<User> user, boolean isRememberMe) {
         if (user.isPresent()) {
-            String token = this.jwtService.generateToken(user.get().getId(), user.get().getRole());
+            String token = this.jwtService.generateToken(user.get().getId(), user.get().getRole(), isRememberMe);
             return Optional.of(token);
         }
         return Optional.empty();
@@ -133,7 +132,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userToSave.setAccountStatus(AccountStatus.ACTIVE);
         this.userService.save(userToSave);
         Optional<User> savedUser = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
-        return createToken(savedUser);
+        return createToken(savedUser, credentialsRequestDTO.isRememberMe());
     }
 
     /**
@@ -150,7 +149,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDB = this.userService.findUserByEmail(credentialsRequestDTO.getEmail());
         if (userFromDB.isPresent()
                 && encoder.matches(credentialsRequestDTO.getPassword(), userFromDB.get().getPassword())) {
-            return createToken(userFromDB);
+            return createToken(userFromDB, credentialsRequestDTO.isRememberMe());
         }
         return Optional.empty();
     }

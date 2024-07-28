@@ -1,11 +1,12 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
+import adeuxpas.back.dto.user.UserAliasAndLocationResponseDTO;
 import adeuxpas.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.responses.*;
+import jakarta.persistence.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.Set;
@@ -88,6 +89,8 @@ public class UserController {
     public ResponseEntity<Object> getUserAliasAndLocation(@PathVariable long id) {
         try {
             return ResponseEntity.ok(this.userService.getUserAliasAndLocation(id));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -109,6 +112,8 @@ public class UserController {
     public ResponseEntity<Object> getUserInformation(@PathVariable String userAlias) {
         try {
             return ResponseEntity.ok(userService.findUserProfileInfoByAlias(userAlias));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -131,6 +136,24 @@ public class UserController {
     public ResponseEntity<Object> getSellersNearby(@PathVariable long id) {
         try {
             return ResponseEntity.ok(this.userService.getSellersNearby(id));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    /**
+     * Endpoint that handles the retrieval of checkout seller information by alias.
+     *
+     * @param alias the alias of the seller
+     * @return a ResponseEntity containing the seller information if found,
+     *         or an error message if an exception occurs
+     */
+    @GetMapping("{alias}")
+    public ResponseEntity<Object> getByAlias(@PathVariable String alias){
+        try {
+            return ResponseEntity.ok(this.userService.findCheckoutSellerInfoByAlias(alias));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

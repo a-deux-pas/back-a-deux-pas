@@ -2,7 +2,6 @@ package adeuxpas.back.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import adeuxpas.back.dto.AdPostResponseDTO;
 import adeuxpas.back.dto.mapper.AdMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,8 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import adeuxpas.back.dto.AdPostRequestDTO;
-import adeuxpas.back.dto.ArticlePictureDTO;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.AdStatus;
@@ -20,12 +17,14 @@ import adeuxpas.back.repository.UserRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import adeuxpas.back.dto.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdCardResponseDTO;
+import adeuxpas.back.dto.ad.AdPostRequestDTO;
+import adeuxpas.back.dto.ad.AdPostResponseDTO;
 import adeuxpas.back.utils.UnitTestUtils;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -33,10 +32,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
+
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Test class for AdServiceImpl.
@@ -101,6 +105,8 @@ class AdServiceImplTest {
         private AdServiceImpl adService;
         @Mock
         private UsersFavoriteAdsRepository favoriteRepositoryMock;
+        @Mock
+        private CloudinaryService cloudinaryService;
 
         /**
          * This method tests the
@@ -292,12 +298,11 @@ class AdServiceImplTest {
          * Test for postAd method in AdServiceImpl.
          */
         @Test
-        void testPostAd() {
-                // Mock Dto data
+        void testPostAd() throws IOException {
+                // Mock DTO data
                 AdPostRequestDTO adPostRequestDTO = new AdPostRequestDTO();
                 adPostRequestDTO.setTitle("Test Ad");
                 adPostRequestDTO.setArticleDescription("Test description");
-                adPostRequestDTO.setCreationDate(LocalDateTime.now().toString());
                 adPostRequestDTO.setPrice(BigDecimal.valueOf(100));
                 adPostRequestDTO.setCategory("Test Category");
                 adPostRequestDTO.setSubcategory("Test Subcategory");
@@ -305,44 +310,71 @@ class AdServiceImplTest {
                 adPostRequestDTO.setPublisherId(1L);
                 adPostRequestDTO.setArticleState("Test State");
 
-                List<ArticlePictureDTO> articlePictures = new ArrayList<>();
-                ArticlePictureDTO singleAdPic = new ArticlePictureDTO();
-                singleAdPic.setUrl("https://www.pexels.com/fr-fr/photo/mer-vacances-femme-ocean-16953646/");
-                articlePictures.add(singleAdPic);
-                adPostRequestDTO.setArticlePictures(articlePictures);
+                // Simulate MultipartFiles
+                MultipartFile adPicture1 = new MockMultipartFile("file1", "test1.jpg", "image/jpeg",
+                                "test1".getBytes());
+                MultipartFile adPicture2 = new MockMultipartFile("file2", "test2.jpg", "image/jpeg",
+                                "test2".getBytes());
+                MultipartFile adPicture3 = new MockMultipartFile("file3", "test3.jpg", "image/jpeg",
+                                "test3".getBytes());
+                MultipartFile adPicture4 = null;
+                MultipartFile adPicture5 = null;
 
+                // Mock User
                 User user = new User();
                 user.setId(1L);
-                when(userRepositoryMock.findById(1L)).thenReturn((Optional.of(user)));
+                when(userRepositoryMock.findById(1L)).thenReturn(Optional.of(user));
 
-                Ad expectedAd = new Ad();
-                expectedAd.setTitle(adPostRequestDTO.getTitle());
-                expectedAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
-                expectedAd.setPrice(adPostRequestDTO.getPrice());
-                expectedAd.setCategory(adPostRequestDTO.getCategory());
-                expectedAd.setSubcategory(adPostRequestDTO.getSubcategory());
-                expectedAd.setArticleGender(adPostRequestDTO.getArticleGender());
-                expectedAd.setPublisher(user);
-                expectedAd.setArticleState(adPostRequestDTO.getArticleState());
-                expectedAd.setStatus(AdStatus.AVAILABLE);
+                // Mock Cloudinary upload method
+                Map<String, Object> cloudinaryResponse = new HashMap<>();
+                cloudinaryResponse.put("url", "https://example.com/image.webp");
+                when(cloudinaryService.upload(any(String.class), any(MultipartFile.class)))
+                                .thenReturn(cloudinaryResponse);
 
-                when(adRepositoryMock.save(any(Ad.class))).thenReturn(expectedAd);
+                // Mock AdMapper
+                Ad newAd = new Ad();
+                newAd.setTitle(adPostRequestDTO.getTitle());
+                newAd.setArticleDescription(adPostRequestDTO.getArticleDescription());
+                newAd.setPrice(adPostRequestDTO.getPrice());
+                newAd.setCategory(adPostRequestDTO.getCategory());
+                newAd.setSubcategory(adPostRequestDTO.getSubcategory());
+                newAd.setArticleGender(adPostRequestDTO.getArticleGender());
+                newAd.setPublisher(user);
+                newAd.setArticleState(adPostRequestDTO.getArticleState());
+                newAd.setStatus(AdStatus.AVAILABLE);
+
+                when(adMapperMock.adPostRequestDTOToAd(adPostRequestDTO)).thenReturn(newAd);
+
+                Ad savedAd = newAd; // Assuming the savedAd is the same as newAd for simplicity
+                when(adRepositoryMock.save(any(Ad.class))).thenReturn(savedAd);
 
                 AdPostResponseDTO adResponse = new AdPostResponseDTO();
-                adResponse.setTitle(expectedAd.getTitle());
-                adResponse.setArticleDescription(expectedAd.getArticleDescription());
-                adResponse.setPrice(expectedAd.getPrice());
-                adResponse.setPublisherId(expectedAd.getPublisher().getId());
-                adResponse.setArticleState(expectedAd.getArticleState());
-                adResponse.setStatus(expectedAd.getStatus());
+                adResponse.setTitle(newAd.getTitle());
+                adResponse.setArticleDescription(newAd.getArticleDescription());
+                adResponse.setPrice(newAd.getPrice());
+                adResponse.setPublisherId(newAd.getPublisher().getId());
+                adResponse.setArticleState(newAd.getArticleState());
+                adResponse.setStatus(newAd.getStatus());
 
                 when(adMapperMock.adToAdPostResponseDTO(any(Ad.class))).thenReturn(adResponse);
 
-                AdPostResponseDTO result = this.adService.postAd(adPostRequestDTO);
+                // Call the method with the new signature
+                AdPostResponseDTO result = adService.postAd(adPostRequestDTO, adPicture1, adPicture2, adPicture3,
+                                adPicture4, adPicture5);
 
-                assertEquals(result.getTitle(), adResponse.getTitle());
-                assertEquals(result.getArticleDescription(), adResponse.getArticleDescription());
-                assertEquals(result.getStatus(), adResponse.getStatus());
+                // Verify results
+                assertEquals(adResponse.getTitle(), result.getTitle());
+                assertEquals(adResponse.getArticleDescription(), result.getArticleDescription());
+                assertEquals(adResponse.getPrice(), result.getPrice());
+                assertEquals(adResponse.getPublisherId(), result.getPublisherId());
+                assertEquals(adResponse.getArticleState(), result.getArticleState());
+                assertEquals(adResponse.getStatus(), result.getStatus());
+
+                // Verify interactions with mocks
+                verify(userRepositoryMock).findById(adPostRequestDTO.getPublisherId());
+                verify(adRepositoryMock).save(any(Ad.class));
+                verify(adMapperMock).adToAdPostResponseDTO(any(Ad.class));
+                verify(cloudinaryService, times(3)).upload(any(String.class), any(MultipartFile.class));
         }
 
         /**
@@ -416,5 +448,4 @@ class AdServiceImplTest {
                         return adCardResponseDTO;
                 });
         }
-
 }

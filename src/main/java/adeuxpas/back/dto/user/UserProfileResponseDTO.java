@@ -1,4 +1,4 @@
-package adeuxpas.back.dto;
+package adeuxpas.back.dto.user;
 
 /**
  * Data Transfer Object (DTO) for representing user profile information.
