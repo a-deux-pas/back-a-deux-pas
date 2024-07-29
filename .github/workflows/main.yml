@@ -41,8 +41,14 @@ jobs:
       - name: Retrieve Application Version
         id: set_app_version
         run: |
-          echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_ENV
-          echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_OUTPUT
+          if [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == "refs/heads/test-release" ]]; then
+            COMMIT_SHA=$(git rev-parse --short HEAD)
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_ENV
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_OUTPUT
+          else
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_ENV
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_OUTPUT
+          fi
       - name: Print Maven POM project version
         run: echo "application version = ${{ env.APP_VERSION }}"
       # Project compilation
@@ -129,11 +135,12 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
 
+
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@master
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          path: ${{ github.workspace }}/target
+          path: target/
 
       - name: Create GitHub Release
         env:
