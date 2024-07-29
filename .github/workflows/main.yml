@@ -5,6 +5,7 @@ on:
     branches:
       - "dev"
       - "main"
+      - "feature/test-release"
   pull_request:
     branches:
       - "**"
@@ -91,8 +92,75 @@ jobs:
         with:
           context: ${{ github.workspace }}
           file: Dockerfile
-          push: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/test-release' }}
           tags: docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
           build-args: |
             APP_NAME=${{ env.APP_NAME }}
             APP_VERSION=${{ env.APP_VERSION }}
+  release:
+    needs: [maven, docker]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/test-release'
+    runs-on: ubuntu-latest
+    env:
+      APP_NAME: ${{ vars.APP_NAME }}
+      APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Configure Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+          path: ${{ github.workspace }}/target
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          RELEASE_VERSION="${{ env.APP_VERSION }}"
+          DOCKER_IMAGE_URL="docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}"
+          RELEASE_NOTES="${{ env.APP_NAME }} release v${RELEASE_VERSION}
+          
+          Docker image: \`${DOCKER_IMAGE_URL}\`
+          Commit: ${COMMIT_SHA}"
+          
+          gh release create v${RELEASE_VERSION} target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar \
+            --title "v${RELEASE_VERSION}" \
+            --notes "${RELEASE_NOTES}" \
+            --target ${{ github.ref_name }}
+
+      - name: Increment version and create PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          BRANCH_NAME="bump-version-$(date +%Y%m%d%H%M%S)"
+          git checkout -b $BRANCH_NAME
+          
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//')
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+          mvn versions:set -DnewVersion=${NEW_VERSION}-SNAPSHOT
+          
+          git add pom.xml
+          git commit -m "Increment version to ${NEW_VERSION}-SNAPSHOT [skip ci]"
+          git push origin $BRANCH_NAME
+          
+          gh pr create --base dev --head $BRANCH_NAME \
+            --title "Bump version to ${NEW_VERSION}-SNAPSHOT" \
+            --body "Automated version bump after release ${{ env.APP_VERSION }}"
+
+          echo "Pull request created successfully. Please review and merge manually."
