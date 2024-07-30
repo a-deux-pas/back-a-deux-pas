@@ -78,11 +78,11 @@ public class SecurityConfig {
                 // and CSRF protection is less relevant in this scenario
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        // We explicitly define all the routes that we permit open access to (to be verified/updated)
+                        // We explicitly define all the endpoints that we permit open access to.
                         // This practice complies with the 'Default Deny'/'Implicit Deny' principle, that is a fundamental aspect
                                 // of security practices and advises that, by default,
                                 // all access should be denied unless explicitly allowed.
-                        // Open access routes :
+                        // Open access routes (to be verified/updated) :
                         .requestMatchers(
                                 "/api/account/create",
                                 "/api/auth/**",
@@ -95,6 +95,7 @@ public class SecurityConfig {
                                 "/api/ads/list",
                                 "/api/users/cities-and-postal-codes",
                                 "/api/users/{id}/alias-and-location",
+                                "/api/users/{userAlias}",
                                 "/api/users/{userAlias}/presentation",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
