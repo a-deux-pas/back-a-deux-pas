@@ -5,7 +5,6 @@ on:
     branches:
       - "dev"
       - "main"
-      - "feature/test-release"
   pull_request:
     branches:
       - "**"
@@ -106,42 +105,51 @@ jobs:
         with:
           context: ${{ github.workspace }}
           file: Dockerfile
-          push: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/test-release' }}
+          push: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' }}
           tags: docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
           build-args: |
             APP_NAME=${{ env.APP_NAME }}
             APP_VERSION=${{ env.APP_VERSION }}
+
   release:
+    # This job depends on the successful completion of the 'maven' and 'docker' jobs
     needs: [maven, docker]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/test-release'
+    # This job only runs on the 'main' branch or the 'feature/test-release' branch
+    if: github.ref == 'refs/heads/main'
+    # The job runs on the latest version of Ubuntu
     runs-on: ubuntu-latest
+    # Environment variables used throughout the job
     env:
       APP_NAME: ${{ vars.APP_NAME }}
       APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
 
+      # Set up Java environment
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
+      # Configure Git with GitHub Actions bot details
       - name: Configure Git
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-
+      # Download the built artifact from the 'maven' job
       - name: Download artifact
         uses: actions/download-artifact@master
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           path: target/
 
+      # Create a GitHub release with the built artifact
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -159,6 +167,7 @@ jobs:
             --notes "${RELEASE_NOTES}" \
             --target ${{ github.ref_name }}
 
+      # Increment the version number and create a pull request for the next development cycle
       - name: Increment version and create PR
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -178,4 +187,6 @@ jobs:
             --title "Bump version to ${NEW_VERSION}-SNAPSHOT" \
             --body "Automated version bump after release ${{ env.APP_VERSION }}"
 
-          echo "Pull request created successfully. Please review and merge manually."
+          echo "Pull request created successfully. Please review and merge manually."   
+
+
