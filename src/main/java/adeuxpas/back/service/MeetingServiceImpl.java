@@ -39,10 +39,10 @@ public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
     private final MeetingMapper meetingMapper;
-    private static final String MEETING_NOT_FOUND_MESSAGE = "Meeting not found for ad ID: ";
     private final AdRepository adRepository;
     private final StripePaymentService stripePaymentService;
     private final UserRepository userRepository;
+    private static final String MEETING_NOT_FOUND_MESSAGE = "Meeting not found for ad ID: ";
 
     private static final Logger logger = LoggerFactory.getLogger(MeetingServiceImpl.class);
 
