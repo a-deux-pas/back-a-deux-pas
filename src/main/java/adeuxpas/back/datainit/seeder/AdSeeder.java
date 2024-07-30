@@ -831,16 +831,6 @@ public class AdSeeder {
                 fiftyEighthAd.setStatus(AdStatus.SOLD);
                 fourthUserAds.add(fiftyEighthAd);
 
-                // AdSeeder 2 =>
-                // pour le 5é user (fifthUserAds - setPublisher(users.get(4)))
-                // ajouter 6 ads AVAILABLE - 3 RESERVED - 1 SOLD
-                // de fiftyNinth à sixtyNinthAd
-
-                // AdSeeder 3 =>
-                // pour le 6é user (fifthUserAds - setPublisher(users.get(5)))
-                // ajouter 8 ads AVAILABLE - 1 RESERVED - 1 SOLD
-                // de seventiethAd à seventyNinthAd
-
                 users.get(0).setAds(firstUserAds);
                 users.get(1).setAds(secondUserAds);
                 users.get(2).setAds(thirdUserAds);
