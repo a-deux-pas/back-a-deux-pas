@@ -40,7 +40,7 @@ jobs:
       - name: Retrieve Application Version
         id: set_app_version
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main"; then
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             COMMIT_SHA=$(git rev-parse --short HEAD)
             echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_ENV
             echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_OUTPUT
