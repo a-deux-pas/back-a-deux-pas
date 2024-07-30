@@ -50,3 +50,5 @@ build/*
 .vscode
 _site/
 *.css
+
+src/main/resources/keystore.p12
