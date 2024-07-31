@@ -116,7 +116,13 @@ public class UserServiceImpl implements UserService {
                     Map<String, Object> profilePictureObject = cloudinaryService
                             .upload(publicId, profilePicture);
                     String profilePictureUrl = (String) profilePictureObject.get("url");
-                    user.setProfilePicture(profilePictureUrl);
+                    // Replace 'http' with 'https' in the returned url (to prevent 'mixed content' warnings)
+                    StringBuilder secureUrl = new StringBuilder(profilePictureUrl);
+                    // Insert the 's' character at the end of 'http' (index 4)
+                    secureUrl.insert(4, 's');
+                    // Convert the StringBuilder back to a String
+                    String secureUrlString = secureUrl.toString();
+                    user.setProfilePicture(secureUrlString);
                 } catch (IOException e) {
                     throw new UncheckedIOException("Failed to upload profile picture", e);
                 }
