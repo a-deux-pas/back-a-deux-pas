@@ -50,6 +50,3 @@ build/*
 .vscode
 _site/
 *.css
-
-# SSL
-src/main/resources/keystore.p12
