@@ -1,11 +1,7 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
-import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
-import adeuxpas.back.dto.UserProfileResponseDTO;
 import adeuxpas.back.dto.mapper.UserMapper;
-import adeuxpas.back.dto.UserProfileRequestDTO;
+import adeuxpas.back.dto.user.*;
 import adeuxpas.back.entity.PreferredMeetingPlace;
 import adeuxpas.back.entity.PreferredSchedule;
 import adeuxpas.back.entity.User;
@@ -13,9 +9,13 @@ import adeuxpas.back.repository.PreferredMeetingPlaceRepository;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import adeuxpas.back.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.stream.Collectors;
 import java.util.*;
 
@@ -33,11 +33,11 @@ import java.util.*;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
     private final PreferredScheduleRepository preferredScheduleRepository;
     private final PreferredMeetingPlaceRepository preferredMeetingPlaceRepository;
     private final UserMapper userMapper;
+    private final CloudinaryService cloudinaryService;
 
     private static final String USER_NOT_FOUND_MESSAGE = "User with ID : %d not Found";
 
@@ -51,11 +51,13 @@ public class UserServiceImpl implements UserService {
             @Autowired UserRepository userRepository,
             @Autowired PreferredScheduleRepository preferredScheduleRepository,
             @Autowired PreferredMeetingPlaceRepository preferredMeetingPlaceRepository,
+            @Autowired CloudinaryService cloudinaryService,
             @Autowired UserMapper userMapper) {
         this.userRepository = userRepository;
         this.preferredScheduleRepository = preferredScheduleRepository;
         this.preferredMeetingPlaceRepository = preferredMeetingPlaceRepository;
         this.userMapper = userMapper;
+        this.cloudinaryService = cloudinaryService;
     }
 
     /**
@@ -93,21 +95,37 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Saves an user profile and preferrences.
+     * Saves a user profile and preferences.
      *
      * @param profileDto the profile dto to save.
      */
     @Override
-    public void createProfile(UserProfileRequestDTO profileDto) {
+    public void createProfile(UserProfileRequestDTO profileDto, MultipartFile profilePicture) {
         Long userId = Long.parseLong(profileDto.getId());
         Optional<User> optionalUser = userRepository.findById(userId);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             User alias = findUserByAlias(profileDto.getAlias()).orElse(null);
             if (alias != null) {
                 throw new IllegalArgumentException(
                         "A user with alias '" + profileDto.getAlias() + "' already exists");
+            }
+            String publicId = "profilePicture-" + profileDto.getAlias();
+            if (profilePicture != null) {
+                try {
+                    Map<String, Object> profilePictureObject = cloudinaryService
+                            .upload(publicId, profilePicture);
+                    String profilePictureUrl = (String) profilePictureObject.get("url");
+                    // Replace 'http' with 'https' in the returned url (to prevent 'mixed content' warnings)
+                    StringBuilder secureUrl = new StringBuilder(profilePictureUrl);
+                    // Insert the 's' character at the end of 'http' (index 4)
+                    secureUrl.insert(4, 's');
+                    // Convert the StringBuilder back to a String
+                    String secureUrlString = secureUrl.toString();
+                    user.setProfilePicture(secureUrlString);
+                } catch (IOException e) {
+                    throw new UncheckedIOException("Failed to upload profile picture", e);
+                }
             }
             userMapper.mapProfileUserToUser(profileDto, user);
             userRepository.save(user);
@@ -279,5 +297,34 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new EntityNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, userId));
         }
+    }
+
+    /**
+     * Finds and returns the checkout information of a seller identified by their alias.
+     * <p>
+     * This method searches for a user by the given alias. If the user is found, it constructs and returns a
+     * {@link SellerCheckoutResponseDTO} containing the user's preferred meeting places, preferred schedules,
+     * ID, and bank account token ID. If the user is not found, the method returns {@code null}.
+     *
+     * @param alias the alias of the user to find.
+     * @return a {@link SellerCheckoutResponseDTO} containing the user's checkout information, or {@code null} if the user is not found.
+     */
+    @Override
+    public SellerCheckoutResponseDTO findCheckoutSellerInfoByAlias(String alias) {
+        Optional<User> optionalUser = this.findUserByAlias(alias);
+        if (optionalUser.isPresent()){
+            SellerCheckoutResponseDTO sellerCheckoutResponseDTO = new SellerCheckoutResponseDTO();
+            List<PreferredMeetingPlaceDTO> preferredMeetingPlaceDTOS = optionalUser.get()
+                    .getPreferredMeetingPlaces().stream().map(userMapper::mapPreferredMeetingPlaceToDTO).toList();
+            List<PreferredScheduleDTO> preferredScheduleDTOS = optionalUser.get()
+                    .getPreferredSchedules().stream().map(userMapper::mapPreferredScheduleToDTO).toList();
+            sellerCheckoutResponseDTO.setPreferredMeetingPlaces(preferredMeetingPlaceDTOS);
+            sellerCheckoutResponseDTO.setPreferredSchedules(preferredScheduleDTOS);
+            sellerCheckoutResponseDTO.setId(optionalUser.get().getId());
+            sellerCheckoutResponseDTO.setBankAccountTokenId(optionalUser.get().getBankAccountTokenId());
+
+            return sellerCheckoutResponseDTO;
+        }
+        return null;
     }
 }

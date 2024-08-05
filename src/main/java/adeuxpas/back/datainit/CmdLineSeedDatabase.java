@@ -3,11 +3,12 @@ package adeuxpas.back.datainit;
 import adeuxpas.back.datainit.seeder.*;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Executes custom logic or tasks at the start of the application,
@@ -49,11 +50,11 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
      * @param meetingSeeder
      */
     public CmdLineSeedDatabase(@Autowired UserSeeder userSeeder,
-                               @Autowired AdSeeder adSeeder,
-                               @Autowired ArticlePictureSeeder articlePictureSeeder,
-                               @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
-                               @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder,
-                               @Autowired MeetingSeeder meetingSeeder){
+            @Autowired AdSeeder adSeeder,
+            @Autowired ArticlePictureSeeder articlePictureSeeder,
+            @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
+            @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder,
+            @Autowired MeetingSeeder meetingSeeder) {
         this.userSeeder = userSeeder;
         this.adSeeder = adSeeder;
         this.articlePictureSeeder = articlePictureSeeder;
@@ -75,8 +76,6 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
 
         List<Ad> ads = this.adSeeder.createAds(users);
         this.adSeeder.seedAds(ads);
-        this.adSeeder.seedFavoritesAds(users, ads);
-
         this.articlePictureSeeder.seedArticlePictures(ads);
 
         for (User user : users) {
@@ -88,5 +87,7 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
 
         // Seed meetings
         this.meetingSeeder.seedMeetings();
+        // Seed favorite ads
+        this.adSeeder.seedFavoritesAds();
     }
 }

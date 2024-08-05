@@ -1,4 +1,4 @@
-package adeuxpas.back.dto;
+package adeuxpas.back.dto.user;
 
 import java.util.List;
 
@@ -23,8 +23,6 @@ public class UserProfileRequestDTO {
 
     @NotBlank
     private String id;
-    // @NotBlank TO DO: à décommenter une fois cloudinary implémenté
-    private String profilePicture;
     @NotBlank
     @Size(min = 3, max = 30)
     private String alias;
@@ -39,10 +37,7 @@ public class UserProfileRequestDTO {
     private String city;
     private String country = "France";
     @NotBlank
-    private String bankAccountHolder;
-    @NotNull
-    @Size(max = 34)
-    private String bankAccountNumber;
+    private String bankAccountTokenId;
     @NotEmpty
     @Size(min = 1, max = 5)
     private List<PreferredMeetingPlaceDTO> preferredMeetingPlaces;
@@ -58,14 +53,6 @@ public class UserProfileRequestDTO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public String getAlias() {
@@ -116,20 +103,12 @@ public class UserProfileRequestDTO {
         this.country = country;
     }
 
-    public String getBankAccountHolder() {
-        return bankAccountHolder;
+    public String getBankAccountTokenId() {
+        return bankAccountTokenId;
     }
 
-    public void setBankAccountHolder(String bankAccountHolde) {
-        this.bankAccountHolder = bankAccountHolde;
-    }
-
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public void setBankAccountTokenId(String bankAccountTokenId) {
+        this.bankAccountTokenId = bankAccountTokenId;
     }
 
     public List<PreferredMeetingPlaceDTO> getPreferredMeetingPlaces() {
@@ -154,5 +133,16 @@ public class UserProfileRequestDTO {
 
     public void setNotifications(List<NotificationDTO> notifications) {
         this.notifications = notifications;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfileRequestDTO{" +
+                "id='" + id + '\'' +
+                ", alias='" + alias + '\'' +
+                ", bio='" + bio + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }

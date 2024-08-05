@@ -31,6 +31,14 @@ import java.util.List;
  */
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Long> {
+        /**
+         * Finds all ads by the given publisher ID.
+         *
+         * @param publisherId the ID of the publisher whose ads are to be retrieved.
+         * @return a list of ads published by the given publisher, or an empty list if
+         *         none are found.
+         */
+        List<Ad> findAdsByPublisherId(Long publisherId);
 
         /**
          * Custom query for retrieving ads based on various filters and criteria.
@@ -139,8 +147,11 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
          */
         @Query("SELECT a FROM Ad a " +
                         "WHERE a.publisher.id = :publisherId " +
-                        "ORDER BY CASE WHEN a.status = 'AVAILABLE' " +
-                        "THEN 0 ELSE 1 END, " +
+                        "ORDER BY CASE " +
+                        "WHEN a.status = 'AVAILABLE' THEN 0 " +
+                        "WHEN a.status = 'RESERVED' THEN 1 " +
+                        "WHEN a.status = 'SOLD' THEN 2 " +
+                        "END, " +
                         "a.creationDate DESC")
         Page<Ad> findSortedAdsByPublisherIdOrderByCreationDateDesc(
                         @Param("publisherId") Long publisherId,

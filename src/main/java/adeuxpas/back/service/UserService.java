@@ -1,13 +1,11 @@
 package adeuxpas.back.service;
 
-import adeuxpas.back.dto.PreferredMeetingPlaceDTO;
-import adeuxpas.back.dto.PreferredScheduleDTO;
-import adeuxpas.back.dto.UserAliasAndLocationResponseDTO;
-import adeuxpas.back.dto.UserProfileResponseDTO;
-import adeuxpas.back.dto.UserProfileRequestDTO;
+import adeuxpas.back.dto.user.*;
 import adeuxpas.back.entity.User;
 
 import java.util.*;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Interface defining user-related operations for the application.
@@ -48,7 +46,7 @@ public interface UserService {
      * 
      * @param profileDto The DTO containing the details of an user Profile.
      */
-    void createProfile(UserProfileRequestDTO profileDto);
+    void createProfile(UserProfileRequestDTO profileDto, MultipartFile profilePicture);
 
     /**
      * Abstract method that attempts to find the user info with its alias.
@@ -97,4 +95,11 @@ public interface UserService {
      * @return a list of UserProfileResponseDTO.
      */
     List<UserProfileResponseDTO> getSellersNearby(long userId);
+
+    /**
+     * Contract to return the necessary seller info needed for the Checkout process
+     * @param alias the seller's alias, by which the search is made.
+     * @return a SellerCheckoutResponseDTO with the required data.
+     */
+    SellerCheckoutResponseDTO findCheckoutSellerInfoByAlias(String alias);
 }

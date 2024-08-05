@@ -1,6 +1,6 @@
 package adeuxpas.back.controller;
 
-import adeuxpas.back.dto.CredentialsRequestDTO;
+import adeuxpas.back.dto.user.CredentialsRequestDTO;
 import adeuxpas.back.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Mircea Bardan
  */
 
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @RestController
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
