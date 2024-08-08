@@ -226,9 +226,8 @@ public class MeetingController {
         }
     }
 
-    // TO DO :: transformer putmappping en getMapping ??
     /**
-     * GET finalize/:meetingId/:userID : Finalizes a meeting.
+     * PUT finalize/:meetingId/:userID : Finalizes a meeting.
      *
      * @param id     The ID of the meeting to finalize.
      * @param userId The current user's id used to determine if they're the current
