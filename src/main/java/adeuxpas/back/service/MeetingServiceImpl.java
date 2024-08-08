@@ -24,6 +24,9 @@ import java.time.*;
 import java.util.*;
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Implementation class for the MeetingService interface.
  * <p>
@@ -241,11 +244,15 @@ public class MeetingServiceImpl implements MeetingService {
      * @param meetingId the ID of the meeting to be finalized
      */
     @Override
-    public void finalizeMeeting(Long meetingId) {
+    public MeetingResponseDTO finalizeMeeting(Long meetingId, Long userId) {
         Optional<Meeting> meetingToBeFinalized = this.meetingRepository.findById(meetingId);
         if (meetingToBeFinalized.isPresent()) {
+
+            logger.error("meetingToBeFinalized: {}", meetingToBeFinalized);
+
             Optional<User> seller = this.userRepository.findById(meetingToBeFinalized.get().getSeller().getId());
             if (seller.isPresent()) {
+                logger.info("meetingin");
                 // Mocked the seller's info and created a Stripe Connect Account for the seller,
                 // which is needed
                 // in order to attach the seller's profile info, including his bank account, to
@@ -263,6 +270,7 @@ public class MeetingServiceImpl implements MeetingService {
                 String sellerPostalCode = seller.get().getPostalCode();
                 String businessProfileUrl = "https://5390-82-76-31-95.ngrok-free.app";
 
+                logger.info("meetingd");
                 String stripePaymentIntentId = meetingToBeFinalized.get().getStripePaymentIntentId();
                 BigDecimal amount = meetingToBeFinalized.get().getAds().stream().findFirst().get().getPrice();
                 // the seller's tokenized bank account, which we've saved to our DB at user
@@ -270,6 +278,8 @@ public class MeetingServiceImpl implements MeetingService {
                 String bankAccountToken = meetingToBeFinalized.get().getSeller().getBankAccountTokenId();
 
                 if (stripePaymentIntentId != null) {
+                    // SEULEMENT SI paiement par carte
+                    logger.info("meetingt");
                     // Create the seller's Connect Account, capture the buyer's funds, and make the
                     // payout to the seller's bank account:
                     try {
@@ -288,16 +298,52 @@ public class MeetingServiceImpl implements MeetingService {
 
                         // Capture the payment
                         this.stripePaymentService.capturePayment(stripePaymentIntentId);
-
+                        logger.info("meetingq");
                         // Create a payout to the external account (and its associated bank account)
                         stripePaymentService.createPayout(account.getId(), amount.longValue() * 100, "eur",
                                 externalAccount.getId());
-
                     } catch (StripeException stripeException) {
                         logger.error("Error capturing payment or creating payout: {}", stripeException.getMessage());
+
                     }
                 }
             }
+
         }
+        return this.finalizeSell(meetingToBeFinalized, userId);
     }
+
+    public MeetingResponseDTO finalizeSell(Optional<Meeting> meetingToBeFinalized, Long userId) {
+        if (meetingToBeFinalized.isEmpty()) {
+            throw new IllegalArgumentException("Meeting not found.");
+        }
+
+        Meeting meeting = meetingToBeFinalized.get();
+
+        logger.error("meeting: {}", meeting);
+
+        if (userId.equals(meeting.getBuyer().getId())) {
+            meeting.setValidatedByBuyer(true);
+        } else {
+            meeting.setValidatedBySeller(true);
+        }
+
+        Meeting updatedMeeting = meetingRepository.save(meeting);
+        logger.error("updatedMeeting: {}", updatedMeeting);
+
+        if (meeting.getStatus() == MeetingStatus.TOBEFINALIZED
+                && Boolean.TRUE.equals(meeting.getValidatedByBuyer())
+                && Boolean.TRUE.equals(meeting.getValidatedBySeller())) {
+
+            meeting.setStatus(MeetingStatus.FINALIZED);
+            meeting.getAds().iterator().next().setStatus(AdStatus.SOLD);
+
+            Meeting finalizedMeeting = meetingRepository.save(meeting);
+            logger.info("Meeting and ad status updated to finalized and sold, respectively", finalizedMeeting);
+            return meetingMapper.meetingToMeetingDTO(finalizedMeeting);
+        }
+        logger.info("Meeting validation status updated: {}", updatedMeeting);
+        return meetingMapper.meetingToMeetingDTO(updatedMeeting);
+    }
+
 }

@@ -32,6 +32,8 @@ public class MeetingResponseDTO {
     private String adTitle;
     private BigDecimal adPrice;
     private String adPictureUrl;
+    private Boolean isValidatedByBuyer;
+    private Boolean isValidatedBySeller;
 
     // Getters and setters
 
@@ -241,6 +243,22 @@ public class MeetingResponseDTO {
 
     public void setAdPictureUrl(String adPictureUrl) {
         this.adPictureUrl = adPictureUrl;
+    }
+
+    public Boolean getValidatedByBuyer() {
+        return isValidatedByBuyer;
+    }
+
+    public void setValidatedByBuyer(Boolean validatedByBuyer) {
+        isValidatedByBuyer = validatedByBuyer;
+    }
+
+    public Boolean getValidatedBySeller() {
+        return isValidatedBySeller;
+    }
+
+    public void setValidatedBySeller(Boolean validatedBySeller) {
+        isValidatedBySeller = validatedBySeller;
     }
 
 }

@@ -51,7 +51,8 @@ public interface MeetingService {
     /**
      * Contract to initialize a meeting
      *
-     * @param meetingRequestDTO The DTo containing the request data needed for the operation.
+     * @param meetingRequestDTO The DTo containing the request data needed for the
+     *                          operation.
      */
     Long initializeMeeting(MeetingRequestDTO meetingRequestDTO);
 
@@ -60,5 +61,5 @@ public interface MeetingService {
      *
      * @param meetingId The id of the meeting to be finalized.
      */
-    void finalizeMeeting(Long meetingId);
+    MeetingResponseDTO finalizeMeeting(Long meetingId, Long userId);
 }

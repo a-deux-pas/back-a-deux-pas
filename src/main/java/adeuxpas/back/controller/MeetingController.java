@@ -226,18 +226,27 @@ public class MeetingController {
         }
     }
 
-    // Stub method chain: to be completed with business logic and called when a
-    // meeting is finalized
-    // All it does for now is capture the Stripe Card Payment for demonstration and
-    // testing purposes
-    @GetMapping("/finalize/{meetingId}")
-    public ResponseEntity<Object> finalizeMeeting(@PathVariable Long meetingId) {
+    // TO DO :: transformer putmappping en getMapping ??
+    /**
+     * GET finalize/:meetingId/:userID : Finalizes a meeting.
+     *
+     * @param id     The ID of the meeting to finalize.
+     * @param userId The current user's id used to determine if they're the current
+     *               ad's buyer or seller
+     * @return A ResponseEntity containing the updated MeetingDTO if found, or a not
+     *         found status.
+     */
+    @Operation(summary = "Finalises a meeting")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting finalized successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PutMapping("/finalize/{meetingId}/{userId}")
+    public ResponseEntity<MeetingResponseDTO> finalizeMeeting(@PathVariable Long meetingId, @PathVariable Long userId) {
         try {
-            this.meetingService.finalizeMeeting(meetingId);
-            return ResponseEntity.ok("Meeting finalized successfully");
+            return ResponseEntity.ok(meetingService.finalizeMeeting(meetingId, userId));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to finalize meeting : error occurred in the meeting service");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

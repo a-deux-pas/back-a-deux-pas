@@ -28,7 +28,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
         @Query("SELECT m FROM Meeting m WHERE " +
                         "(m.buyer.id = :userId OR m.seller.id = :userId) " +
                         "AND m.date < :date " +
-                        "ORDER BY m.date")
+                        "AND m.status <> 'FINALIZED'")
         List<Meeting> findPastMeetings(
                         @Param("userId") Long userId,
                         @Param("date") LocalDateTime date);
