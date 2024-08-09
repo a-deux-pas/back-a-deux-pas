@@ -7,8 +7,10 @@ import java.util.Set;
 
 /**
  * Entity class representing a meeting.
- * This class encapsulates meeting-related information, such as status, date, additional info, etc.
- * Instances of this class are persisted to the database by the MeetingRepository.
+ * This class encapsulates meeting-related information, such as status, date,
+ * additional info, etc.
+ * Instances of this class are persisted to the database by the
+ * MeetingRepository.
  */
 @Entity
 public class Meeting {
@@ -49,11 +51,7 @@ public class Meeting {
     private PreferredMeetingPlace meetingPlace;
 
     @ManyToMany
-    @JoinTable(
-            name = "ads_meetings",
-            joinColumns = @JoinColumn(name = "meeting_id"),
-            inverseJoinColumns = @JoinColumn(name = "ad_id")
-    )
+    @JoinTable(name = "ads_meetings", joinColumns = @JoinColumn(name = "meeting_id"), inverseJoinColumns = @JoinColumn(name = "ad_id"))
     private Set<Ad> ads;
 
     @Column(name = "is_validated_by_buyer")
@@ -84,6 +82,7 @@ public class Meeting {
     public MeetingStatus getStatus() {
         return status;
     }
+
     public void setStatus(MeetingStatus status) {
         this.status = status;
     }
@@ -190,6 +189,8 @@ public class Meeting {
                 ", seller=" + (seller != null ? seller.getId() : "null") +
                 ", meetingPlace=" + (meetingPlace != null ? meetingPlace.getId() : "null") +
                 ", ads=" + (ads != null ? ads.size() : 0) +
+                ", isValidatedByBuyer=" + isValidatedByBuyer +
+                ", isValidatedBySeller=" + isValidatedBySeller +
                 '}';
     }
 }

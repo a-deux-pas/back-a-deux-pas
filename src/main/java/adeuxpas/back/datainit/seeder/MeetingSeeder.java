@@ -7,7 +7,9 @@ import adeuxpas.back.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Component
@@ -56,7 +58,9 @@ public class MeetingSeeder {
                 firstMeeting.setBuyer(user2);// Dounia == user
                 firstMeeting.setSeller(user1);// Koroviev
                 firstMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
-                firstMeeting.setDate(LocalDateTime.now().plusDays(3));
+                firstMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY))
+                            .withHour(14)
+                            .withMinute(30));
                 firstMeeting.setStatus(MeetingStatus.INITIALIZED);
                 firstMeeting.setBuyerDistinctiveSign("Je porterai un grand cabas doré.");
                 firstMeeting.setSellerDistinctiveSign("Je porte des lunettes rouges.");
@@ -70,7 +74,9 @@ public class MeetingSeeder {
                 secondMeeting.setBuyer(user1); // Koroviev
                 secondMeeting.setSeller(user2); // Dounia == user
                 secondMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
-                secondMeeting.setDate(LocalDateTime.now().plusDays(3));
+                secondMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY))
+                .withHour(20)
+                .withMinute(30));
                 secondMeeting.setStatus(MeetingStatus.INITIALIZED);
                 secondMeeting.setBuyerDistinctiveSign("Je porterai un chapeau bleu.");
                 secondMeeting.setSellerDistinctiveSign("Je porterai un manteau vert.");
@@ -84,7 +90,9 @@ public class MeetingSeeder {
                 fourthMeeting.setBuyer(user1); // Koroviev
                 fourthMeeting.setSeller(user2); // Dounia == user
                 fourthMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
-                fourthMeeting.setDate(LocalDateTime.now().plusDays(4));
+                fourthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
+                .withHour(19)
+                .withMinute(00));
                 fourthMeeting.setStatus(MeetingStatus.ACCEPTED);
                 fourthMeeting.setBuyerDistinctiveSign("Je porterai une chemise blanche.");
                 fourthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil.");
@@ -98,7 +106,9 @@ public class MeetingSeeder {
                 fifthMeeting.setBuyer(user1); // Koroviev
                 fifthMeeting.setSeller(user2); // Dounia == user
                 fifthMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
-                fifthMeeting.setDate(LocalDateTime.now().minusDays(1));
+                fifthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY))
+                .withHour(20)
+                .withMinute(30));
                 fifthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 fifthMeeting.setBuyerDistinctiveSign("Je porterai un pull rouge.");
                 fifthMeeting.setSellerDistinctiveSign("Je porterai un manteau noir.");
@@ -111,7 +121,9 @@ public class MeetingSeeder {
                 sixthMeeting.setBuyer(user2); // Dounia == user
                 sixthMeeting.setSeller(user1); // Koroviev
                 sixthMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
-                sixthMeeting.setDate(LocalDateTime.now().minusDays(2));
+                sixthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.FRIDAY))
+                .withHour(19)
+                .withMinute(30));
                 sixthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 sixthMeeting.setBuyerDistinctiveSign("Je porterai un bonnet jaune.");
                 sixthMeeting.setSellerDistinctiveSign("Je porterai une veste en cuir.");
@@ -126,7 +138,9 @@ public class MeetingSeeder {
                 seventhMeeting.setBuyer(user1); // Koroviev == user
                 seventhMeeting.setSeller(user2); // Dounia
                 seventhMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
-                seventhMeeting.setDate(LocalDateTime.now().plusDays(3));
+                seventhMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY))
+                .withHour(14)
+                .withMinute(00));
                 seventhMeeting.setStatus(MeetingStatus.INITIALIZED);
                 seventhMeeting.setBuyerDistinctiveSign("Je porterai un manteau noir et une écharpe bleue.");
                 seventhMeeting.setSellerDistinctiveSign("J'aurai une mallette en cuir marron.");
@@ -140,7 +154,9 @@ public class MeetingSeeder {
                 eighthMeeting.setBuyer(user2); // Dounia
                 eighthMeeting.setSeller(user1); // Koroviev == user
                 eighthMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
-                eighthMeeting.setDate(LocalDateTime.now().plusDays(3));
+                eighthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY))
+                .withHour(12)
+                .withMinute(30));
                 eighthMeeting.setStatus(MeetingStatus.ACCEPTED);
                 eighthMeeting.setBuyerDistinctiveSign("Je porterai un pull vert foncé et un pantalon beige.");
                 eighthMeeting.setSellerDistinctiveSign("J'aurai un sac en toile écru sur l'épaule.");
@@ -154,7 +170,9 @@ public class MeetingSeeder {
                 ninthMeeting.setBuyer(user2); // Dounia
                 ninthMeeting.setSeller(user1); // Koroviev == user
                 ninthMeeting.setMeetingPlace(meetingPlacesUser1.get(0));
-                ninthMeeting.setDate(LocalDateTime.now().minusDays(1));
+                ninthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY))
+                .withHour(18)
+                .withMinute(30));
                 ninthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 ninthMeeting.setBuyerDistinctiveSign("Je serai en chemise blanche et pantalon noir.");
                 ninthMeeting.setSellerDistinctiveSign("J'aurai une sacoche pour ordinateur portable.");
@@ -167,7 +185,9 @@ public class MeetingSeeder {
                 tenthMeeting.setBuyer(user1); // Koroviev == user
                 tenthMeeting.setSeller(user2); // Dounia
                 tenthMeeting.setMeetingPlace(meetingPlacesUser2.get(1));
-                tenthMeeting.setDate(LocalDateTime.now().minusDays(2));
+                tenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.WEDNESDAY))
+                .withHour(18)
+                .withMinute(30));
                 tenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 tenthMeeting.setBuyerDistinctiveSign("Je porterai un blouson en cuir marron et un jean.");
                 tenthMeeting.setSellerDistinctiveSign("J'aurai des écouteurs autour du cou.");
@@ -182,7 +202,9 @@ public class MeetingSeeder {
                 eleventhMeeting.setBuyer(user3); // Leahad == user
                 eleventhMeeting.setSeller(user4); // Eri
                 eleventhMeeting.setMeetingPlace(meetingPlacesUser4.get(0));
-                eleventhMeeting.setDate(LocalDateTime.now().plusDays(3));
+                eleventhMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
+                .withHour(18)
+                .withMinute(30));
                 eleventhMeeting.setStatus(MeetingStatus.INITIALIZED);
                 eleventhMeeting.setBuyerDistinctiveSign("J'aurai une casquette bleue marine et des baskets blanches.");
                 eleventhMeeting.setSellerDistinctiveSign("Je porterai une montre argentée visible.");
@@ -195,7 +217,9 @@ public class MeetingSeeder {
                 twelfthMeeting.setBuyer(user5); // Julius
                 twelfthMeeting.setSeller(user3); // Leahad == user
                 twelfthMeeting.setMeetingPlace(meetingPlacesUser3.get(2));
-                twelfthMeeting.setDate(LocalDateTime.now().plusDays(3));
+                twelfthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
+                .withHour(18)
+                .withMinute(30));
                 twelfthMeeting.setStatus(MeetingStatus.ACCEPTED);
                 twelfthMeeting.setBuyerDistinctiveSign("Je serai en tailleur noir avec une broche dorée.");
                 twelfthMeeting.setSellerDistinctiveSign("J'aurai un porte-documents en cuir noir.");
@@ -209,7 +233,9 @@ public class MeetingSeeder {
                 thirteenthMeeting.setBuyer(user4); // Eri
                 thirteenthMeeting.setSeller(user3); // Leahad == user
                 thirteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(3));
-                thirteenthMeeting.setDate(LocalDateTime.now().minusDays(1));
+                thirteenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.WEDNESDAY))
+                .withHour(20)
+                .withMinute(30));
                 thirteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 thirteenthMeeting.setBuyerDistinctiveSign("Je porterai un polo bleu ciel et un pantalon kaki.");
                 thirteenthMeeting.setSellerDistinctiveSign("J'aurai une sacoche en bandoulière grise.");
@@ -222,7 +248,9 @@ public class MeetingSeeder {
                 fourteenthMeeting.setBuyer(user5); // Julius
                 fourteenthMeeting.setSeller(user3); // Leahad == user
                 fourteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(1));
-                fourteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
+                fourteenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SATURDAY))
+                .withHour(12)
+                .withMinute(00));
                 fourteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 fourteenthMeeting.setBuyerDistinctiveSign("Je porterai un blazer blanc.");
                 fourteenthMeeting.setSellerDistinctiveSign("Je porterai des lunettes de soleil sur la tête.");
@@ -237,7 +265,9 @@ public class MeetingSeeder {
                 fifteenthMeeting.setBuyer(user4); // Eri == user
                 fifteenthMeeting.setSeller(user3); // Leahad
                 fifteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(2));
-                fifteenthMeeting.setDate(LocalDateTime.now().plusDays(2));
+                fifteenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
+                .withHour(15)
+                .withMinute(30));
                 fifteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
                 fifteenthMeeting.setBuyerDistinctiveSign("J'aurai une écharpe rouge et des gants en cuir.");
                 fifteenthMeeting.setSellerDistinctiveSign("Je tiendrai un journal sous le bras.");
@@ -252,7 +282,9 @@ public class MeetingSeeder {
                 sixteenthMeeting.setBuyer(user3);// Leahad
                 sixteenthMeeting.setSeller(user4); // Eri == user
                 sixteenthMeeting.setMeetingPlace(meetingPlacesUser4.get(2));
-                sixteenthMeeting.setDate(LocalDateTime.now().plusDays(6));
+                sixteenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+                .withHour(1)
+                .withMinute(00));
                 sixteenthMeeting.setStatus(MeetingStatus.INITIALIZED);
                 sixteenthMeeting.setBuyerDistinctiveSign("Je serai en costume bleu marine avec une pochette.");
                 sixteenthMeeting.setSellerDistinctiveSign("J'aurai une cravate à motifs géométriques.");
@@ -268,7 +300,9 @@ public class MeetingSeeder {
                 seventeenthMeeting.setBuyer(user5); // Julius
                 seventeenthMeeting.setSeller(user4); // Eri == user
                 seventeenthMeeting.setMeetingPlace(meetingPlacesUser4.get(0));
-                seventeenthMeeting.setDate(LocalDateTime.now().plusDays(2));
+                seventeenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
+                .withHour(13)
+                .withMinute(00));
                 seventeenthMeeting.setStatus(MeetingStatus.ACCEPTED);
                 seventeenthMeeting.setBuyerDistinctiveSign("Je serai en pull col roulé noir et pantalon gris.");
                 seventeenthMeeting.setSellerDistinctiveSign("Je porterai une montre connectée visible.");
@@ -283,7 +317,9 @@ public class MeetingSeeder {
                 eighteenthMeeting.setBuyer(user5); // Julius
                 eighteenthMeeting.setSeller(user4); // Eri == user
                 eighteenthMeeting.setMeetingPlace(meetingPlacesUser4.get(1));
-                eighteenthMeeting.setDate(LocalDateTime.now().minusDays(1));
+                eighteenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.THURSDAY))
+                .withHour(9)
+                .withMinute(00));
                 eighteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 eighteenthMeeting.setBuyerDistinctiveSign("J'aurai une veste matelassée bleue et une écharpe grise.");
                 eighteenthMeeting.setSellerDistinctiveSign("Je tiendrai un dossier avec des papiers visibles.");
@@ -297,7 +333,9 @@ public class MeetingSeeder {
                 nineteenthMeeting.setBuyer(user4); // Erika == user
                 nineteenthMeeting.setSeller(user3); // Leahad
                 nineteenthMeeting.setMeetingPlace(meetingPlacesUser3.get(0));
-                nineteenthMeeting.setDate(LocalDateTime.now().minusDays(2));
+                nineteenthMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.WEDNESDAY))
+                .withHour(16)
+                .withMinute(00));
                 nineteenthMeeting.setStatus(MeetingStatus.TOBEFINALIZED);
                 nineteenthMeeting.setBuyerDistinctiveSign("Je serai en chemise à carreaux et jean foncé.");
                 nineteenthMeeting.setSellerDistinctiveSign("J'aurai une sacoche pour appareil photo.");

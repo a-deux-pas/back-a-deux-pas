@@ -96,8 +96,4 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         return publicId.replaceAll("[^a-zA-Z0-9_-]", "");
     }
 
-    // TO DO :: to see if I can implement it once I get the ad deleting process
-    // public Map delete(String id) throws IOException {
-    // return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
-    // }
 }
