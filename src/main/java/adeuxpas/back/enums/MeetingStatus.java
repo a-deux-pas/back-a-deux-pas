@@ -4,5 +4,6 @@ public enum MeetingStatus {
     INITIALIZED,
     ACCEPTED,
     TOBEFINALIZED,
-    CANCELLED
+    CANCELLED,
+    FINALIZED
 }

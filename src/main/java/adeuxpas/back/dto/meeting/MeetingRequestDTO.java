@@ -17,6 +17,8 @@ public class MeetingRequestDTO {
     public LocalDateTime date;
     private String buyerAdditionalInfo;
     private String buyerDistinctiveSign;
+    private Boolean isValidatedByBuyer;
+    private Boolean isValidatedBySeller;
 
     public Long getBuyerId() {
         return buyerId;
@@ -72,6 +74,22 @@ public class MeetingRequestDTO {
 
     public void setBuyerDistinctiveSign(String buyerDistinctiveSign) {
         this.buyerDistinctiveSign = buyerDistinctiveSign;
+    }
+
+    public Boolean getValidatedByBuyer() {
+        return isValidatedByBuyer;
+    }
+
+    public void setValidatedByBuyer(Boolean validatedByBuyer) {
+        isValidatedByBuyer = validatedByBuyer;
+    }
+
+    public Boolean getValidatedBySeller() {
+        return isValidatedBySeller;
+    }
+
+    public void setValidatedBySeller(Boolean validatedBySeller) {
+        isValidatedBySeller = validatedBySeller;
     }
 
     @Override

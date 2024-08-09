@@ -48,19 +48,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // Configure the default Cross-Origin Resource Sharing (CORS) policy for the
+                // Configure the Cross-Origin Resource Sharing (CORS) policy for the
                 // HTTP security.
-                // Without this line, the default CORS configuration provided by Spring Security
-                // would still be in effect,
-                // permitting same-origin resource sharing and denying cross-origin requests:
-                // .cors(cors -> cors.configure(http))
-                // The explicit inclusion of this line simply ensures that the default
-                // configuration is applied explicitly
-                // and provides a hook for further customization, needed in the near future:
-                // FOR EXAMPLE, we'll need to customize the above default CORS configuration,
-                // when we start making requests to our Front End,
-                // to only allow cross-origin requests from our Angular web server, running at
-                // localhost:4200:
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of("http://localhost:4200")); // self-explanatory
@@ -68,9 +57,7 @@ public class SecurityConfig {
                     // For ex: standard headers like Content-Type, Authorization, etc.,
                     // but also custom headers that the frontend application might include in its
                     // requests.
-                    // In a production environment it's more secure to explicitly specify the
-                    // headers that are allowed, rather than allowing them all.
-                    configuration.setAllowedHeaders(List.of("*"));
+                    configuration.setAllowedHeaders(List.of("Content-Type", "Authorization"));
                     return configuration;
                 }))
                 // Disable Cross-Site Request Forgery (CSRF) protection for our app,
@@ -78,16 +65,27 @@ public class SecurityConfig {
                 // and CSRF protection is less relevant in this scenario
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        // Explicitly expose these endpoints to everybody
-                        .requestMatchers("api/login", "api/signup", "api/cities-and-postal-codes",
-                                "api/ads/{id}", "api/ads/list")
-                        .permitAll()
-                        // Protect these endpoints from unauthenticated and/or unauthorized users
-                        .requestMatchers("/content").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers("/admin-page").hasAuthority("ADMIN")
-                        // Permit any other endpoints to be accessed freely, e.g.:'/swagger-ui/' (during
-                        // development only
-                        .anyRequest().permitAll())
+                        // We explicitly define all the endpoints that we permit open access to.
+                        // (some of them might seem that they shouldn't belong in this list, but they are needed, as per our business logic)
+                        // This practice complies with the 'Default Deny'/'Implicit Deny' principle, that is a fundamental aspect
+                                // of security practices and advises that, by default,
+                                // all access should be denied unless explicitly allowed.
+                        // Open access routes (to be verified/updated) :
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/ads/{adId}/{loggedInUserId}",
+                                "/api/ads/adPageContentList/{publisherId}/{loggedInUserId}/{adId}",
+                                "/api/ads/similarAdsList/{category}/{publisherId}/{userId}",
+                                "/api/ads/list",
+                                "/api/users/cities-and-postal-codes",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/api/webhooks/**"
+                        ).permitAll()
+                        // Any other request must be authenticated
+                        .anyRequest().authenticated()
+                        )
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
                         // meaning no session will be created or used for authentication.

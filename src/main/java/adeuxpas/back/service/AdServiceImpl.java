@@ -256,8 +256,15 @@ public class AdServiceImpl implements AdService {
                 Map<String, Object> uploadResult = cloudinaryService.upload(publicId, newPicture);
                 String newUrl = (String) uploadResult.get("url");
 
+                // Replace 'http' with 'https' in the returned url (to prevent 'mixed content' warnings)
+                StringBuilder secureUrl = new StringBuilder(newUrl);
+                // Insert the 's' character at the end of 'http' (index 4)
+                secureUrl.insert(4, 's');
+                // Convert the StringBuilder back to a String
+                String secureUrlString = secureUrl.toString();
+
                 ArticlePicture articlePicture = new ArticlePicture();
-                articlePicture.setUrl(newUrl);
+                articlePicture.setUrl(secureUrlString);
                 articlePicture.setAd(ad);
                 ad.addArticlePicture(articlePicture);
             } catch (IOException e) {
