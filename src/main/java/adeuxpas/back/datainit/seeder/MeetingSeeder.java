@@ -75,7 +75,7 @@ public class MeetingSeeder {
                 secondMeeting.setSeller(user2); // Dounia == user
                 secondMeeting.setMeetingPlace(meetingPlacesUser2.get(0));
                 secondMeeting.setDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY))
-                .withHour(8)
+                .withHour(20)
                 .withMinute(30));
                 secondMeeting.setStatus(MeetingStatus.INITIALIZED);
                 secondMeeting.setBuyerDistinctiveSign("Je porterai un chapeau bleu.");

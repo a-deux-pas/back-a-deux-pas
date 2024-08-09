@@ -299,7 +299,7 @@ public class MeetingServiceImpl implements MeetingService {
      * @param userId
      * @return
      */
-    public MeetingResponseDTO finalizeSell(Optional<Meeting> meetingToBeFinalized, Long userId) {
+    private MeetingResponseDTO finalizeSell(Optional<Meeting> meetingToBeFinalized, Long userId) {
         if (meetingToBeFinalized.isEmpty()) {
             throw new IllegalArgumentException("Meeting not found.");
         }
