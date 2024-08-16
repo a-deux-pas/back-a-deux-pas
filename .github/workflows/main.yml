@@ -189,7 +189,6 @@ jobs:
       #           --body "Automated version bump after release ${{ env.APP_VERSION }}"
 
       #         echo "Pull request created successfully. Please review and merge manually."
-
       - name: Trigger deployment
         if: success()
         uses: peter-evans/repository-dispatch@v3
