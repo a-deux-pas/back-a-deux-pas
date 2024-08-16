@@ -3,11 +3,12 @@ name: back-a-deux-pas CI
 on:
   push:
     branches:
-      - "dev"
-      - "main"
-  pull_request:
-    branches:
-      - "**"
+      - feature/deployment
+  #     - "dev"
+  #     - "main"
+  # pull_request:
+  #   branches:
+  #     - "**"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -50,143 +51,150 @@ jobs:
           fi
       - name: Print Maven POM project version
         run: echo "application version = ${{ env.APP_VERSION }}"
-      # Project compilation
-      - name: Compile Code Source
-        run: mvn -B clean compile
-      # Execution of unit tests
-      - name: Run Unit Tests
-        run: mvn -B test
-      # Package application
-      - name: Package Application
-        run: mvn -B package -Dmaven.test.skip=true
-      # Upload artifact to repository
-      - name: Upload Application Package
-        uses: actions/upload-artifact@master
+      # # Project compilation
+      # - name: Compile Code Source
+      #   run: mvn -B clean compile
+      # # Execution of unit tests
+      # - name: Run Unit Tests
+      #   run: mvn -B test
+      # # Package application
+      # - name: Package Application
+      #   run: mvn -B package -Dmaven.test.skip=true
+      #     # Upload artifact to repository
+      #     - name: Upload Application Package
+      #       uses: actions/upload-artifact@master
+      #       with:
+      #         name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+      #         path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+      #         compression-level: 0
+      #         overwrite: true
+      # docker:
+      #   needs: maven
+      #   runs-on: ubuntu-latest
+      #   env:
+      #     APP_NAME: ${{ vars.APP_NAME }}
+      #     APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
+      #   steps:
+      #     - name: Checkout
+      #       uses: actions/checkout@master
+      #     - name: Download Application Package
+      #       uses: actions/download-artifact@master
+      #       with:
+      #         name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+      #         path: target/
+
+      #     - name: Verify downloaded artifact
+      #       run: |
+      #         echo "Contents of target directory:"
+      #         ls -l target/
+      #         echo "APP_NAME: ${{ env.APP_NAME }}"
+      #         echo "APP_VERSION: ${{ env.APP_VERSION }}"
+      #     # Prepare docker build with buildx
+      #     - name: Set up Docker Buildx
+      #       uses: docker/setup-buildx-action@master
+      #       with:
+      #         driver: docker
+      #     # Docker login
+      #     - name: Login to Docker Hub
+      #       uses: docker/login-action@master
+      #       with:
+      #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+      #     # Docker build and push
+      #     - name: Build and push
+      #       uses: docker/build-push-action@master
+      #       with:
+      #         context: ${{ github.workspace }}
+      #         file: Dockerfile
+      #         push: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' }}
+      #         tags: docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
+      #         build-args: |
+      #           APP_NAME=${{ env.APP_NAME }}
+      #           APP_VERSION=${{ env.APP_VERSION }}
+
+      # release:
+      #   # This job depends on the successful completion of the 'maven' and 'docker' jobs
+      #   needs: [maven, docker]
+      #   # This job only runs on the 'main' branch
+      #   if: github.ref == 'refs/heads/main'
+      #   # The job runs on the latest version of Ubuntu
+      #   runs-on: ubuntu-latest
+      #   # Environment variables used throughout the job
+      #   env:
+      #     APP_NAME: ${{ vars.APP_NAME }}
+      #     APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
+      #   steps:
+      #     # Checkout the repository
+      #     - uses: actions/checkout@v3
+      #       with:
+      #         fetch-depth: 0
+      #         token: ${{ secrets.RELEASE_TOKEN }}
+
+      #     # Set up Java environment
+      #     - name: Setup Java
+      #       uses: actions/setup-java@v4
+      #       with:
+      #         java-version: "21"
+      #         distribution: "temurin"
+
+      #     # Configure Git with GitHub Actions bot details
+      #     - name: Configure Git
+      #       run: |
+      #         git config user.name github-actions
+      #         git config user.email github-actions@github.com
+
+      #     # Download the built artifact from the 'maven' job
+      #     - name: Download artifact
+      #       uses: actions/download-artifact@master
+      #       with:
+      #         name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+      #         path: target/
+
+      #     # Create a GitHub release with the built artifact
+      #     - name: Create GitHub Release
+      #       env:
+      #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #       run: |
+      #         COMMIT_SHA=$(git rev-parse --short HEAD)
+      #         RELEASE_VERSION="${{ env.APP_VERSION }}"
+      #         DOCKER_IMAGE_URL="docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}"
+      #         RELEASE_NOTES="${{ env.APP_NAME }} release v${RELEASE_VERSION}
+
+      #         Docker image: \`${DOCKER_IMAGE_URL}\`
+      #         Commit: ${COMMIT_SHA}"
+
+      #         gh release create v${RELEASE_VERSION} target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar \
+      #           --title "v${RELEASE_VERSION}" \
+      #           --notes "${RELEASE_NOTES}" \
+      #           --target ${{ github.ref_name }}
+
+      #     # Increment the version number and create a pull request for the next development cycle
+      #     - name: Increment version and create PR
+      #       env:
+      #         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      #       run: |
+      #         BRANCH_NAME="bump-version-$(date +%Y%m%d%H%M%S)"
+      #         git checkout -b $BRANCH_NAME
+
+      #         CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//')
+      #         NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+      #         mvn versions:set -DnewVersion=${NEW_VERSION}-SNAPSHOT
+
+      #         git add pom.xml
+      #         git commit -m "Increment version to ${NEW_VERSION}-SNAPSHOT [skip ci]"
+      #         git push origin $BRANCH_NAME
+
+      #         gh pr create --base dev --head $BRANCH_NAME \
+      #           --title "Bump version to ${NEW_VERSION}-SNAPSHOT" \
+      #           --body "Automated version bump after release ${{ env.APP_VERSION }}"
+
+      #         echo "Pull request created successfully. Please review and merge manually."
+
+      - name: Trigger deployment
+        if: success()
+        uses: peter-evans/repository-dispatch@v3
         with:
-          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          compression-level: 0
-          overwrite: true
-  docker:
-    needs: maven
-    runs-on: ubuntu-latest
-    env:
-      APP_NAME: ${{ vars.APP_NAME }}
-      APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Download Application Package
-        uses: actions/download-artifact@master
-        with:
-          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          path: target/
-
-      - name: Verify downloaded artifact
-        run: |
-          echo "Contents of target directory:"
-          ls -l target/
-          echo "APP_NAME: ${{ env.APP_NAME }}"
-          echo "APP_VERSION: ${{ env.APP_VERSION }}"
-      # Prepare docker build with buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@master
-        with:
-          driver: docker
-      # Docker login
-      - name: Login to Docker Hub
-        uses: docker/login-action@master
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # Docker build and push
-      - name: Build and push
-        uses: docker/build-push-action@master
-        with:
-          context: ${{ github.workspace }}
-          file: Dockerfile
-          push: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' }}
-          tags: docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
-          build-args: |
-            APP_NAME=${{ env.APP_NAME }}
-            APP_VERSION=${{ env.APP_VERSION }}
-
-  release:
-    # This job depends on the successful completion of the 'maven' and 'docker' jobs
-    needs: [maven, docker]
-    # This job only runs on the 'main' branch
-    if: github.ref == 'refs/heads/main'
-    # The job runs on the latest version of Ubuntu
-    runs-on: ubuntu-latest
-    # Environment variables used throughout the job
-    env:
-      APP_NAME: ${{ vars.APP_NAME }}
-      APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
-    steps:
-      # Checkout the repository
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.RELEASE_TOKEN }}
-
-      # Set up Java environment
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      # Configure Git with GitHub Actions bot details
-      - name: Configure Git
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-      # Download the built artifact from the 'maven' job
-      - name: Download artifact
-        uses: actions/download-artifact@master
-        with:
-          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          path: target/
-
-      # Create a GitHub release with the built artifact
-      - name: Create GitHub Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          COMMIT_SHA=$(git rev-parse --short HEAD)
-          RELEASE_VERSION="${{ env.APP_VERSION }}"
-          DOCKER_IMAGE_URL="docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}"
-          RELEASE_NOTES="${{ env.APP_NAME }} release v${RELEASE_VERSION}
-          
-          Docker image: \`${DOCKER_IMAGE_URL}\`
-          Commit: ${COMMIT_SHA}"
-          
-          gh release create v${RELEASE_VERSION} target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar \
-            --title "v${RELEASE_VERSION}" \
-            --notes "${RELEASE_NOTES}" \
-            --target ${{ github.ref_name }}
-
-      # Increment the version number and create a pull request for the next development cycle
-      - name: Increment version and create PR
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: |
-          BRANCH_NAME="bump-version-$(date +%Y%m%d%H%M%S)"
-          git checkout -b $BRANCH_NAME
-          
-          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//')
-          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
-          mvn versions:set -DnewVersion=${NEW_VERSION}-SNAPSHOT
-          
-          git add pom.xml
-          git commit -m "Increment version to ${NEW_VERSION}-SNAPSHOT [skip ci]"
-          git push origin $BRANCH_NAME
-          
-          gh pr create --base dev --head $BRANCH_NAME \
-            --title "Bump version to ${NEW_VERSION}-SNAPSHOT" \
-            --body "Automated version bump after release ${{ env.APP_VERSION }}"
-
-          echo "Pull request created successfully. Please review and merge manually."   
-
-
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: a-deux-pas/docker-a-deux-pas
+          event-type: new-release
+          client-payload: '{"app": "back-end", "version": "${{ env.APP_VERSION }}"}'
