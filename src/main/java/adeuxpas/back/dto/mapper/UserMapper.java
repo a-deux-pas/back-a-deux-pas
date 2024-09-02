@@ -45,9 +45,9 @@ import adeuxpas.back.enums.WeekDays;
 public interface UserMapper {
 
     /**
-     * Maps a ProfileRequestDTO to an User entity.
+     * Maps a ProfileRequestDTO to a User entity.
      *
-     * @param profiledDto The UserProfileRequestDTO to be mapped.
+     * @param profileDto The UserProfileRequestDTO to be mapped.
      * @param user        The target entity.
      */
     void mapProfileUserToUser(UserProfileRequestDTO profileDto, @MappingTarget User user);
@@ -128,7 +128,7 @@ public interface UserMapper {
     /**
      * Maps a PreferredMeetingPlaceDTO to a PreferredMeetingPlace entity.
      *
-     * @param preferredMeetingPlace The PreferredMeetingPlaceDTO to be mapped.
+     * @param preferredMeetingPlaceDTO The PreferredMeetingPlaceDTO to be mapped.
      * @return The mapped PreferredMeetingPlaceDTO entity.
      */
     @Mapping(source = "userId", target = "user.id")

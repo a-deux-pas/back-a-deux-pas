@@ -241,7 +241,7 @@ public class AdController {
      * Endpoint that gets a page of ads created by a user excluding the one the
      * current user is on as well as the sold and reserved ones.
      * 
-     * @param userId     The user ID.
+     * @param publisherId     The user ID.
      * @param pageNumber The page number for pagination (default is 0).
      * @param pageSize   The page size for pagination (default is 8).
      * @param adId       The ad ID to exclude from the result list.

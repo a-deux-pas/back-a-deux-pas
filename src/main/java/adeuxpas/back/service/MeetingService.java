@@ -15,12 +15,6 @@ import java.util.*;
  */
 public interface MeetingService {
 
-    /**
-     * Retrieves a list of meetings filtered by their status and sorted by date.
-     *
-     * @param status The status of the meetings to filter.
-     * @return A list of meetings filtered by status and sorted by date.
-     */
     List<MeetingResponseDTO> getMeetingsByBuyerId(Long id);
 
     List<MeetingResponseDTO> getMeetingsBySellerId(Long id);

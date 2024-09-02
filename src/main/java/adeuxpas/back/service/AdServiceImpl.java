@@ -323,8 +323,7 @@ public class AdServiceImpl implements AdService {
      * 
      * @param publisherId    The ad's publisher's ID.
      * @param pageNumber     The page number for pagination.
-     * @param pageSize       The page size for pagination.
-     * @param pageable       The pagination information.
+     * @param pageSize       The page size for pagination.*
      * @param loggedInUserId The current user's ID.
      * @param adId           The ID of ad to exclude from the result list.
      * 

@@ -150,7 +150,6 @@ public class MeetingController {
      *             retrieved.
      * @return A ResponseEntity containing the buyer's alias if successful, or an
      *         error message if an exception occurs.
-     * @throws Exception if there is an error while retrieving the buyer's alias.
      */
     @Operation(summary = "Retrieves the alias of the buyer")
     @ApiResponses(value = {
@@ -174,8 +173,6 @@ public class MeetingController {
      *             is to be retrieved.
      * @return A ResponseEntity containing the meeting date and time if successful,
      *         or an error message if an exception occurs.
-     * @throws Exception if there is an error while retrieving the meeting date and
-     *                   time.
      */
     @Operation(summary = "Retrieves the date of the meeting")
     @ApiResponses(value = {
@@ -229,7 +226,7 @@ public class MeetingController {
     /**
      * PUT finalize/:meetingId/:userID : Finalizes a meeting.
      *
-     * @param id     The ID of the meeting to finalize.
+     * @param meetingId     The ID of the meeting to finalize.
      * @param userId The current user's id used to determine if they're the current
      *               ad's buyer or seller
      * @return A ResponseEntity containing the updated MeetingDTO if found, or a not

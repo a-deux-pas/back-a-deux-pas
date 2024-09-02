@@ -36,7 +36,6 @@ public class PreferredMeetingPlaceSeeder {
 
     /**
      * Fetches addresses from the data.gouv.fr api and returns them as a list of PreferredMeetingPlace objects.
-     * @return List of PreferredMeetingPlace objects fetched from the API
      */
     public void generatePreferredMeetingPlacesForUser(User user){
         String userPostalCode = user.getPostalCode();

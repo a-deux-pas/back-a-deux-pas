@@ -206,8 +206,7 @@ public class StripePaymentServiceImpl implements StripePaymentService{
      * @param accountId the ID of the Stripe Connect account
      * @param amount the amount to payout
      * @param currency the currency of the payout
-     * @param externalAccountId the ID of the external account to payout to
-     * @return the created payout
+     * @param externalAccountId the ID of the external account to make the payout to
      * @throws StripeException if an error occurs while creating the payout
      */
     @Override

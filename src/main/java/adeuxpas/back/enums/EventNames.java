@@ -20,7 +20,7 @@ public enum EventNames {
     /**
      * Constructor for EventNames enum.
      *
-     * @param eventName The value representing the event name.
+     * @param value The value representing the event name.
      */
     EventNames(String value) {
         this.value = value;

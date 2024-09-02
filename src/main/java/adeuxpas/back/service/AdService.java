@@ -49,7 +49,7 @@ public interface AdService {
          * it removes all existing images and replaces them with new ones provided in
          * the request.
          *
-         * @param adPostRequestDTO The data transfer object containing ad details from
+         * @param adDto The data transfer object containing ad details from
          *                         the front-end application.
          * @param adPicture1       The first image file associated with the ad.
          * @param adPicture2       The second image.
@@ -129,7 +129,7 @@ public interface AdService {
          *
          * @param adId   The ID of the ad.
          * @param userId The ID of the user.
-         * @param userId The new status of the ad favorite.
+         * @param isFavorite The new status of the ad favorite.
          */
         void updateAdFavoriteStatus(long adId, long userId, boolean isFavorite);
 

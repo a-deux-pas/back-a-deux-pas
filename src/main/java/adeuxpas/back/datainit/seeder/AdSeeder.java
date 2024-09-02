@@ -876,9 +876,6 @@ public class AdSeeder {
         /**
          * Adds up to two ads to the user's favorites if the postal code of the ad's
          * publisher matches the user's postal code.
-         *
-         * @param user The list of users.
-         * @param ads  The list of ads.
          */
         @Transactional
         public void seedFavoritesAds() {
