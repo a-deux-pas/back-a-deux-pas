@@ -10,7 +10,7 @@ RUN useradd -U -m -d /app/ -s /bin/bash -u ${APP_UID} app-user && \
     apt install -y ca-certificates && \
     apt clean
 
-# switch to app-user and its home directory 
+# switch to app-user and its home directory
 USER app-user
 WORKDIR /app
 
