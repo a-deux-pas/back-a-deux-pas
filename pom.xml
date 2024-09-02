@@ -124,13 +124,12 @@
 			<version>2.10.1</version>
 		</dependency>
 
-		<!-- AWS secrets manager -->	
+		<!-- AWS secrets manager -->
 		<dependency>
-			<groupId>io.awspring.cloud</groupId>
+			<groupId>io.awspring.cloud</groupId>	
 			<artifactId>spring-cloud-aws-starter-secrets-manager</artifactId>
 			<version>3.1.1</version>
 		</dependency>
-		
 	</dependencies>
 
 	<profiles>
@@ -163,7 +162,6 @@
 						<version>3.4.2</version>
 						<configuration>
 							<excludes>
-								<exclude>**/datainit/**</exclude>
 								<exclude>**/test/**</exclude>
 							</excludes>
 						</configuration>
