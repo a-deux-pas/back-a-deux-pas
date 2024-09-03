@@ -239,85 +239,81 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public MeetingResponseDTO finalizeMeeting(Long meetingId, Long userId) {
         Optional<Meeting> meetingToBeFinalized = this.meetingRepository.findById(meetingId);
-        if (meetingToBeFinalized.isPresent()) {
-            Optional<User> seller = this.userRepository.findById(meetingToBeFinalized.get().getSeller().getId());
-            if (seller.isPresent()) {
-                // Mocked the seller's info and created a Stripe Connect Account for the seller,
-                // which is needed
-                // in order to attach the seller's profile info, including his bank account, to
-                // our Stripe account,
-                // and make the payout to this bank account, once the funds have been captured
-                // from the buyer's card
-                String line1 = "123 Main St";
-                String dobDay = "01";
-                String dobMonth = "01";
-                String dobYear = "1990";
-                String firstName = "John";
-                String lastName = "Doe";
-                String sellerEmail = seller.get().getEmail();
-                String sellerCity = seller.get().getCity();
-                String sellerPostalCode = seller.get().getPostalCode();
-                String businessProfileUrl = "https://5390-82-76-31-95.ngrok-free.app";
-                String stripePaymentIntentId = meetingToBeFinalized.get().getStripePaymentIntentId();
-                BigDecimal amount = meetingToBeFinalized.get().getAds().stream().findFirst().get().getPrice();
-                // the seller's tokenized bank account, which we've saved to our DB at user
-                // registration
-                String bankAccountToken = meetingToBeFinalized.get().getSeller().getBankAccountTokenId();
-                if (stripePaymentIntentId != null) {
-                    // Create the seller's Connect Account, capture the buyer's funds, and make the
-                    // payout to the seller's bank account:
-                    try {
-                        // Create an account token with the required info
-                        Token accountToken = stripePaymentService.createAccountToken(sellerEmail, sellerCity, line1,
-                                sellerPostalCode, dobDay, dobMonth, dobYear, firstName, lastName);
-                        // Create a Stripe Connect account for the seller using the account token
-                        Account account = stripePaymentService.createConnectAccountWithToken(accountToken.getId(),
-                                businessProfileUrl);
-                        // Add external bank account to the Stripe Connect account using the bank
-                        // account token
-                        ExternalAccount externalAccount = stripePaymentService
-                                .addExternalBankAccountToStripeConnect(account.getId(), bankAccountToken, amount);
-                        // Capture the payment
-                        this.stripePaymentService.capturePayment(stripePaymentIntentId);
-                        // Create a payout to the external account (and its associated bank account)
-                        stripePaymentService.createPayout(account.getId(), amount.longValue() * 100, "eur",
-                                externalAccount.getId());
-                    } catch (StripeException stripeException) {
-                        logger.error("Error capturing payment or creating payout: {}", stripeException.getMessage());
-                    }
+        if (meetingToBeFinalized.isEmpty()) {
+            throw new IllegalArgumentException("Meeting not found.");
+        } else {
+            confirmMeetingTookPlace(userId, meetingToBeFinalized.get());
+            if (meetingToBeFinalized.get().getStatus() == MeetingStatus.TOBEFINALIZED
+                    && Boolean.TRUE.equals(meetingToBeFinalized.get().getValidatedByBuyer())
+                    && Boolean.TRUE.equals(meetingToBeFinalized.get().getValidatedBySeller())) {
+
+                meetingToBeFinalized.get().setStatus(MeetingStatus.FINALIZED);
+                meetingToBeFinalized.get().getAds().iterator().next().setStatus(AdStatus.SOLD);
+                meetingRepository.save(meetingToBeFinalized.get());
+
+                if (meetingToBeFinalized.get().getStripePaymentIntentId() != null)
+                    finalizeStripePayment(meetingToBeFinalized.get());
+            }
+            return meetingMapper.meetingToMeetingDTO(meetingToBeFinalized.get());
+        }
+    }
+
+    private void finalizeStripePayment(Meeting meeting) {
+        Optional<User> seller = this.userRepository.findById(meeting.getSeller().getId());
+        if (seller.isPresent()) {
+            // Mocked the seller's info and created a Stripe Connect Account for the seller,
+            // which is needed
+            // in order to attach the seller's profile info, including his bank account, to
+            // our Stripe account,
+            // and make the payout to this bank account, once the funds have been captured
+            // from the buyer's card
+            String line1 = "123 Main St";
+            String dobDay = "01";
+            String dobMonth = "01";
+            String dobYear = "1990";
+            String firstName = "John";
+            String lastName = "Doe";
+            String sellerEmail = seller.get().getEmail();
+            String sellerCity = seller.get().getCity();
+            String sellerPostalCode = seller.get().getPostalCode();
+            String businessProfileUrl = "https://5390-82-76-31-95.ngrok-free.app";
+            String stripePaymentIntentId = meeting.getStripePaymentIntentId();
+            BigDecimal amount = meeting.getAds().stream().findFirst().get().getPrice();
+            // the seller's tokenized bank account, which we've saved to our DB at user
+            // registration
+            String bankAccountToken = meeting.getSeller().getBankAccountTokenId();
+            if (stripePaymentIntentId != null) {
+                // Create the seller's Connect Account, capture the buyer's funds, and make the
+                // payout to the seller's bank account:
+                try {
+                    // Create an account token with the required info
+                    Token accountToken = stripePaymentService.createAccountToken(sellerEmail, sellerCity, line1,
+                            sellerPostalCode, dobDay, dobMonth, dobYear, firstName, lastName);
+                    // Create a Stripe Connect account for the seller using the account token
+                    Account account = stripePaymentService.createConnectAccountWithToken(accountToken.getId(),
+                            businessProfileUrl);
+                    // Add external bank account to the Stripe Connect account using the bank
+                    // account token
+                    ExternalAccount externalAccount = stripePaymentService
+                            .addExternalBankAccountToStripeConnect(account.getId(), bankAccountToken, amount);
+                    // Capture the payment
+                    this.stripePaymentService.capturePayment(stripePaymentIntentId);
+                    // Create a payout to the external account (and its associated bank account)
+                    stripePaymentService.createPayout(account.getId(), amount.longValue() * 100, "eur",
+                            externalAccount.getId());
+                } catch (StripeException stripeException) {
+                    logger.error("Error capturing payment or creating payout: {}", stripeException.getMessage());
                 }
             }
         }
-        return this.finalizeSell(meetingToBeFinalized, userId);
     }
 
-    /**
-     * This method checks if the meeting is ready to pass from the 'to be finalized' status to the 'finalized' one 
-     * in which case the ad related to the meeting can have its status set to SOLD
-     * 
-     * @param meetingToBeFinalized
-     * @param userId
-     * @return
-     */
-    private MeetingResponseDTO finalizeSell(Optional<Meeting> meetingToBeFinalized, Long userId) {
-        if (meetingToBeFinalized.isEmpty()) {
-            throw new IllegalArgumentException("Meeting not found.");
-        }
-        Meeting meeting = meetingToBeFinalized.get();
+    private void confirmMeetingTookPlace(Long userId, Meeting meeting) {
         if (userId.equals(meeting.getBuyer().getId())) {
             meeting.setValidatedByBuyer(true);
         } else {
             meeting.setValidatedBySeller(true);
         }
-        Meeting updatedMeeting = meetingRepository.save(meeting);
-        if (meeting.getStatus() == MeetingStatus.TOBEFINALIZED
-                && Boolean.TRUE.equals(meeting.getValidatedByBuyer())
-                && Boolean.TRUE.equals(meeting.getValidatedBySeller())) {
-            meeting.setStatus(MeetingStatus.FINALIZED);
-            meeting.getAds().iterator().next().setStatus(AdStatus.SOLD);
-            Meeting finalizedMeeting = meetingRepository.save(meeting);
-            return meetingMapper.meetingToMeetingDTO(finalizedMeeting);
-        }
-        return meetingMapper.meetingToMeetingDTO(updatedMeeting);
+        meetingRepository.save(meeting);
     }
 }
