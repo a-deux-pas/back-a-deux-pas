@@ -10,6 +10,7 @@ import adeuxpas.back.repository.UserRepository;
 import adeuxpas.back.repository.UsersFavoriteAdsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * publisher, etc.
  */
 @Component
+@Profile("dev")
 public class AdSeeder {
 
         private final AdRepository adRepository;

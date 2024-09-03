@@ -5,6 +5,7 @@ import adeuxpas.back.entity.User;
 import adeuxpas.back.enums.WeekDays;
 import adeuxpas.back.repository.PreferredScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
@@ -17,6 +18,7 @@ import java.util.Set;
  * Seeder class responsible for generating random preferred schedules for users.
  */
 @Component
+@Profile("dev")
 public class PreferredScheduleSeeder {
 
     private final PreferredScheduleRepository preferredScheduleRepository;

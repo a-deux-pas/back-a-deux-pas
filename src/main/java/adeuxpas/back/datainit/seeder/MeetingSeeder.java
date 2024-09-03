@@ -5,6 +5,7 @@ import adeuxpas.back.enums.AdStatus;
 import adeuxpas.back.enums.MeetingStatus;
 import adeuxpas.back.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
@@ -13,6 +14,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Component
+@Profile("dev")
 public class MeetingSeeder {
 
         private final MeetingRepository meetingRepository;

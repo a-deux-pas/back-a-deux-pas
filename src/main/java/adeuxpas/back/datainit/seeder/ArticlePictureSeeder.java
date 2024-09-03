@@ -5,6 +5,7 @@ import adeuxpas.back.entity.ArticlePicture;
 import adeuxpas.back.repository.ArticlePictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * A component responsible for seeding article pictures into the database.
  */
 @Component
+@Profile("dev")
 public class ArticlePictureSeeder {
         private final ArticlePictureRepository articlePictureRepository;
 

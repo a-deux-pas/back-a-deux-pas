@@ -6,6 +6,7 @@ import adeuxpas.back.enums.UserRole;
 import adeuxpas.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.*;
  * etc.
  */
 @Component
+@Profile("dev")
 public class UserSeeder {
         private final UserRepository userRepository;
         private final BCryptPasswordEncoder passwordEncoder;
