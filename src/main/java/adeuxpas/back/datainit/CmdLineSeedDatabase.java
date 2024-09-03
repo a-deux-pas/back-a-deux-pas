@@ -6,6 +6,7 @@ import adeuxpas.back.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -32,6 +33,7 @@ import java.util.*;
  */
 
 @Component
+@Profile("dev")
 public class CmdLineSeedDatabase implements CommandLineRunner {
     private final UserSeeder userSeeder;
     private final AdSeeder adSeeder;
@@ -67,10 +69,9 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
      * Delegates the seeding of the database to the specific Seeder components.
      *
      * @param args Command-line arguments passed to the application.
-     * @throws Exception If an error occurs during the execution of the run method.
      */
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         List<User> users = this.userSeeder.createUsers();
         this.userSeeder.seedUsers(users);
 
