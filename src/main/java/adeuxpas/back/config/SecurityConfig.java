@@ -52,7 +52,7 @@ public class SecurityConfig {
                 // HTTP security.
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("http://localhost:4200")); // self-explanatory
+                    configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://front-a-deux-pas-f9087962c016.herokuapp.com")); // self-explanatory
                     configuration.setAllowedMethods(Arrays.asList("GET", "PATCH", "POST", "PUT", "DELETE")); // self-explanatory
                     // For ex: standard headers like Content-Type, Authorization, etc.,
                     // but also custom headers that the frontend application might include in its
