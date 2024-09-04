@@ -107,7 +107,7 @@ class AdRepositoryIntegrationTest {
 
     /**
      * This method tests the
-     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Pageable)}
+     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Long, Pageable)}
      * method with all filters applied except category.
      * </p>
      */
@@ -136,7 +136,7 @@ class AdRepositoryIntegrationTest {
 
     /**
      * This method tests the
-     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Pageable)}
+     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Long, Pageable)}
      * method with all filters, including category, applied.
      * </p>
      */
@@ -162,7 +162,7 @@ class AdRepositoryIntegrationTest {
 
     /**
      * This method tests the
-     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Pageable)}
+     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Long, Pageable)}
      * method with category and subcategory filters applied.
      * </p>
      */
@@ -191,7 +191,7 @@ class AdRepositoryIntegrationTest {
 
     /**
      * This method tests the
-     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Pageable)}
+     * {@link AdRepository#findByAcceptedStatusesFilteredOrderedByCreationDateDesc(List, List, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, BigDecimal, String, String, String, List, List, Long, Pageable)}
      * method with all filters, including category, subcategory and gender, applied.
      * </p>
      */
@@ -218,7 +218,7 @@ class AdRepositoryIntegrationTest {
 
     /**
      * This method tests the
-     * {@link AdRepository#findByAcceptedStatusesOrderedByCreationDateDesc(List, List, Pageable)}
+     * {@link AdRepository#findByAcceptedStatusesOrderedByCreationDateDesc(List, List, Long, Pageable)}
      * method (which is also called when no filters are applied)
      */
     @Test
