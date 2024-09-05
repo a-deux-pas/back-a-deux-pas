@@ -3,6 +3,7 @@ name: back-a-deux-pas CI
 on:
   push:
     branches:
+      - "demo/bardanmi"
       - "dev"
       - "main"
   pull_request:
