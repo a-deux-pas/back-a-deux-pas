@@ -3,9 +3,12 @@ package adeuxpas.back.datainit;
 import adeuxpas.back.datainit.seeder.*;
 import adeuxpas.back.entity.Ad;
 import adeuxpas.back.entity.User;
+import adeuxpas.back.repository.AdRepository;
+import adeuxpas.back.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -39,6 +42,9 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
     private final PreferredScheduleSeeder preferredScheduleSeeder;
     private final PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder;
     private final MeetingSeeder meetingSeeder;
+    private final UserRepository userRepository;
+    private final AdRepository adRepository;
+    private final Environment environment;
 
     /**
      * Constructor for CmdLineSeedDatabase.
@@ -54,13 +60,19 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
             @Autowired ArticlePictureSeeder articlePictureSeeder,
             @Autowired PreferredScheduleSeeder preferredScheduleSeeder,
             @Autowired PreferredMeetingPlaceSeeder preferredMeetingPlaceSeeder,
-            @Autowired MeetingSeeder meetingSeeder) {
+            @Autowired MeetingSeeder meetingSeeder,
+            @Autowired UserRepository userRepository,
+            @Autowired AdRepository adRepository,
+            @Autowired Environment environment) {
         this.userSeeder = userSeeder;
         this.adSeeder = adSeeder;
         this.articlePictureSeeder = articlePictureSeeder;
         this.preferredScheduleSeeder = preferredScheduleSeeder;
         this.preferredMeetingPlaceSeeder = preferredMeetingPlaceSeeder;
         this.meetingSeeder = meetingSeeder;
+        this.userRepository = userRepository;
+        this.adRepository = adRepository;
+        this.environment = environment;
     }
 
     /**
@@ -71,6 +83,20 @@ public class CmdLineSeedDatabase implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
+        // Determine the active profile
+        boolean isDevProfile = Arrays.asList(environment.getActiveProfiles()).contains("dev");
+        if (isDevProfile) {
+            // Development profile: Insert data regardless of existing records
+            seedData();
+        } else {
+            // Production profile: Insert data only if tables are empty
+            if (userRepository.count() == 0 && adRepository.count() == 0) {
+                seedData();
+            }
+        }
+    }
+
+    private void seedData() {
         List<User> users = this.userSeeder.createUsers();
         this.userSeeder.seedUsers(users);
 

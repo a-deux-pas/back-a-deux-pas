@@ -5,13 +5,12 @@ ARG APP_NAME=back-a-deux-pas \
     APP_VERSION=1.0.0-SNAPSHOT \
     APP_UID=1001
 
-
 # create app user to avoid running app as root and install ca-certificates and clean apt cache
 RUN useradd -U -m -d /app/ -s /bin/bash -u ${APP_UID} app-user && \
     apt install -y ca-certificates && \
     apt clean
 
-# switch to app-user and its home directory 
+# switch to app-user and its home directory
 USER app-user
 WORKDIR /app
 
@@ -26,5 +25,6 @@ ENV APP_NAME=${APP_NAME}
 ENV APP_VERSION=${APP_VERSION}
 
 # set default command to start application and expose application port
-CMD ["sh", "-c", "java -jar /app/${APP_NAME}-${APP_VERSION}.jar"]
+CMD ["sh", "-c", "java -Dspring.profiles.active=prod -jar /app/${APP_NAME}-${APP_VERSION}.jar"]
 EXPOSE 8081
+
