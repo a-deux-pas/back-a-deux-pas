@@ -67,6 +67,13 @@ jobs:
           path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           compression-level: 0
           overwrite: true
+      # debug
+      - name: Verify artifact upload
+        run: |
+          echo "Artifact name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar"
+          ls -l target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+      - name: Verify artifact path
+        run: ls -l target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
   docker:
     needs: maven
     runs-on: ubuntu-latest
@@ -81,7 +88,13 @@ jobs:
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           path: target/
-
+      # debug
+      - name: Environment check
+        run: |
+          echo "Working directory: $(pwd)"
+          echo "Contents of target directory:"
+          ls -l target/
+          echo "GitHub workspace: ${{ github.workspace }}"
       - name: Verify downloaded artifact
         run: |
           echo "Contents of target directory:"
