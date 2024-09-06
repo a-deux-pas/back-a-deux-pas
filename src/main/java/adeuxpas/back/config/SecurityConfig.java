@@ -52,7 +52,7 @@ public class SecurityConfig {
                 // HTTP security.
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("http://localhost:4200")); // self-explanatory
+                    configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://51.44.22.28")); // self-explanatory
                     configuration.setAllowedMethods(Arrays.asList("GET", "PATCH", "POST", "PUT", "DELETE")); // self-explanatory
                     // For ex: standard headers like Content-Type, Authorization, etc.,
                     // but also custom headers that the frontend application might include in its
@@ -66,10 +66,12 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         // We explicitly define all the endpoints that we permit open access to.
-                        // (some of them might seem that they shouldn't belong in this list, but they are needed, as per our business logic)
-                        // This practice complies with the 'Default Deny'/'Implicit Deny' principle, that is a fundamental aspect
-                                // of security practices and advises that, by default,
-                                // all access should be denied unless explicitly allowed.
+                        // (some of them might seem that they shouldn't belong in this list, but they
+                        // are needed, as per our business logic)
+                        // This practice complies with the 'Default Deny'/'Implicit Deny' principle,
+                        // that is a fundamental aspect
+                        // of security practices and advises that, by default,
+                        // all access should be denied unless explicitly allowed.
                         // Open access routes (to be verified/updated) :
                         .requestMatchers(
                                 "/api/auth/**",
@@ -81,11 +83,10 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/api/webhooks/**"
-                        ).permitAll()
+                                "/api/webhooks/**")
+                        .permitAll()
                         // Any other request must be authenticated
-                        .anyRequest().authenticated()
-                        )
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         // Set the session creation policy to STATELESS,
                         // meaning no session will be created or used for authentication.

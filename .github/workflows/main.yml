@@ -133,8 +133,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: "21"
+          distribution: "temurin"
 
       # Configure Git with GitHub Actions bot details
       - name: Configure Git
@@ -158,10 +158,10 @@ jobs:
           RELEASE_VERSION="${{ env.APP_VERSION }}"
           DOCKER_IMAGE_URL="docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}"
           RELEASE_NOTES="${{ env.APP_NAME }} release v${RELEASE_VERSION}
-          
+
           Docker image: \`${DOCKER_IMAGE_URL}\`
           Commit: ${COMMIT_SHA}"
-          
+
           gh release create v${RELEASE_VERSION} target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar \
             --title "v${RELEASE_VERSION}" \
             --notes "${RELEASE_NOTES}" \
@@ -174,19 +174,28 @@ jobs:
         run: |
           BRANCH_NAME="bump-version-$(date +%Y%m%d%H%M%S)"
           git checkout -b $BRANCH_NAME
-          
+
           CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//')
           NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
           mvn versions:set -DnewVersion=${NEW_VERSION}-SNAPSHOT
-          
+
           git add pom.xml
           git commit -m "Increment version to ${NEW_VERSION}-SNAPSHOT [skip ci]"
           git push origin $BRANCH_NAME
-          
+
           gh pr create --base dev --head $BRANCH_NAME \
             --title "Bump version to ${NEW_VERSION}-SNAPSHOT" \
             --body "Automated version bump after release ${{ env.APP_VERSION }}"
 
-          echo "Pull request created successfully. Please review and merge manually."   
+          echo "Pull request created successfully. Please review and merge manually."
 
-
+      # Trigger a deployment in the docker-a-deux-pas repository after a successful workflow run.
+      # This dispatches a 'new-release' event with the app and version information to initiate the deployment process.
+      - name: Trigger deployment
+        if: success()
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: a-deux-pas/docker-a-deux-pas
+          event-type: new-release
+          client-payload: '{"app": "back-end", "version": "${{ env.APP_VERSION }}"}'

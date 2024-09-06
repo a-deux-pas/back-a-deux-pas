@@ -2,10 +2,9 @@ package adeuxpas.back.controller;
 
 import adeuxpas.back.dto.user.CredentialsRequestDTO;
 import adeuxpas.back.service.AuthenticationService;
+import adeuxpas.back.util.ValidationHelper;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -104,9 +103,7 @@ public class AuthenticationController {
     public ResponseEntity<Object> signUp(@RequestBody @Valid CredentialsRequestDTO credentialsRequestDTO,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationHelper.getErrors(bindingResult));
         }
         try {
             String token = this.authenticationService.signup(credentialsRequestDTO).orElse(null);
