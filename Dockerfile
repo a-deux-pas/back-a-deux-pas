@@ -2,8 +2,8 @@
 FROM eclipse-temurin:21-jre
 
 ARG APP_NAME=back-a-deux-pas \
-    APP_VERSION=1.0.0-SNAPSHOT \
-    APP_UID=1001
+ARG APP_VERSION=1.0.0-SNAPSHOT \
+ARG APP_UID=1001
 
 
 # create app user to avoid running app as root and install ca-certificates and clean apt cache
