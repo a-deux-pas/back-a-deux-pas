@@ -40,17 +40,13 @@ jobs:
       - name: Retrieve Application Version
         id: set_app_version
         run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "APP_VERSION=${VERSION}-${COMMIT_SHA}" >> $GITHUB_ENV
-            echo "APP_VERSION=${VERSION}-${COMMIT_SHA}" >> $GITHUB_OUTPUT
-            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_ENV
-            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_OUTPUT
+            COMMIT_SHA=$(git rev-parse --short HEAD)
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_ENV
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_OUTPUT
           else
-            echo "APP_VERSION=${VERSION}" >> $GITHUB_ENV
-            echo "APP_VERSION=${VERSION}" >> $GITHUB_OUTPUT
-            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_ENV
-            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_OUTPUT
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_ENV
+            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_OUTPUT
           fi
       - name: Print Maven POM project version
         run: echo "application version = ${{ env.APP_VERSION }}"
@@ -68,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          path: target/${{ env.JAR_NAME }}
+          path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           compression-level: 0
           overwrite: true
   docker:
@@ -80,10 +76,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+      - name: Set artifact name
+        id: set-artifact-name
+        run: |
+          echo "ARTIFACT_NAME=${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar" >> $GITHUB_OUTPUT
       - name: Download Application Package
         uses: actions/download-artifact@master
         with:
-          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+          name: ${{ steps.get-artifact-name.outputs.ARTIFACT_NAME }}
           path: target/
       - name: Verify downloaded artifact
         run: |
@@ -91,6 +91,7 @@ jobs:
           ls -l target/
           echo "APP_NAME: ${{ env.APP_NAME }}"
           echo "APP_VERSION: ${{ env.APP_VERSION }}"
+          echo "ARTIFACT_NAME: ${{ steps.get-artifact-name.outputs.ARTIFACT_NAME }}"
       # Prepare docker build with buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@master
@@ -113,14 +114,6 @@ jobs:
           build-args: |
             APP_NAME=${{ env.APP_NAME }}
             APP_VERSION=${{ env.APP_VERSION }}
-
-      - name: Verify downloaded artifact
-        run: |
-          echo "Contents of target directory:"
-          ls -l target/
-          echo "APP_NAME: ${{ env.APP_NAME }}"
-          echo "APP_VERSION: ${{ env.APP_VERSION }}"
-
   release:
     # This job depends on the successful completion of the 'maven' and 'docker' jobs
     needs: [maven, docker]
