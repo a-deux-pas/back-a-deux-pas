@@ -40,13 +40,17 @@ jobs:
       - name: Retrieve Application Version
         id: set_app_version
         run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            COMMIT_SHA=$(git rev-parse --short HEAD)
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_ENV
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_OUTPUT
+            echo "APP_VERSION=${VERSION}-${COMMIT_SHA}" >> $GITHUB_ENV
+            echo "APP_VERSION=${VERSION}-${COMMIT_SHA}" >> $GITHUB_OUTPUT
+            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_ENV
+            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_OUTPUT
           else
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_ENV
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_OUTPUT
+            echo "APP_VERSION=${VERSION}" >> $GITHUB_ENV
+            echo "APP_VERSION=${VERSION}" >> $GITHUB_OUTPUT
+            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_ENV
+            echo "JAR_NAME=back-a-deux-pas-${VERSION}.jar" >> $GITHUB_OUTPUT
           fi
       - name: Print Maven POM project version
         run: echo "application version = ${{ env.APP_VERSION }}"
@@ -59,26 +63,12 @@ jobs:
       # Package application
       - name: Package Application
         run: mvn -B package -Dmaven.test.skip=true
-
-      - name: Verify Maven build
-        run: |
-          echo "Contents of target directory:"
-          ls -l target/
-          echo "Maven build info:"
-          mvn -B help:evaluate -Dexpression=project.build.finalName -q -DforceStdout
-
-      - name: Check permissions
-        run: |
-          ls -l target/
-          whoami
-          groups
-
       # Upload artifact to repository
       - name: Upload Application Package
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          path: ${{ github.workspace }}/target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+          path: target/${{ env.JAR_NAME }}
           compression-level: 0
           overwrite: true
       # debug
@@ -137,6 +127,13 @@ jobs:
           build-args: |
             APP_NAME=${{ env.APP_NAME }}
             APP_VERSION=${{ env.APP_VERSION }}
+
+      - name: Verify downloaded artifact
+        run: |
+          echo "Contents of target directory:"
+          ls -l target/
+          echo "APP_NAME: ${{ env.APP_NAME }}"
+          echo "APP_VERSION: ${{ env.APP_VERSION }}"
 
   release:
     # This job depends on the successful completion of the 'maven' and 'docker' jobs
