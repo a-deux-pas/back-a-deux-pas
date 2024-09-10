@@ -151,7 +151,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@master
         with:
-          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION_ONLY }}.jar
+          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           path: target/
 
       # Create a GitHub release with the built artifact
@@ -167,7 +167,7 @@ jobs:
           Docker image: \`${DOCKER_IMAGE_URL}\`
           Commit: ${COMMIT_SHA}"
 
-          gh release create v${RELEASE_VERSION} target/${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar \
+          gh release create v${RELEASE_VERSION} target/${{ env.APP_NAME }}-${{ env.APP_VERSION_ONLY }}.jar \
             --title "v${RELEASE_VERSION}" \
             --notes "${RELEASE_NOTES}" \
             --target ${{ github.ref_name }}
