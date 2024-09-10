@@ -20,6 +20,7 @@ jobs:
     # export APP_VERSION to other jobs
     outputs:
       APP_VERSION: ${{ steps.set_app_version.outputs.APP_VERSION }}
+      APP_VERSION_ONLY: ${{ steps.set_app_version.outputs.APP_VERSION_ONLY }}
     strategy:
       matrix:
         java: ["21"]
@@ -52,8 +53,6 @@ jobs:
           fi
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
           echo "APP_VERSION_ONLY=${APP_VERSION}" >> $GITHUB_OUTPUT
-        outputs:
-          APP_VERSION_ONLY: ${{ steps.set_app_version.outputs.APP_VERSION_ONLY }}
       - name: Print Maven POM project version
         run: echo "application version = ${{ env.APP_VERSION }}"
       # Project compilation
