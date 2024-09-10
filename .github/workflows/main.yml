@@ -76,14 +76,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Set artifact name
-        id: set-artifact-name
-        run: |
-          echo "ARTIFACT_NAME=${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar" >> $GITHUB_OUTPUT
       - name: Download Application Package
         uses: actions/download-artifact@master
         with:
-          name: ${{ steps.get-artifact-name.outputs.ARTIFACT_NAME }}
+          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
           path: target/
       - name: Verify downloaded artifact
         run: |
@@ -91,7 +87,6 @@ jobs:
           ls -l target/
           echo "APP_NAME: ${{ env.APP_NAME }}"
           echo "APP_VERSION: ${{ env.APP_VERSION }}"
-          echo "ARTIFACT_NAME: ${{ steps.get-artifact-name.outputs.ARTIFACT_NAME }}"
       # Prepare docker build with buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@master
