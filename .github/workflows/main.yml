@@ -40,14 +40,15 @@ jobs:
       - name: Retrieve Application Version
         id: set_app_version
         run: |
-          ARTIFACT_NAME="${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar"
+          APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)
+          ARTIFACT_NAME="${{ env.APP_NAME }}-${APP_VERSION}.jar"
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             COMMIT_SHA=$(git rev-parse --short HEAD)
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_ENV
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)-${COMMIT_SHA}" >> $GITHUB_OUTPUT
+            echo "APP_VERSION=${APP_VERSION}-${COMMIT_SHA}" >> $GITHUB_ENV
+            echo "APP_VERSION=${APP_VERSION}-${COMMIT_SHA}" >> $GITHUB_OUTPUT
           else
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_ENV
-            echo "APP_VERSION=$(mvn -f pom.xml help:evaluate -Dexpression='project.version' -q -DforceStdout)" >> $GITHUB_OUTPUT
+            echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
+            echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_OUTPUT
           fi
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
       - name: Print Maven POM project version
