@@ -76,13 +76,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Get artifact name
-        id: get-artifact-name
+      - name: Set artifact name
+        id: set-artifact-name
         run: |
-          ARTIFACT_NAME=$(gh run list --workflow="main.yml" --branch=${{ github.ref_name }} --json artifacts --jq '.[] | select(.status=="completed") | .artifacts[0].name' --limit 1)
-          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "ARTIFACT_NAME=${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar" >> $GITHUB_OUTPUT
       - name: Download Application Package
         uses: actions/download-artifact@master
         with:
