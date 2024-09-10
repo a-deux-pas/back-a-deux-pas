@@ -76,10 +76,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+      - name: Get artifact name
+        id: get-artifact-name
+        run: |
+          ARTIFACT_NAME=$(gh run list --workflow="main.yml" --branch=${{ github.ref_name }} --json artifacts --jq '.[] | select(.status=="completed") | .artifacts[0].name' --limit 1)
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download Application Package
         uses: actions/download-artifact@master
         with:
-          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}*
+          name: ${{ steps.get-artifact-name.outputs.ARTIFACT_NAME }}
           path: target/
       - name: Verify downloaded artifact
         run: |
@@ -87,6 +94,7 @@ jobs:
           ls -l target/
           echo "APP_NAME: ${{ env.APP_NAME }}"
           echo "APP_VERSION: ${{ env.APP_VERSION }}"
+          echo "ARTIFACT_NAME: ${{ steps.get-artifact-name.outputs.ARTIFACT_NAME }}"
       # Prepare docker build with buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@master
