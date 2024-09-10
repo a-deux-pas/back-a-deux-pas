@@ -58,6 +58,20 @@ jobs:
         run: mvn -B test
       # Package application
       - name: Package Application
+      
+      - name: Verify Maven build
+        run: |
+          echo "Contents of target directory:"
+          ls -l target/
+          echo "Maven build info:"
+          mvn -B help:evaluate -Dexpression=project.build.finalName -q -DforceStdout
+
+      - name: Check permissions
+        run: |
+          ls -l target/
+          whoami
+          groups
+
         run: mvn -B package -Dmaven.test.skip=true
       # Upload artifact to repository
       - name: Upload Application Package
