@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
-          path: ${{ github.workspace }}/target/${{ steps.set_versions.outputs.ARTIFACT_NAME }}"
+          path: ${{ github.workspace }}/target/${{ env.ARTIFACT_NAME }}"
           compression-level: 0
           overwrite: true
   docker:
