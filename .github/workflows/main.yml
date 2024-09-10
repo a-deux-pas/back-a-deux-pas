@@ -91,7 +91,7 @@ jobs:
           echo "Contents of target directory:"
           ls -l target/
           echo "APP_NAME: ${{ env.APP_NAME }}"
-          echo "APP_VERSION: ${{ env.APP_VERSION }}
+          echo "APP_VERSION: ${{ env.APP_VERSION }}"
           echo "ARTIFACT_NAME: ${{ env.ARTIFACT_NAME }}"
       # Prepare docker build with buildx
       - name: Set up Docker Buildx
