@@ -20,6 +20,7 @@ jobs:
     # export APP_VERSION to other jobs
     outputs:
       APP_VERSION: ${{ steps.set_app_version.outputs.APP_VERSION }}
+      APP_VERSION_ONLY: ${{ steps.set_app_version.outputs.APP_VERSION_ONLY }}
     strategy:
       matrix:
         java: ["21"]
@@ -51,6 +52,7 @@ jobs:
             echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_OUTPUT
           fi
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
+          echo "APP_VERSION_ONLY=${APP_VERSION}" >> $GITHUB_OUTPUT
       - name: Print Maven POM project version
         run: echo "application version = ${{ env.APP_VERSION }}"
       # Project compilation
@@ -76,6 +78,7 @@ jobs:
     env:
       APP_NAME: ${{ vars.APP_NAME }}
       APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
+      APP_VERSION_ONLY: ${{ needs.maven.outputs.APP_VERSION_ONLY }}
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -111,7 +114,7 @@ jobs:
           tags: docker.io/douniabed/${{ env.APP_NAME }}:${{ env.APP_VERSION }}
           build-args: |
             APP_NAME=${{ env.APP_NAME }}
-            APP_VERSION=${{ env.APP_VERSION }}
+            APP_VERSION=${{ env.APP_VERSION_ONLY }}
   release:
     # This job depends on the successful completion of the 'maven' and 'docker' jobs
     needs: [maven, docker]
