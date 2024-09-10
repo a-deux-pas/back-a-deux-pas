@@ -126,6 +126,7 @@ jobs:
     env:
       APP_NAME: ${{ vars.APP_NAME }}
       APP_VERSION: ${{ needs.maven.outputs.APP_VERSION }}
+      APP_VERSION_ONLY: ${{ needs.maven.outputs.APP_VERSION_ONLY }}
     steps:
       # Checkout the repository
       - uses: actions/checkout@v3
@@ -150,7 +151,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@master
         with:
-          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.jar
+          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION_ONLY }}.jar
           path: target/
 
       # Create a GitHub release with the built artifact
