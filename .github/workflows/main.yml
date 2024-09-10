@@ -52,9 +52,7 @@ jobs:
           fi
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
       - name: Print Maven POM project version
-        run: |
-          echo "application version = ${{ env.APP_VERSION }}"
-          echo "artifact name = ${{ env.ARTIFACT_NAME }}"
+        run: echo "application version = ${{ env.APP_VERSION }}"
       # Project compilation
       - name: Compile Code Source
         run: mvn -B clean compile
@@ -64,10 +62,6 @@ jobs:
       # Package application
       - name: Package Application
         run: mvn -B package -Dmaven.test.skip=true
-
-      - name: List files in target directory
-        run: ls -l ${{ github.workspace }}/target/
-
       # Upload artifact to repository
       - name: Upload Application Package
         uses: actions/upload-artifact@master
